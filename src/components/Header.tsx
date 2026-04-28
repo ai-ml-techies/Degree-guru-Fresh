@@ -11,6 +11,7 @@ const navItems = [
   { to: "/programs", label: "Programs", dropdown: true },
   { to: "/class-10-12", label: "Class 10 & 12" },
   { to: "/about", label: "About" },
+  { to: "/blog", label: "Blogs" },
   { to: "/contact", label: "Contact" },
 ];
 

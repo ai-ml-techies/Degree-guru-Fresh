@@ -105,7 +105,7 @@ export const PROGRAMS: ProgramContent[] = [
       "Engineers and IT folks moving into product / strategy",
       "Founders and entrepreneurs scaling their venture",
     ],
-    emiNote: "No-cost EMI options at most partner universities, from ₹8,000 per month.",
+    emiNote: "No-cost EMI options at top universities, from ₹8,000 per month.",
   },
   {
     slug: "online-mca",

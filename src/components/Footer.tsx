@@ -36,7 +36,7 @@ export const Footer = () => {
                   target="_blank"
                   rel="noreferrer"
                   aria-label={s.label}
-                  className="w-10 h-10 rounded-full bg-white/10 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover:-translate-y-1"
+                  className="w-10 h-10 aspect-square shrink-0 rounded-full bg-white/10 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover:-translate-y-1"
                 >
                   <s.icon size={16} />
                 </a>
@@ -70,7 +70,8 @@ export const Footer = () => {
             <h4 className="font-bold mb-5 text-sm uppercase tracking-wider">Contact</h4>
             <ul className="space-y-3 text-sm text-white/75">
               <li className="flex items-center gap-2"><Phone size={14} /> 9350199001</li>
-              <li className="flex items-center gap-2"><Mail size={14} /> admissions@degreeguru.in</li>
+              <li className="flex items-center gap-2"><Mail size={14} /> Admissions: admissions@degreeguru.in</li>
+              <li className="flex items-center gap-2"><Mail size={14} /> Queries: info@degreeguru.in</li>
               <li className="flex items-center gap-2"><MapPin size={14} /> Gurugram, Haryana, India</li>
             </ul>
           </div>

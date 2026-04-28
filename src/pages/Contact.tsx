@@ -11,8 +11,8 @@ import {
 import contactHero from "@/assets/contact-hero.jpg";
 
 const faqs = [
-  { q: "Is career counseling really free?", a: "Yes. Completely free for every student. Our partner universities support our work, so you pay nothing." },
-  { q: "Do you offer easy EMI options?", a: "Yes. Most of our partner universities offer no-cost or low-cost EMI plans, so you can spread your fees comfortably." },
+  { q: "Is career counseling really free?", a: "Yes. Completely free for every student. Top universities support our work, so you pay nothing." },
+  { q: "Do you offer easy EMI options?", a: "Yes. Top universities offer no-cost or low-cost EMI plans, so you can spread your fees comfortably." },
   { q: "How does online degree guidance work?", a: "Share your profile, we recommend programs and universities that fit you, and then guide you through the application process." },
   { q: "Can working professionals apply for online bachelors?", a: "Absolutely. Our online programs are designed for both fresh learners and working professionals." },
   { q: "Who can apply for Class 10 or 12 online?", a: "Anyone who missed formal schooling or wants to complete it from home. Talk to us to check your eligibility." },
@@ -66,8 +66,15 @@ const Contact = () => (
             <a href="mailto:admissions@degreeguru.in" className="glass glass-hover p-6 flex items-center gap-4 min-w-0">
               <div className="w-12 h-12 rounded-full bg-primary/15 flex items-center justify-center flex-shrink-0"><Mail size={18} className="text-primary" /></div>
               <div className="min-w-0 flex-1">
-                <div className="text-xs uppercase tracking-wider text-soft">Email</div>
+                <div className="text-xs uppercase tracking-wider text-soft">Admissions</div>
                 <div className="font-bold text-xs sm:text-sm break-all">admissions@degreeguru.in</div>
+              </div>
+            </a>
+            <a href="mailto:info@degreeguru.in" className="glass glass-hover p-6 flex items-center gap-4 min-w-0">
+              <div className="w-12 h-12 rounded-full bg-primary/15 flex items-center justify-center flex-shrink-0"><Mail size={18} className="text-primary" /></div>
+              <div className="min-w-0 flex-1">
+                <div className="text-xs uppercase tracking-wider text-soft">Queries</div>
+                <div className="font-bold text-xs sm:text-sm break-all">info@degreeguru.in</div>
               </div>
             </a>
             <a href="https://wa.me/919350199001" target="_blank" rel="noreferrer" className="glass glass-hover p-6 flex items-center gap-4">

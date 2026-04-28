@@ -7,11 +7,11 @@ const Privacy = () => (
 
         {[
           { t: "Information We Collect", b: "When you request counseling, we collect your name, phone, email, date of birth and message. That is it. Nothing more." },
-          { t: "How We Use It", b: "We use your details only to call you back, share program recommendations, and connect you with partner universities you ask about." },
+          { t: "How We Use It", b: "We use your details only to call you back, share program recommendations, and connect you with universities you ask about." },
           { t: "Data Protection", b: "Your details are stored securely. Access is limited to authorised counselors. We never sell your data." },
           { t: "Third Party Sharing", b: "We share your information only with the universities you choose to apply to. We never share with marketers or unrelated third parties." },
           { t: "Your Rights", b: "You can ask us to update or delete your data at any time. Just email us." },
-          { t: "Contact", b: "Questions about privacy? Email admissions@degreeguru.in. We will get back to you fast." },
+          { t: "Contact", b: "Questions about privacy? Email info@degreeguru.in. We will get back to you fast." },
         ].map((s) => (
           <div key={s.t} className="mb-8">
             <h2 className="text-xl font-bold mb-2">{s.t}</h2>

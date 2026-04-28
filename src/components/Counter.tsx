@@ -4,9 +4,10 @@ interface CounterProps {
   end: number;
   suffix?: string;
   duration?: number;
+  className?: string;
 }
 
-export const Counter = ({ end, suffix = "", duration = 2000 }: CounterProps) => {
+export const Counter = ({ end, suffix = "", duration = 2000, className }: CounterProps) => {
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLSpanElement>(null);
   const started = useRef(false);
@@ -38,7 +39,7 @@ export const Counter = ({ end, suffix = "", duration = 2000 }: CounterProps) => 
   }, [end, duration]);
 
   return (
-    <span ref={ref}>
+    <span ref={ref} className={className}>
       {count.toLocaleString("en-IN")}
       {suffix}
     </span>

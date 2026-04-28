@@ -14,6 +14,7 @@ import Recruitment from "./pages/Recruitment.tsx";
 import ProgramsIndex from "./pages/ProgramsIndex.tsx";
 import ProgramDetail from "./pages/ProgramDetail.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import Blog from "./pages/Blog.tsx";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +35,7 @@ const App = () => (
               <Route path="/recruitment" element={<Recruitment />} />
               <Route path="/programs" element={<ProgramsIndex />} />
               <Route path="/programs/:slug" element={<ProgramDetail />} />
+              <Route path="/blog" element={<Blog />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Layout>

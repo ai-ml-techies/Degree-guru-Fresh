@@ -61,8 +61,8 @@ const Index = () => {
                   <GraduationCap size={20} className="text-primary" />
                 </div>
                 <div>
-                  <div className="text-xs text-foreground/70">Counseled today</div>
-                  <div className="font-bold text-foreground">+182 students</div>
+                  <div className="text-xs text-foreground/70">Today</div>
+                  <div className="font-bold text-foreground">700+ Students Enrolled</div>
                 </div>
               </div>
             </div>
@@ -72,7 +72,7 @@ const Index = () => {
 
       {/* TRUST BAR */}
       <section className="bg-primary text-primary-foreground py-5">
-        <div className="container-dg grid grid-cols-3 gap-6 text-left">
+        <div className="container-dg grid grid-cols-3 gap-6 text-center">
           {[
             { end: 5000, suffix: "+", l: "Students Guided" },
             { end: 50, suffix: "+", l: "Top Universities" },
@@ -150,8 +150,8 @@ const Index = () => {
           </Reveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { icon: ShieldCheck, t: "Completely Free Counseling", d: "Universities support our work, so students pay nothing. Honest, unbiased advice for every learner and professional." },
-              { icon: Sparkles, t: "Easy EMI Options", d: "Most partner universities offer no-cost or low-cost EMI plans, so you never have to pause your dream for fees." },
+              { icon: ShieldCheck, t: "Completely Free Counseling", d: "Top universities support our work, so students pay nothing. Honest, unbiased advice for every learner and professional." },
+              { icon: Sparkles, t: "Easy EMI Options", d: "Top universities offer no-cost or low-cost EMI plans, so you never have to pause your dream for fees." },
               { icon: Award, t: "Scholarships & Recruitment Support", d: "We help you find scholarships and connect with recruitment opportunities after your degree." },
               { icon: Briefcase, t: "Industry Ready Advice", d: "Our counselors understand current job markets, salary trends and what hiring managers actually look for." },
             ].map((c, i) => (
@@ -293,7 +293,8 @@ const Index = () => {
             </p>
             <div className="space-y-3 text-sm">
               <div className="flex items-center gap-3"><span className="w-9 h-9 rounded-full bg-primary/15 flex items-center justify-center text-primary font-bold">P</span> 9350199001</div>
-              <div className="flex items-center gap-3"><span className="w-9 h-9 rounded-full bg-primary/15 flex items-center justify-center text-primary font-bold">E</span> admissions@degreeguru.in</div>
+              <div className="flex items-center gap-3"><span className="w-9 h-9 rounded-full bg-primary/15 flex items-center justify-center text-primary font-bold">A</span> Admissions: admissions@degreeguru.in</div>
+              <div className="flex items-center gap-3"><span className="w-9 h-9 rounded-full bg-primary/15 flex items-center justify-center text-primary font-bold">Q</span> Queries: info@degreeguru.in</div>
             </div>
           </Reveal>
           <Reveal delay={0.1}>
