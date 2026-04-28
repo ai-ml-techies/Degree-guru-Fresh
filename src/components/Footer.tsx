@@ -7,7 +7,7 @@ const trustPills = [
   "AICTE Approved Programs",
   "UGC Entitled Degrees",
   "Easy EMI Options",
-  "Trusted University Partner",
+  "50+ Top Universities",
 ];
 
 const socials = [
