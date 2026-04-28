@@ -3,6 +3,7 @@ import { Blobs } from "@/components/Blobs";
 import { ShieldCheck, Sparkles, Users, Briefcase } from "lucide-react";
 import { Link } from "react-router-dom";
 import aboutHero from "@/assets/about-hero.jpg";
+import { Counter } from "@/components/Counter";
 
 const About = () => (
   <>
@@ -47,7 +48,7 @@ const About = () => (
     </section>
 
     <section className="bg-primary text-primary-foreground py-20">
-      <div className="container-dg max-w-3xl text-center">
+      <div className="container-dg max-w-3xl text-left">
         <Reveal>
           <p className="overline !text-primary-foreground/80 mb-3">Vision</p>
           <h2 className="text-3xl md:text-[40px] font-bold mb-5">Aligned With Viksit Bharat</h2>
@@ -87,7 +88,7 @@ const About = () => (
     <section className="py-20">
       <div className="container-dg">
         <Reveal>
-          <div className="glass p-10 md:p-12 text-center max-w-3xl mx-auto">
+          <div className="glass p-10 md:p-12 text-left max-w-3xl mx-auto">
             <p className="overline mb-3">Beyond Counseling</p>
             <h2 className="text-2xl md:text-3xl font-bold mb-4">We Help You Get Hired Too</h2>
             <p className="text-soft leading-relaxed mb-6">
@@ -100,16 +101,18 @@ const About = () => (
     </section>
 
     <section className="py-20">
-      <div className="container-dg grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+      <div className="container-dg grid grid-cols-2 md:grid-cols-4 gap-6 text-left">
         {[
-          { n: "5+", l: "Years" },
-          { n: "50,000+", l: "Students" },
-          { n: "600+", l: "Partners" },
-          { n: "98%", l: "Satisfaction" },
+          { end: 5, suffix: "+", l: "Years" },
+          { end: 5000, suffix: "+", l: "Students" },
+          { end: 50, suffix: "+", l: "Top Universities" },
+          { end: 98, suffix: "%", l: "Satisfaction" },
         ].map((s) => (
           <Reveal key={s.l}>
             <div className="glass glass-hover p-8">
-              <div className="text-3xl md:text-4xl font-extrabold text-primary">{s.n}</div>
+              <div className="text-3xl md:text-4xl font-extrabold text-primary">
+                <Counter end={s.end} suffix={s.suffix} />
+              </div>
               <div className="text-xs uppercase tracking-wider mt-2 text-soft">{s.l}</div>
             </div>
           </Reveal>

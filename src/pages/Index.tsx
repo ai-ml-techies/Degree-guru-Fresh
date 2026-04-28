@@ -4,6 +4,7 @@ import { Blobs } from "@/components/Blobs";
 import { Reveal } from "@/components/Reveal";
 import { UniversityMarquee } from "@/components/UniversityMarquee";
 import { CounselingForm } from "@/components/CounselingForm";
+import { Counter } from "@/components/Counter";
 import { PROGRAMS } from "@/data/programs";
 import heroDesktop from "@/assets/hero-desktop.jpg";
 import heroTablet from "@/assets/hero-tablet.jpg";
@@ -70,16 +71,18 @@ const Index = () => {
       </section>
 
       {/* TRUST BAR */}
-      <section className="bg-primary text-primary-foreground py-12">
-        <div className="container-dg grid grid-cols-3 gap-6 text-center">
+      <section className="bg-primary text-primary-foreground py-5">
+        <div className="container-dg grid grid-cols-3 gap-6 text-left">
           {[
-            { n: "50,000+", l: "Students Guided" },
-            { n: "600+", l: "University Partners" },
-            { n: "100%", l: "Free Forever" },
+            { end: 5000, suffix: "+", l: "Students Guided" },
+            { end: 50, suffix: "+", l: "Top Universities" },
+            { end: 100, suffix: "%", l: "Free Forever" },
           ].map((s) => (
             <Reveal key={s.l}>
-              <div className="text-3xl md:text-[40px] font-extrabold">{s.n}</div>
-              <div className="text-[13px] uppercase tracking-wider opacity-90 mt-1">{s.l}</div>
+              <div className="text-2xl md:text-[32px] font-extrabold leading-tight">
+                <Counter end={s.end} suffix={s.suffix} />
+              </div>
+              <div className="text-[12px] uppercase tracking-wider opacity-90 mt-0.5">{s.l}</div>
             </Reveal>
           ))}
         </div>
@@ -89,13 +92,13 @@ const Index = () => {
       <section className="py-24 relative">
         <div className="container-dg">
           <Reveal>
-            <div className="glass max-w-[900px] mx-auto p-10 md:p-14 text-center">
+            <div className="glass max-w-[900px] mx-auto p-10 md:p-14 text-left">
               <p className="overline mb-4">Our Vision</p>
               <h2 className="text-3xl md:text-[40px] font-bold mb-6 leading-tight">
-                Empowering Viksit Bharat Through Education
+                Empowering Viksit Bharat (Developed India) Initiative Through Education
               </h2>
               <p className="text-soft text-lg leading-[1.8]">
-                At Degree Guru, we believe every Indian deserves honest career guidance. Our mission aligns with Viksit Bharat: empowering youth through education and informed choices. We partner with leading universities to build a platform where no student pays for counseling, where every professional finds their next step, and where the right online degree opens doors. This is a movement toward an educated, empowered India.
+                At Degree Guru, we believe every Indian deserves honest career guidance. Our mission aligns with the Viksit Bharat (Developed India) Initiative: empowering youth through education and informed choices. We partner with leading universities to build a platform where no student pays for counseling, where every professional finds their next step, and where the right online degree opens doors. This is a movement toward an educated, empowered India.
               </p>
             </div>
           </Reveal>

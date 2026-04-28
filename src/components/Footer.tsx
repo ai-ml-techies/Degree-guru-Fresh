@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
 import { Phone, Mail, MapPin, Facebook, Instagram, Linkedin, Youtube, Twitter } from "lucide-react";
+import logoDark from "@/assets/logo-dark.png";
 
 const trustPills = [
   "100% Free Forever",
   "AICTE Approved Programs",
   "UGC Entitled Degrees",
   "Easy EMI Options",
-  "Trusted University Partner",
+  "50+ Top Universities",
 ];
 
 const socials = [
@@ -23,7 +24,7 @@ export const Footer = () => {
       <div className="container-dg">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
           <div>
-            <div className="font-extrabold text-2xl mb-4">Degree Guru</div>
+            <img src={logoDark} alt="Degree Guru" className="h-10 w-auto mb-4" />
             <p className="text-white/70 leading-relaxed text-sm mb-6">
               India's Trusted Free Career Counseling and Recruitment Platform.
             </p>
