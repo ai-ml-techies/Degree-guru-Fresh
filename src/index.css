@@ -107,6 +107,15 @@
     font-feature-settings: "ss01", "cv11";
   }
 
+  /* Blend the floating header into the hero by removing any visible seam */
+  main, main > section:first-child {
+    background-color: transparent;
+  }
+  main > section:first-child {
+    padding-top: 7rem;
+    margin-top: -1rem;
+  }
+
   h1, h2, h3, h4, h5 {
     letter-spacing: -0.02em;
   }

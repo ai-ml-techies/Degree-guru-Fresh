@@ -63,25 +63,25 @@ const Contact = () => (
                 <div className="font-bold">9350199001</div>
               </div>
             </a>
-            <a href="mailto:admissions@degreeguru.in" className="glass glass-hover p-6 flex items-center gap-4 min-w-0">
-              <div className="w-12 h-12 rounded-full bg-primary/15 flex items-center justify-center flex-shrink-0"><Mail size={18} className="text-primary" /></div>
-              <div className="min-w-0 flex-1">
-                <div className="text-xs uppercase tracking-wider text-soft">Admissions</div>
-                <div className="font-bold text-xs sm:text-sm break-all">admissions@degreeguru.in</div>
-              </div>
-            </a>
-            <a href="mailto:info@degreeguru.in" className="glass glass-hover p-6 flex items-center gap-4 min-w-0">
-              <div className="w-12 h-12 rounded-full bg-primary/15 flex items-center justify-center flex-shrink-0"><Mail size={18} className="text-primary" /></div>
-              <div className="min-w-0 flex-1">
-                <div className="text-xs uppercase tracking-wider text-soft">Queries</div>
-                <div className="font-bold text-xs sm:text-sm break-all">info@degreeguru.in</div>
-              </div>
-            </a>
             <a href="https://wa.me/919350199001" target="_blank" rel="noreferrer" className="glass glass-hover p-6 flex items-center gap-4">
               <div className="w-12 h-12 rounded-full bg-[#25D366]/15 flex items-center justify-center flex-shrink-0"><MessageCircle size={18} className="text-[#25D366]" /></div>
               <div>
                 <div className="text-xs uppercase tracking-wider text-soft">WhatsApp</div>
                 <div className="font-bold">Chat instantly</div>
+              </div>
+            </a>
+            <a href="mailto:admissions@degreeguru.in" className="glass glass-hover p-6 flex items-center gap-4 min-w-0 sm:col-span-2">
+              <div className="w-12 h-12 rounded-full bg-primary/15 flex items-center justify-center flex-shrink-0"><Mail size={18} className="text-primary" /></div>
+              <div className="min-w-0 flex-1">
+                <div className="text-xs uppercase tracking-wider text-soft">Admissions</div>
+                <div className="font-bold text-sm md:text-base whitespace-nowrap overflow-hidden text-ellipsis">admissions@degreeguru.in</div>
+              </div>
+            </a>
+            <a href="mailto:info@degreeguru.in" className="glass glass-hover p-6 flex items-center gap-4 min-w-0 sm:col-span-2">
+              <div className="w-12 h-12 rounded-full bg-primary/15 flex items-center justify-center flex-shrink-0"><Mail size={18} className="text-primary" /></div>
+              <div className="min-w-0 flex-1">
+                <div className="text-xs uppercase tracking-wider text-soft">Queries</div>
+                <div className="font-bold text-sm md:text-base whitespace-nowrap overflow-hidden text-ellipsis">info@degreeguru.in</div>
               </div>
             </a>
             <div className="glass p-6 flex items-center gap-4">
@@ -91,7 +91,7 @@ const Contact = () => (
                 <div className="font-bold">Available all 7 days</div>
               </div>
             </div>
-            <div className="glass p-6 flex items-center gap-4 sm:col-span-2">
+            <div className="glass p-6 flex items-center gap-4">
               <div className="w-12 h-12 rounded-full bg-primary/15 flex items-center justify-center flex-shrink-0"><MapPin size={18} className="text-primary" /></div>
               <div>
                 <div className="text-xs uppercase tracking-wider text-soft">Location</div>
