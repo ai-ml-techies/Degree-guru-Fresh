@@ -63,11 +63,11 @@ const Contact = () => (
                 <div className="font-bold">9350199001</div>
               </div>
             </a>
-            <a href="mailto:admissions@degreeguru.in" className="glass glass-hover p-6 flex items-center gap-4">
+            <a href="mailto:admissions@degreeguru.in" className="glass glass-hover p-6 flex items-center gap-4 min-w-0">
               <div className="w-12 h-12 rounded-full bg-primary/15 flex items-center justify-center flex-shrink-0"><Mail size={18} className="text-primary" /></div>
-              <div>
+              <div className="min-w-0 flex-1">
                 <div className="text-xs uppercase tracking-wider text-soft">Email</div>
-                <div className="font-bold text-sm">admissions@degreeguru.in</div>
+                <div className="font-bold text-xs sm:text-sm break-all">admissions@degreeguru.in</div>
               </div>
             </a>
             <a href="https://wa.me/919350199001" target="_blank" rel="noreferrer" className="glass glass-hover p-6 flex items-center gap-4">
@@ -81,7 +81,7 @@ const Contact = () => (
               <div className="w-12 h-12 rounded-full bg-primary/15 flex items-center justify-center flex-shrink-0"><CalendarCheck size={18} className="text-primary" /></div>
               <div>
                 <div className="text-xs uppercase tracking-wider text-soft">Availability</div>
-                <div className="font-bold">We're available for you 7 days</div>
+                <div className="font-bold">Available all 7 days</div>
               </div>
             </div>
             <div className="glass p-6 flex items-center gap-4 sm:col-span-2">

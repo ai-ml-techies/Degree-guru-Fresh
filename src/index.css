@@ -139,17 +139,17 @@
     box-shadow: 0 16px 48px rgba(0,0,0,0.5);
   }
   .glass-dropdown {
-    background: rgba(231, 239, 255, 0.5);
-    backdrop-filter: blur(32px) saturate(180%);
-    -webkit-backdrop-filter: blur(32px) saturate(180%);
-    border: 1px solid rgba(255,255,255,0.4);
+    background: rgba(231, 239, 255, 0.75);
+    backdrop-filter: blur(40px) saturate(200%);
+    -webkit-backdrop-filter: blur(40px) saturate(200%);
+    border: 1px solid rgba(255,255,255,0.55);
     border-radius: 16px;
-    box-shadow: 0 24px 60px rgba(101, 40, 247, 0.18);
+    box-shadow: 0 24px 60px rgba(101, 40, 247, 0.22);
   }
   .dark .glass-dropdown {
-    background: rgba(24, 26, 37, 0.65);
-    border-color: rgba(255,255,255,0.08);
-    box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+    background: rgba(24, 26, 37, 0.85);
+    border-color: rgba(255,255,255,0.1);
+    box-shadow: 0 24px 60px rgba(0,0,0,0.7);
   }
 
   .overline {
