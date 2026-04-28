@@ -2,20 +2,32 @@ import { Reveal } from "@/components/Reveal";
 import { Blobs } from "@/components/Blobs";
 import { ShieldCheck, Sparkles, Users, Briefcase } from "lucide-react";
 import { Link } from "react-router-dom";
+import aboutHero from "@/assets/about-hero.jpg";
 
 const About = () => (
   <>
     <section className="relative min-h-[60vh] flex items-center overflow-hidden py-20">
       <Blobs />
-      <div className="container-dg relative z-10 max-w-3xl">
+      <div className="container-dg relative z-10 grid lg:grid-cols-2 gap-12 items-center">
         <Reveal>
           <p className="overline mb-4">About Degree Guru</p>
-          <h1 className="text-[40px] md:text-[64px] font-extrabold leading-[1.05] mb-6">
+          <h1 className="text-[40px] md:text-[60px] font-extrabold leading-[1.05] mb-6">
             India's Trusted Free Education Guide
           </h1>
           <p className="text-soft text-lg leading-[1.8]">
-            A platform built on one simple belief: career counseling should be free, honest and accessible to every Indian.
+            A platform built on one simple belief: career counseling should be free, honest and accessible to every Indian — with easy EMI options on the programs we recommend.
           </p>
+        </Reveal>
+        <Reveal delay={0.15}>
+          <div className="relative">
+            <div className="absolute -inset-6 bg-primary/15 rounded-[40px] blur-2xl" />
+            <img
+              src={aboutHero}
+              alt="Indian students studying together at a modern library"
+              className="relative rounded-[28px] w-full object-cover aspect-[4/3] shadow-2xl"
+              loading="eager"
+            />
+          </div>
         </Reveal>
       </div>
     </section>
@@ -27,7 +39,7 @@ const About = () => (
             <p className="overline mb-3">Our Story</p>
             <h2 className="text-3xl font-bold mb-5">Built on a Simple Belief</h2>
             <p className="text-soft text-lg leading-[1.8]">
-              Too many Indian students pay for biased counseling and end up in the wrong program. We started Degree Guru to change that. Because we partner directly with India's top universities, our counseling is free for every student. Your future, your choice, our free guidance.
+              Too many Indian students pay for biased counseling and end up in the wrong program. We started Degree Guru to change that. Because we partner directly with India's top universities, our counseling is free for every student — and we make sure you know about every EMI and scholarship option you qualify for.
             </p>
           </div>
         </Reveal>
@@ -55,7 +67,7 @@ const About = () => (
           {[
             { icon: ShieldCheck, t: "Free Forever", d: "No charges to students. Ever." },
             { icon: Users, t: "Trusted Partnerships", d: "Direct ties with India's top universities." },
-            { icon: Sparkles, t: "Expert Counselors", d: "People who actually understand education." },
+            { icon: Sparkles, t: "Easy EMI Options", d: "Fee plans that fit your monthly budget." },
             { icon: Briefcase, t: "End to End Support", d: "From shortlisting to enrollment to recruitment." },
           ].map((c, i) => (
             <Reveal key={c.t} delay={i * 0.08}>
@@ -96,7 +108,7 @@ const About = () => (
           { n: "98%", l: "Satisfaction" },
         ].map((s) => (
           <Reveal key={s.l}>
-            <div className="glass p-8">
+            <div className="glass glass-hover p-8">
               <div className="text-3xl md:text-4xl font-extrabold text-primary">{s.n}</div>
               <div className="text-xs uppercase tracking-wider mt-2 text-soft">{s.l}</div>
             </div>

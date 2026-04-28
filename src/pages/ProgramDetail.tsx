@@ -1,10 +1,11 @@
 import { useParams, Link, Navigate } from "react-router-dom";
 import { useEffect } from "react";
-import { ArrowRight, ChevronRight, GraduationCap, Briefcase, Award, ShieldCheck, Star } from "lucide-react";
+import { ArrowRight, ChevronRight, GraduationCap, Briefcase, Award, ShieldCheck, Star, Wallet } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { Blobs } from "@/components/Blobs";
 import { CounselingForm } from "@/components/CounselingForm";
 import { PROGRAMS } from "@/data/programs";
+import programHero from "@/assets/program-hero.jpg";
 
 // Universities relevant per program. NMIMS excluded from BBA.
 const universitiesForProgram = (slug: string) => {
@@ -48,7 +49,7 @@ const ProgramDetail = () => {
     if (program) {
       document.title = `${program.name} | Free Counseling & Guidance | Degree Guru`;
       const meta = document.querySelector('meta[name="description"]');
-      if (meta) meta.setAttribute("content", `${program.name} (${program.full}). Free career counseling and university comparison from Degree Guru.`);
+      if (meta) meta.setAttribute("content", `${program.name} (${program.full}). Free career counseling, easy EMI options and university comparison from Degree Guru.`);
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [program]);
@@ -71,20 +72,33 @@ const ProgramDetail = () => {
             <ChevronRight size={12} />
             <span className="font-semibold text-foreground">{program.name}</span>
           </nav>
-          <Reveal>
-            <p className="overline mb-3">{program.level}</p>
-            <h1 className="text-4xl md:text-[56px] font-extrabold leading-[1.05] mb-5 max-w-4xl">
-              {program.name}: Your Future Starts Here
-            </h1>
-            <p className="text-soft text-lg max-w-2xl mb-8">
-              Online, flexible, and recognized. Get free guidance today.
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <span className="glass px-4 py-2 text-sm font-semibold flex items-center gap-2"><ShieldCheck size={14} className="text-primary" /> UGC Entitled</span>
-              <span className="glass px-4 py-2 text-sm font-semibold flex items-center gap-2"><Award size={14} className="text-primary" /> AICTE Approved</span>
-              <span className="glass px-4 py-2 text-sm font-semibold flex items-center gap-2"><GraduationCap size={14} className="text-primary" /> Direct Admission</span>
-            </div>
-          </Reveal>
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <Reveal>
+              <p className="overline mb-3">{program.level}</p>
+              <h1 className="text-4xl md:text-[56px] font-extrabold leading-[1.05] mb-5">
+                {program.name}
+              </h1>
+              <p className="text-soft text-lg max-w-xl mb-8">
+                {program.tagline}
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <span className="glass px-4 py-2 text-sm font-semibold flex items-center gap-2"><ShieldCheck size={14} className="text-primary" /> UGC Entitled</span>
+                <span className="glass px-4 py-2 text-sm font-semibold flex items-center gap-2"><Award size={14} className="text-primary" /> AICTE Approved</span>
+                <span className="glass px-4 py-2 text-sm font-semibold flex items-center gap-2"><Wallet size={14} className="text-primary" /> Easy EMI</span>
+              </div>
+            </Reveal>
+            <Reveal delay={0.15}>
+              <div className="relative">
+                <div className="absolute -inset-6 bg-primary/15 rounded-[40px] blur-2xl" />
+                <img
+                  src={programHero}
+                  alt={`${program.name} student studying online`}
+                  className="relative rounded-[28px] w-full object-cover aspect-[4/3] shadow-2xl"
+                  loading="eager"
+                />
+              </div>
+            </Reveal>
+          </div>
         </div>
       </section>
 
@@ -95,15 +109,32 @@ const ProgramDetail = () => {
             <div className="glass p-10 md:p-14 max-w-4xl mx-auto">
               <h2 className="text-3xl font-bold mb-5">What is {program.name}?</h2>
               <p className="text-soft text-lg leading-[1.8] mb-6">
-                {program.full} is a recognized online program designed for learners of all backgrounds. {program.desc} Whether you are a fresh student, a working professional or someone returning to education, this program fits flexibly into your life.
+                {program.about}
               </p>
               <h3 className="text-xl font-bold mt-8 mb-3">Who Should Enroll?</h3>
               <ul className="space-y-2 text-soft">
-                <li className="flex gap-2"><span className="text-primary font-bold">•</span> Working professionals upskilling alongside their job</li>
-                <li className="flex gap-2"><span className="text-primary font-bold">•</span> Career switchers exploring a new field</li>
-                <li className="flex gap-2"><span className="text-primary font-bold">•</span> Fresh students wanting flexibility and recognized degrees</li>
-                <li className="flex gap-2"><span className="text-primary font-bold">•</span> Anyone with the interest and drive to learn</li>
+                {program.enrollFor.map((item) => (
+                  <li key={item} className="flex gap-2"><span className="text-primary font-bold">•</span> {item}</li>
+                ))}
               </ul>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* EMI HIGHLIGHT */}
+      <section className="py-12">
+        <div className="container-dg max-w-4xl">
+          <Reveal>
+            <div className="glass glass-hover p-8 md:p-10 flex flex-col md:flex-row items-start md:items-center gap-6">
+              <div className="w-14 h-14 rounded-2xl bg-primary/15 flex items-center justify-center flex-shrink-0">
+                <Wallet size={26} className="text-primary" />
+              </div>
+              <div>
+                <p className="overline mb-1">Easy EMI</p>
+                <h3 className="text-xl md:text-2xl font-bold mb-2">Pay Comfortably, Study Stress-Free</h3>
+                <p className="text-soft leading-relaxed">{program.emiNote}</p>
+              </div>
             </div>
           </Reveal>
         </div>
@@ -152,6 +183,7 @@ const ProgramDetail = () => {
                   <div className="flex flex-wrap gap-2">
                     <span className="text-[10px] font-bold uppercase tracking-wider bg-primary/10 text-primary px-2 py-1 rounded">UGC Entitled</span>
                     <span className="text-[10px] font-bold uppercase tracking-wider bg-primary/10 text-primary px-2 py-1 rounded">AICTE Approved</span>
+                    <span className="text-[10px] font-bold uppercase tracking-wider bg-primary/10 text-primary px-2 py-1 rounded">Easy EMI</span>
                   </div>
                 </div>
               </Reveal>
@@ -169,7 +201,7 @@ const ProgramDetail = () => {
       <section className="py-16">
         <div className="container-dg grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
           <Reveal>
-            <div className="glass p-8 h-full">
+            <div className="glass glass-hover p-8 h-full">
               <p className="overline mb-3">Admission</p>
               <h2 className="text-2xl font-bold mb-4">Simple Admission Process</h2>
               <p className="text-soft leading-relaxed">
@@ -178,11 +210,11 @@ const ProgramDetail = () => {
             </div>
           </Reveal>
           <Reveal delay={0.1}>
-            <div className="glass p-8 h-full">
-              <p className="overline mb-3">Scholarships</p>
-              <h2 className="text-2xl font-bold mb-4">Scholarship Opportunities</h2>
+            <div className="glass glass-hover p-8 h-full">
+              <p className="overline mb-3">Scholarships & EMI</p>
+              <h2 className="text-2xl font-bold mb-4">Fee Support That Fits</h2>
               <p className="text-soft leading-relaxed">
-                Several universities offer scholarship support for deserving candidates. We help you check what you qualify for.
+                Several universities offer scholarships for deserving candidates, plus easy EMI options to spread your fees comfortably. We help you check what you qualify for.
               </p>
             </div>
           </Reveal>
@@ -198,7 +230,7 @@ const ProgramDetail = () => {
                 {Array.from({ length: 5 }).map((_, k) => <Star key={k} size={16} className="fill-primary text-primary" />)}
               </div>
               <p className="text-lg leading-relaxed text-soft mb-5">
-                "Degree Guru helped me pick the right {program.name} without any pressure. The counselor was honest about pros and cons of each university."
+                "Degree Guru helped me pick the right {program.name} without any pressure. The counselor was honest about pros, cons and even the EMI of each university."
               </p>
               <div className="font-bold">Verified Learner</div>
               <div className="text-xs text-soft">{program.full} graduate</div>
@@ -212,9 +244,8 @@ const ProgramDetail = () => {
         <div className="container-dg max-w-2xl">
           <Reveal>
             <div className="text-center mb-8">
-              <p className="overline mb-3">Free Counseling</p>
               <h2 className="text-3xl md:text-4xl font-bold mb-3">Confused About {program.name}?</h2>
-              <p className="text-soft text-lg">Talk to us. We will simplify everything.</p>
+              <p className="text-soft text-lg">Talk to us. We will simplify everything — including the EMI math.</p>
             </div>
             <CounselingForm compact buttonLabel="Request Free Counseling Call" />
           </Reveal>

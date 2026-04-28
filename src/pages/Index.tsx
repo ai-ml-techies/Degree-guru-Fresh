@@ -18,42 +18,42 @@ const Index = () => {
       {/* HERO */}
       <section className="relative min-h-[90vh] flex items-center overflow-hidden pt-12 pb-20">
         <Blobs />
-        <div className="container-dg relative z-10 grid lg:grid-cols-5 gap-12 items-center">
-          <Reveal className="lg:col-span-3">
+        <div className="container-dg relative z-10 grid lg:grid-cols-2 gap-12 items-center">
+          <Reveal>
             <p className="overline mb-5">Free Career Counseling</p>
             <h1 className="font-extrabold leading-[1.05] text-[40px] sm:text-[52px] lg:text-[64px] xl:text-[72px] mb-6">
-              India's Most Trusted Free Career Counseling Platform
+              Your degree, sorted — for free.
             </h1>
-            <p className="text-soft text-lg leading-[1.75] max-w-[540px] mb-9">
-              We partner with India's top universities to help you pick the right online program and the right career move. Our counseling is completely free for you.
+            <p className="text-soft text-lg leading-[1.7] max-w-[520px] mb-8">
+              India's top universities. Honest counseling. Easy EMI options.
             </p>
             <div className="flex flex-wrap gap-4">
               <Link to="/contact" className="btn-primary">
                 Get Free Counseling <ArrowRight size={18} />
               </Link>
               <Link to="/programs" className="btn-outline">
-                Explore Online Programs
+                Explore Programs
               </Link>
             </div>
             <div className="flex flex-wrap items-center gap-6 mt-10 text-xs text-soft">
               <span className="flex items-center gap-2"><ShieldCheck size={14} className="text-primary" /> AICTE Approved</span>
               <span className="flex items-center gap-2"><Award size={14} className="text-primary" /> UGC Entitled</span>
-              <span className="flex items-center gap-2"><Sparkles size={14} className="text-primary" /> Student First</span>
+              <span className="flex items-center gap-2"><Sparkles size={14} className="text-primary" /> Easy EMI</span>
             </div>
           </Reveal>
 
-          <Reveal delay={0.15} className="lg:col-span-2">
+          <Reveal delay={0.15}>
             <div className="relative">
-              <div className="absolute -inset-6 bg-primary/10 rounded-[40px] blur-2xl" />
+              <div className="absolute -inset-8 bg-primary/15 rounded-[48px] blur-3xl" />
               <picture>
                 <source media="(max-width: 640px)" srcSet={heroMobile} />
                 <source media="(max-width: 1024px)" srcSet={heroTablet} />
                 <img
                   src={heroDesktop}
-                  alt="Indian student smiling, ready for online degree"
+                  alt="Confident Indian student ready for an online degree"
                   className="relative rounded-[32px] w-full object-cover aspect-[4/5] shadow-2xl"
-                  width={800}
-                  height={1000}
+                  width={900}
+                  height={1100}
                 />
               </picture>
               <div className="absolute -bottom-6 -left-6 glass px-5 py-4 hidden md:flex items-center gap-3">
@@ -148,10 +148,10 @@ const Index = () => {
           </Reveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { icon: ShieldCheck, t: "Completely Free for Students", d: "We partner with universities so you pay nothing. No charges. No hidden costs. Free career counseling for every student and professional." },
-              { icon: Sparkles, t: "Honest Student-First Guidance", d: "Our advice is based on your profile and goals. We recommend what fits you best from our partner university network." },
-              { icon: Award, t: "Scholarship & Career Support", d: "We help you find scholarships and connect with recruitment opportunities after your degree." },
-              { icon: Briefcase, t: "Industry Ready Advice", d: "Our counselors understand current job markets and salary trends." },
+              { icon: ShieldCheck, t: "Completely Free Counseling", d: "Universities support our work, so students pay nothing. Honest, unbiased advice for every learner and professional." },
+              { icon: Sparkles, t: "Easy EMI Options", d: "Most partner universities offer no-cost or low-cost EMI plans, so you never have to pause your dream for fees." },
+              { icon: Award, t: "Scholarships & Recruitment Support", d: "We help you find scholarships and connect with recruitment opportunities after your degree." },
+              { icon: Briefcase, t: "Industry Ready Advice", d: "Our counselors understand current job markets, salary trends and what hiring managers actually look for." },
             ].map((c, i) => (
               <Reveal key={c.t} delay={i * 0.08}>
                 <div className="glass glass-hover p-8 h-full">
