@@ -243,7 +243,7 @@ const ProgramDetail = () => {
       <section className="py-20">
         <div className="container-dg max-w-2xl">
           <Reveal>
-            <div className="text-center mb-8">
+            <div className="mb-8">
               <h2 className="text-3xl md:text-4xl font-bold mb-3">Confused About {program.name}?</h2>
               <p className="text-soft text-lg">Talk to us. We will simplify everything — including the EMI math.</p>
             </div>

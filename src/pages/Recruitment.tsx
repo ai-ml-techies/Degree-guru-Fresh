@@ -60,8 +60,8 @@ const Recruitment = () => (
     <section className="pb-24">
       <div className="container-dg max-w-2xl">
         <Reveal>
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-6">Register for Recruitment Support</h2>
-          <p className="text-soft text-center mb-8">Tell us about yourself. Our team will reach out with the next steps.</p>
+          <h2 className="text-2xl md:text-3xl font-bold mb-3">Register for Recruitment Support</h2>
+          <p className="text-soft mb-8">Tell us about yourself. Our team will reach out with the next steps.</p>
           <CounselingForm buttonLabel="Register for Recruitment Support" />
         </Reveal>
       </div>
