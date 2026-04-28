@@ -24,7 +24,7 @@ export const Footer = () => {
       <div className="container-dg">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
           <div>
-            <div className="font-extrabold text-2xl mb-4">Degree Guru</div>
+            <img src={logoDark} alt="Degree Guru" className="h-10 w-auto mb-4" />
             <p className="text-white/70 leading-relaxed text-sm mb-6">
               India's Trusted Free Career Counseling and Recruitment Platform.
             </p>
