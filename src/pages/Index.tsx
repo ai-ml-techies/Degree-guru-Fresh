@@ -148,10 +148,10 @@ const Index = () => {
           </Reveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { icon: ShieldCheck, t: "Completely Free for Students", d: "We partner with universities so you pay nothing. No charges. No hidden costs. Free career counseling for every student and professional." },
-              { icon: Sparkles, t: "Honest Student-First Guidance", d: "Our advice is based on your profile and goals. We recommend what fits you best from our partner university network." },
-              { icon: Award, t: "Scholarship & Career Support", d: "We help you find scholarships and connect with recruitment opportunities after your degree." },
-              { icon: Briefcase, t: "Industry Ready Advice", d: "Our counselors understand current job markets and salary trends." },
+              { icon: ShieldCheck, t: "Completely Free Counseling", d: "Universities support our work, so students pay nothing. Honest, unbiased advice for every learner and professional." },
+              { icon: Sparkles, t: "Easy EMI Options", d: "Most partner universities offer no-cost or low-cost EMI plans, so you never have to pause your dream for fees." },
+              { icon: Award, t: "Scholarships & Recruitment Support", d: "We help you find scholarships and connect with recruitment opportunities after your degree." },
+              { icon: Briefcase, t: "Industry Ready Advice", d: "Our counselors understand current job markets, salary trends and what hiring managers actually look for." },
             ].map((c, i) => (
               <Reveal key={c.t} delay={i * 0.08}>
                 <div className="glass glass-hover p-8 h-full">
