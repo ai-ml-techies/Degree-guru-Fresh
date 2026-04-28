@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Phone, Mail, MapPin, Facebook, Instagram, Linkedin, Youtube, Twitter } from "lucide-react";
+import { Phone, Mail, MapPin, Facebook, Instagram, Linkedin, Youtube } from "lucide-react";
 import logoDark from "@/assets/logo-dark.png";
 
 const trustPills = [
@@ -15,7 +15,6 @@ const socials = [
   { icon: Instagram, href: "https://instagram.com", label: "Instagram" },
   { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
   { icon: Youtube, href: "https://youtube.com", label: "YouTube" },
-  { icon: Twitter, href: "https://twitter.com", label: "Twitter" },
 ];
 
 export const Footer = () => {
@@ -85,8 +84,14 @@ export const Footer = () => {
           ))}
         </div>
 
-        <div className="border-t border-white/10 pt-6 text-xs text-white/50">
-          2026 Degree Guru. Built for India's learners.
+        <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-white/50">
+          <div>2026 Degree Guru. Built for India's learners.</div>
+          <Link
+            to="/privacy"
+            className="inline-flex items-center rounded-full border border-white/20 px-4 py-2 text-xs font-semibold text-white/80 hover:bg-white hover:text-[#0e0e0e] transition-all"
+          >
+            Privacy Policy
+          </Link>
         </div>
       </div>
     </footer>
