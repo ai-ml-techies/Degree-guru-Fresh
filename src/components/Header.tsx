@@ -3,6 +3,8 @@ import { Link, NavLink } from "react-router-dom";
 import { Menu, Moon, Sun, X, ChevronDown } from "lucide-react";
 import { useTheme } from "./ThemeProvider";
 import { PROGRAMS } from "@/data/programs";
+import logoLight from "@/assets/logo-light.png";
+import logoDark from "@/assets/logo-dark.png";
 
 const navItems = [
   { to: "/", label: "Home" },
@@ -28,8 +30,12 @@ export const Header = () => {
       <header className="fixed top-4 inset-x-4 md:inset-x-8 z-[100]">
         <div className="glass-header mx-auto max-w-[1400px] rounded-2xl px-5 md:px-8">
           <div className="flex items-center justify-between h-[68px]">
-            <Link to="/" className="font-extrabold text-xl md:text-2xl tracking-tight">
-              Degree Guru
+            <Link to="/" className="flex items-center" aria-label="Degree Guru">
+              <img
+                src={theme === "dark" ? logoDark : logoLight}
+                alt="Degree Guru"
+                className="h-9 md:h-10 w-auto animate-float-logo"
+              />
             </Link>
 
             <nav className="hidden lg:flex items-center gap-8">
@@ -45,15 +51,17 @@ export const Header = () => {
                       {item.label} <ChevronDown size={14} />
                     </button>
                     {progOpen && (
-                      <div className="absolute top-full left-1/2 -translate-x-1/2 pt-3 w-[520px]">
-                        <div className="glass-dropdown p-4 grid grid-cols-2 gap-1">
-                          {PROGRAMS.map((p) => (
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 pt-3 w-[560px]">
+                        <div className="glass-dropdown p-3 grid grid-cols-2 gap-1 animate-fade-in">
+                          {PROGRAMS.map((p, i) => (
                             <Link
                               key={p.slug}
                               to={`/programs/${p.slug}`}
-                              className="px-3 py-2.5 rounded-lg hover:bg-primary/15 transition-colors text-sm font-semibold"
+                              style={{ animationDelay: `${i * 30}ms` }}
+                              className="group px-3 py-2.5 rounded-lg hover:bg-primary/15 hover:translate-x-1 transition-all duration-200 animate-fade-in"
                             >
-                              {p.name}
+                              <div className="text-sm font-semibold group-hover:text-primary transition-colors">{p.name}</div>
+                              <div className="text-[11px] text-foreground/60 truncate">{p.full}</div>
                             </Link>
                           ))}
                         </div>
