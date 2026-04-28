@@ -42,7 +42,7 @@ const Index = () => {
           </Reveal>
 
           <Reveal delay={0.15}>
-            <div className="relative">
+            <div className="relative animate-float-soft">
               <div className="absolute -inset-8 bg-primary/15 rounded-[48px] blur-3xl" />
               <picture>
                 <source media="(max-width: 640px)" srcSet={heroMobile} />
