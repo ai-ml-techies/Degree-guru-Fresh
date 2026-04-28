@@ -55,7 +55,7 @@ const Index = () => {
                   height={1100}
                 />
               </picture>
-              <div className="absolute -bottom-6 -left-6 hidden md:flex items-center gap-3 px-5 py-4 rounded-2xl bg-background/95 backdrop-blur-xl border border-primary/20 shadow-2xl shadow-primary/20 animate-fade-in">
+              <div className="absolute -bottom-6 -left-6 hidden md:flex items-center gap-3 px-5 py-4 rounded-2xl bg-background/95 backdrop-blur-xl border border-primary/20 shadow-2xl shadow-primary/20 animate-fade-in animate-float">
                 <div className="w-10 h-10 rounded-full bg-primary/15 flex items-center justify-center">
                   <GraduationCap size={20} className="text-primary" />
                 </div>
