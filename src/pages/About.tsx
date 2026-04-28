@@ -15,7 +15,7 @@ const About = () => (
             India's Trusted Free Education Guide
           </h1>
           <p className="text-soft text-lg leading-[1.8]">
-            A platform built on one simple belief: career counseling should be free, honest and accessible to every Indian — with easy EMI options on the programs we recommend.
+            A platform built on one simple belief: career counseling should be free, honest and accessible to every Indian, with easy EMI options on the programs we recommend.
           </p>
         </Reveal>
         <Reveal delay={0.15}>
@@ -39,7 +39,7 @@ const About = () => (
             <p className="overline mb-3">Our Story</p>
             <h2 className="text-3xl font-bold mb-5">Built on a Simple Belief</h2>
             <p className="text-soft text-lg leading-[1.8]">
-              Too many Indian students pay for biased counseling and end up in the wrong program. We started Degree Guru to change that. Because we partner directly with India's top universities, our counseling is free for every student — and we make sure you know about every EMI and scholarship option you qualify for.
+              Too many Indian students pay for biased counseling and end up in the wrong program. We started Degree Guru to change that. Because we partner directly with India's top universities, our counseling is free for every student, and we make sure you know about every EMI and scholarship option you qualify for.
             </p>
           </div>
         </Reveal>

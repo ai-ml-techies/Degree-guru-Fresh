@@ -25,7 +25,7 @@ export const PROGRAMS: ProgramContent[] = [
       "Civil services aspirants building a strong base",
       "Creators and writers wanting a recognised degree",
     ],
-    emiNote: "Easy EMI options available — start your BA from as low as ₹3,500 per month.",
+    emiNote: "Easy EMI options available, start your BA from as low as ₹3,500 per month.",
   },
   {
     slug: "online-bba",
@@ -41,7 +41,7 @@ export const PROGRAMS: ProgramContent[] = [
       "Students planning to pursue an MBA next",
       "Sales and marketing executives upskilling",
     ],
-    emiNote: "Flexible EMI plans starting around ₹4,500 per month — no upfront pressure.",
+    emiNote: "Flexible EMI plans starting around ₹4,500 per month, no upfront pressure.",
   },
   {
     slug: "online-bca",
@@ -57,7 +57,7 @@ export const PROGRAMS: ProgramContent[] = [
       "Working IT support staff aiming for dev roles",
       "Students planning an MCA or tech masters later",
     ],
-    emiNote: "Pay in easy EMIs — many universities offer plans from ₹4,000 per month.",
+    emiNote: "Pay in easy EMIs, many universities offer plans from ₹4,000 per month.",
   },
   {
     slug: "online-bcom",
@@ -65,7 +65,7 @@ export const PROGRAMS: ProgramContent[] = [
     full: "Bachelor of Commerce",
     level: "Bachelors",
     desc: "Master accounting, finance and commerce, fully online.",
-    tagline: "Numbers, business and money — your degree, your way.",
+    tagline: "Numbers, business and money, your degree, your way.",
     about: "An Online BCom builds expertise in accounting, taxation, business law and finance. It is the ideal launchpad for careers in banking, audit, financial services and CA / CS preparation, while staying flexible enough for jobs and family.",
     enrollFor: [
       "CA / CS / CMA aspirants who want a parallel degree",
@@ -73,7 +73,7 @@ export const PROGRAMS: ProgramContent[] = [
       "Family business owners formalising knowledge",
       "Class 12 commerce students wanting flexibility",
     ],
-    emiNote: "Affordable EMI plans — start your BCom for around ₹3,800 per month.",
+    emiNote: "Affordable EMI plans, start your BCom for around ₹3,800 per month.",
   },
   {
     slug: "online-ma",
@@ -89,7 +89,7 @@ export const PROGRAMS: ProgramContent[] = [
       "Counsellors and therapists deepening expertise",
       "Civil services and policy aspirants",
     ],
-    emiNote: "Flexible EMIs available — many programs run from ₹4,500 per month.",
+    emiNote: "Flexible EMIs available, many programs run from ₹4,500 per month.",
   },
   {
     slug: "online-mba",
@@ -105,7 +105,7 @@ export const PROGRAMS: ProgramContent[] = [
       "Engineers and IT folks moving into product / strategy",
       "Founders and entrepreneurs scaling their venture",
     ],
-    emiNote: "No-cost EMI options at most partner universities — from ₹8,000 per month.",
+    emiNote: "No-cost EMI options at most partner universities, from ₹8,000 per month.",
   },
   {
     slug: "online-mca",
@@ -121,7 +121,7 @@ export const PROGRAMS: ProgramContent[] = [
       "Working IT folks moving into AI / cloud",
       "Aspiring tech leads and architects",
     ],
-    emiNote: "Easy EMI plans starting around ₹6,500 per month — pay as you learn.",
+    emiNote: "Easy EMI plans starting around ₹6,500 per month, pay as you learn.",
   },
   {
     slug: "online-mcom",
@@ -137,7 +137,7 @@ export const PROGRAMS: ProgramContent[] = [
       "Bank officers and tax professionals upskilling",
       "Aspiring finance educators and researchers",
     ],
-    emiNote: "Flexible EMI plans — many universities offer from ₹5,000 per month.",
+    emiNote: "Flexible EMI plans, many universities offer from ₹5,000 per month.",
   },
   {
     slug: "online-dba",
@@ -146,14 +146,14 @@ export const PROGRAMS: ProgramContent[] = [
     level: "Doctoral",
     desc: "An applied doctorate for senior leaders and consultants.",
     tagline: "The applied doctorate built for industry leaders.",
-    about: "An Online DBA is the practitioner's doctorate — designed for senior managers, consultants and entrepreneurs who want to apply rigorous research to real business problems. Earn a respected doctoral title without leaving your role.",
+    about: "An Online DBA is the practitioner's doctorate, designed for senior managers, consultants and entrepreneurs who want to apply rigorous research to real business problems. Earn a respected doctoral title without leaving your role.",
     enrollFor: [
       "Senior leaders, VPs and CXOs",
       "Independent consultants and coaches",
       "Entrepreneurs scaling complex ventures",
       "Aspiring business school faculty",
     ],
-    emiNote: "Spread your investment over easy EMIs — flexible plans across partners.",
+    emiNote: "Spread your investment over easy EMIs, flexible plans across partners.",
   },
   {
     slug: "phd",
@@ -162,14 +162,14 @@ export const PROGRAMS: ProgramContent[] = [
     level: "Doctoral",
     desc: "Pursue research at the highest level across disciplines.",
     tagline: "Become a recognised researcher in your field.",
-    about: "A PhD is the highest academic qualification — built for serious researchers, future professors and subject experts. Pursue full-time or part-time tracks across management, sciences, humanities, engineering and social sciences from UGC-recognised universities.",
+    about: "A PhD is the highest academic qualification, built for serious researchers, future professors and subject experts. Pursue full-time or part-time tracks across management, sciences, humanities, engineering and social sciences from UGC-recognised universities.",
     enrollFor: [
       "Aspiring professors and university faculty",
       "Working professionals deep in their domain",
       "Researchers in policy, science and humanities",
       "Subject experts seeking the highest credential",
     ],
-    emiNote: "Flexible fee plans and EMI options available — talk to us for details.",
+    emiNote: "Flexible fee plans and EMI options available, talk to us for details.",
   },
   {
     slug: "certifications",
@@ -178,14 +178,14 @@ export const PROGRAMS: ProgramContent[] = [
     level: "Skills",
     desc: "Short, focused courses to upskill in months, not years.",
     tagline: "Learn one skill. Land one job. In months, not years.",
-    about: "Short, intense online certifications in high-demand areas — Digital Marketing, Data Analytics, AI & ML, UX Design, Product Management, Finance and more. Built for fast outcomes and immediate career impact.",
+    about: "Short, intense online certifications in high-demand areas, Digital Marketing, Data Analytics, AI & ML, UX Design, Product Management, Finance and more. Built for fast outcomes and immediate career impact.",
     enrollFor: [
       "Working professionals making a fast pivot",
       "Students adding industry-ready skills",
       "Freelancers building proof of expertise",
       "Anyone wanting a quick, focused upgrade",
     ],
-    emiNote: "Most certifications support easy EMIs — start from a few thousand a month.",
+    emiNote: "Most certifications support easy EMIs, start from a few thousand a month.",
   },
 ];
 
