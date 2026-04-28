@@ -62,8 +62,8 @@ const Class1012 = () => (
 
       <div className="container-dg max-w-2xl">
         <Reveal>
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-3">Talk To Us About Class 10 or 12</h2>
-          <p className="text-soft text-center mb-8">We'll call you within 2 hours. No fees, no pressure.</p>
+          <h2 className="text-2xl md:text-3xl font-bold mb-3">Talk To Us About Class 10 or 12</h2>
+          <p className="text-soft mb-8">We'll call you within 2 hours. No fees, no pressure.</p>
           <CounselingForm />
         </Reveal>
       </div>

@@ -107,7 +107,7 @@ const Index = () => {
       <section className="py-24">
         <div className="container-dg">
           <Reveal>
-            <div className="text-center max-w-2xl mx-auto mb-14">
+            <div className="max-w-2xl mb-14">
               <p className="overline mb-3">Explore Programs</p>
               <h2 className="text-3xl md:text-[40px] font-bold mb-4">Online Programs for Every Career Stage</h2>
               <p className="text-soft text-lg">
@@ -141,7 +141,7 @@ const Index = () => {
       <section className="py-24">
         <div className="container-dg">
           <Reveal>
-            <div className="text-center max-w-2xl mx-auto mb-14">
+            <div className="max-w-2xl mb-14">
               <p className="overline mb-3">Why Trust Us</p>
               <h2 className="text-3xl md:text-[40px] font-bold">Why Thousands Choose Degree Guru</h2>
             </div>
@@ -171,7 +171,7 @@ const Index = () => {
       <section className="py-24 relative overflow-hidden">
         <div className="container-dg">
           <Reveal>
-            <div className="text-center max-w-2xl mx-auto mb-16">
+            <div className="max-w-2xl mb-16">
               <p className="overline mb-3">Your Journey</p>
               <h2 className="text-3xl md:text-[40px] font-bold">3 Steps to Your Online Degree</h2>
             </div>
@@ -230,7 +230,7 @@ const Index = () => {
       <section className="py-24">
         <div className="container-dg">
           <Reveal>
-            <div className="text-center max-w-2xl mx-auto mb-14">
+            <div className="max-w-2xl mb-14">
               <p className="overline mb-3">Stories</p>
               <h2 className="text-3xl md:text-[40px] font-bold">Real Learners, Real Results</h2>
             </div>

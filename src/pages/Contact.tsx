@@ -99,8 +99,7 @@ const Contact = () => (
     <section className="py-20">
       <div className="container-dg max-w-3xl">
         <Reveal>
-          <p className="overline mb-3 text-center">FAQ</p>
-          <h2 className="text-3xl md:text-[40px] font-bold text-center mb-10">Common Questions</h2>
+          <h2 className="text-3xl md:text-[40px] font-bold mb-10">Common Questions</h2>
           <div className="glass p-4 md:p-8">
             <Accordion type="single" collapsible>
               {faqs.map((f, i) => (

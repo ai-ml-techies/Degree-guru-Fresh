@@ -61,7 +61,7 @@ const About = () => (
     <section className="py-24">
       <div className="container-dg">
         <Reveal>
-          <h2 className="text-3xl md:text-[40px] font-bold text-center mb-14">What Makes Us Different</h2>
+          <h2 className="text-3xl md:text-[40px] font-bold mb-14">What Makes Us Different</h2>
         </Reveal>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
