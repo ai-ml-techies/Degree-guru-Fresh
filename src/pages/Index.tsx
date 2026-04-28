@@ -4,6 +4,7 @@ import { Blobs } from "@/components/Blobs";
 import { Reveal } from "@/components/Reveal";
 import { UniversityMarquee } from "@/components/UniversityMarquee";
 import { CounselingForm } from "@/components/CounselingForm";
+import { Counter } from "@/components/Counter";
 import { PROGRAMS } from "@/data/programs";
 import heroDesktop from "@/assets/hero-desktop.jpg";
 import heroTablet from "@/assets/hero-tablet.jpg";
@@ -70,16 +71,18 @@ const Index = () => {
       </section>
 
       {/* TRUST BAR */}
-      <section className="bg-primary text-primary-foreground py-12">
-        <div className="container-dg grid grid-cols-3 gap-6 text-center">
+      <section className="bg-primary text-primary-foreground py-5">
+        <div className="container-dg grid grid-cols-3 gap-6 text-left">
           {[
-            { n: "50,000+", l: "Students Guided" },
-            { n: "600+", l: "University Partners" },
-            { n: "100%", l: "Free Forever" },
+            { end: 5000, suffix: "+", l: "Students Guided" },
+            { end: 50, suffix: "+", l: "Top Universities" },
+            { end: 100, suffix: "%", l: "Free Forever" },
           ].map((s) => (
             <Reveal key={s.l}>
-              <div className="text-3xl md:text-[40px] font-extrabold">{s.n}</div>
-              <div className="text-[13px] uppercase tracking-wider opacity-90 mt-1">{s.l}</div>
+              <div className="text-2xl md:text-[32px] font-extrabold leading-tight">
+                <Counter end={s.end} suffix={s.suffix} />
+              </div>
+              <div className="text-[12px] uppercase tracking-wider opacity-90 mt-0.5">{s.l}</div>
             </Reveal>
           ))}
         </div>
