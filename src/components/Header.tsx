@@ -51,23 +51,26 @@ export const Header = () => {
                     <button className="flex items-center gap-1 text-sm font-medium hover:text-primary transition-colors py-2">
                       {item.label} <ChevronDown size={14} />
                     </button>
-                    {progOpen && (
-                      <div className="absolute top-full left-1/2 -translate-x-1/2 pt-3 w-[560px]">
-                        <div className="glass-dropdown p-3 grid grid-cols-2 gap-1 animate-fade-in">
-                          {PROGRAMS.map((p, i) => (
-                            <Link
-                              key={p.slug}
-                              to={`/programs/${p.slug}`}
-                              style={{ animationDelay: `${i * 30}ms` }}
-                              className="group px-3 py-2.5 rounded-lg hover:bg-primary/15 hover:translate-x-1 transition-all duration-200 animate-fade-in"
-                            >
-                              <div className="text-sm font-semibold group-hover:text-primary transition-colors">{p.name}</div>
-                              <div className="text-[11px] text-foreground/60 truncate">{p.full}</div>
-                            </Link>
-                          ))}
-                        </div>
+                    <div
+                      className={`absolute top-full left-1/2 -translate-x-1/2 pt-3 w-[560px] transition-all duration-200 ease-out ${
+                        progOpen
+                          ? "opacity-100 translate-y-0 pointer-events-auto"
+                          : "opacity-0 -translate-y-1 pointer-events-none"
+                      }`}
+                    >
+                      <div className="glass-dropdown p-3 grid grid-cols-2 gap-1">
+                        {PROGRAMS.map((p) => (
+                          <Link
+                            key={p.slug}
+                            to={`/programs/${p.slug}`}
+                            className="group px-3 py-2.5 rounded-lg transition-colors duration-150 hover:bg-primary/15 will-change-transform"
+                          >
+                            <div className="text-sm font-semibold transition-colors duration-150 group-hover:text-primary">{p.name}</div>
+                            <div className="text-[11px] text-foreground/60 truncate">{p.full}</div>
+                          </Link>
+                        ))}
                       </div>
-                    )}
+                    </div>
                   </div>
                 ) : (
                   <NavLink
