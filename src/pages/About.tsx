@@ -40,7 +40,7 @@ const About = () => (
             <p className="overline mb-3">Our Story</p>
             <h2 className="text-3xl font-bold mb-5">Built on a Simple Belief</h2>
             <p className="text-soft text-lg leading-[1.8]">
-              Too many Indian students pay for biased counseling and end up in the wrong program. We started Degree Guru to change that. Because we partner directly with India's top universities, our counseling is free for every student, and we make sure you know about every EMI and scholarship option you qualify for.
+              Too many Indian students pay for biased counseling and end up in the wrong program. We started Degree Guru to change that. Because we work directly with India's top universities, our counseling is free for every student, and we make sure you know about every EMI and scholarship option you qualify for.
             </p>
           </div>
         </Reveal>
@@ -67,7 +67,7 @@ const About = () => (
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
             { icon: ShieldCheck, t: "Free Forever", d: "No charges to students. Ever." },
-            { icon: Users, t: "Trusted Partnerships", d: "Direct ties with India's top universities." },
+            { icon: Users, t: "Top Universities", d: "Direct ties with India's top universities." },
             { icon: Sparkles, t: "Easy EMI Options", d: "Fee plans that fit your monthly budget." },
             { icon: Briefcase, t: "End to End Support", d: "From shortlisting to enrollment to recruitment." },
           ].map((c, i) => (
@@ -101,7 +101,7 @@ const About = () => (
     </section>
 
     <section className="py-20">
-      <div className="container-dg grid grid-cols-2 md:grid-cols-4 gap-6 text-left">
+      <div className="container-dg grid grid-cols-2 md:grid-cols-4 gap-6">
         {[
           { end: 5, suffix: "+", l: "Years" },
           { end: 5000, suffix: "+", l: "Students" },
@@ -109,11 +109,11 @@ const About = () => (
           { end: 98, suffix: "%", l: "Satisfaction" },
         ].map((s) => (
           <Reveal key={s.l}>
-            <div className="glass glass-hover p-8">
-              <div className="text-3xl md:text-4xl font-extrabold text-primary">
+            <div className="glass glass-hover p-8 text-center">
+              <div className="text-3xl md:text-4xl font-extrabold text-primary text-center">
                 <Counter end={s.end} suffix={s.suffix} />
               </div>
-              <div className="text-xs uppercase tracking-wider mt-2 text-soft">{s.l}</div>
+              <div className="text-xs uppercase tracking-wider mt-2 text-soft text-center">{s.l}</div>
             </div>
           </Reveal>
         ))}
