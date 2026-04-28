@@ -2,104 +2,224 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
+/* Degree Guru Design System
+   All colors HSL. Raleway only. Glass + liquid blobs aesthetic.
 */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Brand */
+    --background: 222 100% 95%;          /* #e7efff */
+    --foreground: 0 0% 5%;                /* #0e0e0e */
+    --foreground-soft: 0 0% 5%;
+    --primary: 258 93% 56%;               /* #6528f7 */
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 258 93% 70%;
+    --accent-blue: 217 91% 60%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 0 0% 5%;
+    --popover: 222 100% 95%;
+    --popover-foreground: 0 0% 5%;
+    --secondary: 222 60% 92%;
+    --secondary-foreground: 0 0% 5%;
+    --muted: 222 60% 92%;
+    --muted-foreground: 0 0% 5%;
+    --accent: 258 93% 56%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 258 30% 88%;
+    --input: 258 30% 88%;
+    --ring: 258 93% 56%;
+    --radius: 1rem;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    /* Glass tokens */
+    --glass-bg: 255 255 255;              /* used as rgba */
+    --glass-bg-alpha: 0.55;
+    --glass-border: 255 255 255;
+    --glass-border-alpha: 0.6;
+    --glass-shadow: 0 8px 32px hsl(258 93% 56% / 0.06);
+    --glass-shadow-hover: 0 16px 48px hsl(258 93% 56% / 0.12);
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Header */
+    --header-bg: 231 239 255;
+    --header-bg-alpha: 0.85;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
-
+    /* Sidebar (kept for shadcn compat) */
     --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-foreground: 0 0% 5%;
+    --sidebar-primary: 258 93% 56%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 222 60% 92%;
+    --sidebar-accent-foreground: 0 0% 5%;
+    --sidebar-border: 258 30% 88%;
+    --sidebar-ring: 258 93% 56%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 0 0% 5%;                /* #0e0e0e */
+    --foreground: 222 100% 95%;           /* #e7efff */
+    --primary: 258 93% 65%;
+    --primary-foreground: 0 0% 5%;
+    --primary-glow: 258 93% 75%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 8%;
+    --card-foreground: 222 100% 95%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 222 100% 95%;
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 222 100% 95%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 222 40% 80%;
+    --accent: 258 93% 65%;
+    --accent-foreground: 0 0% 5%;
+    --border: 0 0% 18%;
+    --input: 0 0% 18%;
+    --ring: 258 93% 65%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --glass-bg: 30 30 30;
+    --glass-bg-alpha: 0.6;
+    --glass-border: 255 255 255;
+    --glass-border-alpha: 0.1;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --header-bg: 14 14 14;
+    --header-bg-alpha: 0.85;
   }
-}
 
-@layer base {
   * {
     @apply border-border;
   }
 
-  body {
-    @apply bg-background text-foreground;
+  html {
+    scroll-behavior: smooth;
   }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Raleway', system-ui, sans-serif;
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  h1, h2, h3, h4, h5 {
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer components {
+  .glass {
+    background: rgba(var(--glass-bg), var(--glass-bg-alpha));
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(var(--glass-border), var(--glass-border-alpha));
+    border-radius: 20px;
+    box-shadow: var(--glass-shadow);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .glass-hover:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--glass-shadow-hover);
+  }
+  .glass-header {
+    background: rgba(var(--header-bg), var(--header-bg-alpha));
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-bottom: 1px solid hsl(var(--primary) / 0.08);
+    box-shadow: 0 4px 24px rgba(14, 14, 14, 0.04);
+  }
+  .glass-dropdown {
+    background: rgba(231, 239, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid hsl(var(--primary) / 0.1);
+    border-radius: 16px;
+  }
+  .dark .glass-dropdown {
+    background: rgba(14, 14, 14, 0.95);
+    border-color: rgba(255,255,255,0.1);
+  }
+
+  .overline {
+    @apply text-xs font-bold uppercase tracking-[0.15em];
+    color: hsl(var(--primary));
+  }
+
+  .container-dg {
+    @apply mx-auto px-[5%] md:px-[10%] xl:px-[15%];
+    max-width: 1400px;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl font-semibold text-[15px] md:text-base px-8 py-3.5 transition-all duration-300;
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    box-shadow: 0 4px 20px hsl(var(--primary) / 0.25);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px hsl(var(--primary) / 0.35);
+  }
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl font-semibold text-[15px] md:text-base px-8 py-3.5 transition-all duration-300 border-2;
+    border-color: hsl(var(--primary));
+    color: hsl(var(--primary));
+    background: transparent;
+  }
+  .btn-outline:hover {
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+
+  /* Liquid blobs */
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    pointer-events: none;
+    will-change: transform;
+  }
+
+  .marquee {
+    display: flex;
+    gap: 1.5rem;
+    width: max-content;
+    animation: marquee 35s linear infinite;
+  }
+  .marquee-reverse {
+    animation: marquee-reverse 40s linear infinite;
+  }
+}
+
+@layer utilities {
+  .text-soft {
+    color: hsl(var(--foreground) / 0.7);
+  }
+  .text-softer {
+    color: hsl(var(--foreground) / 0.55);
+  }
+}
+
+/* Keyframes */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes marquee-reverse {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+@keyframes float-blob {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(40px, -30px) scale(1.08); }
+  66% { transform: translate(-30px, 30px) scale(0.95); }
+}
+.animate-blob { animation: float-blob 12s ease-in-out infinite; }
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.reveal {
+  opacity: 0;
+  animation: fade-in-up 0.7s cubic-bezier(0.4,0,0.2,1) forwards;
 }

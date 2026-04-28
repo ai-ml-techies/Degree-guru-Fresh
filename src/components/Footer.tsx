@@ -1,0 +1,69 @@
+import { Link } from "react-router-dom";
+import { Phone, Mail, MapPin } from "lucide-react";
+
+const trustPills = [
+  "100% Free Forever",
+  "AICTE Approved Programs",
+  "UGC Entitled Degrees",
+  "Trusted University Partner",
+];
+
+export const Footer = () => {
+  return (
+    <footer className="bg-[#0e0e0e] text-white pt-20 pb-12 mt-0">
+      <div className="container-dg">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
+          <div>
+            <div className="font-extrabold text-2xl mb-4">Degree Guru</div>
+            <p className="text-white/70 leading-relaxed text-sm">
+              India's Trusted Free Career Counseling and Recruitment Platform.
+            </p>
+          </div>
+          <div>
+            <h4 className="font-bold mb-5 text-sm uppercase tracking-wider">Quick Links</h4>
+            <ul className="space-y-3 text-sm text-white/75">
+              <li><Link to="/" className="hover:text-white">Home</Link></li>
+              <li><Link to="/about" className="hover:text-white">About</Link></li>
+              <li><Link to="/contact" className="hover:text-white">Contact</Link></li>
+              <li><Link to="/privacy" className="hover:text-white">Privacy</Link></li>
+              <li><Link to="/recruitment" className="hover:text-white">Careers / Recruitment</Link></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-bold mb-5 text-sm uppercase tracking-wider">Programs</h4>
+            <ul className="space-y-3 text-sm text-white/75">
+              <li><Link to="/programs/online-ba" className="hover:text-white">Online BA</Link></li>
+              <li><Link to="/programs/online-bba" className="hover:text-white">Online BBA</Link></li>
+              <li><Link to="/programs/online-bca" className="hover:text-white">Online BCA</Link></li>
+              <li><Link to="/programs/online-mba" className="hover:text-white">Online MBA</Link></li>
+              <li><Link to="/programs/online-mca" className="hover:text-white">Online MCA</Link></li>
+              <li><Link to="/programs/online-dba" className="hover:text-white">Online DBA</Link></li>
+              <li><Link to="/programs/phd" className="hover:text-white">PhD</Link></li>
+              <li><Link to="/class-10-12" className="hover:text-white">Class 10 / 12 Online</Link></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-bold mb-5 text-sm uppercase tracking-wider">Contact</h4>
+            <ul className="space-y-3 text-sm text-white/75">
+              <li className="flex items-center gap-2"><Phone size={14} /> 9350199001</li>
+              <li className="flex items-center gap-2"><Mail size={14} /> admissions@degreeguru.in</li>
+              <li className="flex items-center gap-2"><MapPin size={14} /> Gurugram, Haryana, India</li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap gap-3 mt-14 mb-10">
+          {trustPills.map((p) => (
+            <span key={p} className="border border-white/20 rounded-full px-4 py-2 text-xs text-white/80">
+              {p}
+            </span>
+          ))}
+        </div>
+
+        <div className="border-t border-white/10 pt-6 text-xs text-white/50">
+          2026 Degree Guru. Built for India's learners.
+        </div>
+      </div>
+    </footer>
+  );
+};
