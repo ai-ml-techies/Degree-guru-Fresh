@@ -114,7 +114,7 @@ export const Header = () => {
       {mobileOpen && (
         <div className="lg:hidden fixed inset-0 z-[200] glass-dropdown p-6 overflow-auto animate-fade-in">
           <div className="flex justify-between items-center mb-8">
-            <span className="font-extrabold text-xl">Degree Guru</span>
+            <img src={theme === "dark" ? logoDark : logoLight} alt="Degree Guru" className="h-9 w-auto" />
             <button onClick={() => setMobileOpen(false)} aria-label="Close" className="w-11 h-11 flex items-center justify-center rounded-full border border-foreground/15">
               <X size={20} />
             </button>
@@ -131,15 +131,16 @@ export const Header = () => {
               </Link>
             ))}
             <p className="text-xs font-bold uppercase tracking-wider text-primary mt-6 mb-2">Programs</p>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 gap-2">
               {PROGRAMS.map((p) => (
                 <Link
                   key={p.slug}
                   to={`/programs/${p.slug}`}
                   onClick={() => setMobileOpen(false)}
-                  className="px-3 py-2 rounded-lg bg-primary/10 text-sm font-semibold"
+                  className="px-3 py-2.5 rounded-lg bg-primary/10"
                 >
-                  {p.name}
+                  <div className="text-sm font-semibold">{p.name}</div>
+                  <div className="text-[11px] text-foreground/60">{p.full}</div>
                 </Link>
               ))}
             </div>
