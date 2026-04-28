@@ -198,8 +198,26 @@
     width: max-content;
     animation: marquee 35s linear infinite;
   }
-  .marquee-reverse {
-    animation: marquee-reverse 40s linear infinite;
+  .marquee:hover { animation-play-state: paused; }
+  .marquee-reverse { animation: marquee-reverse 40s linear infinite; }
+  .marquee-pill {
+    background: rgba(255,255,255,0.45);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255,255,255,0.55);
+    border-radius: 999px;
+    box-shadow: 0 8px 24px rgba(101, 40, 247, 0.08);
+    transition: transform 0.4s cubic-bezier(0.4,0,0.2,1), box-shadow 0.4s, border-color 0.3s;
+  }
+  .marquee-pill:hover {
+    transform: translateY(-4px) scale(1.04);
+    box-shadow: 0 16px 36px rgba(101, 40, 247, 0.18);
+    border-color: hsl(var(--primary) / 0.5);
+  }
+  .dark .marquee-pill {
+    background: rgba(40, 42, 58, 0.55);
+    border-color: rgba(255,255,255,0.1);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
   }
 }
 
