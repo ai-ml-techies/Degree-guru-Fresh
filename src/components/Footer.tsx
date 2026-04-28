@@ -1,11 +1,20 @@
 import { Link } from "react-router-dom";
-import { Phone, Mail, MapPin } from "lucide-react";
+import { Phone, Mail, MapPin, Facebook, Instagram, Linkedin, Youtube, Twitter } from "lucide-react";
 
 const trustPills = [
   "100% Free Forever",
   "AICTE Approved Programs",
   "UGC Entitled Degrees",
+  "Easy EMI Options",
   "Trusted University Partner",
+];
+
+const socials = [
+  { icon: Facebook, href: "https://facebook.com", label: "Facebook" },
+  { icon: Instagram, href: "https://instagram.com", label: "Instagram" },
+  { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
+  { icon: Youtube, href: "https://youtube.com", label: "YouTube" },
+  { icon: Twitter, href: "https://twitter.com", label: "Twitter" },
 ];
 
 export const Footer = () => {
@@ -15,9 +24,23 @@ export const Footer = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
           <div>
             <div className="font-extrabold text-2xl mb-4">Degree Guru</div>
-            <p className="text-white/70 leading-relaxed text-sm">
+            <p className="text-white/70 leading-relaxed text-sm mb-6">
               India's Trusted Free Career Counseling and Recruitment Platform.
             </p>
+            <div className="flex gap-3">
+              {socials.map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={s.label}
+                  className="w-10 h-10 rounded-full bg-white/10 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover:-translate-y-1"
+                >
+                  <s.icon size={16} />
+                </a>
+              ))}
+            </div>
           </div>
           <div>
             <h4 className="font-bold mb-5 text-sm uppercase tracking-wider">Quick Links</h4>
