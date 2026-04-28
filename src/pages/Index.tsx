@@ -20,12 +20,11 @@ const Index = () => {
         <Blobs />
         <div className="container-dg relative z-10 grid lg:grid-cols-2 gap-12 items-center">
           <Reveal>
-            <p className="overline mb-5">Free Career Counseling</p>
-            <h1 className="font-extrabold leading-[1.05] text-[40px] sm:text-[52px] lg:text-[64px] xl:text-[72px] mb-6">
-              Your degree, sorted, for free.
+            <h1 className="font-extrabold leading-[1.05] text-[36px] sm:text-[48px] lg:text-[58px] xl:text-[66px] mb-6 animate-fade-in">
+              India's <span className="text-primary">#1 Most Trusted</span> Career Counselling Platform
             </h1>
-            <p className="text-soft text-lg leading-[1.7] max-w-[520px] mb-8">
-              India's top universities. Honest counseling. Easy EMI options.
+            <p className="text-soft text-lg leading-[1.7] max-w-[540px] mb-8">
+              100% online degree courses from India's top universities. Honest counseling. Easy EMI options.
             </p>
             <div className="flex flex-wrap gap-4">
               <Link to="/contact" className="btn-primary">
@@ -56,13 +55,13 @@ const Index = () => {
                   height={1100}
                 />
               </picture>
-              <div className="absolute -bottom-6 -left-6 glass px-5 py-4 hidden md:flex items-center gap-3">
+              <div className="absolute -bottom-6 -left-6 hidden md:flex items-center gap-3 px-5 py-4 rounded-2xl bg-background/95 backdrop-blur-xl border border-primary/20 shadow-2xl shadow-primary/20 animate-fade-in animate-float">
                 <div className="w-10 h-10 rounded-full bg-primary/15 flex items-center justify-center">
                   <GraduationCap size={20} className="text-primary" />
                 </div>
                 <div>
-                  <div className="text-xs text-soft">Counseled today</div>
-                  <div className="font-bold">+182 students</div>
+                  <div className="text-xs text-foreground/70">Counseled today</div>
+                  <div className="font-bold text-foreground">+182 students</div>
                 </div>
               </div>
             </div>
