@@ -58,7 +58,7 @@
   }
 
   .dark {
-    /* Lighter, friendlier dark theme — high contrast for readability */
+    /* Lighter, friendlier dark theme, high contrast for readability */
     --background: 240 18% 11%;            /* #181a25 deep navy */
     --foreground: 210 40% 98%;            /* near white */
     --primary: 258 95% 72%;               /* bright lavender */

@@ -22,7 +22,7 @@ const Index = () => {
           <Reveal>
             <p className="overline mb-5">Free Career Counseling</p>
             <h1 className="font-extrabold leading-[1.05] text-[40px] sm:text-[52px] lg:text-[64px] xl:text-[72px] mb-6">
-              Your degree, sorted — for free.
+              Your degree, sorted, for free.
             </h1>
             <p className="text-soft text-lg leading-[1.7] max-w-[520px] mb-8">
               India's top universities. Honest counseling. Easy EMI options.

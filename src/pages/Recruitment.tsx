@@ -22,7 +22,7 @@ const Recruitment = () => (
             We Help You Land the Right Job Too
           </h1>
           <p className="text-soft text-lg leading-relaxed">
-            A degree opens doors — we help you walk through the right one. From resume reviews to direct employer introductions, our recruitment support turns your online degree into a real career move.
+            A degree opens doors, we help you walk through the right one. From resume reviews to direct employer introductions, our recruitment support turns your online degree into a real career move.
           </p>
         </Reveal>
         <Reveal delay={0.15}>

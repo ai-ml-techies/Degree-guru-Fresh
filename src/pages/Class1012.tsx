@@ -12,10 +12,10 @@ const Class1012 = () => (
         <Reveal>
           <p className="overline mb-3">Schooling Online</p>
           <h1 className="text-4xl md:text-[56px] font-extrabold leading-[1.05] mb-5">
-            Class 10 & Class 12 — Finished Online
+            Class 10 & Class 12, Finished Online
           </h1>
           <p className="text-soft text-lg leading-relaxed">
-            Complete your secondary or senior secondary education online from home. Flexible learning for every age, every situation — and easy EMI options if you need them.
+            Complete your secondary or senior secondary education online from home. Flexible learning for every age, every situation, and easy EMI options if you need them.
           </p>
         </Reveal>
         <Reveal delay={0.15}>
@@ -38,11 +38,11 @@ const Class1012 = () => (
           <div className="glass glass-hover p-10">
             <h2 className="text-2xl font-bold mb-3">Class 10 Online</h2>
             <p className="text-soft leading-relaxed mb-4">
-              Finish your secondary education from home, on your own schedule. No previous formal schooling is required in many cases — just the will to learn.
+              Finish your secondary education from home, on your own schedule. No previous formal schooling is required in many cases, just the will to learn.
             </p>
             <p className="text-soft text-sm flex items-start gap-2">
               <Sparkles size={14} className="text-primary mt-1 flex-shrink-0" />
-              Easy EMI options available. Limited government scholarship schemes may apply — talk to us to check eligibility.
+              Easy EMI options available. Limited government scholarship schemes may apply, talk to us to check eligibility.
             </p>
           </div>
         </Reveal>

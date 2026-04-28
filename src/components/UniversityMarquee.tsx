@@ -20,7 +20,7 @@ export const UniversityMarquee = () => {
 
       <div className="container-dg mb-12">
         <h2 className="text-3xl md:text-4xl font-bold">Trusted University Network</h2>
-        <p className="text-soft mt-2 max-w-xl">India's most respected universities — under one free counseling roof.</p>
+        <p className="text-soft mt-2 max-w-xl">India's most respected universities, under one free counseling roof.</p>
       </div>
 
       <div className="space-y-5 relative">

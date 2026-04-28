@@ -245,7 +245,7 @@ const ProgramDetail = () => {
           <Reveal>
             <div className="mb-8">
               <h2 className="text-3xl md:text-4xl font-bold mb-3">Confused About {program.name}?</h2>
-              <p className="text-soft text-lg">Talk to us. We will simplify everything — including the EMI math.</p>
+              <p className="text-soft text-lg">Talk to us. We will simplify everything, including the EMI math.</p>
             </div>
             <CounselingForm compact buttonLabel="Request Free Counseling Call" />
           </Reveal>
