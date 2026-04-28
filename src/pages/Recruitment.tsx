@@ -1,7 +1,8 @@
+import { useState } from "react";
 import { Reveal } from "@/components/Reveal";
 import { Blobs } from "@/components/Blobs";
-import { CounselingForm } from "@/components/CounselingForm";
-import { Briefcase, FileText, Users, TrendingUp } from "lucide-react";
+import { Briefcase, FileText, Users, TrendingUp, ArrowRight, Upload } from "lucide-react";
+import { toast } from "sonner";
 import recruitmentHero from "@/assets/recruitment-hero.jpg";
 
 const perks = [
