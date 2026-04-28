@@ -35,7 +35,7 @@ export const Header = () => {
               <img
                 src={theme === "dark" ? logoDark : logoLight}
                 alt="Degree Guru"
-                className="h-9 md:h-10 w-auto animate-float-logo"
+                className="h-11 md:h-12 w-auto animate-float-logo"
               />
             </Link>
 
@@ -115,7 +115,7 @@ export const Header = () => {
       {mobileOpen && (
         <div className="lg:hidden fixed inset-0 z-[200] glass-dropdown p-6 overflow-auto animate-fade-in">
           <div className="flex justify-between items-center mb-8">
-            <img src={theme === "dark" ? logoDark : logoLight} alt="Degree Guru" className="h-9 w-auto" />
+            <img src={theme === "dark" ? logoDark : logoLight} alt="Degree Guru" className="h-12 w-auto" />
             <button onClick={() => setMobileOpen(false)} aria-label="Close" className="w-11 h-11 flex items-center justify-center rounded-full border border-foreground/15">
               <X size={20} />
             </button>

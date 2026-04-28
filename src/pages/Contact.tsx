@@ -45,7 +45,7 @@ const Contact = () => (
     </section>
 
     <section className="pb-16">
-      <div className="container-dg max-w-2xl">
+      <div className="container-dg max-w-3xl">
         <Reveal>
           <CounselingForm buttonLabel="Get My Free Counseling Session" />
         </Reveal>
@@ -53,7 +53,7 @@ const Contact = () => (
     </section>
 
     <section className="pb-16">
-      <div className="container-dg max-w-2xl">
+      <div className="container-dg max-w-3xl">
         <Reveal delay={0.05}>
           <div className="grid sm:grid-cols-2 gap-5">
             <a href="tel:9350199001" className="glass glass-hover p-6 flex items-center gap-4">
@@ -74,14 +74,14 @@ const Contact = () => (
               <div className="w-12 h-12 rounded-full bg-primary/15 flex items-center justify-center flex-shrink-0"><Mail size={18} className="text-primary" /></div>
               <div className="min-w-0 flex-1">
                 <div className="text-xs uppercase tracking-wider text-soft">Admissions</div>
-                <div className="font-bold text-sm md:text-base whitespace-nowrap overflow-hidden text-ellipsis">admissions@degreeguru.in</div>
+                <div className="font-bold text-base md:text-lg whitespace-nowrap">admissions@degreeguru.in</div>
               </div>
             </a>
             <a href="mailto:info@degreeguru.in" className="glass glass-hover p-6 flex items-center gap-4 min-w-0 sm:col-span-2">
               <div className="w-12 h-12 rounded-full bg-primary/15 flex items-center justify-center flex-shrink-0"><Mail size={18} className="text-primary" /></div>
               <div className="min-w-0 flex-1">
                 <div className="text-xs uppercase tracking-wider text-soft">Queries</div>
-                <div className="font-bold text-sm md:text-base whitespace-nowrap overflow-hidden text-ellipsis">info@degreeguru.in</div>
+                <div className="font-bold text-base md:text-lg whitespace-nowrap">info@degreeguru.in</div>
               </div>
             </a>
             <div className="glass p-6 flex items-center gap-4">
