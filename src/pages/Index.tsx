@@ -92,13 +92,13 @@ const Index = () => {
       <section className="py-24 relative">
         <div className="container-dg">
           <Reveal>
-            <div className="glass max-w-[900px] mx-auto p-10 md:p-14 text-center">
+            <div className="glass max-w-[900px] mx-auto p-10 md:p-14 text-left">
               <p className="overline mb-4">Our Vision</p>
               <h2 className="text-3xl md:text-[40px] font-bold mb-6 leading-tight">
-                Empowering Viksit Bharat Through Education
+                Empowering Viksit Bharat (Developed India) Initiative Through Education
               </h2>
               <p className="text-soft text-lg leading-[1.8]">
-                At Degree Guru, we believe every Indian deserves honest career guidance. Our mission aligns with Viksit Bharat: empowering youth through education and informed choices. We partner with leading universities to build a platform where no student pays for counseling, where every professional finds their next step, and where the right online degree opens doors. This is a movement toward an educated, empowered India.
+                At Degree Guru, we believe every Indian deserves honest career guidance. Our mission aligns with the Viksit Bharat (Developed India) Initiative: empowering youth through education and informed choices. We partner with leading universities to build a platform where no student pays for counseling, where every professional finds their next step, and where the right online degree opens doors. This is a movement toward an educated, empowered India.
               </p>
             </div>
           </Reveal>

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Phone, Mail, MapPin, Facebook, Instagram, Linkedin, Youtube, Twitter } from "lucide-react";
+import logoDark from "@/assets/logo-dark.png";
 
 const trustPills = [
   "100% Free Forever",
