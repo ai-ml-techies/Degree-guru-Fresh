@@ -23,7 +23,7 @@ export const Footer = () => {
       <div className="container-dg">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
           <div>
-            <img src={logoDark} alt="Degree Guru" className="h-10 w-auto mb-4" />
+            <img src={logoDark} alt="Degree Guru" className="h-14 w-auto mb-4" />
             <p className="text-white/70 leading-relaxed text-sm mb-6">
               India's Trusted Free Career Counseling and Recruitment Platform.
             </p>
@@ -48,7 +48,6 @@ export const Footer = () => {
               <li><Link to="/" className="hover:text-white">Home</Link></li>
               <li><Link to="/about" className="hover:text-white">About</Link></li>
               <li><Link to="/contact" className="hover:text-white">Contact</Link></li>
-              <li><Link to="/privacy" className="hover:text-white">Privacy</Link></li>
               <li><Link to="/recruitment" className="hover:text-white">Careers / Recruitment</Link></li>
             </ul>
           </div>

@@ -103,7 +103,7 @@ const About = () => (
     <section className="py-20">
       <div className="container-dg grid grid-cols-2 md:grid-cols-4 gap-6">
         {[
-          { end: 5, suffix: "+", l: "Years" },
+          { end: 3, suffix: "+", l: "Years of Counseling" },
           { end: 5000, suffix: "+", l: "Students" },
           { end: 50, suffix: "+", l: "Top Universities" },
           { end: 98, suffix: "%", l: "Satisfaction" },
