@@ -198,13 +198,14 @@
     color: hsl(var(--primary-foreground));
   }
 
-  /* Liquid blobs */
+  /* Liquid blobs — kept light: no will-change so the compositor doesn't
+     promote a giant blurred layer that flickers while scrolling. */
   .blob {
     position: absolute;
     border-radius: 50%;
-    filter: blur(90px);
+    filter: blur(80px);
     pointer-events: none;
-    will-change: transform;
+    transform: translateZ(0);
   }
 
   .marquee {
