@@ -47,6 +47,7 @@ export const Footer = () => {
             <ul className="space-y-3 text-sm text-white/75">
               <li><Link to="/" className="hover:text-white">Home</Link></li>
               <li><Link to="/about" className="hover:text-white">About</Link></li>
+              <li><Link to="/blog" className="hover:text-white">Blogs</Link></li>
               <li><Link to="/contact" className="hover:text-white">Contact</Link></li>
               <li><Link to="/recruitment" className="hover:text-white">Careers / Recruitment</Link></li>
             </ul>

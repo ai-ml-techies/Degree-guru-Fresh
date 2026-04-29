@@ -97,23 +97,30 @@
     @apply border-border;
   }
 
+  /* Smooth, flicker-free scrolling.
+     Disable CSS smooth-scroll globally — combined with heavy blurred blobs and
+     scroll-triggered Reveals it causes visible jank. Programmatic smooth scrolls
+     (window.scrollTo) still work. */
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
+    -webkit-text-size-adjust: 100%;
   }
-
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Raleway', system-ui, sans-serif;
     font-feature-settings: "ss01", "cv11";
+    overflow-x: hidden;
   }
 
-  /* Blend the floating header into the hero by removing any visible seam */
+  /* Seamlessly blend the floating header into the hero gradient.
+     Pull the first section up under the header and add a soft top fade so
+     there is no visible seam between the glass header and hero background. */
   main, main > section:first-child {
     background-color: transparent;
   }
   main > section:first-child {
-    padding-top: 7rem;
-    margin-top: -1rem;
+    padding-top: 8rem;
+    margin-top: -6rem;
   }
 
   h1, h2, h3, h4, h5 {
@@ -136,16 +143,16 @@
     box-shadow: var(--glass-shadow-hover);
   }
   .glass-header {
-    background: rgba(var(--header-bg), 0.6);
-    backdrop-filter: blur(28px) saturate(180%);
-    -webkit-backdrop-filter: blur(28px) saturate(180%);
-    border: 1px solid rgba(255,255,255,0.4);
-    box-shadow: 0 16px 48px rgba(14, 14, 14, 0.1), 0 4px 12px rgba(101, 40, 247, 0.08);
+    background: rgba(var(--header-bg), 0.45);
+    backdrop-filter: blur(24px) saturate(170%);
+    -webkit-backdrop-filter: blur(24px) saturate(170%);
+    border: 1px solid rgba(255,255,255,0.35);
+    box-shadow: 0 8px 24px rgba(101, 40, 247, 0.06);
   }
   .dark .glass-header {
-    background: rgba(40, 42, 58, 0.55);
-    border-color: rgba(255,255,255,0.08);
-    box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+    background: rgba(40, 42, 58, 0.4);
+    border-color: rgba(255,255,255,0.06);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
   }
   .glass-dropdown {
     background: hsl(var(--background));
@@ -166,7 +173,7 @@
   }
 
   .container-dg {
-    @apply mx-auto px-[5%] md:px-[10%] xl:px-[15%];
+    @apply mx-auto px-5 sm:px-8 lg:px-12 xl:px-16 2xl:px-24;
     max-width: 1400px;
   }
 
@@ -191,13 +198,14 @@
     color: hsl(var(--primary-foreground));
   }
 
-  /* Liquid blobs */
+  /* Liquid blobs — kept light: no will-change so the compositor doesn't
+     promote a giant blurred layer that flickers while scrolling. */
   .blob {
     position: absolute;
     border-radius: 50%;
-    filter: blur(90px);
+    filter: blur(80px);
     pointer-events: none;
-    will-change: transform;
+    transform: translateZ(0);
   }
 
   .marquee {
