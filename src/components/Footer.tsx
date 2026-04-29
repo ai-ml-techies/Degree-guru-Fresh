@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Phone, Mail, MapPin, Facebook, Instagram, Linkedin, Youtube } from "lucide-react";
+import { Phone, Mail, MapPin, Facebook, Instagram, Linkedin, Youtube, MessageCircle } from "lucide-react";
 import logoDark from "@/assets/logo-dark.png";
 
 const trustPills = [
@@ -11,10 +11,11 @@ const trustPills = [
 ];
 
 const socials = [
-  { icon: Facebook, href: "https://facebook.com", label: "Facebook" },
-  { icon: Instagram, href: "https://instagram.com", label: "Instagram" },
-  { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-  { icon: Youtube, href: "https://youtube.com", label: "YouTube" },
+  { icon: Instagram, href: "https://www.instagram.com/degreeguru/", label: "Instagram" },
+  { icon: Facebook, href: "https://www.facebook.com/degreegurucareer/", label: "Facebook" },
+  { icon: Linkedin, href: "https://www.linkedin.com/company/degree-guru", label: "LinkedIn" },
+  { icon: Youtube, href: "https://www.youtube.com/@DegreeGuru", label: "YouTube" },
+  { icon: MessageCircle, href: "https://wa.me/919350199001", label: "WhatsApp" },
 ];
 
 export const Footer = () => {
