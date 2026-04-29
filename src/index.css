@@ -97,23 +97,30 @@
     @apply border-border;
   }
 
+  /* Smooth, flicker-free scrolling.
+     Disable CSS smooth-scroll globally — combined with heavy blurred blobs and
+     scroll-triggered Reveals it causes visible jank. Programmatic smooth scrolls
+     (window.scrollTo) still work. */
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
+    -webkit-text-size-adjust: 100%;
   }
-
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Raleway', system-ui, sans-serif;
     font-feature-settings: "ss01", "cv11";
+    overflow-x: hidden;
   }
 
-  /* Blend the floating header into the hero by removing any visible seam */
+  /* Seamlessly blend the floating header into the hero gradient.
+     Pull the first section up under the header and add a soft top fade so
+     there is no visible seam between the glass header and hero background. */
   main, main > section:first-child {
     background-color: transparent;
   }
   main > section:first-child {
-    padding-top: 7rem;
-    margin-top: -1rem;
+    padding-top: 8rem;
+    margin-top: -6rem;
   }
 
   h1, h2, h3, h4, h5 {
