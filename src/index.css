@@ -1,0 +1,389 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Degree Guru Design System
+   All colors HSL. Raleway only. Glass + liquid blobs aesthetic.
+*/
+
+@layer base {
+  :root {
+    /* Brand */
+    --background: 222 100% 95%;          /* #e7efff */
+    --foreground: 0 0% 5%;                /* #0e0e0e */
+    --foreground-soft: 0 0% 5%;
+    --primary: 258 93% 56%;               /* #6528f7 */
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 258 93% 70%;
+    --accent-blue: 217 91% 60%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 5%;
+    --popover: 222 100% 95%;
+    --popover-foreground: 0 0% 5%;
+    --secondary: 222 60% 92%;
+    --secondary-foreground: 0 0% 5%;
+    --muted: 222 60% 92%;
+    --muted-foreground: 0 0% 5%;
+    --accent: 258 93% 56%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 258 30% 88%;
+    --input: 258 30% 88%;
+    --ring: 258 93% 56%;
+    --radius: 1rem;
+
+    /* Glass tokens */
+    --glass-bg: 255 255 255;              /* used as rgba */
+    --glass-bg-alpha: 0.55;
+    --glass-border: 255 255 255;
+    --glass-border-alpha: 0.6;
+    --glass-shadow: 0 8px 32px hsl(258 93% 56% / 0.06);
+    --glass-shadow-hover: 0 16px 48px hsl(258 93% 56% / 0.12);
+
+    /* Header */
+    --header-bg: 231 239 255;
+    --header-bg-alpha: 0.85;
+
+    /* Sidebar (kept for shadcn compat) */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 0 0% 5%;
+    --sidebar-primary: 258 93% 56%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 222 60% 92%;
+    --sidebar-accent-foreground: 0 0% 5%;
+    --sidebar-border: 258 30% 88%;
+    --sidebar-ring: 258 93% 56%;
+  }
+
+  .dark {
+    /* Lighter, friendlier dark theme, high contrast for readability */
+    --background: 240 18% 11%;            /* #181a25 deep navy */
+    --foreground: 210 40% 98%;            /* near white */
+    --primary: 258 95% 72%;               /* bright lavender */
+    --primary-foreground: 240 18% 11%;
+    --primary-glow: 258 95% 80%;
+
+    --card: 240 16% 16%;
+    --card-foreground: 210 40% 98%;
+    --popover: 240 16% 16%;
+    --popover-foreground: 210 40% 98%;
+    --secondary: 240 14% 20%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 240 14% 20%;
+    --muted-foreground: 220 20% 80%;
+    --accent: 258 95% 72%;
+    --accent-foreground: 240 18% 11%;
+    --border: 240 14% 28%;
+    --input: 240 14% 28%;
+    --ring: 258 95% 72%;
+
+    --glass-bg: 40 42 58;
+    --glass-bg-alpha: 0.7;
+    --glass-border: 255 255 255;
+    --glass-border-alpha: 0.12;
+    --glass-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    --glass-shadow-hover: 0 16px 48px rgba(0,0,0,0.55);
+
+    --header-bg: 24 26 37;
+    --header-bg-alpha: 0.9;
+  }
+
+  .dark .text-soft { color: hsl(var(--foreground) / 0.85); }
+  .dark .text-softer { color: hsl(var(--foreground) / 0.7); }
+
+  * {
+    @apply border-border;
+  }
+
+  /* Smooth, flicker-free scrolling.
+     Disable CSS smooth-scroll globally — combined with heavy blurred blobs and
+     scroll-triggered Reveals it causes visible jank. Programmatic smooth scrolls
+     (window.scrollTo) still work. */
+  html {
+    scroll-behavior: auto;
+    -webkit-text-size-adjust: 100%;
+    /* Prevent iOS rubber-band overflow-x */
+    overflow-x: hidden;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Raleway', system-ui, sans-serif;
+    font-feature-settings: "ss01", "cv11";
+    /* Overflow-x on html handles horizontal containment;
+       keeping it off body prevents iOS scroll-lock bug */
+    overflow-x: clip;
+    /* Remove iOS grey tap flash on interactive elements */
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Seamlessly blend the floating header into the hero gradient.
+     Pull the first section up under the header and add a soft top fade so
+     there is no visible seam between the glass header and hero background. */
+  main, main > section:first-child {
+    background-color: transparent;
+  }
+  main > section:first-child {
+    padding-top: 6rem;
+    margin-top: -4rem;
+  }
+
+  h1, h2, h3, h4, h5 {
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer components {
+  .glass {
+    /* rgb(R G B / A) is valid CSS Color Level 4 — works in Safari 10.1+
+       rgba(var(--x), alpha) with space-separated var was rejected by WebKit */
+    background: rgb(var(--glass-bg) / var(--glass-bg-alpha));
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgb(var(--glass-border) / var(--glass-border-alpha));
+    border-radius: 20px;
+    box-shadow: var(--glass-shadow);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .glass-hover:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--glass-shadow-hover);
+  }
+  .glass-header {
+    background: rgb(var(--header-bg) / 0.45);
+    backdrop-filter: blur(24px) saturate(170%);
+    -webkit-backdrop-filter: blur(24px) saturate(170%);
+    border: 1px solid rgba(255,255,255,0.35);
+    box-shadow: 0 8px 24px rgba(101, 40, 247, 0.06);
+  }
+  .dark .glass-header {
+    background: rgba(40, 42, 58, 0.4);
+    border-color: rgba(255,255,255,0.06);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+  .glass-dropdown {
+    background: hsl(var(--background));
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    border: 1px solid rgba(255,255,255,0.6);
+    border-radius: 16px;
+    box-shadow: 0 24px 60px rgba(101, 40, 247, 0.18);
+  }
+  .dark .glass-dropdown {
+    background: hsl(var(--card));
+    border-color: rgba(255,255,255,0.1);
+    box-shadow: 0 24px 60px rgba(0,0,0,0.55);
+  }
+
+  .overline {
+    display: none;
+  }
+
+  .container-dg {
+    @apply mx-auto px-5 sm:px-8 lg:px-12 xl:px-16 2xl:px-24;
+    max-width: 1400px;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl font-semibold text-[15px] md:text-base px-8 py-3.5 transition-all duration-300;
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(258 93% 65%));
+    color: hsl(var(--primary-foreground));
+    box-shadow: 0 4px 24px hsl(var(--primary) / 0.3), 0 1px 0 rgba(255,255,255,0.15) inset;
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 32px hsl(var(--primary) / 0.45), 0 1px 0 rgba(255,255,255,0.15) inset;
+  }
+  .btn-primary:active {
+    transform: translateY(0) scale(0.99);
+  }
+  .btn-primary-pulse {
+    animation: pulse-glow 2.5s ease-in-out infinite;
+  }
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl font-semibold text-[15px] md:text-base px-8 py-3.5 transition-all duration-300 border-2;
+    border-color: hsl(var(--primary));
+    color: hsl(var(--primary));
+    background: transparent;
+  }
+  .btn-outline:hover {
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px hsl(var(--primary) / 0.3);
+  }
+
+  /* Gradient animated text */
+  .text-gradient {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(258 93% 72%) 40%, hsl(217 91% 65%) 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient-x 4s ease infinite;
+  }
+
+  /* Dot-grid pattern for section backgrounds */
+  .dot-grid {
+    background-image: radial-gradient(circle, hsl(var(--primary) / 0.12) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  /* Card with gradient top border accent */
+  .card-accent {
+    position: relative;
+    overflow: hidden;
+  }
+  .card-accent::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, hsl(var(--primary)), hsl(258 93% 72%), hsl(217 91% 60%));
+    border-radius: 20px 20px 0 0;
+  }
+
+  /* Announcement bar */
+  .announcement-bar {
+    background: linear-gradient(90deg, hsl(var(--primary)), hsl(258 93% 65%), hsl(217 91% 60%), hsl(var(--primary)));
+    background-size: 200% 100%;
+    animation: gradient-x 5s linear infinite;
+  }
+
+  /* Soft glow ring on stat icons */
+  .glow-ring {
+    box-shadow: 0 0 0 8px hsl(var(--primary) / 0.12), 0 0 0 16px hsl(var(--primary) / 0.05);
+  }
+
+  /* iOS: prevent double-tap zoom on all buttons and links */
+  button, a, [role="button"] {
+    touch-action: manipulation;
+  }
+
+  /* iOS: smooth momentum scroll on overflow containers */
+  .overflow-x-auto, .overflow-y-auto, .overflow-auto {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Tab filter pill */
+  .tab-pill {
+    @apply px-5 py-2 rounded-full text-sm font-semibold transition-all duration-200 border border-transparent flex-shrink-0;
+    color: hsl(var(--foreground) / 0.6);
+  }
+  .tab-pill:hover {
+    color: hsl(var(--primary));
+    background: hsl(var(--primary) / 0.08);
+  }
+  .tab-pill.active {
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    box-shadow: 0 4px 16px hsl(var(--primary) / 0.35);
+  }
+
+  /* FAQ accordion */
+  .faq-item {
+    @apply border border-foreground/10 rounded-2xl overflow-hidden transition-all duration-300;
+  }
+  .faq-item:hover {
+    border-color: hsl(var(--primary) / 0.4);
+  }
+  .faq-question {
+    @apply w-full flex items-center justify-between gap-4 px-6 py-5 text-left font-semibold text-base cursor-pointer transition-colors;
+  }
+  .faq-question:hover {
+    color: hsl(var(--primary));
+  }
+
+  /* Floating CTA — safe area aware bottom offset for iPhone notch/home bar */
+  .float-cta-container {
+    bottom: 1.5rem; /* fallback for browsers without env() support */
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 1.5rem);
+  }
+
+  .float-cta-btn {
+    @apply flex items-center justify-center rounded-full shadow-2xl transition-all duration-300 cursor-pointer;
+  }
+  .float-cta-btn:hover {
+    transform: scale(1.1) translateY(-2px);
+  }
+
+  /* Liquid blobs — kept light: no will-change so the compositor doesn't
+     promote a giant blurred layer that flickers while scrolling. */
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    transform: translateZ(0);
+  }
+
+  .marquee {
+    display: flex;
+    gap: 1.5rem;
+    width: max-content;
+    animation: marquee 35s linear infinite;
+  }
+  .marquee:hover { animation-play-state: paused; }
+  .marquee-reverse { animation: marquee-reverse 40s linear infinite; }
+  .marquee-pill {
+    background: rgba(255,255,255,0.45);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255,255,255,0.55);
+    border-radius: 999px;
+    box-shadow: 0 8px 24px rgba(101, 40, 247, 0.08);
+    transition: transform 0.4s cubic-bezier(0.4,0,0.2,1), box-shadow 0.4s, border-color 0.3s;
+  }
+  .marquee-pill:hover {
+    transform: translateY(-4px) scale(1.04);
+    box-shadow: 0 16px 36px rgba(101, 40, 247, 0.18);
+    border-color: hsl(var(--primary) / 0.5);
+  }
+  .dark .marquee-pill {
+    background: rgba(40, 42, 58, 0.55);
+    border-color: rgba(255,255,255,0.1);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  }
+}
+
+@layer utilities {
+  .text-soft {
+    color: hsl(var(--foreground) / 0.7);
+  }
+  .text-softer {
+    color: hsl(var(--foreground) / 0.55);
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Keyframes */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes marquee-reverse {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+@keyframes float-blob {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(40px, -30px) scale(1.08); }
+  66% { transform: translate(-30px, 30px) scale(0.95); }
+}
+.animate-blob { animation: float-blob 12s ease-in-out infinite; }
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.reveal {
+  opacity: 0;
+  animation: fade-in-up 0.7s cubic-bezier(0.4,0,0.2,1) forwards;
+}
