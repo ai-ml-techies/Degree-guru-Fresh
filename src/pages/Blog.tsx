@@ -4,7 +4,7 @@ import { Sparkles } from "lucide-react";
 
 const Blog = () => (
   <>
-    <section className="relative py-24 overflow-hidden">
+    <section className="relative py-14 md:py-24 overflow-hidden">
       <Blobs />
       <div className="container-dg relative z-10 max-w-3xl">
         <Reveal>
@@ -19,10 +19,10 @@ const Blog = () => (
       </div>
     </section>
 
-    <section className="pb-24">
+    <section className="pb-12 md:pb-24">
       <div className="container-dg">
         <Reveal>
-          <div className="glass p-12 md:p-16 max-w-3xl mx-auto text-left">
+          <div className="glass p-6 sm:p-12 md:p-16 max-w-3xl mx-auto text-left">
             <div className="w-14 h-14 rounded-full bg-primary/15 flex items-center justify-center mb-6">
               <Sparkles size={22} className="text-primary" />
             </div>

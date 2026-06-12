@@ -1,9 +1,12 @@
 import { useState } from "react";
+import { Country, State, City } from "country-state-city";
 import { Reveal } from "@/components/Reveal";
 import { Blobs } from "@/components/Blobs";
-import { Briefcase, FileText, Users, TrendingUp, ArrowRight, Upload } from "lucide-react";
+import { Briefcase, FileText, Users, TrendingUp, ArrowRight, Upload, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import recruitmentHero from "@/assets/recruitment-hero.jpg";
+
+const API_BASE = import.meta.env.VITE_API_BASE as string;
 
 const perks = [
   { icon: FileText, t: "Resume & Profile Review", d: "We polish your resume and LinkedIn so recruiters actually call back." },
@@ -14,12 +17,12 @@ const perks = [
 
 const Recruitment = () => (
   <>
-    <section className="relative py-20 overflow-hidden">
+    <section className="relative py-14 md:py-20 overflow-hidden">
       <Blobs />
       <div className="container-dg relative z-10 grid lg:grid-cols-2 gap-12 items-center">
         <Reveal>
           <p className="overline mb-3">Career Support</p>
-          <h1 className="text-4xl md:text-[56px] font-extrabold leading-[1.05] mb-6">
+          <h1 className="text-3xl sm:text-4xl md:text-[56px] font-extrabold leading-[1.05] mb-6">
             We Help You Land the Right Job Too
           </h1>
           <p className="text-soft text-lg leading-relaxed">
@@ -71,11 +74,33 @@ const Recruitment = () => (
 );
 
 const RecruitmentForm = () => {
-  const [form, setForm] = useState({ name: "", email: "", phone: "", experience: "" });
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    dob: "",
+    country: "",
+    state: "",
+    city: "",
+    industry: "",
+    otherIndustry: "",
+    experience: "",
+  });
   const [resume, setResume] = useState<File | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
-  const handle = (k: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+  const countries = Country.getAllCountries().sort((a, b) => a.name.localeCompare(b.name));
+  const states = form.country ? State.getStatesOfCountry(form.country).sort((a, b) => a.name.localeCompare(b.name)) : [];
+  const cities = form.country && form.state ? City.getCitiesOfState(form.country, form.state).sort((a, b) => a.name.localeCompare(b.name)) : [];
+
+  const handle = (k: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
     setForm({ ...form, [k]: e.target.value });
+
+  const handleCountry = (e: React.ChangeEvent<HTMLSelectElement>) =>
+    setForm({ ...form, country: e.target.value, state: "", city: "" });
+
+  const handleState = (e: React.ChangeEvent<HTMLSelectElement>) =>
+    setForm({ ...form, state: e.target.value, city: "" });
 
   const onResume = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] ?? null;
@@ -94,26 +119,78 @@ const RecruitmentForm = () => {
     setResume(file);
   };
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name || !form.phone) {
       toast.error("Please share your name and phone number.");
+      return;
+    }
+    if (!form.dob) {
+      toast.error("Please add your date of birth.");
+      return;
+    }
+    if (!form.country || !form.state || !form.city) {
+      toast.error("Please choose your country, state and city.");
+      return;
+    }
+    if (!form.industry) {
+      toast.error("Please select your industry.");
+      return;
+    }
+    if (form.industry === "Other" && !form.otherIndustry.trim()) {
+      toast.error("Please enter your industry.");
       return;
     }
     if (!resume) {
       toast.error("Please attach your updated resume.");
       return;
     }
-    toast.success("Thanks! Our recruitment team will reach out within 2 hours.");
-    setForm({ name: "", email: "", phone: "", experience: "" });
-    setResume(null);
+
+    const data = new FormData();
+    data.append("name", form.name);
+    data.append("email", form.email);
+    data.append("phone", form.phone);
+    data.append("dob", form.dob);
+    data.append("country", form.country);
+    data.append("state", form.state);
+    data.append("city", form.city);
+    data.append("industry", form.industry === "Other" ? form.otherIndustry.trim() : form.industry);
+    data.append("experience", form.experience);
+    data.append("resume", resume);
+
+    setSubmitting(true);
+    try {
+      const res = await fetch(`${API_BASE}/recruitment/submit`, { method: "POST", body: data });
+
+      let json: { success: boolean; message?: string; errors?: string[] };
+      try {
+        json = await res.json();
+      } catch {
+        toast.error("Server returned an unexpected response. Please try again.");
+        return;
+      }
+
+      if (json.success) {
+        toast.success("Application submitted! Our team will reach out within 2 hours.");
+        setForm({ name: "", email: "", phone: "", dob: "", country: "", state: "", city: "", industry: "", otherIndustry: "", experience: "" });
+        setResume(null);
+      } else if (json.errors && json.errors.length > 0) {
+        json.errors.forEach((err) => toast.error(err));
+      } else {
+        toast.error(json.message ?? "Submission failed. Please try again.");
+      }
+    } catch {
+      toast.error("Could not reach the server. Please check your connection and try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const inputCls =
     "w-full bg-background/60 border border-foreground/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all";
 
   return (
-    <form onSubmit={submit} className="glass p-8 md:p-10 space-y-4">
+    <form onSubmit={submit} className="glass p-5 sm:p-8 md:p-10 space-y-4">
       <div className="grid md:grid-cols-2 gap-4">
         <div>
           <label className="block text-xs font-semibold mb-2 uppercase tracking-wider">Full Name</label>
@@ -130,10 +207,81 @@ const RecruitmentForm = () => {
           <input type="email" className={inputCls} value={form.email} onChange={handle("email")} placeholder="you@email.com" maxLength={255} />
         </div>
         <div>
-          <label className="block text-xs font-semibold mb-2 uppercase tracking-wider">Years of Experience</label>
-          <input className={inputCls} value={form.experience} onChange={handle("experience")} placeholder="e.g. Fresher / 2 years" maxLength={50} />
+          <label className="block text-xs font-semibold mb-2 uppercase tracking-wider">Date of Birth</label>
+          <input type="date" className={inputCls} value={form.dob} onChange={handle("dob")} />
         </div>
       </div>
+      <div className="grid md:grid-cols-3 gap-4">
+        <div>
+          <label className="block text-xs font-semibold mb-2 uppercase tracking-wider">Country</label>
+          <select className={inputCls} value={form.country} onChange={handleCountry}>
+            <option value="">Select Country</option>
+            {countries.map((country) => (
+              <option key={country.isoCode} value={country.isoCode}>
+                {country.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label className="block text-xs font-semibold mb-2 uppercase tracking-wider">State</label>
+          <select className={inputCls} value={form.state} onChange={handleState} disabled={!form.country}>
+            <option value="">Select State</option>
+            {states.map((state) => (
+              <option key={state.isoCode} value={state.isoCode}>
+                {state.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label className="block text-xs font-semibold mb-2 uppercase tracking-wider">City</label>
+          <select className={inputCls} value={form.city} onChange={handle("city")} disabled={!form.state}>
+            <option value="">Select City</option>
+            {cities.map((city) => (
+              <option key={city.name} value={city.name}>
+                {city.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+      <div className="grid md:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-xs font-semibold mb-2 uppercase tracking-wider">Industry</label>
+          <select className={inputCls} value={form.industry} onChange={handle("industry")}> 
+            <option value="">Select Industry</option>
+            <option>Technology</option>
+            <option>Finance</option>
+            <option>Healthcare</option>
+            <option>Education</option>
+            <option>Consulting</option>
+            <option>Other</option>
+          </select>
+        </div>
+        {form.industry === "Other" ? (
+          <div>
+            <label className="block text-xs font-semibold mb-2 uppercase tracking-wider">Industry Name</label>
+            <input
+              className={inputCls}
+              value={form.otherIndustry}
+              onChange={handle("otherIndustry")}
+              placeholder="Enter your industry"
+              maxLength={100}
+            />
+          </div>
+        ) : (
+          <div>
+            <label className="block text-xs font-semibold mb-2 uppercase tracking-wider">Years of Experience</label>
+            <input className={inputCls} value={form.experience} onChange={handle("experience")} placeholder="e.g. Fresher / 2 years" maxLength={50} />
+          </div>
+        )}
+      </div>
+      {form.industry === "Other" && (
+        <div className="text-xs text-soft">
+          Enter your industry name so our recruitment team can route your resume correctly.
+        </div>
+      )}
       <div>
         <label className="block text-xs font-semibold mb-2 uppercase tracking-wider">Upload Updated Resume</label>
         <label className="flex items-center gap-3 cursor-pointer bg-background/60 border border-dashed border-foreground/20 rounded-xl px-4 py-4 hover:border-primary transition-all">
@@ -154,8 +302,12 @@ const RecruitmentForm = () => {
           />
         </label>
       </div>
-      <button type="submit" className="btn-primary w-full mt-2">
-        Register for Recruitment Support <ArrowRight size={18} />
+      <button type="submit" disabled={submitting} className="btn-primary w-full mt-2 disabled:opacity-60">
+        {submitting ? (
+          <><Loader2 size={18} className="animate-spin" /> Submitting…</>
+        ) : (
+          <>Register for Recruitment Support <ArrowRight size={18} /></>
+        )}
       </button>
       <p className="text-xs text-soft text-center">
         Your details stay private. We reply within 2 hours.

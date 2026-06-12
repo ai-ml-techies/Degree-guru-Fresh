@@ -6,7 +6,7 @@ import classHero from "@/assets/class-hero.jpg";
 
 const Class1012 = () => (
   <>
-    <section className="relative py-20 overflow-hidden">
+    <section className="relative py-14 md:py-20 overflow-hidden">
       <Blobs />
       <div className="container-dg relative z-10 grid lg:grid-cols-2 gap-12 items-center">
         <Reveal>
@@ -35,7 +35,7 @@ const Class1012 = () => (
     <section className="pb-20">
       <div className="container-dg grid md:grid-cols-2 gap-6 mb-12">
         <Reveal>
-          <div className="glass glass-hover p-10">
+          <div className="glass glass-hover p-6 md:p-10">
             <h2 className="text-2xl font-bold mb-3">Class 10 Online</h2>
             <p className="text-soft leading-relaxed mb-4">
               Finish your secondary education from home, on your own schedule. No previous formal schooling is required in many cases, just the will to learn.
@@ -47,7 +47,7 @@ const Class1012 = () => (
           </div>
         </Reveal>
         <Reveal delay={0.1}>
-          <div className="glass glass-hover p-10">
+          <div className="glass glass-hover p-6 md:p-10">
             <h2 className="text-2xl font-bold mb-3">Class 12 Online</h2>
             <p className="text-soft leading-relaxed mb-4">
               Earn your senior secondary completion online. Ideal for anyone who has finished Class 10 or equivalent and wants a flexible, dignified way to study.
@@ -64,7 +64,7 @@ const Class1012 = () => (
         <Reveal>
           <h2 className="text-2xl md:text-3xl font-bold mb-3">Talk To Us About Class 10 or 12</h2>
           <p className="text-soft mb-8">We'll call you within 2 hours. No fees, no pressure.</p>
-          <CounselingForm />
+          <CounselingForm source="class-1012" />
         </Reveal>
       </div>
     </section>

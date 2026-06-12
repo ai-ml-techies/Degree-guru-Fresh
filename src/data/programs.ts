@@ -4,10 +4,12 @@ export type ProgramContent = {
   full: string;
   level: "Bachelors" | "Masters" | "Doctoral" | "Skills";
   desc: string;
-  tagline: string;        // unique hero subtitle (no "Your Future Starts Here")
-  about: string;          // unique long description
-  enrollFor: string[];    // unique audience
-  emiNote: string;        // EMI line specific to program
+  tagline: string;
+  about: string;
+  enrollFor: string[];
+  emiNote: string;
+  careerRoles?: string[];
+  careerSalary?: string;
 };
 
 export const PROGRAMS: ProgramContent[] = [

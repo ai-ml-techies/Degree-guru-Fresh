@@ -1,11 +1,33 @@
+import { Helmet } from "react-helmet-async";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { useEffect } from "react";
-import { ArrowRight, ChevronRight, GraduationCap, Briefcase, Award, ShieldCheck, Star, Wallet } from "lucide-react";
+import { ArrowRight, ChevronRight, Briefcase, Award, ShieldCheck, Star, Wallet } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 import { Reveal } from "@/components/Reveal";
 import { Blobs } from "@/components/Blobs";
 import { CounselingForm } from "@/components/CounselingForm";
 import { PROGRAMS } from "@/data/programs";
+import { fetchPrograms, type ApiProgram } from "@/lib/api";
+import type { ProgramContent } from "@/data/programs";
 import programHero from "@/assets/program-hero.jpg";
+
+type Program = ProgramContent;
+
+function apiToProgram(p: ApiProgram): Program {
+  return {
+    slug:         p.slug,
+    name:         p.name,
+    full:         p.full,
+    level:        p.level,
+    desc:         p.desc,
+    tagline:      p.tagline,
+    about:        p.about,
+    enrollFor:    p.enrollFor,
+    emiNote:      p.emiNote,
+    careerRoles:  p.careerRoles,
+    careerSalary: p.careerSalary,
+  };
+}
 
 // Universities relevant per program. NMIMS excluded from BBA.
 const universitiesForProgram = (slug: string) => {
@@ -24,45 +46,94 @@ const universitiesForProgram = (slug: string) => {
   return pool.slice(0, 6);
 };
 
-const careerScope = (slug: string) => {
-  const map: Record<string, { roles: string[]; salary: string }> = {
-    "online-mba": { roles: ["Business Manager", "Product Manager", "Consultant", "Entrepreneur"], salary: "INR 6 to 25 LPA" },
-    "online-bba": { roles: ["Business Analyst", "Marketing Executive", "Operations Lead"], salary: "INR 3 to 8 LPA" },
-    "online-bca": { roles: ["Software Developer", "Web Developer", "QA Engineer"], salary: "INR 3 to 7 LPA" },
-    "online-mca": { roles: ["Senior Developer", "DevOps Engineer", "Tech Lead"], salary: "INR 6 to 18 LPA" },
-    "online-ba": { roles: ["Content Writer", "Civil Services Aspirant", "Educator"], salary: "INR 2.5 to 6 LPA" },
-    "online-ma": { roles: ["Researcher", "Educator", "Policy Analyst"], salary: "INR 4 to 9 LPA" },
-    "online-bcom": { roles: ["Accountant", "Tax Associate", "Banking Executive"], salary: "INR 3 to 7 LPA" },
-    "online-mcom": { roles: ["Finance Manager", "Audit Lead", "Tax Consultant"], salary: "INR 5 to 12 LPA" },
-    "online-dba": { roles: ["Senior Consultant", "Director", "Educator"], salary: "INR 15 to 40 LPA" },
-    "phd": { roles: ["Researcher", "Professor", "Subject Expert"], salary: "INR 8 to 20 LPA" },
-    "certifications": { roles: ["Skill-based roles across domains"], salary: "Varies by domain" },
-  };
-  return map[slug] || { roles: ["Diverse career paths"], salary: "Varies by role" };
-};
-
 const ProgramDetail = () => {
   const { slug } = useParams();
-  const program = PROGRAMS.find(p => p.slug === slug);
+
+  const { data: apiPrograms } = useQuery({
+    queryKey: ['programs'],
+    queryFn:  fetchPrograms,
+    staleTime: 1000 * 60 * 5,
+  });
+
+  const programs: Program[] = apiPrograms && apiPrograms.length > 0
+    ? apiPrograms.map(apiToProgram)
+    : PROGRAMS;
+
+  const program = programs.find(p => p.slug === slug);
+  const apiProgram = apiPrograms?.find(p => p.slug === slug) ?? null;
 
   useEffect(() => {
-    if (program) {
-      document.title = `${program.name} | Free Counseling & Guidance | Degree Guru`;
-      const meta = document.querySelector('meta[name="description"]');
-      if (meta) meta.setAttribute("content", `${program.name} (${program.full}). Free career counseling, easy EMI options and university comparison from Degree Guru.`);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
+    if (program) window.scrollTo({ top: 0, behavior: "smooth" });
   }, [program]);
 
   if (!program) return <Navigate to="/programs" replace />;
 
   const universities = universitiesForProgram(program.slug);
-  const career = careerScope(program.slug);
+
+  // Use API career data if available, otherwise use the hardcoded map
+  const careerRoles: string[] = program.careerRoles && program.careerRoles.length > 0
+    ? program.careerRoles
+    : (() => {
+        const map: Record<string, string[]> = {
+          "online-mba":    ["Business Manager", "Product Manager", "Consultant", "Entrepreneur"],
+          "online-bba":    ["Business Analyst", "Marketing Executive", "Operations Lead"],
+          "online-bca":    ["Software Developer", "Web Developer", "QA Engineer"],
+          "online-mca":    ["Senior Developer", "DevOps Engineer", "Tech Lead"],
+          "online-ba":     ["Content Writer", "Civil Services Aspirant", "Educator"],
+          "online-ma":     ["Researcher", "Educator", "Policy Analyst"],
+          "online-bcom":   ["Accountant", "Tax Associate", "Banking Executive"],
+          "online-mcom":   ["Finance Manager", "Audit Lead", "Tax Consultant"],
+          "online-dba":    ["Senior Consultant", "Director", "Educator"],
+          "phd":           ["Researcher", "Professor", "Subject Expert"],
+          "certifications":["Skill-based roles across domains"],
+        };
+        return map[program.slug] ?? ["Diverse career paths"];
+      })();
+
+  const careerSalary: string = program.careerSalary && program.careerSalary.trim()
+    ? program.careerSalary
+    : (() => {
+        const map: Record<string, string> = {
+          "online-mba": "INR 6 to 25 LPA",
+          "online-bba": "INR 3 to 8 LPA",
+          "online-bca": "INR 3 to 7 LPA",
+          "online-mca": "INR 6 to 18 LPA",
+          "online-ba":  "INR 2.5 to 6 LPA",
+          "online-ma":  "INR 4 to 9 LPA",
+          "online-bcom":"INR 3 to 7 LPA",
+          "online-mcom":"INR 5 to 12 LPA",
+          "online-dba": "INR 15 to 40 LPA",
+          "phd":        "INR 8 to 20 LPA",
+        };
+        return map[program.slug] ?? "Varies by role";
+      })();
+
+  const siteUrl = 'https://degreeguru.in';
+  const pageUrl = `${siteUrl}/programs/${program?.slug ?? slug}`;
+  const metaTitle = apiProgram?.metaTitle || `${program?.name ?? ''} | Free Counseling & Guidance | Degree Guru`;
+  const metaDesc = apiProgram?.metaDesc || `${program?.name ?? ''} (${program?.full ?? ''}). Free career counseling, easy EMI options and university comparison from Degree Guru.`;
+  const ogImage = apiProgram?.ogImage || `${siteUrl}/og-image.png`;
 
   return (
     <>
+      <Helmet>
+        <title>{metaTitle}</title>
+        <meta name="description" content={metaDesc} />
+        {apiProgram?.focusKeyword && <meta name="keywords" content={apiProgram.focusKeyword} />}
+        <meta name="robots" content="index,follow" />
+        <link rel="canonical" href={pageUrl} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={pageUrl} />
+        <meta property="og:title" content={metaTitle} />
+        <meta property="og:description" content={metaDesc} />
+        <meta property="og:image" content={ogImage} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={metaTitle} />
+        <meta name="twitter:description" content={metaDesc} />
+        <meta name="twitter:image" content={ogImage} />
+      </Helmet>
       {/* HERO */}
-      <section className="relative py-20 overflow-hidden">
+      <section className="relative py-14 md:py-20 overflow-hidden">
         <Blobs />
         <div className="container-dg relative z-10">
           <nav className="flex items-center gap-2 text-xs text-soft mb-8">
@@ -106,7 +177,7 @@ const ProgramDetail = () => {
       <section className="py-16">
         <div className="container-dg">
           <Reveal>
-            <div className="glass p-10 md:p-14 max-w-4xl mx-auto">
+            <div className="glass p-6 sm:p-10 md:p-14 max-w-4xl mx-auto">
               <h2 className="text-3xl font-bold mb-5">What is {program.name}?</h2>
               <p className="text-soft text-lg leading-[1.8] mb-6">
                 {program.about}
@@ -144,19 +215,19 @@ const ProgramDetail = () => {
       <section className="py-16">
         <div className="container-dg">
           <Reveal>
-            <div className="glass p-10 md:p-14 max-w-4xl mx-auto">
+            <div className="glass p-6 sm:p-10 md:p-14 max-w-4xl mx-auto">
               <p className="overline mb-3">Career Path</p>
               <h2 className="text-3xl font-bold mb-6">Career Opportunities</h2>
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <h3 className="font-bold mb-3 flex items-center gap-2"><Briefcase size={18} className="text-primary" /> Popular Roles</h3>
                   <ul className="space-y-2 text-soft">
-                    {career.roles.map(r => <li key={r}>• {r}</li>)}
+                    {careerRoles.map(r => <li key={r}>• {r}</li>)}
                   </ul>
                 </div>
                 <div>
                   <h3 className="font-bold mb-3 flex items-center gap-2"><Award size={18} className="text-primary" /> Average Salary Range</h3>
-                  <p className="text-2xl font-extrabold text-primary">{career.salary}</p>
+                  <p className="text-2xl font-extrabold text-primary">{careerSalary}</p>
                   <p className="text-xs text-soft mt-2">Indicative ranges. Varies by experience and employer.</p>
                 </div>
               </div>
@@ -225,7 +296,7 @@ const ProgramDetail = () => {
       <section className="py-16">
         <div className="container-dg max-w-3xl">
           <Reveal>
-            <div className="glass p-10 text-center">
+            <div className="glass p-6 sm:p-10 text-center">
               <div className="flex justify-center gap-1 mb-4">
                 {Array.from({ length: 5 }).map((_, k) => <Star key={k} size={16} className="fill-primary text-primary" />)}
               </div>
@@ -247,7 +318,7 @@ const ProgramDetail = () => {
               <h2 className="text-3xl md:text-4xl font-bold mb-3">Confused About {program.name}?</h2>
               <p className="text-soft text-lg">Talk to us. We will simplify everything, including the EMI math.</p>
             </div>
-            <CounselingForm compact buttonLabel="Request Free Counseling Call" />
+            <CounselingForm compact buttonLabel="Request Free Counseling Call" source={`program-${program.slug}`} />
           </Reveal>
         </div>
       </section>
@@ -259,7 +330,7 @@ const ProgramDetail = () => {
             <h2 className="text-2xl font-bold mb-8">Related Programs</h2>
           </Reveal>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {PROGRAMS.filter(p => p.slug !== program.slug).slice(0, 4).map((p) => (
+            {programs.filter(p => p.slug !== program.slug).slice(0, 4).map((p) => (
               <Link key={p.slug} to={`/programs/${p.slug}`} className="glass glass-hover p-5 block">
                 <div className="font-bold mb-1">{p.name}</div>
                 <div className="text-xs text-soft mb-3">{p.full}</div>

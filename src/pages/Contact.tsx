@@ -20,12 +20,12 @@ const faqs = [
 
 const Contact = () => (
   <>
-    <section className="relative py-20 overflow-hidden">
+    <section className="relative py-14 md:py-20 overflow-hidden">
       <Blobs />
       <div className="container-dg relative z-10 grid lg:grid-cols-2 gap-12 items-center">
         <Reveal>
           <p className="overline mb-4">Talk To Us</p>
-          <h1 className="text-[40px] md:text-[60px] font-extrabold leading-[1.05] mb-5">
+          <h1 className="text-3xl sm:text-[40px] md:text-[60px] font-extrabold leading-[1.05] mb-5">
             Free Counseling. Honest Answers.
           </h1>
           <p className="text-soft text-lg">A real human counselor will call you back within 2 hours. No bots. No pressure.</p>
@@ -47,7 +47,7 @@ const Contact = () => (
     <section className="pb-16">
       <div className="container-dg max-w-3xl">
         <Reveal>
-          <CounselingForm buttonLabel="Get My Free Counseling Session" />
+          <CounselingForm buttonLabel="Get My Free Counseling Session" source="contact-page" />
         </Reveal>
       </div>
     </section>
@@ -72,16 +72,16 @@ const Contact = () => (
             </a>
             <a href="mailto:admissions@degreeguru.in" className="glass glass-hover p-6 flex items-center gap-4 min-w-0 sm:col-span-2">
               <div className="w-12 h-12 rounded-full bg-primary/15 flex items-center justify-center flex-shrink-0"><Mail size={18} className="text-primary" /></div>
-              <div className="min-w-0 flex-1">
+              <div className="min-w-0 flex-1 overflow-hidden">
                 <div className="text-xs uppercase tracking-wider text-soft">Admissions</div>
-                <div className="font-bold text-base md:text-lg whitespace-nowrap">admissions@degreeguru.in</div>
+                <div className="font-bold text-sm sm:text-base truncate">admissions@degreeguru.in</div>
               </div>
             </a>
             <a href="mailto:info@degreeguru.in" className="glass glass-hover p-6 flex items-center gap-4 min-w-0 sm:col-span-2">
               <div className="w-12 h-12 rounded-full bg-primary/15 flex items-center justify-center flex-shrink-0"><Mail size={18} className="text-primary" /></div>
-              <div className="min-w-0 flex-1">
+              <div className="min-w-0 flex-1 overflow-hidden">
                 <div className="text-xs uppercase tracking-wider text-soft">Queries</div>
-                <div className="font-bold text-base md:text-lg whitespace-nowrap">info@degreeguru.in</div>
+                <div className="font-bold text-sm sm:text-base truncate">info@degreeguru.in</div>
               </div>
             </a>
             <div className="glass p-6 flex items-center gap-4">

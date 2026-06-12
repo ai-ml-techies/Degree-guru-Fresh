@@ -7,12 +7,12 @@ import { Counter } from "@/components/Counter";
 
 const About = () => (
   <>
-    <section className="relative min-h-[60vh] flex items-center overflow-hidden py-20">
+    <section className="relative flex items-center overflow-hidden py-14 md:min-h-[60vh] md:py-20">
       <Blobs />
       <div className="container-dg relative z-10 grid lg:grid-cols-2 gap-12 items-center">
         <Reveal>
           <p className="overline mb-4">About Degree Guru</p>
-          <h1 className="text-[40px] md:text-[60px] font-extrabold leading-[1.05] mb-6">
+          <h1 className="text-3xl sm:text-[40px] md:text-[60px] font-extrabold leading-[1.05] mb-6">
             India's Trusted Free Education Guide
           </h1>
           <p className="text-soft text-lg leading-[1.8]">
@@ -33,10 +33,10 @@ const About = () => (
       </div>
     </section>
 
-    <section className="py-20">
+    <section className="py-10 md:py-20">
       <div className="container-dg">
         <Reveal>
-          <div className="glass max-w-[800px] mx-auto p-10 md:p-14">
+          <div className="glass max-w-[800px] mx-auto p-6 sm:p-10 md:p-14">
             <p className="overline mb-3">Our Story</p>
             <h2 className="text-3xl font-bold mb-5">Built on a Simple Belief</h2>
             <p className="text-soft text-lg leading-[1.8]">
@@ -47,7 +47,7 @@ const About = () => (
       </div>
     </section>
 
-    <section className="bg-primary text-primary-foreground py-20">
+    <section className="bg-primary text-primary-foreground py-12 md:py-20">
       <div className="container-dg max-w-3xl text-left">
         <Reveal>
           <p className="overline !text-primary-foreground/80 mb-3">Vision</p>
@@ -59,10 +59,10 @@ const About = () => (
       </div>
     </section>
 
-    <section className="py-24">
+    <section className="py-12 md:py-24">
       <div className="container-dg">
         <Reveal>
-          <h2 className="text-3xl md:text-[40px] font-bold mb-14">What Makes Us Different</h2>
+          <h2 className="text-3xl md:text-[40px] font-bold mb-8 md:mb-14">What Makes Us Different</h2>
         </Reveal>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
@@ -85,10 +85,10 @@ const About = () => (
       </div>
     </section>
 
-    <section className="py-20">
+    <section className="py-10 md:py-20">
       <div className="container-dg">
         <Reveal>
-          <div className="glass p-10 md:p-12 text-left max-w-3xl mx-auto">
+          <div className="glass p-6 sm:p-10 md:p-12 text-left max-w-3xl mx-auto">
             <p className="overline mb-3">Beyond Counseling</p>
             <h2 className="text-2xl md:text-3xl font-bold mb-4">We Help You Get Hired Too</h2>
             <p className="text-soft leading-relaxed mb-6">
@@ -100,8 +100,8 @@ const About = () => (
       </div>
     </section>
 
-    <section className="py-20">
-      <div className="container-dg grid grid-cols-2 md:grid-cols-4 gap-6">
+    <section className="py-10 md:py-20">
+      <div className="container-dg grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
         {[
           { end: 3, suffix: "+", l: "Years of Counseling" },
           { end: 5000, suffix: "+", l: "Students" },
