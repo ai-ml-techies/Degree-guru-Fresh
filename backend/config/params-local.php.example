@@ -1,0 +1,15 @@
+<?php
+
+// Copy this file to params-local.php and fill in production values.
+// params-local.php is gitignored — never commit it.
+
+return [
+    'adminEmail'  => 'admin@your-domain.com',
+    'senderEmail' => 'noreply@your-domain.com',
+    'senderName'  => 'Degree Guru',
+
+    'corsAllowedOrigins' => [
+        'https://your-domain.com',
+        'https://www.your-domain.com',
+    ],
+];

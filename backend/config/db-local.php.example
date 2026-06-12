@@ -1,0 +1,13 @@
+<?php
+
+// Copy this file to db-local.php and fill in production DB credentials.
+// db-local.php is gitignored — never commit it.
+
+return [
+    'dsn'      => 'mysql:host=your-db-host;dbname=degree_guru',
+    'username' => 'your_db_user',
+    'password' => 'your_strong_password',
+    'enableSchemaCache'   => true,
+    'schemaCacheDuration' => 3600,
+    'schemaCache'         => 'cache',
+];

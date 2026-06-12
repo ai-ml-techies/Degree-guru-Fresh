@@ -1,0 +1,20 @@
+CREATE TABLE IF NOT EXISTS `programs` (
+  `id`            INT            NOT NULL AUTO_INCREMENT,
+  `slug`          VARCHAR(100)   NOT NULL,
+  `name`          VARCHAR(100)   NOT NULL,
+  `full_name`     VARCHAR(200)   NOT NULL DEFAULT '',
+  `level`         ENUM('Bachelors','Masters','Doctoral','Skills') NOT NULL DEFAULT 'Bachelors',
+  `desc`          TEXT,
+  `tagline`       VARCHAR(500)   DEFAULT '',
+  `about`         TEXT,
+  `enroll_for`    JSON,
+  `emi_note`      TEXT,
+  `career_roles`  JSON,
+  `career_salary` VARCHAR(150)   DEFAULT '',
+  `sort_order`    INT            NOT NULL DEFAULT 0,
+  `is_active`     TINYINT(1)     NOT NULL DEFAULT 1,
+  `created_at`    DATETIME       DEFAULT CURRENT_TIMESTAMP,
+  `updated_at`    DATETIME       DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_slug` (`slug`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
