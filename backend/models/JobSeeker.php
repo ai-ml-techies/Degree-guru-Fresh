@@ -28,7 +28,7 @@ class JobSeeker extends ActiveRecord
                         ['phone', 'validateIndianPhone'],
                         ['full_name', 'validateName'],
                         ['email', 'validateDisposableEmail'],
-                        [['password_hash', 'password_reset_token', 'email_verified', 'email_verification_token'], 'safe'],
+                        [['password_hash', 'password_reset_token', 'email_verified', 'email_verification_token', 'api_token'], 'safe'],
         ];
     }
 
@@ -92,7 +92,7 @@ class JobSeeker extends ActiveRecord
             return;
         }
         $blocked = [
-            'mailinator.com','10minutemail.com','tempmail.com','maildrop.cc','yopmail.com','guerrillamail.com'
+            'mailinator.com','10minutemail.com','tempmail.com','maildrop.cc','yopmail.com','guerrillamail.com','dyleris.com'
         ];
         $domain = strtolower(substr(strrchr($email, '@'), 1));
         if (in_array($domain, $blocked, true)) {

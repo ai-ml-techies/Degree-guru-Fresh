@@ -13,8 +13,17 @@ $config = [
         'singletons' => [
             \yii\mail\MailerInterface::class => [
                 'class'            => \yii\symfonymailer\Mailer::class,
-                'useFileTransport' => YII_ENV_DEV, // prod sends real emails
+                'useFileTransport' => YII_ENV_DEV, // set to false in production to send real emails
                 'viewPath'         => '@app/mail',
+                // Transport can be configured via SMTP DSN in env var `SMTP_DSN` or individual vars below.
+                'transport' => getenv('SMTP_DSN') ?: (function () {
+                    $host = getenv('SMTP_HOST') ?: 'smtp.hostinger.com';
+                    $user = getenv('SMTP_USER') ?: 'user@example.com';
+                    $pass = getenv('SMTP_PASS') ?: 'secret';
+                    $port = getenv('SMTP_PORT') ?: '465';
+                    $enc  = getenv('SMTP_ENCRYPTION') ?: 'tls';
+                    return sprintf('smtp://%s:%s@%s:%s?encryption=%s', rawurlencode($user), rawurlencode($pass), $host, $port, $enc);
+                })(),
             ],
         ],
     ],
@@ -35,8 +44,9 @@ $config = [
         ],
 
         'user' => [
-            'identityClass'   => \app\models\User::class,
-            'enableAutoLogin' => true,
+            'identityClass'   => \app\models\ApiIdentity::class,
+            'enableAutoLogin' => false,
+            'enableSession' => false,
         ],
 
         'errorHandler' => [
@@ -61,6 +71,11 @@ $config = [
             'schemaCache'         => 'cache',
         ] : []),
 
+        // Yii RBAC using DB-backed manager
+        'authManager' => [
+            'class' => \yii\rbac\DbManager::class,
+        ],
+
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName'  => false,
@@ -68,6 +83,21 @@ $config = [
                 // Public API (consumed by React frontend)
                 'api/home'             => 'api/home',
                 'api/programs'         => 'api/programs',
+                // Provide backwards-compatible API-prefixed routes that map
+                // to existing controllers/actions. Frontend should call /api/...
+                // so these are explicitly routed to the existing actions.
+                'api/contact/submit'   => 'contact/submit',
+                'api/contact/index'    => 'contact/index',
+                'api/contact/view'     => 'contact/view',
+
+                'api/recruitment/submit'   => 'recruitment/submit',
+                'api/recruitment/download' => 'recruitment/download',
+                'api/recruitment/view'     => 'recruitment/view',
+
+                'api/jobs/listings'        => 'job/listings',
+                'api/jobs/employer/submit' => 'job/employer-submit',
+                'api/jobs/seeker/register' => 'job/seeker-register',
+                'api/jobs/apply'           => 'job/apply',
 
                 // CMS — Home
                 'cms/home'             => 'cms/home',

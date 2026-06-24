@@ -193,8 +193,14 @@ const ApplyModal = ({
 
   const [phoneError, setPhoneError] = useState<string | null>(null);
 
-  const set = (k: keyof SeekerForm) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
-    setForm(f => ({ ...f, [k]: e.target.value }));
+  const set = (k: keyof SeekerForm) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    let val = e.target.value;
+    const nameKeys = ["fullName"];
+    if (nameKeys.includes(k as string)) {
+      val = val.replace(/[0-9]/g, '');
+    }
+    setForm(f => ({ ...f, [k]: val }));
+  };
 
   // Validate Indian mobile numbers: allow optional country code (+91, 91, 0) and require 10 digits starting with 6-9
   const validateIndianMobile = (input: string) => {

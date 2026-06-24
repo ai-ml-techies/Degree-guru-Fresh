@@ -93,8 +93,11 @@ const RecruitmentForm = () => {
   const states = form.country ? State.getStatesOfCountry(form.country).sort((a, b) => a.name.localeCompare(b.name)) : [];
   const cities = form.country && form.state ? City.getCitiesOfState(form.country, form.state).sort((a, b) => a.name.localeCompare(b.name)) : [];
 
-  const handle = (k: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
-    setForm({ ...form, [k]: e.target.value });
+  const handle = (k: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    let val = e.target.value;
+    if (k === 'name') val = val.replace(/[0-9]/g, '');
+    setForm({ ...form, [k]: val });
+  };
 
   const handleCountry = (e: React.ChangeEvent<HTMLSelectElement>) =>
     setForm({ ...form, country: e.target.value, state: "", city: "" });
@@ -160,7 +163,7 @@ const RecruitmentForm = () => {
 
     setSubmitting(true);
     try {
-      const res = await fetch(`${API_BASE}/recruitment/submit`, { method: "POST", body: data });
+      const res = await fetch(`${API_BASE}/api/recruitment/submit`, { method: "POST", body: data });
 
       let json: { success: boolean; message?: string; errors?: string[] };
       try {

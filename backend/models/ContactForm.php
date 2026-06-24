@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace app\models;
 
+use app\validators\AppValidator;
 use yii\base\Model;
 use yii\mail\MailerInterface;
 
@@ -22,14 +23,26 @@ class ContactForm extends Model
      */
     public function rules(): array
     {
-        return [
-            // name, email, subject and body are required
-            [['name', 'email', 'subject', 'body'], 'required'],
-            // email has to be a valid email address
-            ['email', 'email'],
-            // verifyCode needs to be entered correctly
-            ['verifyCode', 'captcha'],
-        ];
+       return [
+        [['name', 'email', 'phone', 'subject', 'body'], 'required'],
+
+        ['email', function ($attribute) {
+            AppValidator::validateEmail($this, $attribute);
+        }],
+        [['email'],
+            function ($attribute) {
+              AppValidator::validateUniqueEmail(
+                    $this,
+                    $attribute,
+                    CounselingRequest::class 
+                );
+            }
+        ],
+
+        ['phone', function ($attribute) {
+            AppValidator::validatePhone($this, $attribute);
+        }],
+    ];
     }
 
     /**
@@ -41,7 +54,6 @@ class ContactForm extends Model
             'verifyCode' => 'Verification Code',
         ];
     }
-
     /**
      * Sends an email to the specified email address using the information collected by this model.
      *

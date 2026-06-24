@@ -134,34 +134,73 @@ class JobController extends Controller
             return ['success' => false, 'message' => 'Document upload failed. Please try again.'];
         }
 
-        $transaction = Yii::$app->db->beginTransaction();
-        try {
-            // If an employer with this contact email exists, require password (login)
-            $existingEmployer = JobEmployer::find()->where(['contact_email' => trim($post['contactEmail'])])->one();
-            if ($existingEmployer) {
-                $pw = trim($post['password'] ?? '');
-                if ($pw === '' || !Yii::$app->getSecurity()->validatePassword($pw, (string)$existingEmployer->contact_password_hash)) {
-                    throw new \Exception('An account with this email exists — please login with your password.');
-                }
-                // Require verified email for login
-                if (empty($existingEmployer->contact_email_verified) || $existingEmployer->contact_email_verified == 0) {
-                    throw new \Exception('Please verify your email before logging in. A verification link has been sent.');
-                }
-                $employer = $existingEmployer;
-            } else {
-                // Register new employer — require password and confirmation
-                $pw = trim($post['password'] ?? '');
-                $pw2 = trim($post['confirmPassword'] ?? '');
-                if ($pw === '' || strlen($pw) < 6 || $pw !== $pw2) {
-                    throw new \Exception('Password (min 6 chars) and confirmation are required for new employer registration.');
-                }
-                $employer = new JobEmployer();
-                $employer->contact_password_hash = Yii::$app->getSecurity()->generatePasswordHash($pw);
-                // generate email verification token
-                $evToken = bin2hex(random_bytes(16));
-                $employer->contact_email_verified = 0;
-                $employer->contact_email_verification_token = $evToken;
+        // If user is authenticated as employer, allow posting and save under their account.
+        $identity = Yii::$app->user->identity ?? null;
+        if ($identity && ($identity->role ?? '') === 'employer') {
+            // Authenticated employer — find model
+            $employer = JobEmployer::findOne((int)$identity->id);
+            if (!$employer) return ['success' => false, 'message' => 'Authenticated employer not found.'];
+            // Ensure email verified
+            if (empty($employer->contact_email_verified) || $employer->contact_email_verified == 0) {
+                return ['success' => false, 'message' => 'Please verify your email before posting.'];
             }
+            $isPosting = true;
+        } else {
+            // Not authenticated — treat this as a registration attempt. Create employer but DO NOT create posting.
+            // Prevent duplicate email/phone across employers and seekers.
+            $email = trim($post['contactEmail'] ?? '');
+            $phone = preg_replace('/\D+/', '', (string)($post['contactPhone'] ?? ''));
+            $errs = [];
+            if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) $errs[] = 'Valid contact email is required.';
+            if ($phone === '' || !preg_match('/^[6-9][0-9]{9}$/', $phone)) $errs[] = 'Valid 10-digit Indian contact phone number is required.';
+            // Check duplicates
+            $existsEmailEmp = JobEmployer::find()->where(['contact_email' => $email])->exists();
+            $existsEmailSeeker = JobSeeker::find()->where(['email' => $email])->exists();
+            if ($existsEmailEmp || $existsEmailSeeker) $errs[] = 'An account with this email already exists.';
+            $existsPhoneEmp = JobEmployer::find()->where(['contact_phone' => $post['contactPhone']])->exists();
+            $existsPhoneSeeker = JobSeeker::find()->where(['phone' => $post['contactPhone']])->exists();
+            if ($existsPhoneEmp || $existsPhoneSeeker) $errs[] = 'An account with this phone number already exists.';
+            if (!empty($errs)) return ['success' => false, 'errors' => $errs, 'message' => $errs[0]];
+
+            // Create employer record and send verification email. Posting will not be created until they authenticate after verification.
+            $employer = new JobEmployer();
+            $employer->company_name        = trim($post['companyName']);
+            $employer->company_industry    = trim($post['companyIndustry']);
+            $employer->employee_count      = trim($post['employeeCount'] ?? '');
+            $employer->company_address     = trim($post['companyAddress'] ?? '');
+            $employer->company_website     = trim($post['companyWebsite'] ?? '');
+            $employer->document_filename   = $safeName;
+            $employer->document_original   = $file->name;
+            $employer->contact_name        = trim($post['contactName']);
+            $employer->contact_phone       = trim($post['contactPhone']);
+            $employer->contact_email       = $email;
+            $employer->contact_designation = trim($post['contactDesignation'] ?? '');
+            $employer->status              = JobEmployer::STATUS_PENDING;
+
+            // require verification
+            $evToken = bin2hex(random_bytes(16));
+            $employer->contact_email_verified = 0;
+            $employer->contact_email_verification_token = $evToken;
+
+            if (!$employer->save(false)) {
+                return ['success' => false, 'message' => 'Registration failed. Please try again.'];
+            }
+
+            try {
+                $frontend = Yii::$app->params['frontendBaseUrl'] ?? (Yii::$app->request->getHostInfo() . '/');
+                $link = rtrim($frontend, '/') . '/jobs/verify-email?token=' . $evToken . '&type=employer';
+                Yii::$app->mailer->compose()
+                    ->setFrom([Yii::$app->params['senderEmail'] => Yii::$app->params['senderName']])
+                    ->setTo($employer->contact_email)
+                    ->setSubject('Verify your Degree Guru employer account')
+                    ->setTextBody("Click to verify your email:\n\n" . $link)
+                    ->send();
+            } catch (\Throwable $e) {
+                ErrorLog::write('server', 'job/employer-submit', 'Failed to send verification email: ' . $e->getMessage(), ['email' => $employer->contact_email]);
+            }
+
+            return ['success' => true, 'message' => 'Registration successful. Please verify your email before posting.'];
+        }
             $employer->company_name        = trim($post['companyName']);
             $employer->company_industry    = trim($post['companyIndustry']);
             $employer->employee_count      = trim($post['employeeCount'] ?? '');
@@ -177,6 +216,25 @@ class JobController extends Controller
 
             if (!$employer->save(false)) {
                 throw new \Exception('Failed to save employer.');
+            }
+
+            // Begin DB transaction for saving employer/posting. It will be committed on success or rolled back on exception.
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+            // Assign RBAC role 'employer' if authManager available
+            if (Yii::$app->has('authManager')) {
+                try {
+                    $auth = Yii::$app->authManager;
+                    $role = $auth->getRole('employer');
+                    if (!$role) {
+                        $role = $auth->createRole('employer');
+                        $auth->add($role);
+                    }
+                    $auth->assign($role, (string)$employer->id);
+                } catch (\Throwable $e) {
+                    // Do not block save on RBAC assignment failure; log for debugging
+                    ErrorLog::write('server', 'job/employer-submit', 'RBAC assign failed: ' . $e->getMessage(), []);
+                }
             }
 
             $posting = new JobPosting();
@@ -317,6 +375,14 @@ class JobController extends Controller
         $seeker->email              = $email;
         $seeker->phone              = $phone;
         $seeker->city               = trim($post['city'] ?? '');
+        
+                            // Prevent duplicate email/phone across seekers and employers
+                            if (JobSeeker::find()->where(['email' => $email])->exists() || JobEmployer::find()->where(['contact_email' => $email])->exists()) {
+                                $errors[] = 'An account with this email already exists.';
+                            }
+                            if (JobSeeker::find()->where(['phone' => $phone])->exists() || JobEmployer::find()->where(['contact_phone' => $phone])->exists()) {
+                                $errors[] = 'An account with this phone number already exists.';
+                            }
         $seeker->qualification      = trim($post['qualification'] ?? '');
         $seeker->experience         = trim($post['experience'] ?? '');
         $seeker->preferred_industry = trim($post['preferredIndustry'] ?? '');
@@ -326,6 +392,20 @@ class JobController extends Controller
         $seeker->resume_original    = $resumeOriginal;
 
         if ($seeker->save(false)) {
+            // Assign RBAC role 'seeker' if authManager available
+            if (Yii::$app->has('authManager')) {
+                try {
+                    $auth = Yii::$app->authManager;
+                    $role = $auth->getRole('seeker');
+                    if (!$role) {
+                        $role = $auth->createRole('seeker');
+                        $auth->add($role);
+                    }
+                    $auth->assign($role, (string)$seeker->id);
+                } catch (\Throwable $e) {
+                    ErrorLog::write('server', 'job/seeker-register', 'RBAC assign failed: ' . $e->getMessage(), []);
+                }
+            }
             // send verification email for new seeker
             if (isset($svToken) && !empty($svToken)) {
                 try {
@@ -361,11 +441,17 @@ class JobController extends Controller
             return ['success' => false, 'message' => 'Method not allowed.'];
         }
 
+        // Require authenticated seeker
+        $identity = Yii::$app->user->identity ?? null;
+        if (!$identity || ($identity->role ?? '') !== 'seeker') {
+            return ['success' => false, 'message' => 'Authentication required to apply. Please login or register as a job seeker.'];
+        }
+
+        $seekerId = (int)$identity->id;
         $body      = json_decode(Yii::$app->request->rawBody, true) ?? [];
         $postingId = (int)($body['posting_id'] ?? 0);
-        $seekerId  = (int)($body['seeker_id']  ?? 0);
 
-        if (!$postingId || !$seekerId) {
+        if (!$postingId) {
             return ['success' => false, 'message' => 'Invalid request data.'];
         }
 
@@ -375,8 +461,8 @@ class JobController extends Controller
         }
 
         $seeker = JobSeeker::findOne($seekerId);
-        if (!$seeker) {
-            return ['success' => false, 'message' => 'Seeker profile not found.'];
+        if (!$seeker || empty($seeker->email_verified) || $seeker->email_verified == 0) {
+            return ['success' => false, 'message' => 'Please verify your email before applying.'];
         }
 
         $existing = JobApplication::findOne(['posting_id' => $postingId, 'seeker_id' => $seekerId]);
@@ -395,6 +481,86 @@ class JobController extends Controller
 
         ErrorLog::write('database', 'job/apply', 'Failed to save application.', $app->getErrors());
         return ['success' => false, 'message' => 'Application failed. Please try again.'];
+    }
+
+    // ─── POST /jobs/login ───────────────────────────────────────────────────
+    public function actionLogin(): array
+    {
+        if (Yii::$app->request->method !== 'POST') {
+            Yii::$app->response->statusCode = 405;
+            return ['success' => false, 'message' => 'Method not allowed.'];
+        }
+
+        $post = Yii::$app->request->post();
+        $email = trim($post['email'] ?? '');
+        $pw = trim($post['password'] ?? '');
+
+        if ($email === '' || $pw === '') {
+            return ['success' => false, 'message' => 'Email and password are required.'];
+        }
+
+        // Try employer first
+        $employer = JobEmployer::find()->where(['contact_email' => $email])->one();
+        if ($employer) {
+            if (empty($employer->contact_password_hash)) {
+                return ['success' => false, 'message' => 'No password set for this employer account. Please set a password or reset.'];
+            }
+            if (!Yii::$app->getSecurity()->validatePassword($pw, (string)$employer->contact_password_hash)) {
+                return ['success' => false, 'message' => 'Invalid credentials.'];
+            }
+            $token = bin2hex(random_bytes(32));
+            $employer->api_token = $token;
+            $employer->save(false, ['api_token']);
+            return ['success' => true, 'token' => $token, 'role' => 'employer', 'id' => $employer->id];
+        }
+
+        // Try seeker
+        $seeker = JobSeeker::find()->where(['email' => $email])->one();
+        if ($seeker) {
+            if (empty($seeker->password_hash)) {
+                return ['success' => false, 'message' => 'No password set for this seeker account. Please set a password or reset.'];
+            }
+            if (!Yii::$app->getSecurity()->validatePassword($pw, (string)$seeker->password_hash)) {
+                return ['success' => false, 'message' => 'Invalid credentials.'];
+            }
+            $token = bin2hex(random_bytes(32));
+            $seeker->api_token = $token;
+            $seeker->save(false, ['api_token']);
+            return ['success' => true, 'token' => $token, 'role' => 'seeker', 'id' => $seeker->id];
+        }
+
+        return ['success' => false, 'message' => 'Account not found.'];
+    }
+
+    // ─── POST /jobs/logout ──────────────────────────────────────────────────
+    public function actionLogout(): array
+    {
+        if (Yii::$app->request->method !== 'POST') {
+            Yii::$app->response->statusCode = 405;
+            return ['success' => false, 'message' => 'Method not allowed.'];
+        }
+        $hdr = Yii::$app->request->headers->get('Authorization', '');
+        $token = '';
+        if (str_starts_with($hdr, 'Bearer ')) {
+            $token = substr($hdr, 7);
+        } else {
+            $token = trim(Yii::$app->request->post('token', ''));
+        }
+        if ($token === '') return ['success' => false, 'message' => 'Missing token.'];
+
+        $employer = JobEmployer::find()->where(['api_token' => $token])->one();
+        if ($employer) {
+            $employer->api_token = '';
+            $employer->save(false, ['api_token']);
+            return ['success' => true, 'message' => 'Logged out.'];
+        }
+        $seeker = JobSeeker::find()->where(['api_token' => $token])->one();
+        if ($seeker) {
+            $seeker->api_token = '';
+            $seeker->save(false, ['api_token']);
+            return ['success' => true, 'message' => 'Logged out.'];
+        }
+        return ['success' => false, 'message' => 'Invalid token.'];
     }
 
     // ─── Validation helpers ──────────────────────────────────────────────────
