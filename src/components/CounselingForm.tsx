@@ -47,9 +47,26 @@ export const CounselingForm = ({ compact = false, buttonLabel = "Get Free Counse
     const phoneCheck = validateIndianMobile(form.phone);
     if (!phoneCheck.valid) { toast.error(phoneCheck.message); return; }
 
+    // Quick client-side email domain sanity check (frontend only). Backend will
+    // perform authoritative MX/DNS validation.
+    if (form.email && form.email.trim()) {
+      const email = form.email.trim().toLowerCase();
+      const domain = email.split('@')[1] ?? '';
+      const blocked = [
+        'mailinator.com', 'tempmail.com', '10minutemail.com', 'guerrillamail.com', 'yopmail.com', 'temp-mail.org','dyleris.com'
+      ];
+      const looksLikeDomain = domain.includes('.') && domain.split('.').pop()!.length >= 2;
+      if (!looksLikeDomain || blocked.includes(domain)) {
+        toast.error('Please enter a valid email address (use a real email provider).');
+        return;
+      }
+    }
+
     setSubmitting(true);
     try {
       const result = await submitCounselingLead({
+
+       
         name:    form.name.trim(),
         phone:   form.phone.trim(),
         email:   form.email.trim() || undefined,
@@ -57,7 +74,7 @@ export const CounselingForm = ({ compact = false, buttonLabel = "Get Free Counse
         message: form.message.trim() || undefined,
         source,
       });
-
+ console.log("API RESULT:", result);
       if (result.success) {
         setSubmitted(true);
         toast.success("Thanks! Our counselor will call you within 2 hours.");
@@ -121,7 +138,9 @@ export const CounselingForm = ({ compact = false, buttonLabel = "Get Free Counse
             <input
               className={fieldCls("name")}
               value={form.name}
-              onChange={handle("name")}
+              onChange={(e) => setForm({ ...form, name: e.target.value.replace(/[0-9]/g, '') })}
+              onPaste={(e) => { e.preventDefault(); const paste = e.clipboardData.getData('text').replace(/[0-9]/g, ''); setForm({ ...form, name: (form.name + paste).slice(0, 150) }); }}
+              onKeyDown={(e) => { if (e.key.length === 1 && /[0-9]/.test(e.key)) e.preventDefault(); }}
               onFocus={() => setFocusedField("name")}
               onBlur={() => setFocusedField(null)}
               placeholder="Your full name"

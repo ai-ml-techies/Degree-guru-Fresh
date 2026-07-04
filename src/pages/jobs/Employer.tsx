@@ -82,8 +82,12 @@ const Employer = () => {
 
   const [phoneError, setPhoneError] = useState<string | null>(null);
 
-  const set = (k: keyof FormState) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
-    setForm(f => ({ ...f, [k]: e.target.value }));
+  const set = (k: keyof FormState) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    let val = e.target.value;
+    const personNameKeys = ["contactName"];
+    if (personNameKeys.includes(k as string)) val = val.replace(/[0-9]/g, '');
+    setForm(f => ({ ...f, [k]: val }));
+  };
 
   const validateIndianMobile = (input: string) => {
     const digits = input.replace(/\D/g, "");
