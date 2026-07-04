@@ -11,6 +11,8 @@ class JobApplication extends ActiveRecord
     public const STATUS_APPLIED      = 0;
     public const STATUS_SHORTLISTED  = 1;
     public const STATUS_REJECTED     = 2;
+    public const STATUS_INTERVIEWED  = 3;
+    public const STATUS_HIRED        = 4;
 
     public static function tableName(): string
     {
@@ -52,6 +54,8 @@ class JobApplication extends ActiveRecord
         return match ($status) {
             self::STATUS_SHORTLISTED => 'Shortlisted',
             self::STATUS_REJECTED    => 'Rejected',
+            self::STATUS_INTERVIEWED => 'Interviewed',
+            self::STATUS_HIRED       => 'Hired',
             default                  => 'Applied',
         };
     }
@@ -61,6 +65,8 @@ class JobApplication extends ActiveRecord
         return match ($status) {
             self::STATUS_SHORTLISTED => ['bg' => '#d1fae5', 'text' => '#059669'],
             self::STATUS_REJECTED    => ['bg' => '#fee2e2', 'text' => '#dc2626'],
+            self::STATUS_INTERVIEWED => ['bg' => '#fef3c7', 'text' => '#d97706'],
+            self::STATUS_HIRED       => ['bg' => '#ede9fe', 'text' => '#6c45e0'],
             default                  => ['bg' => '#dbeafe', 'text' => '#2563eb'],
         };
     }

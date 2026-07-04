@@ -117,12 +117,18 @@ CREATE TABLE IF NOT EXISTS `job_employers` (
   `company_industry`    VARCHAR(100)     NOT NULL,
   `employee_count`      VARCHAR(50)      NOT NULL DEFAULT '',
   `company_address`     TEXT,
+  `company_description` TEXT,
   `company_website`     VARCHAR(255)     NOT NULL DEFAULT '',
   `document_filename`   VARCHAR(255)     NOT NULL,
   `document_original`   VARCHAR(255)     NOT NULL,
   `contact_name`        VARCHAR(150)     NOT NULL,
   `contact_phone`       VARCHAR(20)      NOT NULL,
   `contact_email`       VARCHAR(255)     NOT NULL,
+  `contact_password_hash` VARCHAR(255)   NOT NULL DEFAULT '',
+  `password_reset_token` VARCHAR(255)    NOT NULL DEFAULT '',
+  `contact_email_verified` TINYINT(1)   NOT NULL DEFAULT 1,
+  `contact_email_verification_token` VARCHAR(255) NOT NULL DEFAULT '',
+  `api_token`           VARCHAR(128)     NOT NULL DEFAULT '',
   `contact_designation` VARCHAR(100)     NOT NULL DEFAULT '',
   `status`              TINYINT          NOT NULL DEFAULT 0,
   `admin_note`          TEXT,
@@ -130,7 +136,8 @@ CREATE TABLE IF NOT EXISTS `job_employers` (
   `updated_at`          TIMESTAMP        NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `idx_status` (`status`),
-  KEY `idx_email`  (`contact_email`)
+  KEY `idx_email`  (`contact_email`),
+  KEY `idx_api_token` (`api_token`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
@@ -180,12 +187,18 @@ CREATE TABLE IF NOT EXISTS `job_seekers` (
   `preferred_industry` VARCHAR(100)    NOT NULL DEFAULT '',
   `skills`             TEXT,
   `linkedin_url`       VARCHAR(255)    NOT NULL DEFAULT '',
+  `password_hash`      VARCHAR(255)    NOT NULL DEFAULT '',
+  `password_reset_token` VARCHAR(255)  NOT NULL DEFAULT '',
+  `email_verified`     TINYINT(1)      NOT NULL DEFAULT 1,
+  `email_verification_token` VARCHAR(255) NOT NULL DEFAULT '',
+  `api_token`          VARCHAR(128)    NOT NULL DEFAULT '',
   `resume_filename`    VARCHAR(255)    NOT NULL DEFAULT '',
   `resume_original`    VARCHAR(255)    NOT NULL DEFAULT '',
   `created_at`         TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at`         TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `idx_email` (`email`)
+  KEY `idx_email` (`email`),
+  KEY `idx_api_token` (`api_token`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
@@ -193,7 +206,7 @@ CREATE TABLE IF NOT EXISTS `job_seekers` (
 -- job_applications
 --    Many-to-many: seekers ↔ postings.
 --    Unique key prevents duplicate applications.
---    status: 0 = Applied | 1 = Shortlisted | 2 = Rejected
+--    status: 0 = Applied | 1 = Shortlisted | 2 = Rejected | 3 = Interviewed | 4 = Hired
 -- -----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `job_applications` (
   `id`         BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,

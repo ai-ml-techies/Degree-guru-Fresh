@@ -12,25 +12,28 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
+use yii\filters\Cors;
 
 class ContactController extends Controller
 {
     public $enableCsrfValidation = false;
 
+
+
     public function behaviors(): array
     {
-        return [
-            'access' => [
-                'class' => AccessControl::class,
-                'except' => ['submit'],
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
+        $behaviors = parent::behaviors();
+
+        $behaviors['corsFilter'] = [
+            'class' => Cors::class,
+            'cors' => [
+                'Origin' => ['http://localhost:5173'],
+                'Access-Control-Request-Method' => ['POST', 'OPTIONS'],
+                'Access-Control-Request-Headers' => ['*'],
             ],
         ];
+
+        return $behaviors;
     }
 
     /**
@@ -38,6 +41,7 @@ class ContactController extends Controller
      */
     public function actionSubmit(): Response
     {
+        // Debugging line
         Yii::$app->response->format = Response::FORMAT_JSON;
 
         if (!Yii::$app->request->isPost) {

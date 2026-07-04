@@ -13,17 +13,22 @@ $config = [
         'singletons' => [
             \yii\mail\MailerInterface::class => [
                 'class'            => \yii\symfonymailer\Mailer::class,
-                'useFileTransport' => YII_ENV_DEV, // set to false in production to send real emails
+                'useFileTransport' => filter_var(getenv('MAIL_USE_FILE_TRANSPORT') ?: '0', FILTER_VALIDATE_BOOLEAN),
                 'viewPath'         => '@app/mail',
+                'messageConfig' => [
+                    'from' => [getenv('SMTP_FROM') ?: 'info@degreeguru.in' => 'Degree Guru'],
+                ],
                 // Transport can be configured via SMTP DSN in env var `SMTP_DSN` or individual vars below.
-                'transport' => getenv('SMTP_DSN') ?: (function () {
-                    $host = getenv('SMTP_HOST') ?: 'smtp.hostinger.com';
-                    $user = getenv('SMTP_USER') ?: 'user@example.com';
-                    $pass = getenv('SMTP_PASS') ?: 'secret';
-                    $port = getenv('SMTP_PORT') ?: '465';
-                    $enc  = getenv('SMTP_ENCRYPTION') ?: 'tls';
-                    return sprintf('smtp://%s:%s@%s:%s?encryption=%s', rawurlencode($user), rawurlencode($pass), $host, $port, $enc);
-                })(),
+                'transport' => [
+                    'dsn' => getenv('SMTP_DSN') ?: (function () {
+                        $host = getenv('SMTP_HOST') ?: 'smtp.hostinger.com';
+                        $user = getenv('SMTP_USER') ?: 'info@degreeguru.in';
+                        $pass = getenv('SMTP_PASS') ?: 'Degreeguru@12';
+                        $port = getenv('SMTP_PORT') ?: '465';
+                        $enc  = getenv('SMTP_ENCRYPTION') ?: 'tls';
+                        return sprintf('smtp://%s:%s@%s:%s?encryption=%s', rawurlencode($user), rawurlencode($pass), $host, $port, $enc);
+                    })(),
+                ],
             ],
         ],
     ],
@@ -44,9 +49,8 @@ $config = [
         ],
 
         'user' => [
-            'identityClass'   => \app\models\ApiIdentity::class,
-            'enableAutoLogin' => false,
-            'enableSession' => false,
+            'identityClass'   => \app\models\User::class,
+            'enableAutoLogin' => true,
         ],
 
         'errorHandler' => [
@@ -95,8 +99,20 @@ $config = [
                 'api/recruitment/view'     => 'recruitment/view',
 
                 'api/jobs/listings'        => 'job/listings',
+                'api/jobs/me'              => 'job/me',
+                'api/jobs/login'           => 'job/login',
+                'api/jobs/logout'          => 'job/logout',
+                'api/jobs/employer/register' => 'job/employer-register',
+                'api/jobs/employer/profile' => 'job/employer-profile',
                 'api/jobs/employer/submit' => 'job/employer-submit',
+                'api/jobs/employer/jobs' => 'job/employer-jobs',
+                'api/jobs/employer/applicants' => 'job/employer-applicants',
+                'api/jobs/employer/application-status' => 'job/employer-application-status',
+                'api/jobs/employer/application-activity' => 'job/employer-application-activity',
+                'api/jobs/employer/download-resume' => 'job/download-resume',
                 'api/jobs/seeker/register' => 'job/seeker-register',
+                'api/jobs/seeker/profile' => 'job/seeker-profile',
+                'api/jobs/seeker/applications' => 'job/seeker-applications',
                 'api/jobs/apply'           => 'job/apply',
 
                 // CMS — Home
@@ -131,12 +147,27 @@ $config = [
 
                 // Jobs — Public API
                 'jobs/listings'          => 'job/listings',
+                'jobs/me'                => 'job/me',
+                'jobs/login'             => 'job/login',
+                'jobs/logout'            => 'job/logout',
+                'jobs/employer/register' => 'job/employer-register',
+                'jobs/employer/profile'  => 'job/employer-profile',
                 'jobs/employer/submit'   => 'job/employer-submit',
+                'jobs/employer/jobs'     => 'job/employer-jobs',
+                'jobs/employer/applicants' => 'job/employer-applicants',
+                'jobs/employer/application-status' => 'job/employer-application-status',
+                'jobs/employer/application-activity' => 'job/employer-application-activity',
+                'jobs/employer/download-resume' => 'job/download-resume',
                 'jobs/forgot-password'   => 'job/forgot-password',
                 'jobs/reset-password'    => 'job/reset-password',
                 'jobs/verify-email'      => 'job/verify-email',
+                'jobs/resend-otp'        => 'job/resend-otp',
                 'jobs/seeker/register'   => 'job/seeker-register',
+                'jobs/seeker/profile'    => 'job/seeker-profile',
+                'jobs/seeker/applications' => 'job/seeker-applications',
                 'jobs/apply'             => 'job/apply',
+                'api/jobs/verify-email'  => 'job/verify-email',
+                'api/jobs/resend-otp'    => 'job/resend-otp',
 
                 // Jobs — Admin
                 'job-admin'                        => 'job-admin/index',
@@ -175,7 +206,7 @@ $config = [
                 if ($origin !== '' && in_array($origin, $allowed, true)) {
                     $response->headers->set('Access-Control-Allow-Origin', $origin);
                     $response->headers->set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-                    $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With');
+                    $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With, Authorization');
                     $response->headers->set('Access-Control-Allow-Credentials', 'true');
                 }
             },

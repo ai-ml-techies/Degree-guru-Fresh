@@ -65,6 +65,8 @@ export const CounselingForm = ({ compact = false, buttonLabel = "Get Free Counse
     setSubmitting(true);
     try {
       const result = await submitCounselingLead({
+
+       
         name:    form.name.trim(),
         phone:   form.phone.trim(),
         email:   form.email.trim() || undefined,
@@ -72,7 +74,7 @@ export const CounselingForm = ({ compact = false, buttonLabel = "Get Free Counse
         message: form.message.trim() || undefined,
         source,
       });
-
+ console.log("API RESULT:", result);
       if (result.success) {
         setSubmitted(true);
         toast.success("Thanks! Our counselor will call you within 2 hours.");

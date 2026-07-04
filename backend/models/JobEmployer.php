@@ -20,17 +20,16 @@ class JobEmployer extends ActiveRecord
     public function rules(): array
     {
                 return [
-                        [['company_name', 'company_industry', 'document_filename', 'document_original',
-                            'contact_name', 'contact_phone', 'contact_email'], 'required'],
+                        [['contact_name', 'contact_phone', 'contact_email'], 'required'],
                         [['company_name', 'contact_name'], 'string', 'max' => 200],
                         [['company_industry', 'contact_designation', 'employee_count'], 'string', 'max' => 100],
                         [['company_website', 'document_filename', 'document_original', 'contact_email'], 'string', 'max' => 255],
                         [['contact_phone'], 'string', 'max' => 20],
-                        [['company_address', 'admin_note'], 'string'],
+                        [['company_address', 'company_description', 'admin_note'], 'string'],
                         [['contact_email'], 'email'],
                         [['status'], 'integer'],
                         [['status'], 'default', 'value' => self::STATUS_PENDING],
-                        [['company_website', 'contact_designation', 'employee_count', 'company_address', 'admin_note'], 'default', 'value' => ''],
+                        [['company_name', 'company_industry', 'company_website', 'contact_designation', 'employee_count', 'company_address', 'company_description', 'document_filename', 'document_original', 'admin_note'], 'default', 'value' => ''],
                         // Custom validators
                         ['contact_phone', 'validateIndianPhone'],
                         ['contact_name', 'validateName'],
@@ -47,6 +46,7 @@ class JobEmployer extends ActiveRecord
             'company_industry'     => 'Industry',
             'employee_count'       => 'Employee Count',
             'company_address'      => 'Address',
+            'company_description'  => 'Description',
             'company_website'      => 'Website',
             'document_filename'    => 'Document',
             'document_original'    => 'Document Name',
