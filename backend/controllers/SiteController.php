@@ -31,10 +31,10 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['logout'],
+                'only' => ['logout', 'index'],
                 'rules' => [
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['logout', 'index'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -43,7 +43,7 @@ class SiteController extends Controller
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
-                    'logout' => ['post'],
+                    'logout' => ['post', 'get'],
                 ],
             ],
         ];
@@ -63,21 +63,25 @@ class SiteController extends Controller
         ];
     }
 
-    public function actionIndex(): string
+    public function actionIndex(): Response|string
     {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['site/login']);
+        }
+
         return $this->render('index');
     }
 
     public function actionLogin(): Response|string
     {
         if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+            return $this->redirect(['site/index']);
         }
 
         $model = new LoginForm();
 
         if ($model->load($this->request->post()) && $model->login()) {
-            return $this->goBack();
+            return $this->redirect(['site/index']);
         }
 
         $model->password = '';
@@ -88,7 +92,7 @@ class SiteController extends Controller
     public function actionLogout(): Response
     {
         Yii::$app->user->logout();
-        return $this->goHome();
+        return $this->redirect(['site/login']);
     }
 
     public function actionContact(): Response|string

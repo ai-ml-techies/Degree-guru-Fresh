@@ -35,9 +35,6 @@ class AppAsset extends AssetBundle
 
         // AdminLTE JS
         'https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js',
-
-        // Existing JS
-        'js/color-mode.js',
     ];
 
     public $jsOptions = [

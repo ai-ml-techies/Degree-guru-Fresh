@@ -38,3 +38,17 @@ tests/_support/_generated
 
 #vagrant folder
 /.vagrant
+
+# runtime and uploads
+/runtime/*
+!/runtime/.gitkeep
+/web/assets/*
+!/web/assets/.gitkeep
+/web/uploads/images/*
+!/web/uploads/images/.gitkeep
+/web/uploads/resumes/*
+!/web/uploads/resumes/.gitkeep
+/web/uploads/seeker-resumes/*
+!/web/uploads/seeker-resumes/.gitkeep
+/web/uploads/job-docs/*
+!/web/uploads/job-docs/.gitkeep

@@ -68,9 +68,44 @@ const DEFAULTS: HomeContent = {
   faqs_json: "",
   announcements_json: "",
 
-  cta_h2:      "Ready to Choose Your Online Degree?",
-  cta_button:  "Talk to a Counselor. It is Free.",
-  cta_subtext: "Join 5,000+ students who found their perfect program — for free.",
+  cta_badge:         "Limited Spots This Week",
+  cta_h2:            "Ready to Choose Your Online Degree?",
+  cta_button:        "Talk to a Counselor. It is Free.",
+  cta_button_url:    "/contact",
+  cta_subtext:       "Join 5,000+ students who found their perfect program — for free.",
+  cta_whatsapp_text: "WhatsApp Us",
+  cta_whatsapp_num:  "919350199001",
+  cta_image:         "",
+
+  hero_cta_primary_link:   "/contact",
+  hero_cta_secondary_link: "/programs",
+  hero_students_count:     "700+ students",
+  hero_rating_value:       "4.9",
+  hero_rating_label:       "Google Rating",
+  hero_card_badge:         "Today",
+  hero_card_text:          "700+ Students Enrolled",
+
+  vision_tag1: "Free Counseling",
+  vision_tag2: "No Pressure",
+  vision_tag3: "Honest Advice",
+  vision_tag4: "Pan India",
+  vision_stat1_label: "Students Served",
+  vision_stat1_val:   "5,000+",
+  vision_stat2_label: "Universities",
+  vision_stat2_val:   "50+",
+  vision_stat3_label: "Placement Rate",
+  vision_stat3_val:   "92%",
+  vision_stat4_label: "Response Time",
+  vision_stat4_val:   "2 hrs",
+  vision_image:       "",
+
+  how_cta_text: "Start My Journey",
+  how_cta_url:  "/contact",
+
+  school_cta_text:    "Learn More",
+  school_cta_url:     "/class-10-12",
+  school_card1_image: "",
+  school_card2_image: "",
 
   contact_overline:  "Talk To Us",
   contact_h2:        "Get Free Counseling",
@@ -149,8 +184,8 @@ const Index = () => {
     { q: "How long does it take for a counselor to call me back?", a: "Our counselors typically call within 2 hours during working hours (9 AM – 8 PM, all 7 days). WhatsApp is available for instant replies." },
   ];
 
-  const rawTestimonials = parseJson<{ name: string; role: string; text: string }>(c.testimonials_json, DEFAULT_TESTIMONIALS);
-  const testimonials = rawTestimonials.map((t, i) => ({ ...t, img: TESTIMONIAL_IMGS[i % 3] }));
+  const rawTestimonials = parseJson<{ name: string; role: string; text: string; img?: string }>(c.testimonials_json, DEFAULT_TESTIMONIALS);
+  const testimonials = rawTestimonials.map((t, i) => ({ ...t, img: t.img || TESTIMONIAL_IMGS[i % 3] }));
 
   const faqs = parseJson<{ q: string; a: string }>(c.faqs_json, DEFAULT_FAQS);
 
@@ -198,11 +233,11 @@ const Index = () => {
             <p className="text-soft text-lg leading-[1.75] max-w-[540px] mb-8">{c.hero_subtitle}</p>
 
             <div className="flex flex-wrap gap-4 mb-10">
-              <Link to="/contact" className="btn-primary btn-primary-pulse group">
+              <Link to={c.hero_cta_primary_link || "/contact"} className="btn-primary btn-primary-pulse group">
                 {c.hero_cta_primary}
                 <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
               </Link>
-              <Link to="/programs" className="btn-outline">{c.hero_cta_secondary}</Link>
+              <Link to={c.hero_cta_secondary_link || "/programs"} className="btn-outline">{c.hero_cta_secondary}</Link>
             </div>
 
             {/* Trust badges */}
@@ -226,8 +261,7 @@ const Index = () => {
                 ))}
               </div>
               <div className="text-sm">
-                <span className="font-bold text-foreground">700+ students</span>
-                <span className="text-soft ml-1">enrolled this month</span>
+                <span className="font-bold text-foreground">{c.hero_students_count || "700+ students"}</span>
               </div>
               <div className="flex gap-0.5 ml-1">
                 {Array.from({ length: 5 }).map((_, k) => <Star key={k} size={11} className="fill-amber-400 text-amber-400" />)}
@@ -255,8 +289,8 @@ const Index = () => {
                   <GraduationCap size={20} className="text-primary" />
                 </div>
                 <div>
-                  <div className="text-xs text-foreground/60">Today</div>
-                  <div className="font-bold text-foreground text-sm">700+ Students Enrolled</div>
+                  <div className="text-xs text-foreground/60">{c.hero_card_badge || "Today"}</div>
+                  <div className="font-bold text-foreground text-sm">{c.hero_card_text || "700+ Students Enrolled"}</div>
                 </div>
               </div>
 
@@ -265,8 +299,8 @@ const Index = () => {
                 <div className="flex gap-0.5">
                   {Array.from({ length: 5 }).map((_, k) => <Star key={k} size={12} className="fill-amber-400 text-amber-400" />)}
                 </div>
-                <span className="font-bold text-sm">4.9</span>
-                <span className="text-xs text-soft">Google Rating</span>
+                <span className="font-bold text-sm">{c.hero_rating_value || "4.9"}</span>
+                <span className="text-xs text-soft">{c.hero_rating_label || "Google Rating"}</span>
               </div>
             </div>
           </Reveal>
@@ -309,7 +343,7 @@ const Index = () => {
               <h2 className="text-3xl md:text-[42px] font-bold mb-6 leading-tight">{c.vision_h2}</h2>
               <p className="text-soft text-lg leading-[1.85]">{c.vision_body}</p>
               <div className="mt-8 flex flex-wrap gap-3">
-                {["Free Counseling", "No Pressure", "Honest Advice", "Pan India"].map((tag) => (
+                {[c.vision_tag1, c.vision_tag2, c.vision_tag3, c.vision_tag4].filter(Boolean).map((tag) => (
                   <span key={tag} className="flex items-center gap-1.5 text-sm font-medium text-primary">
                     <CheckCircle2 size={16} className="text-primary" /> {tag}
                   </span>
@@ -319,10 +353,10 @@ const Index = () => {
             <Reveal delay={0.12}>
               <div className="grid grid-cols-2 gap-4">
                 {[
-                  { icon: Users,        label: "Students Served",  value: "5,000+", color: "bg-violet-100 dark:bg-violet-950 text-violet-700 dark:text-violet-300" },
-                  { icon: GraduationCap,label: "Universities",     value: "50+",    color: "bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300" },
-                  { icon: TrendingUp,   label: "Placement Rate",   value: "92%",    color: "bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300" },
-                  { icon: Zap,          label: "Response Time",    value: "2 hrs",  color: "bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300" },
+                  { icon: Users,        label: c.vision_stat1_label || "Students Served",  value: c.vision_stat1_val || "5,000+", color: "bg-violet-100 dark:bg-violet-950 text-violet-700 dark:text-violet-300" },
+                  { icon: GraduationCap,label: c.vision_stat2_label || "Universities",     value: c.vision_stat2_val || "50+",    color: "bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300" },
+                  { icon: TrendingUp,   label: c.vision_stat3_label || "Placement Rate",   value: c.vision_stat3_val || "92%",    color: "bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300" },
+                  { icon: Zap,          label: c.vision_stat4_label || "Response Time",    value: c.vision_stat4_val || "2 hrs",  color: "bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300" },
                 ].map((item, i) => (
                   <div key={item.label} className={`glass card-accent p-6 rounded-2xl flex flex-col gap-3 ${i % 2 === 1 ? "mt-6" : ""}`}>
                     <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${item.color}`}>
@@ -473,8 +507,8 @@ const Index = () => {
 
           <Reveal>
             <div className="text-center mt-14">
-              <Link to="/contact" className="btn-primary inline-flex">
-                Start My Journey <ArrowRight size={18} />
+              <Link to={c.how_cta_url || "/contact"} className="btn-primary inline-flex">
+                {c.how_cta_text || "Start My Journey"} <ArrowRight size={18} />
               </Link>
             </div>
           </Reveal>
@@ -494,8 +528,8 @@ const Index = () => {
                   </span>
                   <h2 className="text-2xl md:text-3xl font-bold mb-3">{c.schooling_h2}</h2>
                   <p className="text-soft text-sm leading-relaxed mb-5">{c.schooling_body}</p>
-                  <Link to="/class-10-12" className="btn-primary text-sm px-6 py-3 inline-flex">
-                    Learn More <ArrowRight size={16} />
+                  <Link to={c.school_cta_url || "/class-10-12"} className="btn-primary text-sm px-6 py-3 inline-flex">
+                    {c.school_cta_text || "Learn More"} <ArrowRight size={16} />
                   </Link>
                 </div>
                 <div className="md:col-span-2 grid sm:grid-cols-2 gap-4">
@@ -503,7 +537,7 @@ const Index = () => {
                     { title: c.school_card1_title, sub: c.school_card1_sub, grade: "10th", color: "from-blue-500/10 to-violet-500/10" },
                     { title: c.school_card2_title, sub: c.school_card2_sub, grade: "12th", color: "from-violet-500/10 to-primary/10" },
                   ].map((card) => (
-                    <Link key={card.title} to="/class-10-12"
+                    <Link key={card.title} to={c.school_cta_url || "/class-10-12"}
                       className="glass glass-hover rounded-2xl p-6 block group bg-gradient-to-br"
                       style={{ backgroundImage: `linear-gradient(135deg, hsl(var(--primary)/0.06), hsl(217 91% 60% / 0.06))` }}>
                       <div className="text-4xl font-extrabold text-gradient mb-3">Class {card.grade}</div>
@@ -583,18 +617,18 @@ const Index = () => {
               <div className="relative">
                 <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-1.5 mb-6 text-white text-xs font-bold uppercase tracking-wider">
                   <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
-                  Limited Spots This Week
+                  {c.cta_badge || "Limited Spots This Week"}
                 </div>
                 <h2 className="text-2xl sm:text-3xl md:text-[44px] font-extrabold text-white mb-3 leading-tight">{c.cta_h2}</h2>
                 <p className="text-white/75 text-lg mb-8 max-w-xl mx-auto">{c.cta_subtext}</p>
                 <div className="flex flex-wrap gap-4 justify-center">
-                  <Link to="/contact" className="inline-flex items-center gap-2 bg-white text-primary rounded-xl px-8 py-4 font-bold text-base hover:scale-[1.03] transition-transform shadow-2xl">
+                  <Link to={c.cta_button_url || "/contact"} className="inline-flex items-center gap-2 bg-white text-primary rounded-xl px-8 py-4 font-bold text-base hover:scale-[1.03] transition-transform shadow-2xl">
                     {c.cta_button} <ArrowRight size={18} />
                   </Link>
-                  <a href="https://wa.me/919350199001"
+                  <a href={`https://wa.me/${c.cta_whatsapp_num || "919350199001"}`}
                     target="_blank" rel="noreferrer"
                     className="inline-flex items-center gap-2 bg-[#25D366] text-white rounded-xl px-8 py-4 font-bold text-base hover:scale-[1.03] transition-transform shadow-xl">
-                    <MessageCircle size={18} /> WhatsApp Us
+                    <MessageCircle size={18} /> {c.cta_whatsapp_text || "WhatsApp Us"}
                   </a>
                 </div>
               </div>

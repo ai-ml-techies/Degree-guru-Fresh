@@ -1,31 +1,13 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  # If this project is served from a subpath (e.g. /fresh-degree-guru/backend/web),
-  # set RewriteBase accordingly so rewrites map correctly. Update if needed.
-  RewriteBase /fresh-degree-guru/backend/web/
 
-  # Disable MultiViews to avoid content negotiation mapping paths to PHP
-  Options -MultiViews
+  # If a directory or a file exists, use the request directly
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
 
-  # Don't rewrite requests for existing files or directories
-  RewriteCond %{REQUEST_FILENAME} -f [OR]
-  RewriteCond %{REQUEST_FILENAME} -d
-  RewriteRule ^ - [L]
-
-  # Exclude backend/admin/api/uploads paths from SPA rewrite
-  RewriteCond %{REQUEST_URI} ^/api/ [OR]
-  RewriteCond %{REQUEST_URI} ^/admin/ [OR]
-  RewriteCond %{REQUEST_URI} ^/backend/ [OR]
-  RewriteCond %{REQUEST_URI} ^/uploads/
-  RewriteRule ^ - [L]
-
-  # Otherwise serve the SPA index.html
-  RewriteRule ^.*$ /index.html [L,QSA]
+  # Otherwise forward the request to index.php
+  RewriteRule . index.php [L]
 </IfModule>
-
-# FallbackResource is a robust fallback that serves index.html for non-file routes
-# (available on Apache >=2.2.16). It protects against other server-level rewrites.
-FallbackResource /index.html
 
 # Enable gzip compression
 <IfModule mod_deflate.c>

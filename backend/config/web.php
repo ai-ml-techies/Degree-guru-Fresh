@@ -40,6 +40,10 @@ $config = [
 
     'components' => [
 
+        'assetManager' => [
+            'appendTimestamp' => true,
+        ],
+
         'request' => [
             'cookieValidationKey' => 'M-aPK4DBVGF8umqFplk2T7ksXq38Rr3X',
         ],

@@ -4,7 +4,7 @@ import legacy from "@vitejs/plugin-legacy";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
 
-const BACKEND = 'http://localhost:8090';
+const BACKEND = process.env.BACKEND_URL || 'http://127.0.0.1:8091';
 
 export default defineConfig(({ mode }) => ({
   server: {

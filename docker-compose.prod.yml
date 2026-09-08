@@ -1,0 +1,20 @@
+services:
+  backend:
+    environment:
+      DEGREE_GURU_ENV: production
+      YII_DEBUG: "0"
+      YII_ENV: prod
+    volumes:
+      - backend_runtime:/var/www/html/runtime
+      - backend_assets:/var/www/html/web/assets
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: prod
+    environment:
+      NODE_ENV: production
+    volumes: []
+    ports:
+      - "${PROD_PORT:-80}:80"
