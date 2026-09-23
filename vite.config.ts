@@ -27,9 +27,6 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     mode === "development" && componentTagger(),
-    mode === "production" && legacy({
-      targets: ['ios >= 13', 'android >= 8', 'chrome >= 80', 'safari >= 13'],
-    }),
   ].filter(Boolean),
   build: {
     target: ['es2015', 'safari13'],

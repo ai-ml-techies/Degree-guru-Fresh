@@ -42,7 +42,7 @@ jobs:
       - name: Install Composer Dependencies
         working-directory: ./backend
         run: |
-          composer install --no-dev --optimize-autoloader --prefer-dist --no-progress --no-interaction
+          composer install --no-dev --optimize-autoloader --prefer-dist --no-progress --no-interaction --no-scripts --ignore-platform-reqs || composer update --no-dev --optimize-autoloader --prefer-dist --no-progress --no-interaction --no-scripts --ignore-platform-reqs
 
       - name: Prepare Clean Backend Bundle
         run: |
