@@ -5,7 +5,18 @@ $local = file_exists(__DIR__ . '/params-local.php')
     ? require __DIR__ . '/params-local.php'
     : [];
 
-$defaultCors = [
+$productionCors = [
+    'https://degreeguru.in',
+    'https://www.degreeguru.in',
+    'https://admin.degreeguru.in',
+    'https://api.degreeguru.in',
+    'http://degreeguru.in',
+    'http://www.degreeguru.in',
+    'http://admin.degreeguru.in',
+    'http://api.degreeguru.in',
+];
+
+$defaultCors = array_merge([
     'http://localhost:5173',
     'http://127.0.0.1:5173',
     'http://localhost:8080',
@@ -15,11 +26,11 @@ $defaultCors = [
     'http://localhost:8091',
     'http://127.0.0.1:8091',
     'http://localhost',
-];
+], $productionCors);
 
 $envCors = getenv('CORS_ALLOWED_ORIGINS');
 $corsOrigins = $envCors !== false
-    ? array_values(array_filter(array_map('trim', explode(',', $envCors))))
+    ? array_unique(array_merge(array_values(array_filter(array_map('trim', explode(',', $envCors)))), $productionCors))
     : $defaultCors;
 
 return array_merge([

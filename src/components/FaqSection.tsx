@@ -5,7 +5,7 @@ import { Reveal } from "./Reveal";
 const DEFAULT_FAQS = [
   {
     q: "Is the counseling really 100% free? What's the catch?",
-    a: "Absolutely free, no catch. Degree Guru is supported by our university partners who pay us a placement fee when a student enrolls. You never pay anything — not for counseling, not for comparison, not for guidance. Our incentive is to match you with the right program, not the most expensive one.",
+    a: "Absolutely free, with zero hidden fees. Degree Guru operates as an independent discovery and advisory platform for learners. You never pay anything — not for counseling, not for comparison, not for career tools or resume building. We are not agents of universities; our sole mission is to guide learners to the right accredited programs and career trajectories.",
   },
   {
     q: "Are UGC-DEB online degrees valid for government jobs and higher studies?",

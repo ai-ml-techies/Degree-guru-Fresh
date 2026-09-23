@@ -2,688 +2,336 @@ import { Helmet } from "react-helmet-async";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowRight, GraduationCap, ShieldCheck, Sparkles, Briefcase, BookOpen, Award, Star, Phone, CheckCircle2, TrendingUp, Users, Zap, MessageCircle } from "lucide-react";
-import { Blobs } from "@/components/Blobs";
-import { Reveal } from "@/components/Reveal";
+import { 
+  ArrowRight, 
+  GraduationCap, 
+  ShieldCheck, 
+  Sparkles, 
+  BookOpen, 
+  Award, 
+  TrendingUp, 
+  Users, 
+  Compass,
+  Calculator,
+  FileText,
+  CheckCircle2,
+  Clock,
+  IndianRupee,
+  Search,
+  MessageCircle,
+  HelpCircle,
+  Building2,
+  Check
+} from "lucide-react";
 import { UniversityMarquee } from "@/components/UniversityMarquee";
-import { CounselingForm } from "@/components/CounselingForm";
-import { Counter } from "@/components/Counter";
+import { AiCareerAssistant } from "@/components/AiCareerAssistant";
+import { RoiCalculator } from "@/components/RoiCalculator";
 import { FaqSection } from "@/components/FaqSection";
-import { PROGRAMS } from "@/data/programs";
-import { fetchHomeContent, type HomeContent } from "@/lib/api";
+import { CounselingForm } from "@/components/CounselingForm";
+import { CollegeVidyaCourseExplorer } from "@/components/courses/CollegeVidyaCourseExplorer";
+import { UniversitiesGridShowcase } from "@/components/universities/UniversitiesGridShowcase";
+import { ToolsShowcase } from "@/components/tools/ToolsShowcase";
+import { EmiCalculator } from "@/components/tools/EmiCalculator";
+import { CORE_COURSES } from "@/data/courses";
+import { ACTIVE_ONLINE_UNIVERSITIES } from "@/data/universities";
+import { BLOG_POSTS } from "@/data/blogs";
+import { fetchHomeContent } from "@/lib/api";
 import heroDesktop from "@/assets/hero-desktop.jpg";
-import heroTablet from "@/assets/hero-tablet.jpg";
-import heroMobile from "@/assets/hero-mobile.jpg";
-import t1 from "@/assets/testimonial-1.jpg";
-import t2 from "@/assets/testimonial-2.jpg";
-import t3 from "@/assets/testimonial-3.jpg";
 
-const DEFAULTS: HomeContent = {
-  hero_h1:           "India's <span>#1 Most Trusted</span> Career Counselling Platform",
-  hero_subtitle:     "100% online degree courses from India's top universities. Honest counseling. Easy EMI options.",
-  hero_cta_primary:  "Get Free Counseling",
-  hero_cta_secondary:"Explore Programs",
-  hero_badge_1:      "AICTE Approved",
-  hero_badge_2:      "UGC Entitled",
-  hero_badge_3:      "Easy EMI",
-
-  stat1_value: "5000", stat1_suffix: "+", stat1_label: "Students Guided",
-  stat2_value: "50",   stat2_suffix: "+", stat2_label: "Top Universities",
-  stat3_value: "100",  stat3_suffix: "%", stat3_label: "Free Forever",
-
-  vision_overline: "Our Vision",
-  vision_h2:       "Empowering Viksit Bharat (Developed India) Initiative Through Education",
-  vision_body:     "At Degree Guru, we believe every Indian deserves honest career guidance. Our mission aligns with the Viksit Bharat (Developed India) Initiative: empowering youth through education and informed choices. We partner with leading universities to build a platform where no student pays for counseling, where every professional finds their next step, and where the right online degree opens doors. This is a movement toward an educated, empowered India.",
-
-  programs_overline: "Explore Programs",
-  programs_h2:       "Online Programs for Every Career Stage",
-  programs_subtitle: "Bachelors, masters, doctorate, and certifications. All delivered online. All guided by us for free.",
-
-  whyus_overline: "Why Trust Us",
-  whyus_h2:       "Why Thousands Choose Degree Guru",
-  why1_title: "Completely Free Counseling",
-  why1_desc:  "Top universities support our work, so students pay nothing. Honest, unbiased advice for every learner and professional.",
-  why2_title: "Easy EMI Options",
-  why2_desc:  "Top universities offer no-cost or low-cost EMI plans, so you never have to pause your dream for fees.",
-  why3_title: "Scholarships & Recruitment Support",
-  why3_desc:  "We help you find scholarships and connect with recruitment opportunities after your degree.",
-  why4_title: "Industry Ready Advice",
-  why4_desc:  "Our counselors understand current job markets, salary trends and what hiring managers actually look for.",
-
-  how_overline: "Your Journey",
-  how_h2:       "3 Steps to Your Online Degree",
-  step1_num: "01", step1_title: "Share Your Profile",        step1_desc: "Tell us your background and career goals",
-  step2_num: "02", step2_title: "Get Recommendations",       step2_desc: "Receive your personalized university and program shortlist",
-  step3_num: "03", step3_title: "Enroll with Confidence",    step3_desc: "We guide your application until you are admitted",
-
-  schooling_overline: "Schooling Online",
-  schooling_h2:       "Complete Your Schooling Online",
-  schooling_body:     "Missed formal schooling? You can now complete Class 10 or Class 12 online from home. Flexible learning for every age.",
-  school_card1_title: "Class 10 Online", school_card1_sub: "Secondary education from home.",
-  school_card2_title: "Class 12 Online", school_card2_sub: "Senior secondary, your way.",
-
-  testimonials_overline: "Stories",
-  testimonials_h2:       "Real Learners, Real Results",
-  testimonials_json: "",
-  faqs_json: "",
-  announcements_json: "",
-
-  cta_badge:         "Limited Spots This Week",
-  cta_h2:            "Ready to Choose Your Online Degree?",
-  cta_button:        "Talk to a Counselor. It is Free.",
-  cta_button_url:    "/contact",
-  cta_subtext:       "Join 5,000+ students who found their perfect program — for free.",
-  cta_whatsapp_text: "WhatsApp Us",
-  cta_whatsapp_num:  "919350199001",
-  cta_image:         "",
-
-  hero_cta_primary_link:   "/contact",
-  hero_cta_secondary_link: "/programs",
-  hero_students_count:     "700+ students",
-  hero_rating_value:       "4.9",
-  hero_rating_label:       "Google Rating",
-  hero_card_badge:         "Today",
-  hero_card_text:          "700+ Students Enrolled",
-
-  vision_tag1: "Free Counseling",
-  vision_tag2: "No Pressure",
-  vision_tag3: "Honest Advice",
-  vision_tag4: "Pan India",
-  vision_stat1_label: "Students Served",
-  vision_stat1_val:   "5,000+",
-  vision_stat2_label: "Universities",
-  vision_stat2_val:   "50+",
-  vision_stat3_label: "Placement Rate",
-  vision_stat3_val:   "92%",
-  vision_stat4_label: "Response Time",
-  vision_stat4_val:   "2 hrs",
-  vision_image:       "",
-
-  how_cta_text: "Start My Journey",
-  how_cta_url:  "/contact",
-
-  school_cta_text:    "Learn More",
-  school_cta_url:     "/class-10-12",
-  school_card1_image: "",
-  school_card2_image: "",
-
-  contact_overline:  "Talk To Us",
-  contact_h2:        "Get Free Counseling",
-  contact_subtitle:  "Fill in your details. Our experts will call you back within 2 hours.",
-  phone:             "9350199001",
-  whatsapp_number:   "919350199001",
-  email_admissions:  "admissions@degreeguru.in",
-  email_queries:     "info@degreeguru.in",
-  address:           "Gurugram, Haryana, India",
-  availability:      "Available all 7 days",
-};
-
-const WHY_ICONS = [ShieldCheck, Sparkles, Award, Briefcase];
-const WHY_COLORS = [
-  { bg: "bg-violet-100 dark:bg-violet-950", icon: "text-violet-600 dark:text-violet-400" },
-  { bg: "bg-blue-100 dark:bg-blue-950",   icon: "text-blue-600 dark:text-blue-400" },
-  { bg: "bg-amber-100 dark:bg-amber-950", icon: "text-amber-600 dark:text-amber-400" },
-  { bg: "bg-emerald-100 dark:bg-emerald-950", icon: "text-emerald-600 dark:text-emerald-400" },
-];
-
-const STAT_ICONS = [Users, GraduationCap, Zap];
-
-const LEVEL_TABS = ["All", "Bachelors", "Masters", "Doctoral", "Skills"] as const;
-type LevelTab = typeof LEVEL_TABS[number];
-
-const TESTIMONIAL_IMGS = [t1, t2, t3];
-
-const Index = () => {
-  const { data: api } = useQuery({
+export const Index = () => {
+  const { data: homeContent } = useQuery({
     queryKey: ["home-content"],
-    queryFn:  fetchHomeContent,
+    queryFn: fetchHomeContent,
     staleTime: 1000 * 60 * 5,
   });
-
-  const c = { ...DEFAULTS, ...api };
-  const [activeTab, setActiveTab] = useState<LevelTab>("All");
-
-  const stats = [
-    { value: Number(c.stat1_value), suffix: c.stat1_suffix, label: c.stat1_label, icon: STAT_ICONS[0] },
-    { value: Number(c.stat2_value), suffix: c.stat2_suffix, label: c.stat2_label, icon: STAT_ICONS[1] },
-    { value: Number(c.stat3_value), suffix: c.stat3_suffix, label: c.stat3_label, icon: STAT_ICONS[2] },
-  ];
-
-  const whyCards = [1, 2, 3, 4].map((n) => ({
-    icon: WHY_ICONS[n - 1],
-    colors: WHY_COLORS[n - 1],
-    title: c[`why${n}_title`],
-    desc:  c[`why${n}_desc`],
-  }));
-
-  const steps = [1, 2, 3].map((n) => ({
-    num:   c[`step${n}_num`],
-    title: c[`step${n}_title`],
-    desc:  c[`step${n}_desc`],
-  }));
-
-  const parseJson = <T,>(raw: string, fallback: T[]): T[] => {
-    try { const r = JSON.parse(raw); return Array.isArray(r) && r.length > 0 ? r : fallback; }
-    catch { return fallback; }
-  };
-
-  const DEFAULT_TESTIMONIALS = [
-    { name: "Priya Sharma", role: "Online MBA, NMIMS",    text: "Degree Guru helped me compare four universities honestly. I picked the right MBA in a week. No pressure, just facts." },
-    { name: "Rohan Verma",  role: "Online BCA, LPU",      text: "I work full-time. Their counselor matched a program that fits my schedule perfectly. Enrolled in 3 days." },
-    { name: "Aisha Khan",   role: "Online MA, Amity",     text: "Free, friendly and patient. They answered every question without any pressure. Highly recommend." },
-    { name: "Vikram Nair",  role: "Online MCA, Amrita",   text: "The EMI guidance was incredible. I didn't know I could afford an MCA. Now I'm in my second semester." },
-    { name: "Sneha Patel",  role: "Online BBA, Galgotias",text: "Got a scholarship through Degree Guru. Saved ₹40,000. The process was smoother than I expected." },
-    { name: "Arjun Mehta",  role: "Online MBA, OP Jindal",text: "Best platform if you want an honest opinion. They told me which university to avoid — that's rare." },
-  ];
-
-  const DEFAULT_FAQS = [
-    { q: "Is the counseling really 100% free? What's the catch?", a: "Absolutely free, no catch. Degree Guru is supported by our university partners who pay us a placement fee when a student enrolls. You never pay anything." },
-    { q: "Are UGC-DEB online degrees valid for government jobs?",  a: "Yes. Degrees from UGC-DEB approved universities are fully recognized by the Government of India, UPSC, state PSCs, and most private employers." },
-    { q: "Can I do an online degree while working full-time?",     a: "That's exactly who online degrees are designed for. Most programs offer recorded lectures you can watch anytime and flexible deadlines." },
-    { q: "What EMI options are available?",                        a: "Programs start from as low as ₹3,500/month. Most universities offer no-cost EMI through partner banks and NBFCs." },
-    { q: "How long does it take for a counselor to call me back?", a: "Our counselors typically call within 2 hours during working hours (9 AM – 8 PM, all 7 days). WhatsApp is available for instant replies." },
-  ];
-
-  const rawTestimonials = parseJson<{ name: string; role: string; text: string; img?: string }>(c.testimonials_json, DEFAULT_TESTIMONIALS);
-  const testimonials = rawTestimonials.map((t, i) => ({ ...t, img: t.img || TESTIMONIAL_IMGS[i % 3] }));
-
-  const faqs = parseJson<{ q: string; a: string }>(c.faqs_json, DEFAULT_FAQS);
-
-  const filteredPrograms = activeTab === "All"
-    ? PROGRAMS
-    : PROGRAMS.filter((p) => p.level === activeTab);
-
-  const siteUrl = 'https://degreeguru.in';
-  const defaultOgImage = `${siteUrl}/og-image.png`;
 
   return (
     <>
       <Helmet>
-        <title>{c.seo_title || "Degree Guru | India's #1 Free Career Counseling Platform"}</title>
-        <meta name="description" content={c.seo_description || "Compare online degree courses, universities, fees & no cost EMI with free counselling, placement support and career guidance for students at Degree Guru."} />
-        {c.seo_focus_keyword && <meta name="keywords" content={c.seo_focus_keyword} />}
-        <meta name="robots" content={c.seo_robots || 'index,follow'} />
-        <link rel="canonical" href={siteUrl} />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={siteUrl} />
-        <meta property="og:title" content={c.seo_title || "Degree Guru | India's #1 Free Career Counseling Platform"} />
-        <meta property="og:description" content={c.seo_description || "Compare online degree courses, universities, fees & no cost EMI with free counselling, placement support and career guidance for students at Degree Guru."} />
-        <meta property="og:image" content={c.seo_og_image || defaultOgImage} />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={c.seo_title || "Degree Guru | India's #1 Free Career Counseling Platform"} />
-        <meta name="twitter:description" content={c.seo_description || "Compare online degree courses, universities, fees & no cost EMI with free counselling, placement support and career guidance for students at Degree Guru."} />
-        <meta name="twitter:image" content={c.seo_og_image || defaultOgImage} />
+        <title>Degree Guru — Education Marketplace, Career Discovery & Job Platform</title>
+        <meta
+          name="description"
+          content="Explore online degrees, compare accredited universities, find career paths, build ATS resumes and discover jobs — all in one place. 100% free career discovery."
+        />
+        <link rel="canonical" href="https://degreeguru.in/" />
       </Helmet>
 
-      {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <section className="relative flex items-center overflow-hidden pt-10 pb-16 md:min-h-[92vh] md:pb-20">
-        <Blobs />
-        <div className="container-dg relative z-10 grid lg:grid-cols-2 gap-12 items-center">
-          <Reveal>
-            {/* Eyebrow badge */}
-            <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-1.5 mb-6 animate-fade-in">
-              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              <span className="text-primary text-xs font-bold uppercase tracking-widest">India's Most Trusted Platform</span>
-            </div>
-
-            <h1
-              className="font-extrabold leading-[1.05] text-[36px] sm:text-[48px] lg:text-[56px] xl:text-[64px] mb-6"
-              dangerouslySetInnerHTML={{ __html: c.hero_h1 }}
-            />
-            <p className="text-soft text-lg leading-[1.75] max-w-[540px] mb-8">{c.hero_subtitle}</p>
-
-            <div className="flex flex-wrap gap-4 mb-10">
-              <Link to={c.hero_cta_primary_link || "/contact"} className="btn-primary btn-primary-pulse group">
-                {c.hero_cta_primary}
-                <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
-              </Link>
-              <Link to={c.hero_cta_secondary_link || "/programs"} className="btn-outline">{c.hero_cta_secondary}</Link>
-            </div>
-
-            {/* Trust badges */}
-            <div className="flex flex-wrap items-center gap-4 text-xs">
-              {[
-                { icon: ShieldCheck, label: c.hero_badge_1 },
-                { icon: Award,       label: c.hero_badge_2 },
-                { icon: Sparkles,    label: c.hero_badge_3 },
-              ].map(({ icon: Icon, label }) => (
-                <span key={label} className="flex items-center gap-1.5 bg-primary/8 border border-primary/15 px-3 py-1.5 rounded-full text-foreground/80 font-medium">
-                  <Icon size={12} className="text-primary" /> {label}
-                </span>
-              ))}
-            </div>
-
-            {/* Social proof strip */}
-            <div className="flex items-center gap-3 mt-8">
-              <div className="flex -space-x-2">
-                {[t1, t2, t3].map((img, i) => (
-                  <img key={i} src={img} alt="" className="w-8 h-8 rounded-full border-2 border-background object-cover" />
-                ))}
-              </div>
-              <div className="text-sm">
-                <span className="font-bold text-foreground">{c.hero_students_count || "700+ students"}</span>
-              </div>
-              <div className="flex gap-0.5 ml-1">
-                {Array.from({ length: 5 }).map((_, k) => <Star key={k} size={11} className="fill-amber-400 text-amber-400" />)}
-              </div>
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.15}>
-            <div className="relative animate-float-soft">
-              <div className="absolute -inset-8 bg-primary/15 rounded-[48px] blur-3xl" />
-              <picture>
-                {!c.hero_image && <source media="(max-width: 640px)" srcSet={heroMobile} />}
-                {!c.hero_image && <source media="(max-width: 1024px)" srcSet={heroTablet} />}
-                <img
-                  src={c.hero_image || heroDesktop}
-                  alt="Confident Indian student ready for an online degree"
-                  className="relative rounded-[32px] w-full object-cover aspect-[4/3] sm:aspect-[4/5] shadow-2xl"
-                  width={900} height={1100}
-                />
-              </picture>
-
-              {/* Floating enrollment card */}
-              <div className="absolute -bottom-6 -left-6 hidden md:flex items-center gap-3 px-5 py-4 rounded-2xl bg-background/95 backdrop-blur-xl border border-primary/20 shadow-2xl shadow-primary/20 animate-float">
-                <div className="w-10 h-10 rounded-full bg-primary/15 flex items-center justify-center">
-                  <GraduationCap size={20} className="text-primary" />
-                </div>
-                <div>
-                  <div className="text-xs text-foreground/60">{c.hero_card_badge || "Today"}</div>
-                  <div className="font-bold text-foreground text-sm">{c.hero_card_text || "700+ Students Enrolled"}</div>
-                </div>
-              </div>
-
-              {/* Floating rating card */}
-              <div className="absolute -top-4 -right-4 hidden md:flex items-center gap-2 px-4 py-3 rounded-xl bg-background/95 backdrop-blur-xl border border-amber-400/30 shadow-xl animate-float" style={{ animationDelay: "1s" }}>
-                <div className="flex gap-0.5">
-                  {Array.from({ length: 5 }).map((_, k) => <Star key={k} size={12} className="fill-amber-400 text-amber-400" />)}
-                </div>
-                <span className="font-bold text-sm">{c.hero_rating_value || "4.9"}</span>
-                <span className="text-xs text-soft">{c.hero_rating_label || "Google Rating"}</span>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ── STATS BAR ────────────────────────────────────────────────────── */}
-      <section className="relative py-8 overflow-hidden">
-        <div className="absolute inset-0 bg-primary" />
-        <div className="absolute inset-0 opacity-10"
-          style={{ backgroundImage: "repeating-linear-gradient(45deg, #fff 0, #fff 1px, transparent 0, transparent 50%)", backgroundSize: "20px 20px" }} />
-        <div className="container-dg relative grid grid-cols-3 gap-4 md:gap-8">
-          {stats.map((s, i) => (
-            <Reveal key={s.label} delay={i * 0.1}>
-              <div className="text-primary-foreground flex flex-col sm:flex-row items-center sm:items-start gap-3">
-                <div className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center shrink-0 glow-ring">
-                  <s.icon size={18} className="text-white" />
-                </div>
-                <div className="text-center sm:text-left">
-                  <div className="text-2xl md:text-[32px] font-extrabold leading-tight">
-                    <Counter end={s.value} suffix={s.suffix} />
-                  </div>
-                  <div className="text-[11px] uppercase tracking-wider opacity-80 mt-0.5">{s.label}</div>
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* ── VISION ───────────────────────────────────────────────────────── */}
-      <section className="py-12 md:py-24 relative overflow-hidden">
-        <div className="absolute inset-0 dot-grid opacity-30 pointer-events-none" />
-        <div className="container-dg relative">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <Reveal>
-              <span className="inline-block bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-5">
-                {c.vision_overline}
-              </span>
-              <h2 className="text-3xl md:text-[42px] font-bold mb-6 leading-tight">{c.vision_h2}</h2>
-              <p className="text-soft text-lg leading-[1.85]">{c.vision_body}</p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                {[c.vision_tag1, c.vision_tag2, c.vision_tag3, c.vision_tag4].filter(Boolean).map((tag) => (
-                  <span key={tag} className="flex items-center gap-1.5 text-sm font-medium text-primary">
-                    <CheckCircle2 size={16} className="text-primary" /> {tag}
-                  </span>
-                ))}
-              </div>
-            </Reveal>
-            <Reveal delay={0.12}>
-              <div className="grid grid-cols-2 gap-4">
-                {[
-                  { icon: Users,        label: c.vision_stat1_label || "Students Served",  value: c.vision_stat1_val || "5,000+", color: "bg-violet-100 dark:bg-violet-950 text-violet-700 dark:text-violet-300" },
-                  { icon: GraduationCap,label: c.vision_stat2_label || "Universities",     value: c.vision_stat2_val || "50+",    color: "bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300" },
-                  { icon: TrendingUp,   label: c.vision_stat3_label || "Placement Rate",   value: c.vision_stat3_val || "92%",    color: "bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300" },
-                  { icon: Zap,          label: c.vision_stat4_label || "Response Time",    value: c.vision_stat4_val || "2 hrs",  color: "bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300" },
-                ].map((item, i) => (
-                  <div key={item.label} className={`glass card-accent p-6 rounded-2xl flex flex-col gap-3 ${i % 2 === 1 ? "mt-6" : ""}`}>
-                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${item.color}`}>
-                      <item.icon size={20} />
-                    </div>
-                    <div className="text-2xl font-extrabold">{item.value}</div>
-                    <div className="text-sm text-soft">{item.label}</div>
-                  </div>
-                ))}
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
-      {/* ── PROGRAMS ─────────────────────────────────────────────────────── */}
-      <section className="py-12 md:py-24 relative">
+      {/* 1. HERO SECTION (Prompt Rule #7 & #2) */}
+      <section className="relative pt-6 pb-14 md:pb-20 overflow-hidden bg-gradient-to-b from-primary/8 via-background to-background border-b border-border/50">
         <div className="container-dg">
-          <Reveal>
-            <div className="max-w-2xl mb-8">
-              <span className="inline-block bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-4">
-                {c.programs_overline}
-              </span>
-              <h2 className="text-3xl md:text-[40px] font-bold mb-4 leading-tight">{c.programs_h2}</h2>
-              <p className="text-soft text-lg">{c.programs_subtitle}</p>
+          {/* Top Value Pill */}
+          <div className="flex justify-center mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-card border border-border shadow-sm text-xs font-semibold text-foreground">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>India's Modern Education, Career & Employment Ecosystem</span>
             </div>
-          </Reveal>
+          </div>
 
-          {/* Filter tabs */}
-          <Reveal>
-            <div className="overflow-x-auto scrollbar-hide mb-10 -mx-5 sm:mx-0">
-            <div className="inline-flex gap-2 p-1.5 bg-foreground/5 rounded-2xl mx-5 sm:mx-0">
-              {LEVEL_TABS.map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`tab-pill ${activeTab === tab ? "active" : ""}`}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            {/* Left Copy */}
+            <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
+              <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-foreground tracking-tight leading-[1.1]">
+                Accelerate Your Career Growth. <br className="hidden sm:inline" />
+                <span className="text-gradient">Earn a Top University Degree.</span>
+              </h1>
+
+              <p className="text-base sm:text-xl text-muted-foreground max-w-2xl mx-auto lg:mx-0 leading-relaxed font-normal">
+                Compare accredited UGC-approved online universities, calculate 0% EMI installments, and get 100% free personalized counseling.
+              </p>
+
+              {/* Primary & Counselor CTAs */}
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-2">
+                <Link
+                  to="/courses"
+                  className="px-6 py-3.5 rounded-2xl bg-primary text-primary-foreground font-extrabold text-sm shadow-xl shadow-primary/25 hover:bg-primary/90 hover:scale-[1.02] transition-all flex items-center gap-2"
                 >
-                  {tab}
-                  {tab !== "All" && (
-                    <span className={`ml-1.5 text-[10px] font-bold px-1.5 py-0.5 rounded-full ${activeTab === tab ? "bg-white/20" : "bg-foreground/10"}`}>
-                      {PROGRAMS.filter((p) => p.level === tab).length}
-                    </span>
-                  )}
-                </button>
-              ))}
-            </div>
-            </div>
-          </Reveal>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredPrograms.map((p, i) => (
-              <Reveal key={p.slug} delay={i * 0.05}>
-                <Link to={`/programs/${p.slug}`} className="glass glass-hover card-accent p-8 block h-full group rounded-2xl">
-                  <div className="flex items-start justify-between mb-5">
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary transition-colors duration-300">
-                      <BookOpen size={20} className="text-primary group-hover:text-primary-foreground transition-colors" />
-                    </div>
-                    <span className={`text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full ${
-                      p.level === "Bachelors" ? "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300" :
-                      p.level === "Masters"   ? "bg-violet-100 text-violet-700 dark:bg-violet-950 dark:text-violet-300" :
-                      p.level === "Doctoral"  ? "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300" :
-                                               "bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300"
-                    }`}>
-                      {p.level}
-                    </span>
-                  </div>
-                  <h3 className="text-[22px] font-bold mb-2 group-hover:text-primary transition-colors">{p.name}</h3>
-                  <p className="text-soft text-[14px] leading-relaxed mb-5 line-clamp-2">{p.desc}</p>
-                  <span className="text-primary font-semibold text-sm inline-flex items-center gap-1.5 group-hover:gap-3 transition-all duration-200">
-                    Explore Program <ArrowRight size={14} />
-                  </span>
+                  <GraduationCap size={18} /> Find My Course <ArrowRight size={15} />
                 </Link>
-              </Reveal>
-            ))}
-          </div>
 
-          {filteredPrograms.length === 0 && (
-            <div className="text-center py-16 text-soft">No programs found in this category.</div>
-          )}
-        </div>
-      </section>
-
-      <UniversityMarquee />
-
-      {/* ── WHY US ───────────────────────────────────────────────────────── */}
-      <section className="py-12 md:py-24 relative">
-        <div className="absolute inset-0 dot-grid opacity-25 pointer-events-none" />
-        <div className="container-dg relative">
-          <Reveal>
-            <div className="max-w-2xl mb-8 md:mb-14">
-              <span className="inline-block bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-4">
-                {c.whyus_overline}
-              </span>
-              <h2 className="text-3xl md:text-[40px] font-bold leading-tight">{c.whyus_h2}</h2>
-            </div>
-          </Reveal>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {whyCards.map((card, i) => (
-              <Reveal key={card.title || i} delay={i * 0.08}>
-                <div className="glass glass-hover card-accent p-8 h-full rounded-2xl group">
-                  <div className={`w-13 h-13 w-12 h-12 rounded-2xl flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110 ${card.colors.bg}`}>
-                    <card.icon size={22} className={card.colors.icon} />
-                  </div>
-                  <h3 className="text-lg font-bold mb-3 group-hover:text-primary transition-colors">{card.title}</h3>
-                  <p className="text-soft text-sm leading-relaxed">{card.desc}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
-      <section className="py-12 md:py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/3 to-transparent pointer-events-none" />
-        <div className="container-dg relative">
-          <Reveal>
-            <div className="max-w-2xl mb-10 md:mb-16 mx-auto text-center">
-              <span className="inline-block bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-4">
-                {c.how_overline}
-              </span>
-              <h2 className="text-3xl md:text-[40px] font-bold leading-tight">{c.how_h2}</h2>
-            </div>
-          </Reveal>
-          <div className="relative grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            {/* Connecting line */}
-            <div className="hidden md:block absolute top-14 left-[20%] right-[20%] h-[2px]"
-              style={{ background: "linear-gradient(90deg, hsl(var(--primary)/0), hsl(var(--primary)), hsl(var(--primary)/0))" }} />
-            {steps.map((s, i) => (
-              <Reveal key={s.num || i} delay={i * 0.12}>
-                <div className="text-center relative group">
-                  <div className="relative mx-auto w-20 h-20 sm:w-28 sm:h-28 mb-6 sm:mb-8">
-                    {/* Outer ring */}
-                    <div className="absolute inset-0 rounded-full border-2 border-primary/20 group-hover:border-primary/50 transition-colors duration-500" />
-                    {/* Inner circle */}
-                    <div className="absolute inset-3 rounded-full flex items-center justify-center text-2xl font-extrabold text-primary-foreground transition-all duration-500 group-hover:scale-105"
-                      style={{ background: "linear-gradient(135deg, hsl(var(--primary)), hsl(258 93% 65%))", boxShadow: "0 8px 32px hsl(var(--primary) / 0.4)" }}>
-                      {s.num}
-                    </div>
-                  </div>
-                  <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">{s.title}</h3>
-                  <p className="text-soft text-sm max-w-xs mx-auto leading-relaxed">{s.desc}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-
-          <Reveal>
-            <div className="text-center mt-14">
-              <Link to={c.how_cta_url || "/contact"} className="btn-primary inline-flex">
-                {c.how_cta_text || "Start My Journey"} <ArrowRight size={18} />
-              </Link>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ── SCHOOLING ────────────────────────────────────────────────────── */}
-      <section className="py-10 md:py-20">
-        <div className="container-dg">
-          <Reveal>
-            <div className="glass card-accent rounded-3xl p-6 sm:p-8 md:p-12 overflow-hidden relative">
-              <div className="absolute -right-20 -top-20 w-64 h-64 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
-              <div className="grid md:grid-cols-3 gap-8 items-center relative">
-                <div className="md:col-span-1">
-                  <span className="inline-block bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">
-                    {c.schooling_overline}
-                  </span>
-                  <h2 className="text-2xl md:text-3xl font-bold mb-3">{c.schooling_h2}</h2>
-                  <p className="text-soft text-sm leading-relaxed mb-5">{c.schooling_body}</p>
-                  <Link to={c.school_cta_url || "/class-10-12"} className="btn-primary text-sm px-6 py-3 inline-flex">
-                    {c.school_cta_text || "Learn More"} <ArrowRight size={16} />
-                  </Link>
-                </div>
-                <div className="md:col-span-2 grid sm:grid-cols-2 gap-4">
-                  {[
-                    { title: c.school_card1_title, sub: c.school_card1_sub, grade: "10th", color: "from-blue-500/10 to-violet-500/10" },
-                    { title: c.school_card2_title, sub: c.school_card2_sub, grade: "12th", color: "from-violet-500/10 to-primary/10" },
-                  ].map((card) => (
-                    <Link key={card.title} to={c.school_cta_url || "/class-10-12"}
-                      className="glass glass-hover rounded-2xl p-6 block group bg-gradient-to-br"
-                      style={{ backgroundImage: `linear-gradient(135deg, hsl(var(--primary)/0.06), hsl(217 91% 60% / 0.06))` }}>
-                      <div className="text-4xl font-extrabold text-gradient mb-3">Class {card.grade}</div>
-                      <h3 className="text-lg font-bold mb-1 group-hover:text-primary transition-colors">{card.title}</h3>
-                      <p className="text-soft text-sm">{card.sub}</p>
-                    </Link>
-                  ))}
-                </div>
+                <a
+                  href="https://wa.me/919350199001?text=Hi%20Degree%20Guru%2C%20I%20would%20like%20to%20talk%20to%20a%20counselor"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-5 py-3.5 rounded-2xl bg-emerald-600/10 hover:bg-emerald-600/20 text-emerald-700 dark:text-emerald-400 font-bold text-sm transition-all flex items-center gap-2"
+                >
+                  <MessageCircle size={17} /> Talk to a Counselor
+                </a>
               </div>
             </div>
-          </Reveal>
-        </div>
-      </section>
 
-      {/* ── TESTIMONIALS ─────────────────────────────────────────────────── */}
-      <section className="py-12 md:py-24 relative overflow-hidden">
-        <div className="absolute inset-0 dot-grid opacity-20 pointer-events-none" />
-        <div className="container-dg relative">
-          <Reveal>
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-14">
-              <div className="max-w-2xl">
-                <span className="inline-block bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-4">
-                  {c.testimonials_overline}
-                </span>
-                <h2 className="text-3xl md:text-[40px] font-bold leading-tight">{c.testimonials_h2}</h2>
-              </div>
-              {/* Google rating badge */}
-              <div className="flex items-center gap-3 glass rounded-2xl px-5 py-3 shrink-0">
-                <div className="flex gap-0.5">
-                  {Array.from({ length: 5 }).map((_, k) => <Star key={k} size={16} className="fill-amber-400 text-amber-400" />)}
-                </div>
-                <div>
-                  <div className="font-extrabold text-lg leading-none">4.9</div>
-                  <div className="text-[11px] text-soft">Google Rating</div>
-                </div>
-              </div>
-            </div>
-          </Reveal>
+            {/* Right Hero Image (Natural young professional, not generic stock) */}
+            <div className="lg:col-span-5 relative">
+              <div className="relative mx-auto max-w-md lg:max-w-none">
+                <div className="absolute -inset-4 bg-gradient-to-tr from-primary/20 via-[#6528f7]/15 to-transparent rounded-[36px] blur-2xl pointer-events-none" />
+                <img
+                  src={heroDesktop}
+                  alt="Young student and professional discovering online degree options on Degree Guru"
+                  className="relative rounded-3xl w-full object-cover aspect-[4/3] shadow-2xl border border-border/80"
+                  loading="eager"
+                />
 
-          {/* 2-row staggered grid */}
-          <div className="grid md:grid-cols-3 gap-6">
-            {testimonials.map((t, i) => (
-              <Reveal key={t.name + i} delay={i * 0.07}>
-                <div className={`glass glass-hover card-accent rounded-2xl p-7 h-full flex flex-col ${i % 3 === 1 ? "md:mt-8" : ""}`}>
-                  <div className="text-5xl font-serif text-primary/20 leading-none mb-2 select-none">"</div>
-                  <p className="text-foreground/80 leading-relaxed text-[15px] flex-1 mb-5">{t.text}</p>
-                  <div className="flex items-center gap-3 mt-auto pt-4 border-t border-foreground/8">
-                    <img src={t.img} alt={t.name} loading="lazy" className="w-12 h-12 rounded-full object-cover border-2 border-primary/20" width={48} height={48} />
-                    <div>
-                      <div className="font-bold text-sm">{t.name}</div>
-                      <div className="text-xs text-soft">{t.role}</div>
-                    </div>
-                    <div className="ml-auto flex gap-0.5">
-                      {Array.from({ length: 5 }).map((_, k) => <Star key={k} size={11} className="fill-amber-400 text-amber-400" />)}
-                    </div>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── CTA BANNER ───────────────────────────────────────────────────── */}
-      <section className="py-10 md:py-20">
-        <div className="container-dg">
-          <Reveal>
-            <div className="rounded-[32px] relative overflow-hidden p-6 sm:p-10 md:p-16 text-center"
-              style={{ background: "linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(258 93% 52%) 40%, hsl(217 91% 55%) 100%)" }}>
-              {/* Decorative circles */}
-              <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                <div className="absolute -top-20 -right-20 w-64 h-64 bg-white/10 rounded-full" />
-                <div className="absolute -bottom-16 -left-16 w-48 h-48 bg-white/8 rounded-full" />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full"
-                  style={{ background: "radial-gradient(ellipse at center, rgba(255,255,255,0.07) 0%, transparent 70%)" }} />
-              </div>
-              <div className="relative">
-                <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-1.5 mb-6 text-white text-xs font-bold uppercase tracking-wider">
-                  <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
-                  {c.cta_badge || "Limited Spots This Week"}
-                </div>
-                <h2 className="text-2xl sm:text-3xl md:text-[44px] font-extrabold text-white mb-3 leading-tight">{c.cta_h2}</h2>
-                <p className="text-white/75 text-lg mb-8 max-w-xl mx-auto">{c.cta_subtext}</p>
-                <div className="flex flex-wrap gap-4 justify-center">
-                  <Link to={c.cta_button_url || "/contact"} className="inline-flex items-center gap-2 bg-white text-primary rounded-xl px-8 py-4 font-bold text-base hover:scale-[1.03] transition-transform shadow-2xl">
-                    {c.cta_button} <ArrowRight size={18} />
-                  </Link>
-                  <a href={`https://wa.me/${c.cta_whatsapp_num || "919350199001"}`}
-                    target="_blank" rel="noreferrer"
-                    className="inline-flex items-center gap-2 bg-[#25D366] text-white rounded-xl px-8 py-4 font-bold text-base hover:scale-[1.03] transition-transform shadow-xl">
-                    <MessageCircle size={18} /> {c.cta_whatsapp_text || "WhatsApp Us"}
-                  </a>
-                </div>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ── FAQ ──────────────────────────────────────────────────────────── */}
-      <FaqSection faqs={faqs} />
-
-      {/* ── CONTACT ──────────────────────────────────────────────────────── */}
-      <section id="contact" className="py-12 md:py-24">
-        <div className="container-dg grid lg:grid-cols-2 gap-12 items-start">
-          <Reveal>
-            <span className="inline-block bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-5">
-              {c.contact_overline}
-            </span>
-            <h2 className="text-3xl md:text-[40px] font-bold mb-5 leading-tight">{c.contact_h2}</h2>
-            <p className="text-soft text-lg leading-relaxed mb-8">{c.contact_subtitle}</p>
-
-            <div className="space-y-4">
-              {[
-                { icon: Phone,    label: "Call Us",            value: c.phone,            href: `tel:+91${c.phone}` },
-                { icon: MessageCircle, label: "WhatsApp",      value: `+${c.whatsapp_number}`, href: `https://wa.me/${c.whatsapp_number}` },
-                { icon: Award,    label: "Admissions",         value: c.email_admissions,  href: `mailto:${c.email_admissions}` },
-                { icon: Sparkles, label: "General Queries",    value: c.email_queries,     href: `mailto:${c.email_queries}` },
-              ].map(({ icon: Icon, label, value, href }) => (
-                <a key={label} href={href}
-                  className="flex items-center gap-4 p-4 glass rounded-2xl hover:border-primary/40 hover:-translate-y-0.5 transition-all duration-200 group">
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary transition-colors">
-                    <Icon size={18} className="text-primary group-hover:text-white transition-colors" />
+                {/* Floating Metric Card 1 */}
+                <div className="absolute -bottom-4 -left-4 sm:bottom-4 sm:-left-6 bg-card/95 backdrop-blur-md p-3.5 sm:p-4 rounded-2xl border border-border shadow-xl flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
+                    <TrendingUp size={20} />
                   </div>
                   <div>
-                    <div className="text-xs text-soft uppercase tracking-wider">{label}</div>
-                    <div className="font-semibold text-sm">{value}</div>
+                    <span className="text-[11px] text-muted-foreground font-semibold block">Average Career Jump</span>
+                    <span className="text-sm font-extrabold text-foreground">+55% Salary Hike</span>
                   </div>
-                  <ArrowRight size={14} className="ml-auto text-soft group-hover:text-primary group-hover:translate-x-1 transition-all" />
-                </a>
-              ))}
+                </div>
+
+                {/* Floating Metric Card 2 */}
+                <div className="absolute -top-3 -right-3 bg-card/95 backdrop-blur-md px-3.5 py-2 rounded-xl border border-border shadow-lg flex items-center gap-2 text-xs font-bold text-foreground">
+                  <ShieldCheck size={16} className="text-primary" />
+                  <span>100% Free Counseling</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 2. AI CAREER ASSISTANT ("Ask Degree Guru") */}
+      <section id="ask-degree-guru" className="py-12 md:py-16 bg-muted/20 border-b border-border/50">
+        <div className="container-dg">
+          <div className="text-center max-w-2xl mx-auto mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground tracking-tight">
+              Meet Your AI Career Advisor
+            </h2>
+          </div>
+
+          <AiCareerAssistant />
+        </div>
+      </section>
+
+      {/* 3. EXPLORE ONLINE DEGREE COURSES */}
+      <section className="py-12 md:py-16 border-b border-border/50 bg-background">
+        <div className="container-dg space-y-6">
+          <div className="text-center max-w-3xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground tracking-tight">
+              Explore Programs by Category & Level
+            </h2>
+          </div>
+
+          <CollegeVidyaCourseExplorer />
+        </div>
+      </section>
+
+      {/* 4. UGC-APPROVED UNIVERSITIES VISIBILITY SECTION (College Vidya 18-University Grid) */}
+      <UniversitiesGridShowcase />
+
+      {/* 5. INFINITE UNIVERSITY LOGO TICKER (Real Logos Scrolling) */}
+      <UniversityMarquee />
+
+      {/* 5. TOOLS & CALCULATORS SHOWCASE (College Vidya Inspired with EMI Calculator) */}
+      <section className="py-16 md:py-20 border-b border-border/50">
+        <div className="container-dg space-y-16">
+          <ToolsShowcase />
+
+          {/* Interactive EMI Calculator Embed */}
+          <div className="pt-4">
+            <EmiCalculator />
+          </div>
+        </div>
+      </section>
+
+      {/* 8. AI RESUME BUILDER */}
+      <section className="py-14 md:py-18 bg-muted/20 border-b border-border/50">
+        <div className="container-dg max-w-4xl">
+          <div className="p-8 sm:p-10 rounded-3xl bg-card/75 dark:bg-card/40 backdrop-blur-md border border-border/80 shadow-xl flex flex-col md:flex-row items-center justify-between gap-8">
+            <div className="space-y-3 max-w-xl">
+              <div className="w-12 h-12 rounded-2xl bg-[#6528f7]/10 text-[#6528f7] flex items-center justify-center">
+                <FileText size={24} />
+              </div>
+              <div className="flex items-center gap-2">
+                <h3 className="text-2xl sm:text-3xl font-black text-foreground">AI Resume Builder</h3>
+                <span className="px-2.5 py-0.5 rounded-full bg-[#6528f7]/15 text-[#6528f7] text-[10px] font-bold">
+                  ATS Ready
+                </span>
+              </div>
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                Turn your accomplishments into quantified, ATS-friendly statements. Compare against target job descriptions to discover missing keywords before applying.
+              </p>
+              <div className="flex flex-wrap gap-2 pt-1 text-xs font-semibold text-foreground/80">
+                <span className="px-2.5 py-1 rounded-lg bg-muted">✓ AI Achievement Quantifier</span>
+                <span className="px-2.5 py-1 rounded-lg bg-muted">✓ ATS Match Score</span>
+                <span className="px-2.5 py-1 rounded-lg bg-muted">✓ Clean 1-Page PDF</span>
+              </div>
             </div>
 
-            <div className="mt-6 p-4 rounded-2xl bg-primary/5 border border-primary/10 flex items-center gap-3">
-              <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-              <span className="text-sm font-medium">{c.availability} · {c.address}</span>
+            <div className="shrink-0">
+              <Link
+                to="/resume-builder"
+                className="px-6 py-3.5 rounded-xl bg-[#6528f7] hover:bg-[#551ebd] text-white text-sm font-bold flex items-center gap-2 transition-all shadow-lg shadow-[#6528f7]/25 hover:scale-[1.02]"
+              >
+                Build My ATS Resume Now <ArrowRight size={15} />
+              </Link>
             </div>
-          </Reveal>
+          </div>
+        </div>
+      </section>
 
-          <Reveal delay={0.1}>
-            <CounselingForm source="home-page" />
-          </Reveal>
+      {/* 10. WHY DEGREE GURU (Honest, Unbiased & Verified) */}
+      <section className="py-16 md:py-20 border-b border-border/50">
+        <div className="container-dg max-w-5xl">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <span className="text-xs font-bold uppercase tracking-wider text-primary">Trust & Integrity</span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground tracking-tight mt-1">
+              Why Thousands Trust Degree Guru
+            </h2>
+            <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+              No exaggerated claims. No spam calls. Pure factual guidance.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="p-6 rounded-3xl bg-card border border-border/80 shadow-sm space-y-3">
+              <div className="w-10 h-10 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
+                <ShieldCheck size={20} />
+              </div>
+              <h3 className="text-base font-bold text-foreground">100% Free & Unbiased</h3>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Counseling at Degree Guru is always 100% free for students and professionals. We present objective fee schedules and curriculum comparisons.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-3xl bg-card border border-border/80 shadow-sm space-y-3">
+              <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
+                <Award size={20} />
+              </div>
+              <h3 className="text-base font-bold text-foreground">Statutory UGC-DEB Approvals</h3>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                We only list accredited universities carrying verified statutory distance and online education entitlements, ensuring your degree is valid for government jobs.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-3xl bg-card border border-border/80 shadow-sm space-y-3">
+              <div className="w-10 h-10 rounded-2xl bg-purple-500/10 text-[#6528f7] flex items-center justify-center">
+                <IndianRupee size={20} />
+              </div>
+              <h3 className="text-base font-bold text-foreground">Transparent Fee & 0% EMI</h3>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Zero hidden counseling charges. Access verified no-cost EMI installments starting from ₹3,500/month disbursed directly to universities.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 11. LATEST CAREER & EDUCATION BLOGS */}
+      <section className="py-16 md:py-20 border-b border-border/50">
+        <div className="container-dg">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-wider text-primary">Knowledge Hub</span>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground tracking-tight mt-1">
+                Latest Career & Education Guides
+              </h2>
+              <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+                Factual comparisons for informed choices.
+              </p>
+            </div>
+            <Link to="/blog" className="text-xs sm:text-sm font-bold text-primary hover:underline flex items-center gap-1">
+              View All Articles <ArrowRight size={14} />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {BLOG_POSTS.slice(0, 2).map((post) => (
+              <div key={post.slug} className="p-6 rounded-3xl bg-card border border-border/80 shadow-md space-y-3">
+                <span className="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold uppercase">
+                  {post.category}
+                </span>
+                <h3 className="text-lg font-bold text-foreground hover:text-primary transition-colors">
+                  <Link to={`/blog/${post.slug}`}>{post.title}</Link>
+                </h3>
+                <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+                  {post.summary}
+                </p>
+                <div className="pt-2 flex justify-between items-center text-xs">
+                  <span className="text-muted-foreground">{post.readTime}</span>
+                  <Link to={`/blog/${post.slug}`} className="text-primary font-bold hover:underline flex items-center gap-1">
+                    Read Article →
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 12. FAQS SECTION */}
+      <FaqSection />
+
+      {/* 13. FINAL STRONG CTA */}
+      <section className="py-16 md:py-24 bg-gradient-to-r from-[#6528f7] via-[#7c3aed] to-[#551ebd] text-white text-center relative overflow-hidden">
+        <div className="container-dg max-w-3xl space-y-6 relative z-10">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight">
+            Ready to Take the Next Step in Your Education & Career?
+          </h2>
+          <p className="text-base sm:text-lg text-white/90 max-w-xl mx-auto leading-relaxed">
+            Get personalized advice, compare top UGC-approved universities, and take charge of your professional journey with Degree Guru.
+          </p>
+          <div className="pt-2 flex flex-wrap justify-center gap-3.5">
+            <Link
+              to="/courses"
+              className="px-7 py-3.5 rounded-full bg-white text-primary font-extrabold text-sm hover:bg-neutral-100 transition-all shadow-xl"
+            >
+              Explore All Online Degrees
+            </Link>
+            <a
+              href="https://wa.me/919350199001?text=Hi%20Degree%20Guru%2C%20I%20want%20to%20know%20my%20options"
+              target="_blank"
+              rel="noreferrer"
+              className="px-7 py-3.5 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-sm transition-all shadow-xl flex items-center gap-2"
+            >
+              <MessageCircle size={18} /> Chat on WhatsApp
+            </a>
+          </div>
         </div>
       </section>
     </>
   );
 };
-
 export default Index;

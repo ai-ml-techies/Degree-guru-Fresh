@@ -8,6 +8,7 @@ $config = [
     'name'     => 'Degree Guru',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'defaultRoute' => 'site/login',
 
     'container' => [
         'singletons' => [

@@ -13,7 +13,7 @@ export const FloatingCTA = () => {
   if (!visible) return null;
 
   return (
-    <div className="fixed right-5 z-[300] flex flex-col items-end gap-3 animate-slide-up float-cta-container">
+    <div className="hidden md:flex fixed right-5 bottom-8 z-[80] flex-col items-end gap-3 animate-slide-up float-cta-container">
       {/* Expanded action buttons */}
       {expanded && (
         <div className="flex flex-col gap-3 items-end animate-pop-in">

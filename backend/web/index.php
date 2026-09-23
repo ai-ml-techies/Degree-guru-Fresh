@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 // ── Environment ───────────────────────────────────────────────────────────────
 // Set DEGREE_GURU_ENV=production in your server environment to go live.
-// Everything else defaults to development.
-$env = getenv('DEGREE_GURU_ENV') ?: 'dev';
+// Automatically activates production mode on *.degreeguru.in hostnames.
+$env = getenv('DEGREE_GURU_ENV') ?: ($_SERVER['DEGREE_GURU_ENV'] ?? null);
+if (!$env) {
+    $host = $_SERVER['HTTP_HOST'] ?? '';
+    $env = (stripos($host, 'degreeguru.in') !== false) ? 'production' : 'dev';
+}
 $isProd = ($env === 'production');
 
 defined('YII_DEBUG') or define('YII_DEBUG', !$isProd);

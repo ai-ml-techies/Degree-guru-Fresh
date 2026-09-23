@@ -1,36 +1,39 @@
-import { useState, useEffect } from "react";
-import { Link, NavLink } from "react-router-dom";
-import { Menu, Moon, Sun, X, ChevronDown, Building2, UserSearch } from "lucide-react";
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { 
+  GraduationCap, 
+  Building2, 
+  Compass, 
+  ChevronDown, 
+  Moon, 
+  Sun, 
+  MessageCircle, 
+  Calculator, 
+  FileText, 
+  Sparkles, 
+  ArrowRight 
+} from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useTheme } from "./ThemeProvider";
-import { PROGRAMS } from "@/data/programs";
 import { fetchHomeContent } from "@/lib/api";
 import logoLight from "@/assets/logo-light.png";
 import logoDark from "@/assets/logo-dark.png";
+import { CORE_COURSES } from "@/data/courses";
 
 const DEFAULT_ANNOUNCEMENTS = [
-  "🎓 100% Free Career Counseling — No Hidden Fees",
-  "✅ 5,000+ Students Guided",
-  "🏛️ 50+ UGC Approved Universities",
-
-  "💸 No-Cost EMI from ₹3,500/month",
-];
-
-type NavItem = { to: string; label: string; dropdown?: "programs" | "jobs" };
-
-const navItems: NavItem[] = [
-  { to: "/", label: "Home" },
-  { to: "/programs", label: "Programs", dropdown: "programs" },
-  { to: "/class-10-12", label: "Class 10 & 12" },
-  { to: "/jobs", label: "Jobs", dropdown: "jobs" },
-  { to: "/contact", label: "Contact" },
+  "🎓 100% Free Career Counseling & Discovery — No Hidden Fees",
+  "🏛️ 50+ UGC-DEB Approved Online Universities & Accredited Programs",
+  "🚀 Free AI ATS-Friendly Resume Builder & Job Applications",
+  "💸 No-Cost EMI Starting from ₹3,500/Month",
+  "🤝 Refer & Earn ₹5,000 Guaranteed Reward for Every Enrolled Friend",
 ];
 
 export const Header = () => {
   const { theme, toggle } = useTheme();
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [progOpen, setProgOpen] = useState(false);
-  const [jobsOpen, setJobsOpen] = useState(false);
+  const location = useLocation();
+  const [coursesDropdown, setCoursesDropdown] = useState(false);
+  const [universitiesDropdown, setUniversitiesDropdown] = useState(false);
+  const [careerDropdown, setCareerDropdown] = useState(false);
 
   const { data: homeContent } = useQuery({
     queryKey: ["home-content"],
@@ -43,231 +46,270 @@ export const Header = () => {
       const raw = homeContent?.announcements_json;
       const parsed = JSON.parse(raw || "[]");
       return Array.isArray(parsed) && parsed.length > 0 ? parsed : DEFAULT_ANNOUNCEMENTS;
-    } catch { return DEFAULT_ANNOUNCEMENTS; }
+    } catch { 
+      return DEFAULT_ANNOUNCEMENTS; 
+    }
   })();
 
-  useEffect(() => {
-    document.body.style.overflow = mobileOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
-  }, [mobileOpen]);
+  const isActive = (path: string) => {
+    if (path === "/") return location.pathname === "/";
+    return location.pathname.startsWith(path);
+  };
 
   return (
     <>
-      {/* Announcement bar */}
-      <div className="announcement-bar fixed top-0 inset-x-0 z-[101] h-8 overflow-hidden flex items-center">
+      {/* 1. Announcement Ticker Bar — Pure Logo Purple Gradient (No Blue) */}
+      <div className="announcement-bar fixed top-0 inset-x-0 z-[101] h-8 overflow-hidden flex items-center bg-gradient-to-r from-[#6528f7] via-[#7c3aed] to-[#551ebd]">
         <div className="flex animate-ticker whitespace-nowrap">
           {[...ticker, ...ticker].map((text, i) => (
-            <span key={i} className="text-white text-[11px] font-semibold tracking-wide px-4 sm:px-8">
+            <span key={i} className="text-white text-[11px] font-semibold tracking-wide px-4 sm:px-8 inline-flex items-center gap-2">
               {text}
             </span>
           ))}
         </div>
       </div>
 
-      {/* Floating, uplifted, separated header */}
-      <header className="fixed top-8 inset-x-4 md:inset-x-8 z-[100]">
-        <div className="glass-header mx-auto max-w-[1400px] rounded-2xl px-5 md:px-8">
-          <div className="flex items-center justify-between h-[68px]">
-            <Link to="/" className="flex items-center" aria-label="Degree Guru">
+      {/* 2. Main Header */}
+      <header className="fixed top-8 inset-x-0 sm:inset-x-4 md:inset-x-8 z-[100]">
+        <div className="glass-header mx-auto max-w-[1400px] sm:rounded-2xl px-4 sm:px-6 md:px-8 border-b sm:border border-border/50 shadow-md">
+          <div className="flex items-center justify-between h-[64px] md:h-[68px]">
+            {/* Logo (Desktop & Mobile) */}
+            <Link to="/" className="flex items-center shrink-0" aria-label="Degree Guru Home">
               <img
                 src={theme === "dark" ? logoDark : logoLight}
                 alt="Degree Guru"
-                className="h-11 md:h-12 w-auto animate-float-logo"
+                className="h-9 sm:h-11 md:h-12 w-auto animate-float-logo object-contain"
               />
             </Link>
 
-            <nav className="hidden lg:flex items-center gap-8">
-              {navItems.map((item) =>
-                item.dropdown === "programs" ? (
-                  <div
-                    key={item.to}
-                    className="relative"
-                    onMouseEnter={() => setProgOpen(true)}
-                    onMouseLeave={() => setProgOpen(false)}
-                  >
-                    <button className="flex items-center gap-1 text-sm font-medium hover:text-primary transition-colors py-2">
-                      {item.label} <ChevronDown size={14} />
-                    </button>
-                    <div
-                      className={`absolute top-full left-1/2 -translate-x-1/2 pt-3 w-[560px] transition-all duration-200 ease-out ${
-                        progOpen
-                          ? "opacity-100 translate-y-0 pointer-events-auto"
-                          : "opacity-0 -translate-y-1 pointer-events-none"
-                      }`}
-                    >
-                      <div className="glass-dropdown p-3 grid grid-cols-2 gap-1">
-                        {PROGRAMS.map((p) => (
-                          <Link
-                            key={p.slug}
-                            to={`/programs/${p.slug}`}
-                            className="group px-3 py-2.5 rounded-lg transition-colors duration-150 hover:bg-primary/15 will-change-transform"
-                          >
-                            <div className="text-sm font-semibold transition-colors duration-150 group-hover:text-primary">{p.name}</div>
-                            <div className="text-[11px] text-foreground/60 truncate">{p.full}</div>
-                          </Link>
-                        ))}
-                      </div>
+            {/* Desktop Navigation (Courses, Universities, Career Tools, Jobs) — Cleaned: No Blogs/About on main header */}
+            <nav className="hidden lg:flex items-center gap-6 xl:gap-8" aria-label="Desktop Navigation">
+              {/* Courses Dropdown */}
+              <div 
+                className="relative"
+                onMouseEnter={() => setCoursesDropdown(true)}
+                onMouseLeave={() => setCoursesDropdown(false)}
+              >
+                <button 
+                  className={`flex items-center gap-1.5 text-sm font-medium py-2 transition-colors ${
+                    isActive("/online-") || isActive("/courses") ? "text-primary font-semibold" : "text-foreground/80 hover:text-primary"
+                  }`}
+                  aria-expanded={coursesDropdown}
+                >
+                  Courses <ChevronDown size={14} className={`transition-transform duration-200 ${coursesDropdown ? "rotate-180 text-primary" : ""}`} />
+                </button>
+                <div
+                  className={`absolute top-full left-0 pt-2 w-[540px] transition-all duration-200 ease-out ${
+                    coursesDropdown ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-2 pointer-events-none"
+                  }`}
+                >
+                  <div className="glass-dropdown p-4 rounded-2xl shadow-2xl border border-border/70 grid grid-cols-2 gap-2">
+                    <div className="col-span-2 pb-2 border-b border-border/40 flex items-center justify-between">
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-primary">All UGC-Approved Online Degrees</span>
+                      <Link to="/courses" className="text-xs text-muted-foreground hover:text-primary flex items-center gap-1">
+                        View All <ArrowRight size={12} />
+                      </Link>
+                    </div>
+                    {CORE_COURSES.map((c) => (
+                      <Link
+                        key={c.slug}
+                        to={`/${c.slug}`}
+                        className="p-2.5 rounded-xl hover:bg-primary/10 transition-colors flex flex-col group"
+                      >
+                        <span className="text-xs font-bold text-foreground group-hover:text-primary">{c.shortName}</span>
+                        <span className="text-[11px] text-muted-foreground truncate">{c.fullName}</span>
+                      </Link>
+                    ))}
+                    <div className="col-span-2 pt-2 border-t border-border/40 flex items-center justify-between">
+                      <Link to="/class-10" className="text-xs font-semibold text-primary hover:underline">
+                        Class 10 (Online Exams) →
+                      </Link>
+                      <Link to="/class-12" className="text-xs font-semibold text-primary hover:underline">
+                        Class 12 (Online Exams) →
+                      </Link>
+                      <Link to="/offline-courses" className="text-xs text-muted-foreground hover:text-primary">
+                        Offline Campus (M.K. University) →
+                      </Link>
                     </div>
                   </div>
-                ) : item.dropdown === "jobs" ? (
-                  <div
-                    key={item.to}
-                    className="relative"
-                    onMouseEnter={() => setJobsOpen(true)}
-                    onMouseLeave={() => setJobsOpen(false)}
-                  >
-                    <button className="flex items-center gap-1 text-sm font-medium hover:text-primary transition-colors py-2">
-                      {item.label} <ChevronDown size={14} />
-                    </button>
-                    <div
-                      className={`absolute top-full left-1/2 -translate-x-1/2 pt-3 w-[220px] transition-all duration-200 ease-out ${
-                        jobsOpen
-                          ? "opacity-100 translate-y-0 pointer-events-auto"
-                          : "opacity-0 -translate-y-1 pointer-events-none"
-                      }`}
+                </div>
+              </div>
+
+              {/* Universities Dropdown */}
+              <div 
+                className="relative"
+                onMouseEnter={() => setUniversitiesDropdown(true)}
+                onMouseLeave={() => setUniversitiesDropdown(false)}
+              >
+                <button 
+                  className={`flex items-center gap-1.5 text-sm font-medium py-2 transition-colors ${
+                    isActive("/universities") ? "text-primary font-semibold" : "text-foreground/80 hover:text-primary"
+                  }`}
+                  aria-expanded={universitiesDropdown}
+                >
+                  Universities <ChevronDown size={14} className={`transition-transform duration-200 ${universitiesDropdown ? "rotate-180 text-primary" : ""}`} />
+                </button>
+                <div
+                  className={`absolute top-full left-0 pt-2 w-[420px] transition-all duration-200 ease-out ${
+                    universitiesDropdown ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-2 pointer-events-none"
+                  }`}
+                >
+                  <div className="glass-dropdown p-4 rounded-2xl shadow-2xl border border-border/70 space-y-2">
+                    <Link
+                      to="/universities"
+                      className="p-2.5 rounded-xl hover:bg-primary/10 transition-colors flex items-center gap-3 group"
                     >
-                      <div className="glass-dropdown p-2">
-                        <Link
-                          to="/jobs/employer"
-                          onClick={() => setJobsOpen(false)}
-                          className="group flex items-start gap-3 px-3 py-3 rounded-xl hover:bg-primary/10 transition-colors duration-150"
-                        >
-                          <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary transition-colors duration-150">
-                            <Building2 size={14} className="text-primary group-hover:text-primary-foreground transition-colors" />
-                          </div>
-                          <div>
-                            <div className="text-sm font-semibold group-hover:text-primary transition-colors">Employer</div>
-                            <div className="text-[11px] text-foreground/55 leading-tight">Post jobs for free</div>
-                          </div>
-                        </Link>
-                        <Link
-                          to="/jobs/job-seeker"
-                          onClick={() => setJobsOpen(false)}
-                          className="group flex items-start gap-3 px-3 py-3 rounded-xl hover:bg-primary/10 transition-colors duration-150"
-                        >
-                          <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary transition-colors duration-150">
-                            <UserSearch size={14} className="text-primary group-hover:text-primary-foreground transition-colors" />
-                          </div>
-                          <div>
-                            <div className="text-sm font-semibold group-hover:text-primary transition-colors">Job Seeker</div>
-                            <div className="text-[11px] text-foreground/55 leading-tight">Browse open positions</div>
-                          </div>
-                        </Link>
+                      <div className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+                        <Building2 size={16} />
                       </div>
-                    </div>
+                      <div>
+                        <div className="text-xs font-bold text-foreground group-hover:text-primary">Online Universities Directory</div>
+                        <div className="text-[11px] text-muted-foreground">Browse 50+ UGC-DEB approved institutions</div>
+                      </div>
+                    </Link>
+                    <Link
+                      to="/universities/compare"
+                      className="p-2.5 rounded-xl hover:bg-primary/10 transition-colors flex items-center gap-3 group"
+                    >
+                      <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
+                        <GraduationCap size={16} />
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold text-foreground group-hover:text-primary">Compare Universities</div>
+                        <div className="text-[11px] text-muted-foreground">Side-by-side fees, EMI & LMS comparison</div>
+                      </div>
+                    </Link>
+                    <Link
+                      to="/offline-courses"
+                      className="p-2.5 rounded-xl hover:bg-amber-500/10 transition-colors flex items-center gap-3 group border-t border-border/40 pt-3"
+                    >
+                      <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center">
+                        <Building2 size={16} />
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold text-foreground group-hover:text-amber-500">Offline Education</div>
+                        <div className="text-[11px] text-muted-foreground">M.K. University, Patan — regular offline degrees</div>
+                      </div>
+                    </Link>
                   </div>
-                ) : (
-                  <NavLink
-                    key={item.to}
-                    to={item.to}
-                    className={({ isActive }) =>
-                      `text-sm font-medium transition-colors hover:text-primary ${isActive ? "text-primary" : ""}`
-                    }
-                  >
-                    {item.label}
-                  </NavLink>
-                )
-              )}
+                </div>
+              </div>
+
+              {/* Career Tools Dropdown */}
+              <div 
+                className="relative"
+                onMouseEnter={() => setCareerDropdown(true)}
+                onMouseLeave={() => setCareerDropdown(false)}
+              >
+                <button 
+                  className={`flex items-center gap-1.5 text-sm font-medium py-2 transition-colors ${
+                    isActive("/career-finder") || isActive("/roi-calculator") || isActive("/resume-builder")
+                      ? "text-primary font-semibold"
+                      : "text-foreground/80 hover:text-primary"
+                  }`}
+                  aria-expanded={careerDropdown}
+                >
+                  Career Tools <ChevronDown size={14} className={`transition-transform duration-200 ${careerDropdown ? "rotate-180 text-primary" : ""}`} />
+                </button>
+                <div
+                  className={`absolute top-full left-0 pt-2 w-[380px] transition-all duration-200 ease-out ${
+                    careerDropdown ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-2 pointer-events-none"
+                  }`}
+                >
+                  <div className="glass-dropdown p-4 rounded-2xl shadow-2xl border border-border/70 space-y-2">
+                    <Link
+                      to="/career-finder"
+                      className="p-2.5 rounded-xl hover:bg-primary/10 transition-colors flex items-center gap-3 group"
+                    >
+                      <div className="w-8 h-8 rounded-lg bg-[#6528f7]/10 text-[#6528f7] flex items-center justify-center">
+                        <Compass size={16} />
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold text-foreground group-hover:text-primary flex items-center gap-1.5">
+                          Career Finder <span className="text-[9px] px-1.5 py-0.5 rounded-md bg-primary/15 text-primary font-bold">100% Free</span>
+                        </div>
+                        <div className="text-[11px] text-muted-foreground">12-dimension strength & career match</div>
+                      </div>
+                    </Link>
+                    <Link
+                      to="/roi-calculator"
+                      className="p-2.5 rounded-xl hover:bg-emerald-500/10 transition-colors flex items-center gap-3 group"
+                    >
+                      <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
+                        <Calculator size={16} />
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold text-foreground group-hover:text-emerald-500">Degree ROI Calculator</div>
+                        <div className="text-[11px] text-muted-foreground">Salary jump, payback & investment ROI</div>
+                      </div>
+                    </Link>
+                    <Link
+                      to="/resume-builder"
+                      className="p-2.5 rounded-xl hover:bg-purple-500/10 transition-colors flex items-center gap-3 group"
+                    >
+                      <div className="w-8 h-8 rounded-lg bg-purple-500/10 text-purple-500 flex items-center justify-center">
+                        <FileText size={16} />
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold text-foreground group-hover:text-purple-500 flex items-center gap-1.5">
+                          AI Resume Builder <span className="text-[9px] px-1.5 py-0.5 rounded-md bg-purple-500/15 text-purple-500 font-bold">ATS Score</span>
+                        </div>
+                        <div className="text-[11px] text-muted-foreground">Job-ready resume with AI quantification</div>
+                      </div>
+                    </Link>
+                    <Link
+                      to="/emi-calculator"
+                      className="p-2.5 rounded-xl hover:bg-amber-500/10 transition-colors flex items-center gap-3 group"
+                    >
+                      <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center">
+                        <Calculator size={16} />
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold text-foreground group-hover:text-amber-500 flex items-center gap-1.5">
+                          EMI Calculator <span className="text-[9px] px-1.5 py-0.5 rounded-md bg-amber-500/15 text-amber-600 dark:text-amber-400 font-bold">0% No-Cost</span>
+                        </div>
+                        <div className="text-[11px] text-muted-foreground">Monthly fee installments & approval check</div>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
+              </div>
             </nav>
 
-            <div className="flex items-center gap-2 md:gap-3">
+            {/* Desktop Actions & Mobile Right Action */}
+            <div className="flex items-center gap-3 sm:gap-4">
+              {/* Theme toggle */}
               <button
                 onClick={toggle}
+                className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full border border-foreground/15 hover:bg-foreground/5 transition-colors"
                 aria-label="Toggle theme"
-                className="hidden sm:flex w-10 h-10 items-center justify-center rounded-full border border-foreground/15 hover:border-primary/40 transition-all"
               >
-                <span className="transition-transform duration-500" style={{ transform: theme === "dark" ? "rotate(180deg)" : "rotate(0)" }}>
-                  {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
-                </span>
+                {theme === "dark" ? <Sun size={17} className="text-amber-400" /> : <Moon size={17} className="text-foreground" />}
               </button>
+
+              {/* Mobile WhatsApp Button (Hidden on Desktop as requested) */}
+              <a
+                href="https://wa.me/919350199001?text=Hi%20Degree%20Guru%2C%20I%20want%20to%20know%20more%20about%20online%20degrees"
+                target="_blank"
+                rel="noreferrer"
+                className="flex lg:hidden items-center justify-center gap-2 px-3 py-2 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold transition-all shadow-sm"
+                aria-label="Contact on WhatsApp"
+              >
+                <MessageCircle size={18} className="fill-current" />
+                <span className="hidden sm:inline">WhatsApp</span>
+              </a>
+
+              {/* Desktop Primary CTA: "Find My Course" */}
               <Link
-                to="/contact"
-                className="hidden sm:inline-flex bg-primary text-primary-foreground rounded-full px-5 py-2.5 text-[13px] font-semibold hover:shadow-lg hover:shadow-primary/30 transition-all"
+                to="/courses"
+                className="hidden lg:inline-flex items-center gap-2 bg-primary text-primary-foreground rounded-full px-5 py-2.5 text-xs xl:text-sm font-bold shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:scale-[1.02] transition-all"
               >
-                Instant Chat
+                <Sparkles size={14} /> Find My Course
               </Link>
-              <button
-                onClick={() => setMobileOpen(true)}
-                className="lg:hidden w-10 h-10 flex items-center justify-center rounded-full border border-foreground/15 bg-background/40"
-                aria-label="Open menu"
-              >
-                <Menu size={20} />
-              </button>
             </div>
           </div>
         </div>
       </header>
-
-      {/* Mobile menu - rendered outside header so it always sits on top */}
-      {mobileOpen && (
-        <div className="lg:hidden fixed inset-0 z-[200] glass-dropdown p-6 overflow-auto animate-fade-in">
-          <div className="flex justify-between items-center mb-8">
-            <img src={theme === "dark" ? logoDark : logoLight} alt="Degree Guru" className="h-12 w-auto" />
-            <button onClick={() => setMobileOpen(false)} aria-label="Close" className="w-11 h-11 flex items-center justify-center rounded-full border border-foreground/15">
-              <X size={20} />
-            </button>
-          </div>
-          <div className="flex flex-col gap-2">
-            {navItems.filter(i => !i.dropdown).map((item) => (
-              <Link
-                key={item.to}
-                to={item.to}
-                onClick={() => setMobileOpen(false)}
-                className="text-lg font-semibold py-3 border-b border-foreground/10"
-              >
-                {item.label}
-              </Link>
-            ))}
-
-            {/* Programs sub-list */}
-            <p className="text-xs font-bold uppercase tracking-wider text-primary mt-6 mb-2">Programs</p>
-            <div className="grid grid-cols-1 gap-2">
-              {PROGRAMS.map((p) => (
-                <Link
-                  key={p.slug}
-                  to={`/programs/${p.slug}`}
-                  onClick={() => setMobileOpen(false)}
-                  className="px-3 py-2.5 rounded-lg bg-primary/10"
-                >
-                  <div className="text-sm font-semibold">{p.name}</div>
-                  <div className="text-[11px] text-foreground/60">{p.full}</div>
-                </Link>
-              ))}
-            </div>
-
-            {/* Jobs sub-list */}
-            <p className="text-xs font-bold uppercase tracking-wider text-primary mt-6 mb-2">Jobs</p>
-            <div className="grid grid-cols-2 gap-2">
-              <Link
-                to="/jobs/employer"
-                onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-2 px-3 py-3 rounded-xl bg-primary/10 hover:bg-primary/20 transition-colors"
-              >
-                <Building2 size={16} className="text-primary shrink-0" />
-                <div>
-                  <div className="text-sm font-semibold">Employer</div>
-                  <div className="text-[10px] text-foreground/55">Post jobs free</div>
-                </div>
-              </Link>
-              <Link
-                to="/jobs/job-seeker"
-                onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-2 px-3 py-3 rounded-xl bg-primary/10 hover:bg-primary/20 transition-colors"
-              >
-                <UserSearch size={16} className="text-primary shrink-0" />
-                <div>
-                  <div className="text-sm font-semibold">Job Seeker</div>
-                  <div className="text-[10px] text-foreground/55">Browse jobs</div>
-                </div>
-              </Link>
-            </div>
-
-            <button onClick={toggle} className="mt-6 flex items-center gap-2 text-sm">
-              {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />} Toggle theme
-            </button>
-          </div>
-        </div>
-      )}
     </>
   );
 };

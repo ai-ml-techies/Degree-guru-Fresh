@@ -9,28 +9,28 @@
 @layer base {
   :root {
     /* Brand */
-    --background: 222 100% 95%;          /* #e7efff */
-    --foreground: 0 0% 5%;                /* #0e0e0e */
-    --foreground-soft: 0 0% 5%;
-    --primary: 258 93% 56%;               /* #6528f7 */
+    --background: 0 0% 100%;              /* Crisp White */
+    --foreground: 0 0% 5%;                /* Deep Black #0d0d0d */
+    --foreground-soft: 0 0% 25%;
+    --primary: 258 93% 56%;               /* Brand Purple #6528f7 */
     --primary-foreground: 0 0% 100%;
     --primary-glow: 258 93% 70%;
-    --accent-blue: 217 91% 60%;
+    --accent-purple: 258 93% 56%;
 
     --card: 0 0% 100%;
     --card-foreground: 0 0% 5%;
-    --popover: 222 100% 95%;
+    --popover: 0 0% 100%;
     --popover-foreground: 0 0% 5%;
-    --secondary: 222 60% 92%;
+    --secondary: 258 20% 96%;
     --secondary-foreground: 0 0% 5%;
-    --muted: 222 60% 92%;
-    --muted-foreground: 0 0% 5%;
+    --muted: 258 20% 96%;
+    --muted-foreground: 0 0% 40%;
     --accent: 258 93% 56%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 258 30% 88%;
-    --input: 258 30% 88%;
+    --border: 258 15% 90%;
+    --input: 258 15% 90%;
     --ring: 258 93% 56%;
     --radius: 1rem;
 
@@ -43,51 +43,51 @@
     --glass-shadow-hover: 0 16px 48px hsl(258 93% 56% / 0.12);
 
     /* Header */
-    --header-bg: 231 239 255;
+    --header-bg: 255 255 255;
     --header-bg-alpha: 0.85;
 
     /* Sidebar (kept for shadcn compat) */
-    --sidebar-background: 0 0% 98%;
+    --sidebar-background: 0 0% 99%;
     --sidebar-foreground: 0 0% 5%;
     --sidebar-primary: 258 93% 56%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 222 60% 92%;
+    --sidebar-accent: 258 20% 96%;
     --sidebar-accent-foreground: 0 0% 5%;
-    --sidebar-border: 258 30% 88%;
+    --sidebar-border: 258 15% 90%;
     --sidebar-ring: 258 93% 56%;
   }
 
   .dark {
-    /* Lighter, friendlier dark theme, high contrast for readability */
-    --background: 240 18% 11%;            /* #181a25 deep navy */
-    --foreground: 210 40% 98%;            /* near white */
-    --primary: 258 95% 72%;               /* bright lavender */
-    --primary-foreground: 240 18% 11%;
+    /* Pure deep obsidian / purple-glow dark theme (No blue) */
+    --background: 260 15% 7%;             /* Deep obsidian dark */
+    --foreground: 0 0% 96%;               /* Pure crisp white */
+    --primary: 258 95% 70%;               /* Brand Purple #8247ff */
+    --primary-foreground: 0 0% 100%;
     --primary-glow: 258 95% 80%;
 
-    --card: 240 16% 16%;
-    --card-foreground: 210 40% 98%;
-    --popover: 240 16% 16%;
-    --popover-foreground: 210 40% 98%;
-    --secondary: 240 14% 20%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 240 14% 20%;
-    --muted-foreground: 220 20% 80%;
-    --accent: 258 95% 72%;
-    --accent-foreground: 240 18% 11%;
-    --border: 240 14% 28%;
-    --input: 240 14% 28%;
-    --ring: 258 95% 72%;
+    --card: 260 12% 11%;                  /* Deep dark card surface */
+    --card-foreground: 0 0% 96%;
+    --popover: 260 12% 11%;
+    --popover-foreground: 0 0% 96%;
+    --secondary: 260 10% 16%;
+    --secondary-foreground: 0 0% 96%;
+    --muted: 260 10% 16%;
+    --muted-foreground: 260 5% 65%;       /* Soft neutral readable secondary */
+    --accent: 258 95% 70%;
+    --accent-foreground: 0 0% 100%;
+    --border: 260 10% 20%;                /* Subtle dark border */
+    --input: 260 10% 20%;
+    --ring: 258 95% 70%;
 
-    --glass-bg: 40 42 58;
-    --glass-bg-alpha: 0.7;
+    --glass-bg: 20 18 26;
+    --glass-bg-alpha: 0.75;
     --glass-border: 255 255 255;
     --glass-border-alpha: 0.12;
-    --glass-shadow: 0 8px 32px rgba(0,0,0,0.4);
-    --glass-shadow-hover: 0 16px 48px rgba(0,0,0,0.55);
+    --glass-shadow: 0 8px 32px rgba(0,0,0,0.45);
+    --glass-shadow-hover: 0 16px 48px rgba(0,0,0,0.6);
 
-    --header-bg: 24 26 37;
-    --header-bg-alpha: 0.9;
+    --header-bg: 15 13 20;
+    --header-bg-alpha: 0.92;
   }
 
   .dark .text-soft { color: hsl(var(--foreground) / 0.85); }
@@ -216,7 +216,7 @@
 
   /* Gradient animated text */
   .text-gradient {
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(258 93% 72%) 40%, hsl(217 91% 65%) 100%);
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(258 93% 72%) 50%, #9333ea 100%);
     background-size: 200% 200%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -240,13 +240,13 @@
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 3px;
-    background: linear-gradient(90deg, hsl(var(--primary)), hsl(258 93% 72%), hsl(217 91% 60%));
+    background: linear-gradient(90deg, hsl(var(--primary)), #8b5cf6, #a855f7);
     border-radius: 20px 20px 0 0;
   }
 
   /* Announcement bar */
   .announcement-bar {
-    background: linear-gradient(90deg, hsl(var(--primary)), hsl(258 93% 65%), hsl(217 91% 60%), hsl(var(--primary)));
+    background: linear-gradient(90deg, hsl(var(--primary)), #7c3aed, #9333ea, hsl(var(--primary)));
     background-size: 200% 100%;
     animation: gradient-x 5s linear infinite;
   }
@@ -322,10 +322,28 @@
     display: flex;
     gap: 1.5rem;
     width: max-content;
-    animation: marquee 35s linear infinite;
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+    animation: marquee 32s linear infinite;
   }
   .marquee:hover { animation-play-state: paused; }
-  .marquee-reverse { animation: marquee-reverse 40s linear infinite; }
+  .marquee-reverse { 
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+    animation: marquee-reverse 36s linear infinite; 
+  }
+  .animate-ticker {
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+    animation: ticker 28s linear infinite;
+  }
+  .animate-ticker:hover { animation-play-state: paused; }
   .marquee-pill {
     background: rgba(255,255,255,0.45);
     backdrop-filter: blur(20px) saturate(180%);
@@ -333,12 +351,11 @@
     border: 1px solid rgba(255,255,255,0.55);
     border-radius: 999px;
     box-shadow: 0 8px 24px rgba(101, 40, 247, 0.08);
-    transition: transform 0.4s cubic-bezier(0.4,0,0.2,1), box-shadow 0.4s, border-color 0.3s;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
   }
   .marquee-pill:hover {
-    transform: translateY(-4px) scale(1.04);
-    box-shadow: 0 16px 36px rgba(101, 40, 247, 0.18);
-    border-color: hsl(var(--primary) / 0.5);
+    box-shadow: 0 12px 30px rgba(101, 40, 247, 0.2);
+    border-color: hsl(var(--primary) / 0.6);
   }
   .dark .marquee-pill {
     background: rgba(40, 42, 58, 0.55);
@@ -363,14 +380,18 @@
   }
 }
 
-/* Keyframes */
+/* Keyframes - Hardware accelerated with translate3d */
 @keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
 }
 @keyframes marquee-reverse {
-  from { transform: translateX(-50%); }
-  to { transform: translateX(0); }
+  0% { transform: translate3d(-50%, 0, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+@keyframes ticker {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
 }
 @keyframes float-blob {
   0%, 100% { transform: translate(0, 0) scale(1); }
@@ -387,3 +408,71 @@
   opacity: 0;
   animation: fade-in-up 0.7s cubic-bezier(0.4,0,0.2,1) forwards;
 }
+
+/* Mobile Bottom Navigation & Safe Area */
+.glass-bottom-nav {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.08);
+}
+.dark .glass-bottom-nav {
+  background: rgba(18, 20, 29, 0.88);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.4);
+}
+
+.safe-bottom {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+}
+
+/* Isolated A4 Resume Print Styles */
+@media print {
+  /* Hide standard UI chrome and non-printable elements */
+  header, footer, nav, .announcement-bar, .mobile-bottom-dock, [class*="print:hidden"], [role="dialog"], .glass-header {
+    display: none !important;
+  }
+
+  /* Reset layout for paper printing */
+  html, body, #root {
+    background: #ffffff !important;
+    color: #111827 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Display printable resume unscaled and centered */
+  #printable-resume {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    width: 100% !important;
+    max-width: 800px !important;
+    margin: 0 auto !important;
+    padding: 20px !important;
+    box-shadow: none !important;
+    border: none !important;
+    transform: none !important;
+    display: block !important;
+    visibility: visible !important;
+  }
+
+  #printable-resume * {
+    visibility: visible !important;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 8mm;
+  }
+}
+

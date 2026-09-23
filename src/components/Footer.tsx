@@ -3,7 +3,7 @@ import { Phone, Mail, MapPin, ArrowRight, Shield, Award, Star } from "lucide-rea
 import logoDark from "@/assets/logo-dark.png";
 
 const trustBadges = [
-  { icon: Shield, label: "UGC-DEB Approved", sub: "All partner universities" },
+  { icon: Shield, label: "UGC-DEB Approved", sub: "All listed accredited universities" },
   { icon: Award, label: "AICTE Recognised", sub: "Quality assured programs" },
   { icon: Star, label: "4.9★ Rated", sub: "by 5,000+ students" },
 ];
@@ -34,8 +34,8 @@ const SvgWhatsapp = () => (
 
 const socials = [
   { Svg: SvgInstagram, href: "https://www.instagram.com/degreeguru/", label: "Instagram", color: "hover:bg-gradient-to-br hover:from-purple-500 hover:to-pink-500" },
-  { Svg: SvgFacebook, href: "https://www.facebook.com/degreegurucareer/", label: "Facebook", color: "hover:bg-blue-600" },
-  { Svg: SvgLinkedin, href: "https://www.linkedin.com/company/degree-guru", label: "LinkedIn", color: "hover:bg-blue-700" },
+  { Svg: SvgFacebook, href: "https://www.facebook.com/degreegurucareer/", label: "Facebook", color: "hover:bg-[#6528f7]" },
+  { Svg: SvgLinkedin, href: "https://www.linkedin.com/company/degree-guru", label: "LinkedIn", color: "hover:bg-[#6528f7]" },
   { Svg: SvgYoutube, href: "https://www.youtube.com/@DegreeGuru", label: "YouTube", color: "hover:bg-red-600" },
   { Svg: SvgWhatsapp, href: "https://wa.me/919350199001", label: "WhatsApp", color: "hover:bg-[#25D366]" },
 ];

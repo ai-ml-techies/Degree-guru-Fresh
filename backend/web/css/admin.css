@@ -5,27 +5,38 @@
 
 /* ── Design tokens ──────────────────────────────────────────── */
 :root {
-    --dg-purple:       #6c45e0;
-    --dg-purple-dark:  #5535c2;
-    --dg-purple-light: #ede9fe;
-    --dg-purple-mid:   #a78bfa;
-    --dg-dark:         #1a0a3d;
-    --dg-muted:        #8b80a8;
-    --dg-soft:         #b0a8cc;
-    --dg-border:       #f0ecff;
-    --dg-bg:           #f4f2ff;
-    --dg-radius:       10px;
-    --dg-radius-lg:    14px;
+    color-scheme: dark;
+    --dg-bg-body:       #0d0f12;
+    --dg-bg-surface:    #14171d;
+    --dg-bg-card:       #181b22;
+    --dg-bg-input:      #101217;
+    --dg-border:        #232730;
+    --dg-border-hover:  #374151;
+    --dg-text-primary:  #f1f5f9;
+    --dg-text-secondary:#94a3b8;
+    --dg-text-muted:    #64748b;
+    --dg-accent:        #6366f1;
+    --dg-accent-dark:   #4f46e5;
+    --dg-purple:        #6366f1;
+    --dg-purple-dark:   #4f46e5;
+    --dg-purple-light:  #252935;
+    --dg-purple-mid:    #818cf8;
+    --dg-dark:          #0d0f12;
+    --dg-muted:         #94a3b8;
+    --dg-soft:          #64748b;
+    --dg-bg:            #0d0f12;
+    --dg-radius:        10px;
+    --dg-radius-lg:     14px;
 }
 
 /* ── AdminLTE overrides (layout) ─────────────────────────────── */
 .brand-link {
-    background: #12002e !important;
+    background: var(--dg-bg-surface) !important;
     padding: 14px 16px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    border-bottom: 1px solid rgba(139, 92, 246, 0.2) !important;
+    border-bottom: 1px solid var(--dg-border) !important;
 }
 .brand-logo-img {
     height: 40px;
@@ -36,34 +47,45 @@
     margin: 0 auto;
 }
 
-.main-sidebar { background: #1a0a3d !important; }
+.main-sidebar {
+    background: var(--dg-bg-surface) !important;
+    border-right: 1px solid var(--dg-border) !important;
+}
 
 .sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active {
-    background: var(--dg-purple) !important;
-    box-shadow: 0 2px 8px rgba(108,69,224,.4);
+    background: #252935 !important;
+    color: #ffffff !important;
+    border-left: 3px solid #6366f1 !important;
+    box-shadow: none !important;
 }
 .sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link:hover:not(.active) {
-    background: rgba(108,69,224,.2) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: #ffffff !important;
 }
 .sidebar .nav-link {
     border-radius: 8px;
     margin: 2px 10px;
     padding: 9px 12px;
+    color: var(--dg-text-secondary);
     transition: all .18s;
 }
 .sidebar .nav-item p { font-size: .875rem; font-weight: 500; }
 
 .main-header.navbar {
-    border-bottom: 3px solid var(--dg-purple);
-    background: #fff !important;
+    border-bottom: 1px solid var(--dg-border) !important;
+    background: var(--dg-bg-surface) !important;
+    color: var(--dg-text-primary) !important;
 }
 
-.content-wrapper { background: #f4f2ff !important; }
+.content-wrapper {
+    background: var(--dg-bg-body) !important;
+    color: var(--dg-text-primary) !important;
+}
 
 .main-footer {
-    background: #fff;
-    border-top: 2px solid #f0ecff;
-    color: #999;
+    background: var(--dg-bg-surface) !important;
+    border-top: 1px solid var(--dg-border) !important;
+    color: var(--dg-text-muted) !important;
     font-size: .8rem;
 }
 
@@ -71,7 +93,7 @@
 
 .navbar-user-badge {
     font-size: .82rem;
-    color: #666;
+    color: var(--dg-text-secondary);
     padding: 0 8px;
     display: flex;
     align-items: center;
@@ -82,25 +104,27 @@
 /* ── Card ───────────────────────────────────────────────────── */
 .dg-card {
     border-radius: var(--dg-radius-lg);
-    box-shadow: 0 2px 16px rgba(108,69,224,.09);
-    border: none;
-    background: #fff;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--dg-border);
+    background: var(--dg-bg-card);
     margin-bottom: 1.25rem;
+    color: var(--dg-text-primary);
 }
 .dg-card-header {
     padding: .9rem 1.4rem;
     border-bottom: 1px solid var(--dg-border);
     border-radius: var(--dg-radius-lg) var(--dg-radius-lg) 0 0 !important;
-    background: #fff;
+    background: var(--dg-bg-card);
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: .75rem;
     flex-wrap: wrap;
+    color: var(--dg-text-primary);
 }
 .dg-card-title {
     font-weight: 700;
-    color: var(--dg-dark);
+    color: var(--dg-text-primary);
     font-size: 1rem;
     margin: 0;
     display: flex;
@@ -117,13 +141,13 @@
 .dg-page-heading h4,
 .dg-page-title {
     font-weight: 800;
-    color: var(--dg-dark);
+    color: var(--dg-text-primary);
     margin-bottom: 2px;
     font-size: 1.15rem;
 }
 .dg-page-heading p,
 .dg-page-sub {
-    color: var(--dg-muted);
+    color: var(--dg-text-secondary);
     font-size: .855rem;
     margin: 0;
 }
@@ -135,24 +159,26 @@
     font-size: .855rem;
 }
 .dg-table thead th {
-    background: #f9f8ff;
-    color: var(--dg-muted);
+    background: #111317;
+    color: var(--dg-text-secondary);
     font-size: .7rem;
     font-weight: 700;
     letter-spacing: .7px;
     text-transform: uppercase;
     padding: .75rem 1rem;
-    border-bottom: 2px solid var(--dg-border);
+    border-bottom: 1px solid var(--dg-border);
     white-space: nowrap;
 }
 .dg-table thead th:first-child { padding-left: 1.4rem; }
 .dg-table thead th:last-child  { padding-right: 1.4rem; }
 .dg-table tbody tr {
-    border-bottom: 1px solid #f4f2ff;
+    border-bottom: 1px solid var(--dg-border);
+    background: var(--dg-bg-card);
     transition: background .12s;
+    color: var(--dg-text-primary);
 }
 .dg-table tbody tr:last-child { border-bottom: none; }
-.dg-table tbody tr:hover { background: #faf9ff; }
+.dg-table tbody tr:hover { background: #1f232c; }
 .dg-table tbody td {
     padding: .8rem 1rem;
     vertical-align: middle;
@@ -467,9 +493,9 @@ label {
 /* ── Stat cards (dashboard) ──────────────────────────────────── */
 .dg-stat-card {
     border-radius: var(--dg-radius-lg);
-    box-shadow: 0 2px 14px rgba(108,69,224,.08);
-    border: none;
-    background: #fff;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--dg-border);
+    background: var(--dg-bg-card);
     padding: 1.1rem 1.25rem;
     display: flex;
     align-items: center;
@@ -479,18 +505,19 @@ label {
 .dg-stat-icon {
     width: 50px;
     height: 50px;
-    background: var(--dg-purple-light);
+    background: rgba(99, 102, 241, 0.12);
+    border: 1px solid rgba(99, 102, 241, 0.25);
     border-radius: 12px;
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.dg-stat-icon i { color: var(--dg-purple); font-size: 1.2rem; }
-.dg-stat-label  { font-size: .78rem; color: var(--dg-muted); margin-bottom: 2px; }
-.dg-stat-value  { font-weight: 800; font-size: 1.5rem; color: var(--dg-dark); line-height: 1; }
-.dg-stat-link   { font-size: .78rem; color: var(--dg-purple); text-decoration: none; display: inline-block; margin-top: 2px; }
-.dg-stat-link:hover { text-decoration: underline; }
+.dg-stat-icon i { color: #818cf8; font-size: 1.2rem; }
+.dg-stat-label  { font-size: .78rem; color: var(--dg-text-secondary); margin-bottom: 2px; }
+.dg-stat-value  { font-weight: 800; font-size: 1.5rem; color: #f8fafc; line-height: 1; }
+.dg-stat-link   { font-size: .78rem; color: #818cf8; text-decoration: none; display: inline-block; margin-top: 2px; }
+.dg-stat-link:hover { text-decoration: underline; color: #a5b4fc; }
 
 /* ── Code block (error log context) ─────────────────────────── */
 .dg-code-block {

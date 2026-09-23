@@ -29,54 +29,69 @@ $webUrl = Yii::getAlias('@web');
     <title><?= Html::encode($this->title ?? 'Degree Guru Admin') ?></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
-        // Apply saved theme immediately to prevent flash of wrong theme (Default: Dark)
-        (function() {
-            var savedTheme = localStorage.getItem('dg_theme');
-            var isDark = savedTheme !== 'light';
-            if (isDark) {
-                document.documentElement.classList.add('dark');
-                document.documentElement.setAttribute('data-theme', 'dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-                document.documentElement.setAttribute('data-theme', 'light');
-            }
-        })();
+        // Force soothing dark gray theme immediately
+        document.documentElement.classList.add('dark');
+        document.documentElement.setAttribute('data-theme', 'dark');
     </script>
     <?php $this->head() ?>
 
     <style>
         /* =============================================================
-           Degree Guru Admin — Layout & Dark Mode Design System
+           Degree Guru Admin — Eye-Pleasing Dark Gray Design System
            ============================================================= */
+        :root {
+            color-scheme: dark;
+            --dg-bg-body: #0d0f12;
+            --dg-bg-surface: #14171d;
+            --dg-bg-card: #181b22;
+            --dg-bg-input: #101217;
+            --dg-border: #232730;
+            --dg-border-hover: #374151;
+            --dg-text-primary: #f1f5f9;
+            --dg-text-secondary: #94a3b8;
+            --dg-text-muted: #64748b;
+            --dg-accent: #6366f1;
+            --dg-accent-hover: #4f46e5;
+            --dg-purple: #6366f1;
+        }
+
+        html, body {
+            background-color: var(--dg-bg-body) !important;
+            color: var(--dg-text-primary) !important;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+        }
+
+        .content-wrapper {
+            background-color: var(--dg-bg-body) !important;
+            color: var(--dg-text-primary) !important;
+        }
 
         /* ── Sidebar & Enlarged Logo ────────────────────────────────── */
         .main-sidebar {
-            background: #12002e !important;
-            border-right: 1px solid rgba(139, 92, 246, 0.2) !important;
-            box-shadow: 0 0 24px rgba(0, 0, 0, 0.45) !important;
+            background: var(--dg-bg-surface) !important;
+            border-right: 1px solid var(--dg-border) !important;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.4) !important;
         }
 
         .brand-link {
-            min-height: 76px !important;
+            min-height: 72px !important;
             padding: 14px 18px !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
-            background: #12002e !important;
-            border-bottom: 1px solid rgba(139, 92, 246, 0.25) !important;
-            transition: all 0.25s ease !important;
+            background: var(--dg-bg-surface) !important;
+            border-bottom: 1px solid var(--dg-border) !important;
             text-align: center !important;
         }
 
         .brand-logo-img {
-            height: 52px !important;
-            max-height: 54px !important;
+            height: 44px !important;
+            max-height: 48px !important;
             width: auto !important;
-            max-width: 195px !important;
+            max-width: 180px !important;
             object-fit: contain !important;
             display: block !important;
             margin: 0 auto !important;
-            transition: all 0.25s ease !important;
         }
 
         body.sidebar-collapse .brand-link {
@@ -85,119 +100,95 @@ $webUrl = Yii::getAlias('@web');
         }
 
         body.sidebar-collapse .brand-logo-img {
-            height: 38px !important;
-            max-height: 40px !important;
-            max-width: 48px !important;
+            height: 36px !important;
+            max-height: 38px !important;
+            max-width: 44px !important;
         }
 
-        /* ── Sidebar Toggle Button (Custom shrink / expand icon) ───── */
+        /* ── Sidebar Toggle Button ───── */
         .sidebar-toggle-btn {
             display: inline-flex !important;
             align-items: center !important;
             justify-content: center !important;
-            width: 36px !important;
-            height: 36px !important;
-            border-radius: 9px !important;
-            background: rgba(108, 69, 224, 0.08) !important;
-            color: var(--dg-purple) !important;
-            margin-top: 5px !important;
+            width: 34px !important;
+            height: 34px !important;
+            border-radius: 8px !important;
+            background: rgba(99, 102, 241, 0.1) !important;
+            color: #a5b4fc !important;
+            margin-top: 2px !important;
             margin-right: 10px !important;
             padding: 0 !important;
-            border: 1px solid rgba(108, 69, 224, 0.2) !important;
+            border: 1px solid rgba(99, 102, 241, 0.25) !important;
             cursor: pointer !important;
             transition: all 0.2s ease !important;
         }
 
         .sidebar-toggle-btn:hover {
-            background: var(--dg-purple) !important;
+            background: #4f46e5 !important;
             color: #ffffff !important;
-            border-color: var(--dg-purple) !important;
-            transform: scale(1.04);
+            border-color: #4f46e5 !important;
         }
 
-        .sidebar-toggle-btn .fa-shrink-icon {
-            display: inline-block;
-            font-size: 1.05rem;
-        }
-
-        .sidebar-toggle-btn .fa-expand-icon {
-            display: none;
-            font-size: 1.05rem;
-        }
-
-        body.sidebar-collapse .sidebar-toggle-btn .fa-shrink-icon {
-            display: none;
-        }
-
-        body.sidebar-collapse .sidebar-toggle-btn .fa-expand-icon {
-            display: inline-block;
-        }
+        .sidebar-toggle-btn .fa-shrink-icon { display: inline-block; font-size: 1rem; }
+        .sidebar-toggle-btn .fa-expand-icon { display: none; font-size: 1rem; }
+        body.sidebar-collapse .sidebar-toggle-btn .fa-shrink-icon { display: none; }
+        body.sidebar-collapse .sidebar-toggle-btn .fa-expand-icon { display: inline-block; }
 
         /* ── Top Navbar ─────────────────────────────────────────────── */
         .main-header.navbar {
-            border-bottom: 3px solid var(--dg-purple) !important;
-            padding: .5rem 1.25rem !important;
-            transition: background 0.25s ease, border-color 0.25s ease !important;
+            background: var(--dg-bg-surface) !important;
+            border-bottom: 1px solid var(--dg-border) !important;
+            color: var(--dg-text-primary) !important;
+            padding: .55rem 1.25rem !important;
         }
 
-        body:not(.dark-mode) .main-header.navbar {
-            background: #ffffff !important;
-            color: #1e1b4b !important;
+        .main-header .nav-link {
+            color: var(--dg-text-secondary) !important;
         }
 
-        body:not(.dark-mode) .main-header .nav-link {
-            color: #4b5563 !important;
+        .main-footer {
+            background-color: var(--dg-bg-surface) !important;
+            border-top: 1px solid var(--dg-border) !important;
+            color: var(--dg-text-muted) !important;
+            font-size: .85rem !important;
+            padding: 1rem 1.5rem !important;
         }
 
-        body:not(.dark-mode) .content-wrapper {
-            background: #f4f2ff !important;
-        }
-
-        /* ── Theme Toggle Button in Navbar ───────────────────────────── */
-        .dg-theme-toggle-btn {
-            display: inline-flex !important;
-            align-items: center !important;
-            gap: 6px !important;
-            padding: 6px 14px !important;
-            border-radius: 20px !important;
-            font-size: .82rem !important;
+        .btn-logout-nav {
+            background: rgba(239, 68, 68, 0.14) !important;
+            border: 1px solid rgba(239, 68, 68, 0.3) !important;
+            color: #fca5a5 !important;
+            padding: 4px 12px !important;
+            border-radius: 6px !important;
+            font-size: 0.8rem !important;
             font-weight: 600 !important;
-            border: 1px solid rgba(108, 69, 224, 0.35) !important;
-            background: rgba(108, 69, 224, 0.08) !important;
-            color: var(--dg-purple) !important;
             cursor: pointer !important;
-            transition: all 0.2s ease !important;
-            outline: none !important;
+            transition: all 0.15s ease !important;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
         }
 
-        .dg-theme-toggle-btn:hover {
-            background: var(--dg-purple) !important;
+        .btn-logout-nav:hover {
+            background: #dc2626 !important;
             color: #ffffff !important;
-            border-color: var(--dg-purple) !important;
+            border-color: #dc2626 !important;
         }
 
-        /* =============================================================
-           Dark Mode Overrides (Hostinger hPanel Aesthetic)
-           ============================================================= */
-        body.dark-mode,
-        html.dark {
-            color-scheme: dark;
+        .navbar-user-badge {
+            background: rgba(99, 102, 241, 0.12) !important;
+            border: 1px solid rgba(99, 102, 241, 0.25) !important;
+            border-radius: 20px !important;
+            color: #c7d2fe !important;
+            padding: 5px 12px !important;
+            font-size: 0.82rem !important;
+            font-weight: 500 !important;
         }
 
-        body.dark-mode {
-            background-color: #0c0d12 !important;
-            color: #f4f4f5 !important;
+        .navbar-user-badge i {
+            color: #818cf8 !important;
+            margin-right: 4px;
         }
-
-        body.dark-mode .content-wrapper {
-            background-color: #0c0d12 !important;
-            color: #f4f4f5 !important;
-        }
-
-        body.dark-mode .main-header.navbar {
-            background-color: #111217 !important;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-            color: #f4f4f5 !important;
         }
 
         body.dark-mode .main-header .nav-link {
@@ -608,12 +599,8 @@ $webUrl = Yii::getAlias('@web');
 
 <body class="hold-transition sidebar-mini layout-fixed dark-mode">
 <script>
-    // Immediate body class sync
-    if (localStorage.getItem('dg_theme') === 'light') {
-        document.body.classList.remove('dark-mode');
-    } else {
-        document.body.classList.add('dark-mode');
-    }
+    // Ensure dark-mode is permanently active
+    document.body.classList.add('dark-mode');
 </script>
 <?php $this->beginBody() ?>
 
@@ -637,11 +624,19 @@ $webUrl = Yii::getAlias('@web');
 
         <ul class="navbar-nav ml-auto align-items-center">
             <?php if (!Yii::$app->user->isGuest): ?>
-                <li class="nav-item d-none d-sm-flex mr-2">
+                <li class="nav-item d-none d-sm-flex mr-3">
                     <span class="navbar-user-badge">
                         <i class="fas fa-user-circle"></i>
-                        <?= Html::encode(Yii::$app->user->identity->username ?? '') ?>
+                        <?= Html::encode(Yii::$app->user->identity->username ?? 'Admin') ?>
                     </span>
+                </li>
+                <li class="nav-item">
+                    <form action="<?= Url::to(['/site/logout']) ?>" method="post" class="m-0 p-0 d-inline">
+                        <input type="hidden" name="<?= Yii::$app->request->csrfParam ?>" value="<?= Yii::$app->request->csrfToken ?>">
+                        <button type="submit" class="btn-logout-nav" title="Sign out of Degree Guru CMS">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </form>
                 </li>
             <?php endif; ?>
         </ul>

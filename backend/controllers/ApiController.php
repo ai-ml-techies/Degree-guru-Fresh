@@ -20,6 +20,9 @@ class ApiController extends Controller
 
     public function beforeAction($action): bool
     {
+        while (ob_get_level() > 0) {
+            ob_end_clean();
+        }
         Yii::$app->response->format = Response::FORMAT_JSON;
         if (Yii::$app->request->method === 'OPTIONS') {
             Yii::$app->response->statusCode = 200;

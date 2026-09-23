@@ -1,13 +1,15 @@
 import { Header } from "./Header";
 import { Footer } from "./Footer";
-import { FloatingCTA } from "./FloatingCTA";
+import { FloatingAiAdvisor } from "./FloatingAiAdvisor";
+import { MobileBottomNav } from "./MobileBottomNav";
 import { ReactNode } from "react";
 
 export const Layout = ({ children }: { children: ReactNode }) => (
-  <div className="min-h-screen flex flex-col">
+  <div className="min-h-screen flex flex-col relative selection:bg-primary/20 selection:text-primary">
     <Header />
-    <main className="flex-1 pt-[128px]">{children}</main>
+    <main className="flex-1 pt-[96px] sm:pt-[110px] md:pt-[128px] pb-24 md:pb-0">{children}</main>
     <Footer />
-    <FloatingCTA />
+    <FloatingAiAdvisor />
+    <MobileBottomNav />
   </div>
 );

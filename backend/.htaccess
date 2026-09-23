@@ -1,0 +1,26 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Prevent direct access to sensitive framework folders and internal files
+    RewriteRule ^(config|controllers|models|views|runtime|vendor|mail|commands|sql)/ - [F,L]
+    RewriteRule ^(\.git|\.env|composer\.|docker) - [F,L]
+
+    # If the request matches an existing file or directory directly, serve it
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Forward all other requests into the web directory
+    RewriteCond %{REQUEST_URI} !^/web/
+    RewriteRule ^(.*)$ web/$1 [L]
+</IfModule>
+
+# Block access to hidden files (.env, .git, .htaccess)
+<FilesMatch "^\.">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>

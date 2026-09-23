@@ -1,0 +1,115 @@
+name: Deploy Backend & API (Hostinger)
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+      - '.github/workflows/deploy-backend.yml'
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'Subdomain(s) to deploy backend to'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - api
+          - admin
+
+concurrency:
+  group: deploy-backend-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    name: Build & Deploy Backend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PHP with Composer
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, xml, ctype, iconv, intl, pdo, pdo_mysql, gd, zip
+          tools: composer:v2
+
+      - name: Install Composer Dependencies
+        working-directory: ./backend
+        run: |
+          composer install --no-dev --optimize-autoloader --prefer-dist --no-progress --no-interaction
+
+      - name: Prepare Clean Backend Bundle
+        run: |
+          mkdir -p backend-deploy
+
+          # Copy core application directories and files
+          cp -r backend/assets backend-deploy/
+          cp -r backend/commands backend-deploy/
+          cp -r backend/config backend-deploy/
+          cp -r backend/controllers backend-deploy/
+          cp -r backend/mail backend-deploy/
+          cp -r backend/models backend-deploy/
+          cp -r backend/views backend-deploy/
+          cp -r backend/web backend-deploy/
+          cp -r backend/vendor backend-deploy/
+          cp backend/yii backend-deploy/
+          cp backend/.htaccess backend-deploy/
+
+          # Clean dev/temporary files if present
+          rm -rf backend-deploy/web/assets/*
+          rm -f backend-deploy/config/db-local.php
+          rm -f backend-deploy/config/params-local.php
+
+          # Ensure runtime structure exists without copying runtime files
+          mkdir -p backend-deploy/runtime/cache backend-deploy/runtime/logs
+          touch backend-deploy/runtime/.gitkeep
+
+          # Ensure upload directories structure exists
+          mkdir -p backend-deploy/web/uploads/images
+          mkdir -p backend-deploy/web/uploads/resumes
+          mkdir -p backend-deploy/web/uploads/seeker-resumes
+          mkdir -p backend-deploy/web/uploads/job-docs
+          touch backend-deploy/web/uploads/images/.gitkeep
+          touch backend-deploy/web/uploads/resumes/.gitkeep
+          touch backend-deploy/web/uploads/seeker-resumes/.gitkeep
+          touch backend-deploy/web/uploads/job-docs/.gitkeep
+
+      - name: Deploy to api.degreeguru.in via FTP
+        if: ${{ github.event.inputs.target == null || github.event.inputs.target == 'all' || github.event.inputs.target == 'api' }}
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_API_USERNAME || secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_API_PASSWORD || secrets.FTP_PASSWORD }}
+          local-dir: ./backend-deploy/
+          server-dir: ${{ secrets.FTP_API_DIR || 'domains/api.degreeguru.in/public_html/' }}
+          timeout: 600000
+          dangerous-clean-slate: false
+          exclude: |
+            **/runtime/**
+            **/web/uploads/**
+            **/config/db-local.php
+            **/config/params-local.php
+
+      - name: Deploy to admin.degreeguru.in via FTP
+        if: ${{ github.event.inputs.target == null || github.event.inputs.target == 'all' || github.event.inputs.target == 'admin' }}
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_ADMIN_USERNAME || secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_ADMIN_PASSWORD || secrets.FTP_PASSWORD }}
+          local-dir: ./backend-deploy/
+          server-dir: ${{ secrets.FTP_ADMIN_DIR || 'domains/admin.degreeguru.in/public_html/' }}
+          timeout: 600000
+          dangerous-clean-slate: false
+          exclude: |
+            **/runtime/**
+            **/web/uploads/**
+            **/config/db-local.php
+            **/config/params-local.php

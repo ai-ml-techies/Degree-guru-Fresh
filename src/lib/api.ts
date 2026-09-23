@@ -137,3 +137,23 @@ export async function submitCounselingLead(payload: CounselingPayload): Promise<
   const data: CounselingResult = await res.json();
   return data;
 }
+
+export type LeadPayload = {
+  name: string;
+  phone: string;
+  email?: string;
+  program?: string;
+  source?: string;
+  message?: string;
+};
+
+export async function submitLead(payload: LeadPayload): Promise<CounselingResult> {
+  return submitCounselingLead({
+    name: payload.name,
+    phone: payload.phone,
+    email: payload.email,
+    message: payload.program || payload.message,
+    source: payload.source,
+  });
+}
+

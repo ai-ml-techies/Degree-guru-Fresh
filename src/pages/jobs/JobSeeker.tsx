@@ -19,7 +19,7 @@ const WORK_TYPE_LABELS: Record<string, string> = {
 
 const WORK_TYPE_COLORS: Record<string, { bg: string; text: string }> = {
   "full-time":  { bg: "#ede9fe", text: "#6c45e0" },
-  "part-time":  { bg: "#dbeafe", text: "#2563eb" },
+  "part-time":  { bg: "#f3e8ff", text: "#6528f7" },
   "internship": { bg: "#fef3c7", text: "#d97706" },
   "remote":     { bg: "#d1fae5", text: "#059669" },
   "hybrid":     { bg: "#fee2e2", text: "#dc2626" },
