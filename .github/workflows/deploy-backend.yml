@@ -1,4 +1,5 @@
 name: Deploy Backend & API (Hostinger)
+# Triggering deployment with verified Hostinger FTP credentials
 
 on:
   push:
