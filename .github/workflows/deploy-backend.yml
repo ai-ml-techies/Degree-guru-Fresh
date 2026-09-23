@@ -127,10 +127,10 @@ jobs:
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_API_USERNAME || secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_API_PASSWORD || secrets.FTP_PASSWORD }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./backend-deploy/
-          server-dir: ${{ secrets.FTP_API_DIR || 'public_html/' }}
+          server-dir: ${{ secrets.FTP_API_DIR || 'public_html/api/' }}
           timeout: 600000
           dangerous-clean-slate: false
           exclude: |
@@ -144,10 +144,10 @@ jobs:
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_ADMIN_USERNAME || secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_ADMIN_PASSWORD || secrets.FTP_PASSWORD }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./backend-deploy/
-          server-dir: ${{ secrets.FTP_ADMIN_DIR || 'public_html/' }}
+          server-dir: ${{ secrets.FTP_ADMIN_DIR || 'public_html/admin/' }}
           timeout: 600000
           dangerous-clean-slate: false
           exclude: |
