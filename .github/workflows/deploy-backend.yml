@@ -81,6 +81,47 @@ jobs:
           touch backend-deploy/web/uploads/seeker-resumes/.gitkeep
           touch backend-deploy/web/uploads/job-docs/.gitkeep
 
+      - name: Diagnose Hostinger FTP Connection & Directories
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_API_USERNAME: ${{ secrets.FTP_API_USERNAME }}
+          FTP_ADMIN_USERNAME: ${{ secrets.FTP_ADMIN_USERNAME }}
+        run: |
+          python3 - << 'EOF'
+          import os
+          from ftplib import FTP, error_perm
+
+          server = os.environ.get("FTP_SERVER", "")
+          password = os.environ.get("FTP_PASSWORD", "")
+          users = [
+              ("FTP_API_USERNAME", os.environ.get("FTP_API_USERNAME", "")),
+              ("FTP_ADMIN_USERNAME", os.environ.get("FTP_ADMIN_USERNAME", "")),
+              ("FTP_USERNAME", os.environ.get("FTP_USERNAME", ""))
+          ]
+
+          print(f"Connecting to {server}:21...")
+          for label, user in users:
+              if not user:
+                  print(f"[{label}] is empty, skipping.")
+                  continue
+              print(f"\n--- Testing [{label}] = '{user}' ---")
+              try:
+                  ftp = FTP()
+                  ftp.connect(server, 21, timeout=15)
+                  ftp.login(user, password)
+                  print(f"SUCCESS: Connected and logged in as {user}!")
+                  print(f"Current Working Directory (PWD): {ftp.pwd()}")
+                  print("Directory Contents:")
+                  ftp.retrlines("LIST")
+                  ftp.quit()
+              except error_perm as e:
+                  print(f"LOGIN FAILED for {user}: {e}")
+              except Exception as e:
+                  print(f"ERROR: {e}")
+          EOF
+
       - name: Deploy to api.degreeguru.in via FTP
         if: ${{ github.event.inputs.target == null || github.event.inputs.target == 'all' || github.event.inputs.target == 'api' }}
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
