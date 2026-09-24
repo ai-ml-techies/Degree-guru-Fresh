@@ -545,7 +545,7 @@ export const CollegeVidyaCourseExplorer = () => {
       {/* Course Explorer Two-Column Glassmorphism Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start">
         {/* Left Sidebar Category Tabs (Desktop & Tablet) */}
-        <div className="lg:col-span-3 flex lg:flex-col gap-2 overflow-x-auto pb-2 lg:pb-0 scrollbar-hide">
+        <div className="lg:col-span-3 flex lg:flex-col gap-1.5 overflow-x-auto pb-2 lg:pb-0 scrollbar-hide">
           {CATEGORIES.map((cat) => {
             const isSelected = activeTab === cat.id;
             return (
@@ -553,23 +553,17 @@ export const CollegeVidyaCourseExplorer = () => {
                 key={cat.id}
                 type="button"
                 onClick={() => setActiveTab(cat.id)}
-                className={`text-left px-3.5 py-2.5 sm:py-3 rounded-xl transition-all duration-200 shrink-0 w-auto lg:w-full border cursor-pointer backdrop-blur-md ${
+                className={`text-left px-3 py-2 sm:py-2.5 rounded-lg transition-all duration-200 shrink-0 w-auto lg:w-full border cursor-pointer backdrop-blur-md ${
                   isSelected
-                    ? "bg-[#6528f7] text-white border-[#6528f7] shadow-lg shadow-[#6528f7]/25"
+                    ? "bg-[#6528f7] text-white border-[#6528f7] shadow-md shadow-[#6528f7]/25"
                     : "bg-card/75 dark:bg-card/40 border-border/70 hover:border-[#6528f7]/40 hover:bg-card/90 text-foreground"
                 }`}
               >
-                <div className={`text-xs sm:text-[13px] font-bold tracking-tight leading-tight ${isSelected ? "text-white" : "text-foreground"}`}>
+                <div className={`text-xs sm:text-[12.5px] font-bold tracking-tight leading-tight ${isSelected ? "text-white" : "text-foreground"}`}>
                   {cat.title}
                 </div>
                 <div className="mt-1">
-                  <span
-                    className={`inline-block text-[9.5px] font-semibold px-2 py-0.5 rounded-md ${
-                      isSelected
-                        ? "bg-white/20 text-white"
-                        : "bg-[#6528f7]/10 text-[#6528f7] dark:bg-[#6528f7]/20 dark:text-purple-300"
-                    }`}
-                  >
+                  <span className="inline-block text-[8.5px] sm:text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-white text-[#6528f7] shadow-xs">
                     {cat.subtitle}
                   </span>
                 </div>

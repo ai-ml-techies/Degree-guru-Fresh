@@ -58,36 +58,36 @@
   }
 
   .dark {
-    /* Pure deep obsidian / purple-glow dark theme (No blue) */
-    --background: 260 15% 7%;             /* Deep obsidian dark */
-    --foreground: 0 0% 96%;               /* Pure crisp white */
-    --primary: 258 95% 70%;               /* Brand Purple #8247ff */
+    /* Subtle, soothing, eye-friendly dark theme with gentle contrast (Soft Slate / Charcoal) */
+    --background: 224 16% 12%;            /* Eye-pleasing subtle dark slate (~#161922) */
+    --foreground: 220 14% 93%;            /* Soft, gentle readable off-white */
+    --primary: 258 92% 66%;               /* Brand Purple #7033f7 */
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 258 95% 80%;
+    --primary-glow: 258 92% 76%;
 
-    --card: 260 12% 11%;                  /* Deep dark card surface */
-    --card-foreground: 0 0% 96%;
-    --popover: 260 12% 11%;
-    --popover-foreground: 0 0% 96%;
-    --secondary: 260 10% 16%;
-    --secondary-foreground: 0 0% 96%;
-    --muted: 260 10% 16%;
-    --muted-foreground: 260 5% 65%;       /* Soft neutral readable secondary */
-    --accent: 258 95% 70%;
+    --card: 224 15% 16%;                  /* Soft, gentle card surface (~#1d212c) */
+    --card-foreground: 220 14% 93%;
+    --popover: 224 15% 16%;
+    --popover-foreground: 220 14% 93%;
+    --secondary: 224 14% 21%;
+    --secondary-foreground: 220 14% 93%;
+    --muted: 224 14% 20%;
+    --muted-foreground: 220 12% 70%;      /* Soft neutral readable secondary */
+    --accent: 258 92% 66%;
     --accent-foreground: 0 0% 100%;
-    --border: 260 10% 20%;                /* Subtle dark border */
-    --input: 260 10% 20%;
-    --ring: 258 95% 70%;
+    --border: 224 13% 23%;                /* Gentle, subtle dark border (~#2d3243) */
+    --input: 224 13% 23%;
+    --ring: 258 92% 66%;
 
-    --glass-bg: 20 18 26;
-    --glass-bg-alpha: 0.75;
+    --glass-bg: 26 30 42;
+    --glass-bg-alpha: 0.82;
     --glass-border: 255 255 255;
-    --glass-border-alpha: 0.12;
-    --glass-shadow: 0 8px 32px rgba(0,0,0,0.45);
-    --glass-shadow-hover: 0 16px 48px rgba(0,0,0,0.6);
+    --glass-border-alpha: 0.08;
+    --glass-shadow: 0 8px 30px rgba(0,0,0,0.28);
+    --glass-shadow-hover: 0 14px 42px rgba(0,0,0,0.38);
 
-    --header-bg: 15 13 20;
-    --header-bg-alpha: 0.92;
+    --header-bg: 20 23 32;
+    --header-bg-alpha: 0.94;
   }
 
   .dark .text-soft { color: hsl(var(--foreground) / 0.85); }

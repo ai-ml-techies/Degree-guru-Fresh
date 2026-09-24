@@ -168,9 +168,6 @@ export const UniversitiesGridShowcase: React.FC = () => {
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground tracking-tight">
             <span className="text-primary">UGC-approved universities</span>, verified by us and reviewed by learners, on 30+ factors
           </h2>
-          <p className="text-xs sm:text-sm text-muted-foreground">
-            Explore authentic approvals, NAAC grades, placement statistics, and official fees.
-          </p>
         </div>
 
         {/* 6-column grid on desktop, 3-col on tablet, 2-col on mobile */}

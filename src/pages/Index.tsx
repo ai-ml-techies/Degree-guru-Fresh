@@ -150,7 +150,7 @@ export const Index = () => {
         <div className="container-dg space-y-6">
           <div className="text-center max-w-3xl mx-auto">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground tracking-tight">
-              Explore Programs by Category & Level
+              Explore Online Degree Programs by Category & Level
             </h2>
           </div>
 
