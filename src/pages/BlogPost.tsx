@@ -5,7 +5,6 @@ import { BLOG_POSTS } from "@/data/blogs";
 import {
   Clock,
   ArrowRight,
-  Share2,
   Sparkles,
   BookOpen,
   Copy,
@@ -13,13 +12,17 @@ import {
   ChevronRight,
   Home,
 } from "lucide-react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  WhatsAppCircleIcon,
+  FacebookCircleIcon,
+  LinkedInCircleIcon,
+  XCircleIcon,
+} from "@/components/SocialIcons";
 
 export const BlogPost = () => {
   const { postSlug } = useParams<{ postSlug: string }>();
   const post = BLOG_POSTS.find((p) => p.slug === postSlug);
   const [copied, setCopied] = useState(false);
-  const [authorModalOpen, setAuthorModalOpen] = useState(false);
 
   if (!post) {
     return <Navigate to="/blog" replace />;
@@ -118,27 +121,29 @@ export const BlogPost = () => {
 
           {/* Author and Social Bar */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border/70 mb-8">
-            {/* Author Info: Clickable Yash showing full credentials & articles */}
+            {/* Author Info: Clickable Yash opening /author/yash in a new page */}
             <div className="flex items-center gap-3.5">
-              <button
-                type="button"
-                onClick={() => setAuthorModalOpen(true)}
-                className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-primary/30 bg-muted shrink-0 hover:scale-105 transition-transform cursor-pointer shadow-sm group"
-                title="Click to view Yash's credentials & articles"
+              <Link
+                to="/author/yash"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-primary/30 bg-muted shrink-0 hover:scale-105 hover:border-primary transition-all shadow-sm group block"
+                title="View Yash's profile & articles (opens in new tab)"
               >
                 <img
-                  src={post.author.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&auto=format&fit=crop&q=80"}
+                  src={post.author.avatar || "/assets/yash-avatar.svg"}
                   alt={post.author.name}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform"
                 />
-              </button>
+              </Link>
               <div>
                 <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setAuthorModalOpen(true)}
-                    className="text-sm font-black text-foreground hover:text-primary transition-colors flex items-center gap-1.5 cursor-pointer text-left"
-                    title="Click to view Yash's credentials & articles"
+                  <Link
+                    to="/author/yash"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm font-black text-foreground hover:text-primary transition-colors flex items-center gap-1.5"
+                    title="View Yash's profile & articles (opens in new tab)"
                   >
                     <span>{post.author.name}</span>
                     {post.author.verified && (
@@ -148,7 +153,7 @@ export const BlogPost = () => {
                         </svg>
                       </span>
                     )}
-                  </button>
+                  </Link>
 
                   {/* LinkedIn Icon in front of writer name linking to Yash's LinkedIn profile */}
                   <a
@@ -165,29 +170,26 @@ export const BlogPost = () => {
                   </a>
                 </div>
                 <div className="text-xs text-muted-foreground font-medium flex items-center gap-1.5 flex-wrap">
-                  <button
-                    type="button"
-                    onClick={() => setAuthorModalOpen(true)}
-                    className="font-bold text-foreground/85 hover:text-primary hover:underline cursor-pointer"
+                  <Link
+                    to="/author/yash"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-bold text-foreground/85 hover:text-primary hover:underline"
                   >
                     {post.author.role}
-                  </button>
+                  </Link>
                   <span>·</span>
-                  <button
-                    type="button"
-                    onClick={() => setAuthorModalOpen(true)}
-                    className="text-foreground/80 hover:text-primary hover:underline cursor-pointer"
-                  >
-                    {post.author.education}
-                  </button>
+                  <span className="text-foreground/80">
+                    {post.author.experience || "Over 3.5 years of experience in marketing and brand building"}
+                  </span>
                   <span>·</span>
                   <span>{post.publishDate}</span>
                 </div>
               </div>
             </div>
 
-            {/* Share in Feed: WhatsApp, LinkedIn, Facebook, and X (Twitter) with bigger balanced icons */}
-            <div className="flex items-center gap-2.5">
+            {/* Share in Feed: WhatsApp, LinkedIn, Facebook, and X (HD Circular Logos, reduced size) */}
+            <div className="flex items-center gap-2">
               <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider mr-1">Share</span>
               
               {/* WhatsApp Share */}
@@ -197,11 +199,9 @@ export const BlogPost = () => {
                 rel="noopener noreferrer"
                 aria-label="Share on WhatsApp"
                 title="Share on WhatsApp"
-                className="w-10 h-10 rounded-full bg-[#25D366] text-white flex items-center justify-center hover:opacity-95 transition-transform hover:scale-110 shadow-sm shrink-0"
+                className="hover:scale-105 active:scale-95 transition-transform shrink-0"
               >
-                <svg className="w-5 h-5 fill-white" viewBox="0 0 24 24">
-                  <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.587-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.007c.106.005.249-.04.39.299.144.347.491 1.196.534 1.284.043.088.072.19.014.305-.058.115-.087.187-.173.289l-.26.309c-.087.098-.178.204-.076.379.102.175.454.748.974 1.211.669.596 1.233.78 1.408.867.175.086.277.072.379-.044.102-.116.433-.505.549-.679.116-.174.232-.145.39-.087s1.011.477 1.184.564.289.13.332.203c.043.072.043.419-.101.824z" />
-                </svg>
+                <WhatsAppCircleIcon className="w-8 h-8 rounded-full shadow-sm hover:shadow-md" />
               </a>
 
               {/* LinkedIn Share to Feed */}
@@ -211,11 +211,9 @@ export const BlogPost = () => {
                 rel="noopener noreferrer"
                 aria-label="Share to LinkedIn Feed"
                 title="Share to LinkedIn Feed"
-                className="w-10 h-10 rounded-full bg-[#0077B5] text-white flex items-center justify-center hover:opacity-95 transition-transform hover:scale-110 shadow-sm shrink-0"
+                className="hover:scale-105 active:scale-95 transition-transform shrink-0"
               >
-                <svg className="w-5 h-5 fill-white" viewBox="0 0 24 24">
-                  <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 8.76c-.97 0-1.75-.79-1.75-1.76s.78-1.75 1.75-1.75 1.75.78 1.75 1.75-.78 1.76-1.75 1.76m1.4 9.74v-8.37H5.06v8.37h2.8z" />
-                </svg>
+                <LinkedInCircleIcon className="w-8 h-8 rounded-full shadow-sm hover:shadow-md" />
               </a>
 
               {/* Facebook Share */}
@@ -225,11 +223,9 @@ export const BlogPost = () => {
                 rel="noopener noreferrer"
                 aria-label="Share on Facebook"
                 title="Share on Facebook"
-                className="w-10 h-10 rounded-full bg-[#1877F2] text-white flex items-center justify-center hover:opacity-95 transition-transform hover:scale-110 shadow-sm shrink-0"
+                className="hover:scale-105 active:scale-95 transition-transform shrink-0"
               >
-                <svg className="w-5 h-5 fill-white" viewBox="0 0 24 24">
-                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                </svg>
+                <FacebookCircleIcon className="w-8 h-8 rounded-full shadow-sm hover:shadow-md" />
               </a>
 
               {/* Twitter / X Share */}
@@ -239,11 +235,9 @@ export const BlogPost = () => {
                 rel="noopener noreferrer"
                 aria-label="Share on X"
                 title="Share on X"
-                className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center hover:opacity-95 transition-transform hover:scale-110 shadow-sm shrink-0"
+                className="hover:scale-105 active:scale-95 transition-transform shrink-0"
               >
-                <svg className="w-4.5 h-4.5 fill-white" viewBox="0 0 24 24">
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                </svg>
+                <XCircleIcon className="w-8 h-8 rounded-full shadow-sm hover:shadow-md" />
               </a>
             </div>
           </div>
@@ -264,18 +258,18 @@ export const BlogPost = () => {
             <div className="lg:col-span-8 space-y-8">
               {/* Executive Summary & Key Takeaways Card */}
               {post.keyTakeaways && post.keyTakeaways.length > 0 && (
-                <div className="p-6 sm:p-8 rounded-3xl bg-[#f5f3ff] dark:bg-purple-950/25 border border-purple-200/90 dark:border-purple-800/40 shadow-sm space-y-4">
+                <div className="p-5 sm:p-6 rounded-2xl bg-[#f5f3ff] dark:bg-purple-950/25 border border-purple-200/90 dark:border-purple-800/40 shadow-sm space-y-3">
                   <div className="flex items-center gap-2 text-purple-900 dark:text-purple-300 font-extrabold text-xs sm:text-sm uppercase tracking-wider">
-                    <Sparkles size={16} className="text-purple-600 dark:text-purple-400" />
+                    <Sparkles size={15} className="text-purple-600 dark:text-purple-400" />
                     <span>Executive Summary & Key Takeaways</span>
                   </div>
 
-                  <ul className="space-y-3.5 pt-1">
+                  <ul className="space-y-2.5 pt-0.5">
                     {post.keyTakeaways.map((item, idx) => (
-                      <li key={idx} className="flex items-start gap-3 text-xs sm:text-sm leading-relaxed text-foreground/90">
-                        <span className="w-2 h-2 rounded-full bg-purple-600 dark:bg-purple-400 mt-2 shrink-0" />
+                      <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm leading-snug text-foreground/90">
+                        <span className="w-1.5 h-1.5 rounded-full bg-purple-600 dark:bg-purple-400 mt-2 shrink-0" />
                         <div>
-                          <span className="font-extrabold text-foreground">{item.title}: </span>
+                          <strong className="font-extrabold text-foreground">{item.title}: </strong>
                           <span className="text-foreground/80">{renderFormattedInline(item.desc)}</span>
                         </div>
                       </li>
@@ -415,18 +409,17 @@ export const BlogPost = () => {
                     Share directly with colleagues, classmates, or in your professional feed.
                   </p>
                 </div>
-                <div className="flex items-center flex-wrap gap-2">
+                <div className="flex items-center flex-wrap gap-2.5">
                   {/* WhatsApp */}
                   <a
                     href={`https://api.whatsapp.com/send?text=${encodeURIComponent(post.title + " - " + currentUrl)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#25D366] text-white text-xs font-bold hover:opacity-90 transition-all shadow-sm"
+                    aria-label="Share on WhatsApp"
+                    title="Share on WhatsApp"
+                    className="hover:scale-105 active:scale-95 transition-transform shrink-0"
                   >
-                    <svg className="w-3.5 h-3.5 fill-white" viewBox="0 0 24 24">
-                      <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.587-5.771-5.764-5.771z" />
-                    </svg>
-                    <span>WhatsApp</span>
+                    <WhatsAppCircleIcon className="w-8 h-8 rounded-full shadow-sm" />
                   </a>
 
                   {/* LinkedIn Share */}
@@ -434,12 +427,11 @@ export const BlogPost = () => {
                     href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(currentUrl)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#0077B5] text-white text-xs font-bold hover:opacity-90 transition-all shadow-sm"
+                    aria-label="Share on LinkedIn"
+                    title="Share on LinkedIn"
+                    className="hover:scale-105 active:scale-95 transition-transform shrink-0"
                   >
-                    <svg className="w-3.5 h-3.5 fill-white" viewBox="0 0 24 24">
-                      <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 8.76c-.97 0-1.75-.79-1.75-1.76s.78-1.75 1.75-1.75 1.75.78 1.75 1.75-.78 1.76-1.75 1.76m1.4 9.74v-8.37H5.06v8.37h2.8z" />
-                    </svg>
-                    <span>LinkedIn</span>
+                    <LinkedInCircleIcon className="w-8 h-8 rounded-full shadow-sm" />
                   </a>
 
                   {/* Facebook Share */}
@@ -447,12 +439,11 @@ export const BlogPost = () => {
                     href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#1877F2] text-white text-xs font-bold hover:opacity-90 transition-all shadow-sm"
+                    aria-label="Share on Facebook"
+                    title="Share on Facebook"
+                    className="hover:scale-105 active:scale-95 transition-transform shrink-0"
                   >
-                    <svg className="w-3.5 h-3.5 fill-white" viewBox="0 0 24 24">
-                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                    </svg>
-                    <span>Facebook</span>
+                    <FacebookCircleIcon className="w-8 h-8 rounded-full shadow-sm" />
                   </a>
 
                   {/* X / Twitter Share */}
@@ -460,18 +451,17 @@ export const BlogPost = () => {
                     href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(currentUrl)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black text-white text-xs font-bold hover:opacity-90 transition-all shadow-sm"
+                    aria-label="Share on X"
+                    title="Share on X"
+                    className="hover:scale-105 active:scale-95 transition-transform shrink-0"
                   >
-                    <svg className="w-3.5 h-3.5 fill-white" viewBox="0 0 24 24">
-                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                    </svg>
-                    <span>X</span>
+                    <XCircleIcon className="w-8 h-8 rounded-full shadow-sm" />
                   </a>
 
                   {/* Copy Link */}
                   <button
                     onClick={handleCopyLink}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-border text-xs font-bold text-foreground hover:bg-muted transition-all"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 h-8 rounded-xl border border-border text-xs font-bold text-foreground hover:bg-muted transition-all"
                   >
                     {copied ? <Check size={13} className="text-emerald-500" /> : <Copy size={13} />}
                     <span>{copied ? "Copied" : "Copy"}</span>
@@ -554,31 +544,34 @@ export const BlogPost = () => {
             </div>
           </div>
 
-          {/* Author Box — Yash Credentials & Link to his articles */}
+          {/* Author Box — Yash Credentials & Link to his dedicated profile page */}
           <div className="mt-12 p-6 sm:p-8 rounded-3xl bg-card border border-border/80 shadow-md">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
               <div className="flex items-start sm:items-center gap-4">
-                <button
-                  type="button"
-                  onClick={() => setAuthorModalOpen(true)}
-                  className="w-16 h-16 rounded-2xl overflow-hidden border-2 border-primary/30 shrink-0 shadow-sm hover:scale-105 transition-transform cursor-pointer"
-                  title="View Yash's Credentials & Articles"
+                <Link
+                  to="/author/yash"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-16 h-16 rounded-2xl overflow-hidden border-2 border-primary/30 shrink-0 shadow-sm hover:scale-105 transition-transform block bg-muted"
+                  title="View Yash's Full Profile & Articles (opens in new tab)"
                 >
                   <img
-                    src={post.author.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&auto=format&fit=crop&q=80"}
+                    src={post.author.avatar || "/assets/yash-avatar.svg"}
                     alt={post.author.name}
                     className="w-full h-full object-cover"
                   />
-                </button>
+                </Link>
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setAuthorModalOpen(true)}
-                      className="text-lg font-black text-foreground hover:text-primary transition-colors cursor-pointer"
+                    <Link
+                      to="/author/yash"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-lg font-black text-foreground hover:text-primary transition-colors"
+                      title="View Yash's Full Profile & Articles (opens in new tab)"
                     >
                       {post.author.name}
-                    </button>
+                    </Link>
                     <span className="inline-flex items-center text-blue-500">
                       <svg className="w-4 h-4 fill-blue-500 text-white" viewBox="0 0 24 24">
                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15-5-5 1.41-1.41L11 14.17l7.59-7.59L20 8l-9 9z" />
@@ -597,7 +590,7 @@ export const BlogPost = () => {
                     </a>
                   </div>
                   <div className="text-xs font-bold text-primary">
-                    {post.author.role} · {post.author.education}
+                    {post.author.role} · {post.author.experience || "Over 3.5 years of experience in marketing and brand building"}
                   </div>
                   <p className="text-xs text-muted-foreground leading-relaxed max-w-xl">
                     {post.author.bio}
@@ -605,14 +598,15 @@ export const BlogPost = () => {
                 </div>
               </div>
 
-              <button
-                type="button"
-                onClick={() => setAuthorModalOpen(true)}
+              <Link
+                to="/author/yash"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="px-5 py-2.5 rounded-xl border border-primary/40 bg-primary/10 text-primary text-xs font-bold hover:bg-primary hover:text-white transition-all shrink-0 flex items-center gap-1.5"
               >
-                <span>View All Articles by Yash</span>
+                <span>View Yash's Profile & Articles</span>
                 <ArrowRight size={13} />
-              </button>
+              </Link>
             </div>
           </div>
 
@@ -666,74 +660,6 @@ export const BlogPost = () => {
           </div>
         </div>
       </div>
-
-      {/* Yash Author Profile Dialog Modal */}
-      <Dialog open={authorModalOpen} onOpenChange={setAuthorModalOpen}>
-        <DialogContent className="max-w-lg p-6 sm:p-8 rounded-3xl bg-card border border-border shadow-2xl space-y-5">
-          <DialogHeader>
-            <DialogTitle className="sr-only">Author Profile - {post.author.name}</DialogTitle>
-          </DialogHeader>
-
-          <div className="flex items-start gap-4">
-            <div className="w-16 h-16 rounded-2xl overflow-hidden border-2 border-primary/30 shrink-0 shadow-md">
-              <img
-                src={post.author.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&auto=format&fit=crop&q=80"}
-                alt={post.author.name}
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="space-y-1">
-              <div className="flex items-center gap-2">
-                <h3 className="text-xl font-black text-foreground">{post.author.name}</h3>
-                <span className="inline-flex items-center text-blue-500">
-                  <svg className="w-4 h-4 fill-blue-500 text-white" viewBox="0 0 24 24">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15-5-5 1.41-1.41L11 14.17l7.59-7.59L20 8l-9 9z" />
-                  </svg>
-                </span>
-              </div>
-              <div className="text-xs font-bold text-primary">
-                {post.author.role} · {post.author.education}
-              </div>
-              <a
-                href={post.author.linkedin || "https://www.linkedin.com/in/yashappy"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs text-[#0077b5] font-bold hover:underline pt-1"
-              >
-                <span>Connect on LinkedIn</span>
-                <ArrowRight size={12} />
-              </a>
-            </div>
-          </div>
-
-          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-            {post.author.bio}
-          </p>
-
-          <div className="pt-3 border-t border-border/70 space-y-3">
-            <h4 className="text-xs font-black uppercase tracking-wider text-foreground">
-              Articles Written by Yash ({BLOG_POSTS.length})
-            </h4>
-            <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
-              {BLOG_POSTS.map((bp) => (
-                <Link
-                  key={bp.slug}
-                  to={`/blog/${bp.slug}`}
-                  onClick={() => setAuthorModalOpen(false)}
-                  className={`p-3 rounded-xl border flex items-center justify-between gap-3 text-xs transition-colors ${
-                    bp.slug === post.slug
-                      ? "bg-primary/10 border-primary/30 text-primary font-bold"
-                      : "bg-muted/50 border-border/70 text-foreground hover:bg-primary/5 hover:border-primary/30"
-                  }`}
-                >
-                  <span className="line-clamp-1">{bp.title}</span>
-                  <ArrowRight size={12} className="shrink-0 text-muted-foreground" />
-                </Link>
-              ))}
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
     </>
   );
 };

@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8b5cf6" />
+      <stop offset="100%" stop-color="#6528f7" />
+    </linearGradient>
+    <linearGradient id="skinGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffd5b5" />
+      <stop offset="100%" stop-color="#fabe96" />
+    </linearGradient>
+    <linearGradient id="suitGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1b4b" />
+      <stop offset="100%" stop-color="#312e81" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background Circle -->
+  <circle cx="120" cy="120" r="120" fill="url(#bgGrad)" />
+
+  <!-- Body / Corporate Blazer -->
+  <path d="M48 240 C48 184 76 166 120 166 C164 166 192 184 192 240 Z" fill="url(#suitGrad)" />
+  
+  <!-- White Collar Shirt & Tie -->
+  <polygon points="120,166 102,192 138,192" fill="#ffffff" />
+  <polygon points="116,186 124,186 126,220 120,228 114,220" fill="#6528f7" />
+  <polygon points="102,166 120,202 120,166" fill="#f8fafc" />
+  <polygon points="138,166 120,202 120,166" fill="#f1f5f9" />
+
+  <!-- Neck -->
+  <rect x="108" y="140" width="24" height="28" rx="6" fill="#fabe96" />
+
+  <!-- Head Base -->
+  <ellipse cx="120" cy="112" rx="42" ry="46" fill="url(#skinGrad)" />
+
+  <!-- Ears -->
+  <circle cx="78" cy="114" r="10" fill="#fabe96" />
+  <circle cx="162" cy="114" r="10" fill="#fabe96" />
+
+  <!-- Stylish Modern Hair -->
+  <path d="M78 94 C76 66 102 52 124 52 C150 52 168 64 164 96 C154 84 144 80 128 80 C108 80 92 86 78 94 Z" fill="#18181b" />
+  <path d="M82 88 C90 74 114 68 136 70 C154 72 160 84 160 84 C150 78 136 74 122 75 C104 76 92 84 82 88 Z" fill="#27272a" />
+
+  <!-- Modern Spectacles / Glasses -->
+  <rect x="88" y="98" width="24" height="18" rx="5" fill="none" stroke="#0f172a" stroke-width="3" />
+  <rect x="128" y="98" width="24" height="18" rx="5" fill="none" stroke="#0f172a" stroke-width="3" />
+  <line x1="112" y1="106" x2="128" y2="106" stroke="#0f172a" stroke-width="3" stroke-linecap="round" />
+  <line x1="78" y1="104" x2="88" y2="106" stroke="#0f172a" stroke-width="3" stroke-linecap="round" />
+  <line x1="152" y1="106" x2="162" y2="104" stroke="#0f172a" stroke-width="3" stroke-linecap="round" />
+
+  <!-- Eyes inside Glasses -->
+  <circle cx="100" cy="107" r="3.5" fill="#0f172a" />
+  <circle cx="140" cy="107" r="3.5" fill="#0f172a" />
+  <circle cx="101.5" cy="105.5" r="1" fill="#ffffff" />
+  <circle cx="141.5" cy="105.5" r="1" fill="#ffffff" />
+
+  <!-- Eyebrows -->
+  <path d="M89 93 Q100 90 110 93" fill="none" stroke="#18181b" stroke-width="2.5" stroke-linecap="round" />
+  <path d="M130 93 Q140 90 151 93" fill="none" stroke="#18181b" stroke-width="2.5" stroke-linecap="round" />
+
+  <!-- Nose -->
+  <path d="M118 116 Q120 124 123 124" fill="none" stroke="#e09d75" stroke-width="2.5" stroke-linecap="round" />
+
+  <!-- Confident Warm Smile -->
+  <path d="M109 134 Q120 144 131 134" fill="none" stroke="#991b1b" stroke-width="3" stroke-linecap="round" />
+
+  <!-- Subtle Cheeks -->
+  <circle cx="94" cy="125" r="5" fill="#f43f5e" opacity="0.25" />
+  <circle cx="146" cy="125" r="5" fill="#f43f5e" opacity="0.25" />
+</svg>

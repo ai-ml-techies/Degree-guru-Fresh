@@ -138,19 +138,27 @@ export const Blog = () => {
               {/* Author & Read More Bar */}
               <div className="px-6 sm:px-7 py-4 bg-muted/30 border-t border-border/50 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-full overflow-hidden bg-muted border border-border">
-                    <img
-                      src={post.author.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&auto=format&fit=crop&q=80"}
-                      alt={post.author.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <span className="text-xs font-bold text-foreground flex items-center gap-1">
-                    {post.author.name}
-                    <svg className="w-3.5 h-3.5 fill-blue-500 text-white" viewBox="0 0 24 24">
-                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15-5-5 1.41-1.41L11 14.17l7.59-7.59L20 8l-9 9z" />
-                    </svg>
-                  </span>
+                  <Link
+                    to="/author/yash"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 group/author hover:text-primary transition-colors"
+                    title="View Yash's Profile & Articles"
+                  >
+                    <div className="w-6 h-6 rounded-full overflow-hidden bg-muted border border-border group-hover/author:border-primary transition-colors">
+                      <img
+                        src={post.author.avatar || "/assets/yash-avatar.svg"}
+                        alt={post.author.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <span className="text-xs font-bold text-foreground group-hover/author:text-primary flex items-center gap-1 transition-colors">
+                      {post.author.name}
+                      <svg className="w-3.5 h-3.5 fill-blue-500 text-white" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15-5-5 1.41-1.41L11 14.17l7.59-7.59L20 8l-9 9z" />
+                      </svg>
+                    </span>
+                  </Link>
                 </div>
 
                 <Link

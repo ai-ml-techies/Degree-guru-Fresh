@@ -1,3 +1,15 @@
+export type BlogAuthor = {
+  name: string;
+  slug: string;
+  role: string;
+  experience: string;
+  education: string;
+  bio: string;
+  verified: boolean;
+  avatar: string;
+  linkedin: string;
+};
+
 export type BlogPost = {
   slug: string;
   title: string;
@@ -7,21 +19,25 @@ export type BlogPost = {
   summary: string;
   metaDescription: string;
   image: string;
-  author: {
-    name: string;
-    role: string;
-    education: string;
-    bio: string;
-    verified: boolean;
-    avatar?: string;
-    linkedin: string;
-  };
+  author: BlogAuthor;
   keyTakeaways: { title: string; desc: string }[];
   toc: { id: string; label: string }[];
   tags: string[];
   contentMarkdown: string;
   relatedCourses: { name: string; url: string }[];
   relatedTools: { name: string; url: string }[];
+};
+
+export const YASH_AUTHOR: BlogAuthor = {
+  name: "Yash",
+  slug: "yash",
+  role: "Marketing Head",
+  experience: "Over 3.5 years of experience in marketing and brand building",
+  education: "MBA from Amity University",
+  verified: true,
+  avatar: "/assets/yash-avatar.svg",
+  bio: "Marketing Head at Degree Guru with over 3.5 years of experience in marketing, growth strategy, and brand building. Holds an MBA from Amity University. Specializes in higher education benchmarking, UGC-DEB accreditation audits, and educational technology strategy.",
+  linkedin: "https://www.linkedin.com/in/yashappy",
 };
 
 export const BLOG_POSTS: BlogPost[] = [
@@ -32,39 +48,31 @@ export const BLOG_POSTS: BlogPost[] = [
     readTime: "6 min read",
     publishDate: "March 24, 2026",
     summary:
-      "A critical comparison exposing the major drawbacks of IGNOU distance education—delayed books, zero student networking, and no live classes—against agile UGC-DEB online universities.",
+      "Why IGNOU distance education falls short on networking, live classes, and timely book delivery compared to modern online degrees.",
     metaDescription:
       "Critical comparison of IGNOU vs modern Online Universities. Discover why IGNOU struggles with delayed study materials, lack of batchmate networking, absence of live classes, and outdated syllabus.",
     image: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1200&auto=format&fit=crop&q=80",
-    author: {
-      name: "Yash",
-      role: "Marketing Head",
-      education: "MBA from Amity University",
-      verified: true,
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&auto=format&fit=crop&q=80",
-      bio: "Marketing Head at Degree Guru. MBA from Amity University. Specializes in education market intelligence, university audits, and student career roadmap design.",
-      linkedin: "https://www.linkedin.com/in/yashappy",
-    },
+    author: YASH_AUTHOR,
     keyTakeaways: [
       {
-        title: "Zero Batchmate Networking in IGNOU",
-        desc: "IGNOU distance students study in complete isolation without peer cohorts or alumni channels, whereas Online Universities build active Slack/Discord communities and collaborative group projects.",
+        title: "No Peer Networking",
+        desc: "Isolated distance setup with zero cohort collaboration or student communities.",
       },
       {
-        title: "No Live Interactive Classes",
-        desc: "IGNOU offers no scheduled interactive online lectures, while modern Online Universities deliver structured weekend live faculty webinars and 24/7 lecture archives.",
+        title: "No Live Lectures",
+        desc: "Lacks scheduled interactive online classes; relies purely on independent reading.",
       },
       {
-        title: "Chronic Study Material Delivery Delays",
-        desc: "Printed booklets from IGNOU frequently arrive after semester exams or never at all, while Online Universities deliver immediate digital LMS access from day one.",
+        title: "Delayed Book Delivery",
+        desc: "Printed study material often arrives weeks after semester exams or not at all.",
       },
       {
-        title: "Unresponsive University Administration",
-        desc: "Resolving assignment errors or hall ticket issues at IGNOU regional centers often requires bureaucratic red tape, contrasted with dedicated online student relationship managers.",
+        title: "Unresponsive Helpdesk",
+        desc: "Resolving marks, admit cards, or administrative issues requires tedious office visits.",
       },
       {
-        title: "Outdated Legacy Syllabus",
-        desc: "IGNOU syllabi are refreshed slowly and lack modern AI and business software electives, whereas top online universities teach industry-current tools.",
+        title: "Outdated Curriculum",
+        desc: "Legacy theoretical syllabus with zero modern electives in AI, analytics, or tech.",
       },
     ],
     toc: [
@@ -145,39 +153,31 @@ Accredited online universities provide the modern digital framework, networking 
     readTime: "5 min read",
     publishDate: "March 20, 2026",
     summary:
-      "An unvarnished analysis of Delhi University School of Open Learning (DU SOL): exam chaos, missing batchmate networking, and delayed study material vs modern online universities.",
+      "Why DU SOL's distance model compromises on student networking, study material logistics, and live learning vs online universities.",
     metaDescription:
       "Evaluate DU SOL vs Online Universities objectively. Learn how DU SOL disadvantages students with zero networking, no live online lectures, delayed books, and overcrowded exam centers.",
     image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1200&auto=format&fit=crop&q=80",
-    author: {
-      name: "Yash",
-      role: "Marketing Head",
-      education: "MBA from Amity University",
-      verified: true,
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&auto=format&fit=crop&q=80",
-      bio: "Marketing Head at Degree Guru. MBA from Amity University. Specializes in education market intelligence, university audits, and student career roadmap design.",
-      linkedin: "https://www.linkedin.com/in/yashappy",
-    },
+    author: YASH_AUTHOR,
     keyTakeaways: [
       {
-        title: "No Student Networking or Campus Life",
-        desc: "DU SOL students miss out entirely on peer connection and batchmate collaboration, unlike online universities with interactive community hubs.",
+        title: "Zero Student Interaction",
+        desc: "No campus life, cohort groups, or alumni networking for distance learners.",
       },
       {
-        title: "No Structured Online Live Lectures",
-        desc: "DU SOL relies on chaotic Sunday offline classes in Delhi colleges with severe overcrowding, whereas online universities offer smooth live web lectures.",
+        title: "No Structured Live Classes",
+        desc: "Relies on overcrowded Sunday offline sessions rather than modern interactive webinars.",
       },
       {
-        title: "Study Material Supply Shortages",
-        desc: "Students endure massive queues at North and South Campus study centers only to face book shortages, while online universities provide immediate digital LMS notes.",
+        title: "Book Shortages & Queues",
+        desc: "Exhausting distribution queues and frequent study material stock shortages.",
       },
       {
-        title: "Zero Dedicated University Coordinator Support",
-        desc: "DU SOL helpdesks are notoriously hard to reach for admit card issues or marks updates, compared to dedicated mentors in online universities.",
+        title: "No Dedicated Coordinators",
+        desc: "Resolving marks, admit cards, or center issues requires tedious in-person office visits.",
       },
       {
-        title: "Rigid Delhi Physical Examination Centers",
-        desc: "DU SOL requires physical attendance at NCR exam centers, whereas online universities allow 100% remote proctored exams from anywhere in the world.",
+        title: "Rigid Delhi Centers",
+        desc: "Mandatory physical exam attendance in NCR vs 100% remote proctored online exams.",
       },
     ],
     toc: [
@@ -258,31 +258,23 @@ For career-driven students and working professionals, modern UGC-DEB online univ
     readTime: "5 min read",
     publishDate: "February 28, 2026",
     summary:
-      "Why an Online MBA is vastly superior to a traditional Distance MBA: pedagogy, LMS infrastructure, corporate recruitment, and cohort networking.",
+      "Key differences between Online MBA and Distance MBA across digital pedagogy, proctoring, and corporate recognition.",
     metaDescription:
       "Learn the difference between an Online MBA and Distance MBA. Compare curriculum interactivity, live lectures, peer networking, exam flexibility, and corporate hiring trends.",
     image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&auto=format&fit=crop&q=80",
-    author: {
-      name: "Yash",
-      role: "Marketing Head",
-      education: "MBA from Amity University",
-      verified: true,
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&auto=format&fit=crop&q=80",
-      bio: "Marketing Head at Degree Guru. MBA from Amity University. Specializes in education market intelligence, university audits, and student career roadmap design.",
-      linkedin: "https://www.linkedin.com/in/yashappy",
-    },
+    author: YASH_AUTHOR,
     keyTakeaways: [
       {
-        title: "Distinct UGC Regulations",
-        desc: "Online MBA programs are governed by specific UGC digital directives requiring mandatory synchronous live hours and virtual proctoring.",
+        title: "Digital Interactivity",
+        desc: "Online MBA provides live weekend faculty webinars, case studies, and doubt sessions.",
       },
       {
-        title: "Peer Networking Dynamics",
-        desc: "Online MBAs incorporate digital cohort lounges, capstone team projects, and live faculty discussions, unlike solitary distance learning.",
+        title: "100% Remote Exams",
+        desc: "AI web-proctored exams from home vs traveling to physical distance exam halls.",
       },
       {
-        title: "Corporate Recruitment Acceptance",
-        desc: "Top MNCs and tech firms actively recruit from accredited online MBA cohorts recognizing contemporary digital collaboration tools.",
+        title: "Corporate Recognition",
+        desc: "Leading employers actively recruit from accredited online cohorts with modern curricula.",
       },
     ],
     toc: [
@@ -330,31 +322,23 @@ Leading tech firms, consultancies, and MNCs actively recruit from accredited Onl
     readTime: "7 min read",
     publishDate: "March 15, 2026",
     summary:
-      "A step-by-step masterclass on optimizing your resume for Applicant Tracking Systems (ATS), incorporating metrics, and matching target job descriptions.",
+      "Essential rules for beating ATS algorithms with clean formatting, keyword alignment, and quantifiable metrics.",
     metaDescription:
       "Master ATS resume writing in 2026. Discover single-column layout best practices, keyword density, quantifiable bullet formulas, and free AI resume tools.",
     image: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=1200&auto=format&fit=crop&q=80",
-    author: {
-      name: "Yash",
-      role: "Marketing Head",
-      education: "MBA from Amity University",
-      verified: true,
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&auto=format&fit=crop&q=80",
-      bio: "Marketing Head at Degree Guru. MBA from Amity University. Specializes in education market intelligence, university audits, and student career roadmap design.",
-      linkedin: "https://www.linkedin.com/in/yashappy",
-    },
+    author: YASH_AUTHOR,
     keyTakeaways: [
       {
-        title: "The 75% Filter Hurdle",
-        desc: "Over 75% of corporate job applications are filtered out by ATS bots before human recruiters review them due to formatting errors.",
+        title: "75% Initial Filter Rate",
+        desc: "Over 75% of resumes are discarded by automated ATS parsers due to formatting flaws.",
       },
       {
-        title: "Single-Column Supremacy",
-        desc: "Multi-column graphic resumes fail parser ingestion; simple, semantic single-column hierarchy scores 95%+ in parse tests.",
+        title: "Single-Column Hierarchy",
+        desc: "Avoid multi-column tables and complex graphics that scramble parsing bots.",
       },
       {
-        title: "Quantifiable Impact Bullets",
-        desc: "Utilize Google's X-Y-Z formula (Accomplished [X], measured by [Y], by doing [Z]) to prove clear ROI to hiring managers.",
+        title: "Quantified X-Y-Z Formula",
+        desc: "Showcase concrete business impact using Google's quantified achievement formula.",
       },
     ],
     toc: [

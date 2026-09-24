@@ -32,6 +32,7 @@ const OfflineCourses    = lazy(() => import("./pages/OfflineCourses.tsx"));
 const Referral          = lazy(() => import("./pages/Referral.tsx"));
 const Blog              = lazy(() => import("./pages/Blog.tsx"));
 const BlogPost          = lazy(() => import("./pages/BlogPost.tsx"));
+const AuthorDetail      = lazy(() => import("./pages/AuthorDetail.tsx"));
 const Employer          = lazy(() => import("./pages/jobs/Employer.tsx"));
 const JobSeeker         = lazy(() => import("./pages/jobs/JobSeeker.tsx"));
 const Sitemap           = lazy(() => import("./pages/Sitemap.tsx"));
@@ -85,6 +86,8 @@ const App = () => (
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/blogs" element={<Blog />} />
                 <Route path="/blog/:postSlug" element={<BlogPost />} />
+                <Route path="/author/:authorSlug" element={<AuthorDetail />} />
+                <Route path="/authors/:authorSlug" element={<AuthorDetail />} />
 
                 {/* Employment / Job Platform */}
                 <Route path="/jobs" element={<JobSeeker />} />
