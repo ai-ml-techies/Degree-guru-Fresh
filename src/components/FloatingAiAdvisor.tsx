@@ -14,11 +14,13 @@ import {
   ArrowRight,
   Send,
   HelpCircle,
-  AlertCircle
+  AlertCircle,
+  Globe,
+  Check
 } from "lucide-react";
 import { askGeminiAdvisor } from "@/services/geminiService";
 import { GuruMascot } from "@/components/GuruMascot";
-import { useLanguage } from "@/context/LanguageContext";
+import { useLanguage, SUPPORTED_LANGUAGES } from "@/context/LanguageContext";
 
 type Message = {
   id: string;
@@ -32,6 +34,7 @@ export const FloatingAiAdvisor = () => {
   const [userInput, setUserInput] = useState<string>("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState<boolean>(false);
+  const [langMenuOpen, setLangMenuOpen] = useState<boolean>(false);
   const { language, setLanguage } = useLanguage();
 
   // Initial prompt templates based on language
@@ -337,28 +340,78 @@ export const FloatingAiAdvisor = () => {
 
             {/* Header Controls: EN | हि Toggle, Reset, Close */}
             <div className="flex items-center gap-1.5">
-              {/* Language Switcher Pill */}
-              <div className="flex items-center bg-black/25 rounded-full p-0.5 border border-white/20 text-[10px] font-extrabold">
-                <button
-                  type="button"
-                  onClick={() => setLanguage("en")}
-                  className={`px-2 py-0.5 rounded-full transition-all ${
-                    language === "en" ? "bg-white text-[#5022c3] shadow-sm" : "text-white/70 hover:text-white"
-                  }`}
-                  aria-label="Switch to English"
-                >
-                  EN
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setLanguage("hi")}
-                  className={`px-2 py-0.5 rounded-full transition-all ${
-                    language === "hi" ? "bg-amber-400 text-slate-900 shadow-sm" : "text-white/70 hover:text-white"
-                  }`}
-                  aria-label="Switch to Hindi"
-                >
-                  हि
-                </button>
+              {/* Language Switcher: Hindi & English preferred, plus expanded languages */}
+              <div className="relative">
+                <div className="flex items-center bg-black/25 rounded-full p-0.5 border border-white/20 text-[10px] font-extrabold">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setLanguage("hi");
+                      setLangMenuOpen(false);
+                    }}
+                    className={`px-2 py-0.5 rounded-full transition-all ${
+                      language === "hi" ? "bg-amber-400 text-slate-900 shadow-sm" : "text-white/70 hover:text-white"
+                    }`}
+                    aria-label="Switch to Hindi"
+                  >
+                    हि
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setLanguage("en");
+                      setLangMenuOpen(false);
+                    }}
+                    className={`px-2 py-0.5 rounded-full transition-all ${
+                      language === "en" ? "bg-white text-[#5022c3] shadow-sm" : "text-white/70 hover:text-white"
+                    }`}
+                    aria-label="Switch to English"
+                  >
+                    EN
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setLangMenuOpen(!langMenuOpen)}
+                    className="px-1 py-0.5 text-white/80 hover:text-white transition-colors"
+                    title="All Languages"
+                  >
+                    <Globe size={11} />
+                  </button>
+                </div>
+
+                {langMenuOpen && (
+                  <>
+                    <div className="fixed inset-0 z-40" onClick={() => setLangMenuOpen(false)} />
+                    <div className="absolute right-0 top-full mt-2 w-56 max-h-[300px] overflow-y-auto bg-card text-foreground rounded-2xl shadow-2xl border border-border p-2 z-50 animate-in fade-in zoom-in-95 space-y-2 text-left">
+                      <div className="text-[10px] font-black uppercase text-primary px-2 pt-1 border-b border-border/40 pb-1">
+                        Select Language
+                      </div>
+                      <div className="space-y-0.5">
+                        {SUPPORTED_LANGUAGES.map((l) => (
+                          <button
+                            key={l.code}
+                            type="button"
+                            onClick={() => {
+                              setLanguage(l.code);
+                              setLangMenuOpen(false);
+                            }}
+                            className={`w-full px-2 py-1 rounded-xl text-xs font-semibold flex items-center justify-between transition-colors ${
+                              language === l.code
+                                ? "bg-primary text-primary-foreground font-bold shadow-sm"
+                                : "hover:bg-muted text-foreground"
+                            }`}
+                          >
+                            <span className="flex items-center gap-1.5">
+                              <span>{l.flag}</span>
+                              <span>{l.nativeName}</span>
+                            </span>
+                            {language === l.code && <Check size={12} />}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
 
               {/* Reset Button */}

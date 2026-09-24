@@ -4,19 +4,15 @@ import { Helmet } from "react-helmet-async";
 import { BLOG_POSTS } from "@/data/blogs";
 import {
   Clock,
-  Calendar,
   ArrowRight,
   Share2,
   Sparkles,
   BookOpen,
   Copy,
   Check,
-  CheckCircle2,
   ChevronRight,
-  Bookmark,
-  ExternalLink,
+  Home,
 } from "lucide-react";
-import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 
 export const BlogPost = () => {
   const { postSlug } = useParams<{ postSlug: string }>();
@@ -51,6 +47,28 @@ export const BlogPost = () => {
     { label: "Healthcare Mgmt", href: "/courses/management/online-mba" },
   ];
 
+  // Helper to format inline markdown without raw asterisks
+  const renderFormattedInline = (text: string) => {
+    const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g);
+    return parts.map((part, idx) => {
+      if (part.startsWith("**") && part.endsWith("**") && part.length > 4) {
+        return (
+          <strong key={idx} className="font-extrabold text-foreground">
+            {part.slice(2, -2)}
+          </strong>
+        );
+      }
+      if (part.startsWith("*") && part.endsWith("*") && part.length > 2) {
+        return (
+          <em key={idx} className="italic text-foreground/90 font-medium">
+            {part.slice(1, -1)}
+          </em>
+        );
+      }
+      return part.replace(/\*\*/g, "");
+    });
+  };
+
   return (
     <>
       <Helmet>
@@ -64,16 +82,23 @@ export const BlogPost = () => {
       </Helmet>
 
       <div className="bg-background min-h-screen pb-20">
-        {/* Top Breadcrumb & Share Nav */}
+        {/* Top Breadcrumb Nav — Goes all the way back to Home */}
         <div className="border-b border-border/60 bg-card/60 backdrop-blur-md sticky top-16 z-20">
           <div className="container-dg py-3.5 flex items-center justify-between gap-4">
-            <div className="flex items-center gap-2 text-xs text-muted-foreground font-semibold truncate">
-              <Link to="/blog" className="hover:text-primary transition-colors flex items-center gap-1 shrink-0">
-                ‹ ACADEMIC RESEARCH & ADVISORY
+            <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs text-muted-foreground font-semibold truncate">
+              <Link to="/" className="hover:text-primary transition-colors flex items-center gap-1 shrink-0">
+                <Home size={13} />
+                <span>Home</span>
               </Link>
-              <span className="text-border">/</span>
-              <span className="text-primary truncate">{post.category}</span>
-            </div>
+              <ChevronRight size={12} className="text-muted-foreground/50 shrink-0" />
+              <Link to="/blog" className="hover:text-primary transition-colors shrink-0">
+                Blog
+              </Link>
+              <ChevronRight size={12} className="text-muted-foreground/50 shrink-0" />
+              <span className="text-foreground/90 font-bold shrink-0">{post.category}</span>
+              <ChevronRight size={12} className="text-muted-foreground/50 shrink-0 hidden sm:inline" />
+              <span className="text-primary truncate max-w-[260px] hidden sm:inline">{post.title}</span>
+            </nav>
 
             <button
               onClick={handleCopyLink}
@@ -102,7 +127,7 @@ export const BlogPost = () => {
 
           {/* Author and Social Bar */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border/70 mb-8">
-            {/* Author Info */}
+            {/* Author Info with LinkedIn Icon in front of / beside writer name */}
             <div className="flex items-center gap-3.5">
               <div className="relative w-11 h-11 rounded-full overflow-hidden border-2 border-primary/20 bg-muted shrink-0">
                 <img
@@ -112,7 +137,7 @@ export const BlogPost = () => {
                 />
               </div>
               <div>
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-2">
                   <span className="text-sm font-black text-foreground">{post.author.name}</span>
                   {post.author.verified && (
                     <span title="Verified Academic Editor" className="inline-flex items-center text-blue-500">
@@ -121,6 +146,20 @@ export const BlogPost = () => {
                       </svg>
                     </span>
                   )}
+
+                  {/* LinkedIn Icon in front of writer name linking to Yash's LinkedIn profile */}
+                  <a
+                    href={post.author.linkedin || "https://www.linkedin.com/in/yashappy"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Connect with Yash on LinkedIn"
+                    title="Connect with Yash on LinkedIn"
+                    className="w-5 h-5 rounded-md bg-[#0077b5] text-white flex items-center justify-center hover:scale-110 transition-transform shadow-xs shrink-0"
+                  >
+                    <svg className="w-3 h-3 fill-white" viewBox="0 0 24 24">
+                      <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 8.76c-.97 0-1.75-.79-1.75-1.76s.78-1.75 1.75-1.75 1.75.78 1.75 1.75-.78 1.76-1.75 1.76m1.4 9.74v-8.37H5.06v8.37h2.8z" />
+                    </svg>
+                  </a>
                 </div>
                 <p className="text-xs text-muted-foreground font-medium">
                   {post.author.role} · {post.publishDate}
@@ -128,15 +167,17 @@ export const BlogPost = () => {
               </div>
             </div>
 
-            {/* Share Icons */}
-            <div className="flex items-center gap-2.5">
+            {/* Share in Feed: WhatsApp, LinkedIn, Facebook, and X (Twitter) */}
+            <div className="flex items-center gap-2">
               <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider mr-1">Share</span>
-              {/* WhatsApp */}
+              
+              {/* WhatsApp Share */}
               <a
                 href={`https://api.whatsapp.com/send?text=${encodeURIComponent(post.title + " - " + currentUrl)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Share on WhatsApp"
+                title="Share on WhatsApp"
                 className="w-8 h-8 rounded-full bg-[#25D366] text-white flex items-center justify-center hover:opacity-90 transition-transform hover:scale-105 shadow-sm"
               >
                 <svg className="w-4 h-4 fill-white" viewBox="0 0 24 24">
@@ -144,26 +185,41 @@ export const BlogPost = () => {
                 </svg>
               </a>
 
-              {/* LinkedIn - Hyperlinked specifically to user provided link */}
+              {/* LinkedIn Share to Feed */}
               <a
-                href={post.author.linkedin || "https://www.linkedin.com/in/yashappy"}
+                href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(currentUrl)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Connect with Yash on LinkedIn"
+                aria-label="Share to LinkedIn Feed"
+                title="Share to LinkedIn Feed"
                 className="w-8 h-8 rounded-full bg-[#0077B5] text-white flex items-center justify-center hover:opacity-90 transition-transform hover:scale-105 shadow-sm"
-                title="Yash on LinkedIn"
               >
                 <svg className="w-3.5 h-3.5 fill-white" viewBox="0 0 24 24">
                   <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 8.76c-.97 0-1.75-.79-1.75-1.76s.78-1.75 1.75-1.75 1.75.78 1.75 1.75-.78 1.76-1.75 1.76m1.4 9.74v-8.37H5.06v8.37h2.8z" />
                 </svg>
               </a>
 
-              {/* Twitter / X */}
+              {/* Facebook Share */}
+              <a
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Share on Facebook"
+                title="Share on Facebook"
+                className="w-8 h-8 rounded-full bg-[#1877F2] text-white flex items-center justify-center hover:opacity-90 transition-transform hover:scale-105 shadow-sm"
+              >
+                <svg className="w-3.5 h-3.5 fill-white" viewBox="0 0 24 24">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                </svg>
+              </a>
+
+              {/* Twitter / X Share */}
               <a
                 href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(currentUrl)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Share on X"
+                title="Share on X"
                 className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center hover:opacity-90 transition-transform hover:scale-105 shadow-sm"
               >
                 <svg className="w-3.5 h-3.5 fill-white" viewBox="0 0 24 24">
@@ -201,7 +257,7 @@ export const BlogPost = () => {
                         <span className="w-2 h-2 rounded-full bg-purple-600 dark:bg-purple-400 mt-2 shrink-0" />
                         <div>
                           <span className="font-extrabold text-foreground">{item.title}: </span>
-                          <span className="text-foreground/80">{item.desc}</span>
+                          <span className="text-foreground/80">{renderFormattedInline(item.desc)}</span>
                         </div>
                       </li>
                     ))}
@@ -229,11 +285,13 @@ export const BlogPost = () => {
                 </div>
               )}
 
-              {/* Rich Editorial Body */}
+              {/* Rich Editorial Body: Clean Parsing with NO Raw Asterisks */}
               <article className="p-6 sm:p-10 rounded-3xl bg-card border border-border/80 shadow-md">
-                <div className="prose prose-sm sm:prose-base dark:prose-invert max-w-none space-y-6 text-foreground/90 leading-relaxed font-sans">
+                <div className="prose prose-sm sm:prose-base dark:prose-invert max-w-none space-y-5 text-foreground/90 leading-relaxed font-sans">
                   {post.contentMarkdown.split("\n\n").map((block, i) => {
                     const trimmed = block.trim();
+                    if (!trimmed) return null;
+
                     if (trimmed.startsWith("### ")) {
                       return (
                         <h2 key={i} className="text-xl sm:text-2xl font-black text-foreground pt-4 pb-1 border-b border-border/60">
@@ -261,7 +319,7 @@ export const BlogPost = () => {
                               <tr>
                                 {headerRow.map((h, hi) => (
                                   <th key={hi} className="p-3 sm:p-3.5">
-                                    {h}
+                                    {renderFormattedInline(h)}
                                   </th>
                                 ))}
                               </tr>
@@ -271,7 +329,7 @@ export const BlogPost = () => {
                                 <tr key={ri} className="hover:bg-muted/30 transition-colors">
                                   {row.map((cell, ci) => (
                                     <td key={ci} className="p-3 sm:p-3.5 text-foreground/90 font-medium">
-                                      {cell.replace(/\*\*/g, "")}
+                                      {renderFormattedInline(cell)}
                                     </td>
                                   ))}
                                 </tr>
@@ -284,9 +342,29 @@ export const BlogPost = () => {
                     if (trimmed === "---") {
                       return <hr key={i} className="my-6 border-border/60" />;
                     }
+
+                    // Render bullet lists or numbered lists
+                    if (trimmed.startsWith("- ") || trimmed.startsWith("1. ") || trimmed.startsWith("2. ")) {
+                      const listItems = trimmed.split("\n").filter(Boolean);
+                      return (
+                        <ul key={i} className="space-y-2.5 my-3 pl-1">
+                          {listItems.map((item, itemIdx) => {
+                            const cleanItem = item.replace(/^[-•]\s+|\d+\.\s+/, "");
+                            return (
+                              <li key={itemIdx} className="flex items-start gap-2.5 text-sm sm:text-base leading-relaxed text-foreground/85">
+                                <span className="w-1.5 h-1.5 rounded-full bg-primary mt-2 shrink-0" />
+                                <div>{renderFormattedInline(cleanItem)}</div>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      );
+                    }
+
+                    // Standard paragraph with fully parsed inline formatting
                     return (
                       <p key={i} className="text-sm sm:text-base leading-relaxed text-foreground/85">
-                        {trimmed}
+                        {renderFormattedInline(trimmed)}
                       </p>
                     );
                   })}
@@ -308,17 +386,18 @@ export const BlogPost = () => {
                 )}
               </article>
 
-              {/* Bottom Share Feedback Card */}
+              {/* Bottom Share Feedback Card with WhatsApp, LinkedIn, Facebook, and X */}
               <div className="p-5 sm:p-6 rounded-2xl bg-card border border-border/80 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div>
                   <h4 className="text-xs sm:text-sm font-extrabold text-foreground">
                     Found this research analysis valuable?
                   </h4>
                   <p className="text-xs text-muted-foreground mt-0.5">
-                    Share with colleagues or fellow working professionals.
+                    Share directly with colleagues, classmates, or in your professional feed.
                   </p>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center flex-wrap gap-2">
+                  {/* WhatsApp */}
                   <a
                     href={`https://api.whatsapp.com/send?text=${encodeURIComponent(post.title + " - " + currentUrl)}`}
                     target="_blank"
@@ -331,8 +410,9 @@ export const BlogPost = () => {
                     <span>WhatsApp</span>
                   </a>
 
+                  {/* LinkedIn Share */}
                   <a
-                    href={post.author.linkedin || "https://www.linkedin.com/in/yashappy"}
+                    href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(currentUrl)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#0077B5] text-white text-xs font-bold hover:opacity-90 transition-all shadow-sm"
@@ -343,6 +423,33 @@ export const BlogPost = () => {
                     <span>LinkedIn</span>
                   </a>
 
+                  {/* Facebook Share */}
+                  <a
+                    href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#1877F2] text-white text-xs font-bold hover:opacity-90 transition-all shadow-sm"
+                  >
+                    <svg className="w-3.5 h-3.5 fill-white" viewBox="0 0 24 24">
+                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                    </svg>
+                    <span>Facebook</span>
+                  </a>
+
+                  {/* X / Twitter Share */}
+                  <a
+                    href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(currentUrl)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black text-white text-xs font-bold hover:opacity-90 transition-all shadow-sm"
+                  >
+                    <svg className="w-3.5 h-3.5 fill-white" viewBox="0 0 24 24">
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                    </svg>
+                    <span>X</span>
+                  </a>
+
+                  {/* Copy Link */}
                   <button
                     onClick={handleCopyLink}
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-border text-xs font-bold text-foreground hover:bg-muted transition-all"

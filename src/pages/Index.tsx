@@ -70,7 +70,7 @@ export const Index = () => {
             {/* Left Copy */}
             <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
               <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-foreground tracking-tight leading-[1.15]">
-                Confused about which online degree course is right for <span className="text-gradient">your career growth?</span>
+                Not Sure What’s Next? <span className="block text-gradient mt-1">Find Your Growth Roadmap</span>
               </h1>
 
               {/* Primary & Counselor CTAs */}
@@ -168,112 +168,111 @@ export const Index = () => {
         </div>
       </section>
 
-      {/* 8. ATS COMPLIANT RESUME BUILDER (Two-Column Showcase with Loud HIRED Mark) */}
-      <section className="py-10 md:py-16 bg-muted/20 border-b border-border/50 overflow-hidden">
-        <div className="container-dg max-w-5xl">
-          <div className="p-6 sm:p-10 md:p-12 rounded-3xl bg-card border border-border/80 shadow-2xl">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+      {/* 8. ATS COMPLIANT RESUME BUILDER (Expanded Two-Column Showcase with Loud HIRED Mark) */}
+      <section className="py-12 md:py-20 bg-muted/20 border-b border-border/50 overflow-hidden">
+        <div className="container-dg max-w-6xl">
+          <div className="p-8 sm:p-12 md:p-16 rounded-3xl bg-card border border-border/80 shadow-2xl">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
               
-              {/* Left Column: Copy & Free Badge */}
-              <div className="lg:col-span-7 space-y-4 text-center lg:text-left">
-                <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-bold">
-                  <Sparkles size={13} /> 100% Free · No Subscription Barrier
+              {/* Left Column: Clean Copy & Single Free Badge */}
+              <div className="lg:col-span-7 space-y-5 text-center lg:text-left">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold">
+                  <Sparkles size={13} /> AI Career Acceleration
                 </div>
 
                 <div className="flex items-center justify-center lg:justify-start gap-3 flex-wrap">
                   <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black text-foreground tracking-tight">
                     ATS Compliant Resume Builder
                   </h3>
-                  <span className="px-3 py-0.5 rounded-full bg-emerald-500 text-white text-xs font-black uppercase tracking-wider shadow-sm">
+                  <span className="px-3.5 py-1 rounded-full bg-emerald-500 text-white text-xs font-black uppercase tracking-wider shadow-sm">
                     Free
                   </span>
                 </div>
 
-                <p className="text-sm text-muted-foreground leading-relaxed max-w-xl mx-auto lg:mx-0">
-                  Turn your experience into quantified, recruiter-ready statements that bypass screening bots. Optimize for target job keywords and achieve 95%+ ATS compatibility scores.
+                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-xl mx-auto lg:mx-0">
+                  Create a recruiter-ready resume optimized for ATS bots and high keyword match scores.
                 </p>
 
-                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2 pt-1 text-xs font-semibold text-foreground/80">
-                  <span className="px-3 py-1.5 rounded-xl bg-muted/70 border border-border/70 flex items-center gap-1.5 shadow-xs">
-                    <CheckCircle2 size={13} className="text-emerald-500 shrink-0" /> AI Achievement Quantifier
+                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 pt-2 text-xs font-semibold text-foreground/85">
+                  <span className="px-3.5 py-2 rounded-xl bg-muted/70 border border-border/70 flex items-center gap-2 shadow-xs">
+                    <CheckCircle2 size={14} className="text-emerald-500 shrink-0" /> AI Achievement Quantifier
                   </span>
-                  <span className="px-3 py-1.5 rounded-xl bg-muted/70 border border-border/70 flex items-center gap-1.5 shadow-xs">
-                    <CheckCircle2 size={13} className="text-emerald-500 shrink-0" /> Real-time ATS Match Score
+                  <span className="px-3.5 py-2 rounded-xl bg-muted/70 border border-border/70 flex items-center gap-2 shadow-xs">
+                    <CheckCircle2 size={14} className="text-emerald-500 shrink-0" /> Real-time ATS Match Score
                   </span>
-                  <span className="px-3 py-1.5 rounded-xl bg-muted/70 border border-border/70 flex items-center gap-1.5 shadow-xs">
-                    <CheckCircle2 size={13} className="text-emerald-500 shrink-0" /> Recruiter-Approved Format
+                  <span className="px-3.5 py-2 rounded-xl bg-muted/70 border border-border/70 flex items-center gap-2 shadow-xs">
+                    <CheckCircle2 size={14} className="text-emerald-500 shrink-0" /> Recruiter-Approved Format
                   </span>
                 </div>
 
-                <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3">
+                <div className="pt-3 flex items-center justify-center lg:justify-start">
                   <Link
                     to="/resume-builder"
-                    className="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-[#6528f7] hover:bg-[#551ebd] text-white text-sm font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-[#6528f7]/25 hover:scale-[1.02]"
+                    className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-[#6528f7] hover:bg-[#551ebd] text-white text-sm font-bold flex items-center justify-center gap-2.5 transition-all shadow-xl shadow-[#6528f7]/25 hover:scale-[1.02]"
                   >
                     <span>Build My ATS Resume Now</span>
-                    <ArrowRight size={15} />
+                    <ArrowRight size={16} />
                   </Link>
-                  <span className="text-xs text-muted-foreground font-medium">Takes 5 mins · Instant Download</span>
                 </div>
               </div>
 
-              {/* Right Column: Visual Resume Preview with Loud HIRED Mark */}
+              {/* Right Column: Bigger Visual Resume Preview with Loud HIRED Mark */}
               <div className="lg:col-span-5 relative">
-                <div className="relative mx-auto max-w-[340px] sm:max-w-[380px] w-full">
+                <div className="relative mx-auto max-w-[360px] sm:max-w-[420px] w-full">
                   {/* Subtle Background Glow */}
                   <div className="absolute -inset-4 bg-gradient-to-tr from-emerald-500/25 via-primary/20 to-purple-500/25 rounded-3xl blur-2xl pointer-events-none" />
 
                   {/* Resume Paper Container */}
-                  <div className="relative bg-white text-slate-900 rounded-2xl border-2 border-slate-200 shadow-2xl p-5 overflow-hidden select-none transform hover:-translate-y-1 transition-transform duration-300">
+                  <div className="relative bg-white text-slate-900 rounded-2xl border-2 border-slate-200 shadow-2xl p-6 sm:p-7 overflow-hidden select-none transform hover:-translate-y-1 transition-transform duration-300">
                     
                     {/* LOUD BOLD "HIRED" STAMP BADGE */}
-                    <div className="absolute top-4 right-4 sm:top-5 sm:right-5 z-20 rotate-[-12deg] drop-shadow-xl animate-pulse">
-                      <div className="px-4 py-1.5 rounded-xl border-4 border-emerald-600 bg-emerald-600 text-white font-black text-base sm:text-lg uppercase tracking-widest shadow-2xl flex items-center gap-1.5 ring-4 ring-emerald-400/40">
-                        <CheckCircle2 size={18} className="stroke-[3]" />
+                    <div className="absolute top-5 right-5 z-20 rotate-[-12deg] drop-shadow-xl animate-pulse">
+                      <div className="px-5 py-2 rounded-xl border-4 border-emerald-600 bg-emerald-600 text-white font-black text-base sm:text-xl uppercase tracking-widest shadow-2xl flex items-center gap-2 ring-4 ring-emerald-400/40">
+                        <CheckCircle2 size={20} className="stroke-[3]" />
                         HIRED
                       </div>
                     </div>
 
                     {/* Resume Header Area */}
-                    <div className="border-b border-slate-200 pb-3 pr-24">
-                      <div className="inline-block bg-slate-900 text-white text-[11px] font-black px-2 py-0.5 rounded tracking-wide">
+                    <div className="border-b border-slate-200 pb-3.5 pr-28">
+                      <div className="inline-block bg-slate-900 text-white text-xs font-black px-2.5 py-0.5 rounded tracking-wide">
                         RAHUL SHARMA
                       </div>
-                      <div className="text-[11px] font-bold text-purple-700 mt-1">
+                      <div className="text-xs font-bold text-purple-700 mt-1">
                         Senior Product Manager · Online MBA
                       </div>
-                      <div className="text-[9px] text-slate-500 flex gap-2 mt-0.5">
+                      <div className="text-[10px] text-slate-500 flex gap-2 mt-0.5">
                         <span>Mumbai, India</span> • <span>rahul.sharma@email.com</span>
                       </div>
                     </div>
 
                     {/* Resume Education Section */}
-                    <div className="mt-2.5 space-y-1">
-                      <div className="text-[9px] font-extrabold uppercase tracking-wider text-slate-400">Education</div>
-                      <div className="flex justify-between items-center text-[10px]">
+                    <div className="mt-3 space-y-1">
+                      <div className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Education</div>
+                      <div className="flex justify-between items-center text-[11px]">
                         <span className="font-bold text-slate-900">Online MBA in Marketing & Analytics</span>
-                        <span className="text-[9px] text-slate-500">2024 - 2026</span>
+                        <span className="text-[10px] text-slate-500">2024 - 2026</span>
                       </div>
-                      <div className="text-[9px] text-slate-600">NAAC A++ Entitled University • CGPA: 9.4/10</div>
+                      <div className="text-[10px] text-slate-600">NAAC A++ Entitled University • CGPA: 9.4/10</div>
                     </div>
 
                     {/* Resume Experience Section */}
-                    <div className="mt-2.5 space-y-1">
-                      <div className="text-[9px] font-extrabold uppercase tracking-wider text-slate-400">Experience</div>
-                      <div className="text-[10px] font-bold text-slate-900">Growth Lead — Fintech & EdTech</div>
-                      <div className="text-[9px] text-slate-600 space-y-0.5 pl-2 border-l-2 border-emerald-500">
+                    <div className="mt-3 space-y-1">
+                      <div className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Experience</div>
+                      <div className="text-[11px] font-bold text-slate-900">Growth Lead — Fintech & EdTech</div>
+                      <div className="text-[10px] text-slate-600 space-y-1 pl-2.5 border-l-2 border-emerald-500">
                         <p>• Scaled conversion funnels achieving <strong>₹4.2 Cr ARR (42% growth)</strong></p>
                         <p>• Engineered ATS-optimized resume workflow for <strong>12,000+ candidates</strong></p>
                       </div>
                     </div>
 
                     {/* Bottom ATS Pass Status Bar */}
-                    <div className="mt-3.5 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[10px]">
-                      <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-black flex items-center gap-1">
+                    <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                      <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 font-black flex items-center gap-1.5">
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-ping" />
                         ATS Score: 98/100
                       </span>
-                      <span className="text-[9px] font-bold text-slate-500">
+                      <span className="text-[10px] font-bold text-slate-500">
                         Shortlisted in 48 Hrs ✓
                       </span>
                     </div>
