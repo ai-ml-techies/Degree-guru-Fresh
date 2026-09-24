@@ -51,13 +51,15 @@ export const UniversityLogo: React.FC<UniversityLogoProps> = ({
 
   if (norm.includes("amity")) {
     logo = { src: "/logos/amity.png", alt: "Amity University Online" };
-  } else if (norm.includes("manipal") && !norm.includes("smu") && !norm.includes("sikkim")) {
-    logo = { src: "/logos/manipal.svg", alt: "Online Manipal" };
+  } else if (norm.includes("smu") || norm.includes("sikkim-manipal")) {
+    logo = { src: "/logos/smu.png", alt: "Sikkim Manipal University Online" };
+  } else if (norm.includes("manipal") || norm.includes("muj")) {
+    logo = { src: "/logos/manipal.svg", alt: "Online Manipal (MUJ)" };
   } else if (norm.includes("dpu") || norm.includes("patil")) {
     logo = { src: "/logos/dpu.png", alt: "Dr. D.Y. Patil Vidyapeeth Online" };
   } else if (norm.includes("shoolini")) {
     logo = { src: "/logos/shoolini.png", alt: "Shoolini University Online" };
-  } else if (norm.includes("chandigarh") || norm === "cu" || norm.includes("cu-online")) {
+  } else if (norm.includes("chandigarh") || norm === "cu" || norm.includes("cuol") || norm.includes("cu-online")) {
     logo = { src: "/logos/cu.png", alt: "Chandigarh University Online" };
   } else if (norm.includes("lpu") || norm.includes("lovely")) {
     logo = { src: "/logos/lpu.svg", alt: "LPU Online" };
@@ -65,12 +67,42 @@ export const UniversityLogo: React.FC<UniversityLogoProps> = ({
     logo = { src: "/logos/nmims.png", alt: "NMIMS Global Online" };
   } else if (norm.includes("jain")) {
     logo = { src: "/logos/jain.png", alt: "Jain University Online" };
-  } else if (norm.includes("amrita")) {
+  } else if (norm.includes("amrita") || norm.includes("avv")) {
     logo = { src: "/logos/amrita.svg", alt: "Amrita Ahead Online" };
   } else if (norm.includes("gla")) {
     logo = { src: "/logos/gla.png", alt: "GLA University Online" };
-  } else if (norm.includes("uttaranchal")) {
+  } else if (norm.includes("uttaranchal") || norm === "uu" || norm.includes("uu-online")) {
     logo = { src: "/logos/uttaranchal.svg", alt: "Uttaranchal University Online" };
+  } else if (norm.includes("bennett")) {
+    logo = { src: "/logos/bennett.png", alt: "Bennett University Online" };
+  } else if (norm.includes("sharda")) {
+    logo = { src: "/logos/sharda.png", alt: "Sharda University Online" };
+  } else if (norm.includes("parul")) {
+    logo = { src: "/logos/parul.svg", alt: "Parul University Online" };
+  } else if (norm.includes("galgotias")) {
+    logo = { src: "/logos/galgotias.png", alt: "Galgotias University Online" };
+  } else if (norm.includes("christ")) {
+    logo = { src: "/logos/christ.png", alt: "Christ University Online" };
+  } else if (norm.includes("adtu") || norm.includes("assam")) {
+    logo = { src: "/logos/adtu.svg", alt: "Assam Down Town University Online" };
+  } else if (norm.includes("alliance")) {
+    logo = { src: "/logos/alliance.webp", alt: "Alliance University Online" };
+  } else if (norm.includes("vit")) {
+    logo = { src: "/logos/vit.png", alt: "VIT Online" };
+  } else if (norm.includes("kuk") || norm.includes("kurukshetra")) {
+    logo = { src: "/logos/kuk.png", alt: "Kurukshetra University Online" };
+  } else if (norm.includes("vgu") || norm.includes("vivekanand")) {
+    logo = { src: "/logos/vgu.svg", alt: "Vivekananda Global University Online" };
+  } else if (norm.includes("andhra") || norm.includes("anu")) {
+    logo = { src: "/logos/andhra.webp", alt: "Andhra University Online" };
+  } else if (norm.includes("ccs") || norm.includes("chaudhary")) {
+    logo = { src: "/logos/ccsu.png", alt: "Chaudhary Charan Singh University" };
+  } else if (norm.includes("ddu") || norm.includes("deen dayal")) {
+    logo = { src: "/logos/ddu.png", alt: "DDU Gorakhpur University Online" };
+  } else if (norm.includes("upes")) {
+    logo = { src: "/logos/upes.png", alt: "UPES Online" };
+  } else if (norm.includes("jindal") || norm.includes("opj")) {
+    logo = { src: "/logos/opjindal.png", alt: "OP Jindal Global University" };
   }
 
   const containerHeight =

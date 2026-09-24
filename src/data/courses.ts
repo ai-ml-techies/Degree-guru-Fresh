@@ -742,7 +742,7 @@ export const COURSES: Course[] = [
       { question: "How does a DBA differ from an academic PhD?", answer: "A traditional PhD is focused on theoretical research and primarily prepares students for full-time university academic careers. A DBA is designed for working executives and focuses on solving practical, high-impact industrial and corporate challenges using applied empirical research." },
     ],
     relatedCourseSlugs: ["online-mba", "online-msc"],
-    topUniversitySlugs: ["birchwood-university", "european-institute-of-management-and-technology", "upgrad-executive-programs", "duke-international-university"],
+    topUniversitySlugs: ["birchwood-university", "european-institute-of-management-and-technology", "upgrad-executive-programs", "op-jindal-global-university-online"],
     primaryKeywordCluster: ["online dba", "doctor of business administration online", "online dba in india", "executive dba online", "online dba fees", "best online dba"],
   },
 

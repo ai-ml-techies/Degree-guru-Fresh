@@ -93,15 +93,9 @@ export const UniversityCompare = () => {
       <div className="container-dg py-8 md:py-14">
         {/* Header Hero */}
         <div className="text-center max-w-3xl mx-auto mb-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold mb-3">
-            <Layers size={14} /> Objective University Benchmark Tool
-          </div>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-foreground tracking-tight">
             Compare Online Universities
           </h1>
-          <p className="text-sm sm:text-base text-muted-foreground mt-2 leading-relaxed">
-            Side-by-side objective comparison of UGC-DEB accreditations, semester fees, online proctored exams, and placement support.
-          </p>
         </div>
 
         {/* Top Controls: Active Count & Add University */}
@@ -162,7 +156,7 @@ export const UniversityCompare = () => {
 
                       <div className="space-y-2 pr-6">
                         <span className="text-[10px] font-bold text-primary uppercase tracking-wider block">
-                          Slot {idx + 1}
+                          University {idx + 1}
                         </span>
 
                         {/* Real University Logo */}
@@ -242,18 +236,47 @@ export const UniversityCompare = () => {
                   ))}
                 </tr>
 
-                {/* 4. No-Cost EMI Available */}
+                {/* Registration Fee */}
                 <tr className="hover:bg-muted/20 transition-colors">
                   <td className="p-4 sm:p-5 font-bold text-foreground">
-                    No-Cost EMI Options
+                    Registration Fee
+                  </td>
+                  {comparedUnis.map((u) => (
+                    <td key={u.id} className="p-4 sm:p-5 text-center text-xs font-semibold text-foreground border-l border-border/40">
+                      <span className="px-2.5 py-1 rounded-lg bg-muted text-foreground/90 font-bold">
+                        {u.registrationFee || "₹500"}
+                      </span>
+                    </td>
+                  ))}
+                </tr>
+
+                {/* Exam Fee */}
+                <tr className="hover:bg-muted/20 transition-colors">
+                  <td className="p-4 sm:p-5 font-bold text-foreground">
+                    Exam Fee
+                  </td>
+                  {comparedUnis.map((u) => (
+                    <td key={u.id} className="p-4 sm:p-5 text-center text-xs font-semibold text-foreground border-l border-border/40">
+                      <span className="px-2.5 py-1 rounded-lg bg-muted text-foreground/90 font-bold">
+                        {u.examFee || "Included"}
+                      </span>
+                    </td>
+                  ))}
+                </tr>
+
+                {/* 4. Loan Partners & EMI Options */}
+                <tr className="hover:bg-muted/20 transition-colors">
+                  <td className="p-4 sm:p-5 font-bold text-foreground">
+                    0% EMI & Financing Partners
                   </td>
                   {comparedUnis.map((u) => (
                     <td key={u.id} className="p-4 sm:p-5 text-center border-l border-border/40">
                       <div className="flex flex-col items-center">
                         <span className="text-emerald-600 dark:text-emerald-400 font-extrabold text-xs flex items-center gap-1">
-                          <Check size={16} /> Available
+                          <Check size={16} /> 0% EMI Available
                         </span>
-                        <span className="text-[11px] text-muted-foreground font-semibold">Starting from ₹3,500/mo</span>
+                        <span className="text-[11px] text-primary font-bold mt-0.5">{u.loanPartners || "Bank / NBFC"}</span>
+                        <span className="text-[10px] text-muted-foreground font-medium mt-0.5">{u.emiStarting || "From ₹3,500/mo"}</span>
                       </div>
                     </td>
                   ))}
