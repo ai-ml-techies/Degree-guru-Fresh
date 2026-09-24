@@ -69,7 +69,15 @@ class SiteController extends Controller
             return $this->redirect(['site/login']);
         }
 
-        return $this->render('index');
+        try {
+            return $this->render('index');
+        } catch (\Throwable $e) {
+            Yii::error("Dashboard render error: " . $e->getMessage(), __METHOD__);
+            return "<div style='background:#0d0f12;color:#fca5a5;padding:30px;font-family:monospace;'>"
+                . "<h3>Dashboard Render Error: " . htmlspecialchars($e->getMessage()) . "</h3>"
+                . "<pre style='color:#94a3b8;'>" . htmlspecialchars($e->getTraceAsString()) . "</pre>"
+                . "</div>";
+        }
     }
 
     public function actionLogin(): Response|string

@@ -11,7 +11,7 @@ try {
     $recruitmentCount = (int) \app\models\Recruitment::find()->count();
     $recentApps = \app\models\Recruitment::find()->orderBy(['created_at' => SORT_DESC])->limit(5)->all();
     $dbOk = true;
-} catch (\Exception $e) {
+} catch (\Throwable $e) {
     $recruitmentCount = 0;
     $recentApps = [];
     $dbOk = false;

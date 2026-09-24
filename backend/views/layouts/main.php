@@ -9,12 +9,16 @@ use yii\helpers\Url;
 
 AppAsset::register($this);
 
-function navActive(string $controller): string {
-    return Yii::$app->controller->id === $controller ? 'active' : '';
+if (!function_exists('navActive')) {
+    function navActive(string $controller): string {
+        return Yii::$app->controller->id === $controller ? 'active' : '';
+    }
 }
 
-function cmsActive(string $action): string {
-    return (Yii::$app->controller->id === 'cms' && Yii::$app->controller->action->id === $action) ? 'active' : '';
+if (!function_exists('cmsActive')) {
+    function cmsActive(string $action): string {
+        return (Yii::$app->controller->id === 'cms' && Yii::$app->controller->action->id === $action) ? 'active' : '';
+    }
 }
 
 $webUrl = Yii::getAlias('@web');
