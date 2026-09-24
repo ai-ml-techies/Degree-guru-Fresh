@@ -43,6 +43,38 @@ $config = [
 
         'assetManager' => [
             'appendTimestamp' => true,
+            'bundles' => [
+                'yii\web\JqueryAsset' => [
+                    'sourcePath' => null,
+                    'js' => [
+                        'https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js',
+                    ],
+                ],
+                'yii\bootstrap5\BootstrapAsset' => [
+                    'sourcePath' => null,
+                    'css' => [],
+                ],
+                'yii\bootstrap5\BootstrapPluginAsset' => [
+                    'sourcePath' => null,
+                    'js' => [],
+                ],
+                'yii\bootstrap4\BootstrapAsset' => [
+                    'sourcePath' => null,
+                    'css' => [],
+                ],
+                'yii\bootstrap4\BootstrapPluginAsset' => [
+                    'sourcePath' => null,
+                    'js' => [],
+                ],
+                'yii\bootstrap\BootstrapAsset' => [
+                    'sourcePath' => null,
+                    'css' => [],
+                ],
+                'yii\bootstrap\BootstrapPluginAsset' => [
+                    'sourcePath' => null,
+                    'js' => [],
+                ],
+            ],
         ],
 
         'request' => [

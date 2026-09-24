@@ -27,9 +27,6 @@ class AppAsset extends AssetBundle
 
     public $js = [
 
-        // jQuery
-        'https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js',
-
         // Bootstrap Bundle
         'https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js',
 

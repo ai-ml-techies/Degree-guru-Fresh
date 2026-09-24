@@ -56,8 +56,14 @@ if (!$autoloadPath) {
 }
 
 require $autoloadPath;
-require dirname($autoloadPath) . '/yiisoft/yii2/Yii.php';
+$vendorDir = dirname($autoloadPath);
+require $vendorDir . '/yiisoft/yii2/Yii.php';
+
+Yii::setAlias('@vendor', $vendorDir);
+Yii::setAlias('@bower', is_dir($vendorDir . '/bower-asset') ? ($vendorDir . '/bower-asset') : ($vendorDir . '/bower'));
+Yii::setAlias('@npm', is_dir($vendorDir . '/npm-asset') ? ($vendorDir . '/npm-asset') : ($vendorDir . '/npm'));
 
 $config = require __DIR__ . '/../config/web.php';
+$config['vendorPath'] = $vendorDir;
 
 (new yii\web\Application($config))->run();
