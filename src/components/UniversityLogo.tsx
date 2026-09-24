@@ -1,42 +1,34 @@
 import React, { useState } from "react";
 
 export type UniversityLogoId =
+  | "amity"
+  | "amity-university-online"
   | "manipal"
   | "manipal-university-jaipur"
   | "manipal-university-jaipur-online"
-  | "amity"
-  | "amity-university-online"
   | "dpu"
   | "dy-patil-university-online"
   | "shoolini"
   | "shoolini-university-online"
-  | "nmims"
-  | "nmims-online"
-  | "lpu"
-  | "lpu-online"
   | "cu"
   | "chandigarh-university-online"
-  | "bennett"
-  | "bennett-university-online"
-  | "sharda"
-  | "sharda-university-online"
-  | "parul"
-  | "parul-university-online"
-  | "amrita"
-  | "amrita-ahead-online"
-  | "uttaranchal"
-  | "uttaranchal-university-online"
+  | "lpu"
+  | "lpu-online"
+  | "nmims"
+  | "nmims-online"
   | "jain"
   | "jain-university-online"
-  | "alliance"
-  | "vit"
-  | "smu";
+  | "amrita"
+  | "amrita-ahead-online"
+  | "gla"
+  | "gla-university-online"
+  | "uttaranchal"
+  | "uttaranchal-university-online";
 
 interface UniversityLogoProps {
   idOrSlug: string;
   size?: "sm" | "md" | "lg";
   className?: string;
-  /** If true, omits the outer white container styling */
   raw?: boolean;
 }
 
@@ -54,40 +46,38 @@ export const UniversityLogo: React.FC<UniversityLogoProps> = ({
   const [hasError, setHasError] = useState(false);
   const norm = (idOrSlug || "").toLowerCase();
 
-  // Match real logos
+  // Match 100% verified real online university logos
   let logo: LogoData | null = null;
 
   if (norm.includes("amity")) {
     logo = { src: "/logos/amity.png", alt: "Amity University Online" };
   } else if (norm.includes("manipal") && !norm.includes("smu") && !norm.includes("sikkim")) {
-    logo = { src: "/logos/manipal.png", alt: "Online Manipal" };
+    logo = { src: "/logos/manipal.svg", alt: "Online Manipal" };
   } else if (norm.includes("dpu") || norm.includes("patil")) {
     logo = { src: "/logos/dpu.png", alt: "Dr. D.Y. Patil Vidyapeeth Online" };
   } else if (norm.includes("shoolini")) {
     logo = { src: "/logos/shoolini.png", alt: "Shoolini University Online" };
   } else if (norm.includes("chandigarh") || norm === "cu" || norm.includes("cu-online")) {
     logo = { src: "/logos/cu.png", alt: "Chandigarh University Online" };
-  } else if (norm.includes("nmims")) {
-    logo = { src: "/logos/nmims.png", alt: "NMIMS Global Online" };
   } else if (norm.includes("lpu") || norm.includes("lovely")) {
     logo = { src: "/logos/lpu.svg", alt: "LPU Online" };
+  } else if (norm.includes("nmims")) {
+    logo = { src: "/logos/nmims.png", alt: "NMIMS Global Online" };
+  } else if (norm.includes("jain")) {
+    logo = { src: "/logos/jain.png", alt: "Jain University Online" };
   } else if (norm.includes("amrita")) {
     logo = { src: "/logos/amrita.svg", alt: "Amrita Ahead Online" };
-  } else if (norm.includes("bennett")) {
-    logo = { src: "/logos/bennett.png", alt: "Bennett University" };
-  } else if (norm.includes("sharda")) {
-    logo = { src: "/logos/sharda.png", alt: "Sharda University" };
-  } else if (norm.includes("parul")) {
-    logo = { src: "/logos/parul.svg", alt: "Parul University" };
+  } else if (norm.includes("gla")) {
+    logo = { src: "/logos/gla.png", alt: "GLA University Online" };
   } else if (norm.includes("uttaranchal")) {
-    logo = { src: "/logos/uttaranchal.svg", alt: "Uttaranchal University" };
+    logo = { src: "/logos/uttaranchal.svg", alt: "Uttaranchal University Online" };
   }
 
   const containerHeight =
-    size === "sm" ? "h-8 px-2" : size === "lg" ? "h-14 px-4" : "h-11 px-3";
+    size === "sm" ? "h-9 px-2" : size === "lg" ? "h-14 px-4" : "h-12 px-3";
 
   const imgMaxHeight =
-    size === "sm" ? "max-h-6" : size === "lg" ? "max-h-11" : "max-h-8";
+    size === "sm" ? "max-h-6" : size === "lg" ? "max-h-10" : "max-h-8";
 
   // If real logo exists and hasn't errored
   if (logo && !hasError) {
@@ -96,7 +86,7 @@ export const UniversityLogo: React.FC<UniversityLogoProps> = ({
         <img
           src={logo.src}
           alt={logo.alt}
-          className={`${imgMaxHeight} w-auto max-w-full object-contain ${className}`}
+          className={`${imgMaxHeight} w-auto max-w-[90%] object-contain ${className}`}
           onError={() => setHasError(true)}
           loading="lazy"
         />
@@ -105,12 +95,12 @@ export const UniversityLogo: React.FC<UniversityLogoProps> = ({
 
     return (
       <div
-        className={`inline-flex items-center justify-center rounded-xl bg-white dark:bg-white/95 shadow-2xs border border-border/40 transition-transform group-hover:scale-[1.02] ${containerHeight} w-full max-w-[190px] ${className}`}
+        className={`inline-flex items-center justify-center rounded-xl bg-white shadow-2xs border border-slate-200/80 transition-all duration-200 group-hover:border-primary/40 ${containerHeight} w-full max-w-[200px] ${className}`}
       >
         <img
           src={logo.src}
           alt={logo.alt}
-          className={`${imgMaxHeight} w-auto max-w-full object-contain select-none`}
+          className={`${imgMaxHeight} w-auto max-w-[88%] object-contain select-none transition-transform duration-200 group-hover:scale-105`}
           onError={() => setHasError(true)}
           loading="lazy"
         />
@@ -118,15 +108,7 @@ export const UniversityLogo: React.FC<UniversityLogoProps> = ({
     );
   }
 
-  // Elegant fallback with clean initials badge on consistent background
-  const initials = idOrSlug
-    .replace(/-online$/, "")
-    .replace(/-university/, "")
-    .split(/[-_\s]+/)
-    .slice(0, 2)
-    .map((w) => w.charAt(0).toUpperCase())
-    .join("") || "DG";
-
+  // Clean fallback for any non-matched university
   const cleanName = idOrSlug
     .replace(/-online$/, "")
     .replace(/-university/, "")
@@ -135,12 +117,9 @@ export const UniversityLogo: React.FC<UniversityLogoProps> = ({
 
   return (
     <div
-      className={`inline-flex items-center justify-center gap-2 rounded-xl bg-white dark:bg-white/95 text-foreground shadow-2xs border border-border/40 ${containerHeight} w-full max-w-[190px] ${className}`}
+      className={`inline-flex items-center justify-center rounded-xl bg-white text-slate-900 shadow-2xs border border-slate-200/80 ${containerHeight} w-full max-w-[200px] ${className}`}
     >
-      <div className="w-6 h-6 rounded-lg bg-[#6528f7]/15 text-[#6528f7] font-black text-[10px] flex items-center justify-center shrink-0">
-        {initials}
-      </div>
-      <span className="text-[10px] font-extrabold text-slate-800 tracking-tight truncate max-w-[120px]">
+      <span className="text-[11px] font-black tracking-tight truncate px-2">
         {cleanName}
       </span>
     </div>

@@ -3,8 +3,7 @@
  * Uses Google's Gemini Flash model to provide intelligent career and degree guidance.
  */
 
-const GEMINI_API_KEY =
-  import.meta.env.VITE_GEMINI_API_KEY || "AIzaSyDOaOwkTzMFI9ua6gCVJ6VX7Z477V71Uro";
+const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY || "";
 
 const SYSTEM_INSTRUCTION = `You are Degree Guru AI Advisor, an expert academic and career counseling assistant for Degree Guru (India's premier independent higher education and online degree decision platform).
 
@@ -25,6 +24,10 @@ export async function askGeminiAdvisor(
   prompt: string,
   history: ChatMessage[] = []
 ): Promise<string> {
+  if (!GEMINI_API_KEY) {
+    return getFallbackAdvice(prompt);
+  }
+
   const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
 
   // Build contents array with history and current prompt
