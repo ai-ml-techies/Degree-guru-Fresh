@@ -34,7 +34,6 @@ const BlogPost          = lazy(() => import("./pages/BlogPost.tsx"));
 const Employer          = lazy(() => import("./pages/jobs/Employer.tsx"));
 const JobSeeker         = lazy(() => import("./pages/jobs/JobSeeker.tsx"));
 const NotFound          = lazy(() => import("./pages/NotFound.tsx"));
-const NewHome           = lazy(() => import("./pages/NewHome.tsx"));
 
 const queryClient = new QueryClient();
 
@@ -51,9 +50,6 @@ const App = () => (
               <Suspense fallback={<div className="min-h-[60vh] flex items-center justify-center text-xs text-muted-foreground">Loading Degree Guru...</div>}>
                 <Routes>
                   <Route path="/" element={<Index />} />
-                  <Route path="/new-home" element={<NewHome />} />
-                  <Route path="/v2" element={<NewHome />} />
-                  <Route path="/career-first" element={<NewHome />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/privacy" element={<Privacy />} />
