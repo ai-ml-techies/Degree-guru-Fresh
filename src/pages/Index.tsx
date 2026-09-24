@@ -58,7 +58,7 @@ export const Index = () => {
       </Helmet>
 
       {/* 1. HERO SECTION (Prompt Rule #7 & #2) */}
-      <section className="relative pt-6 pb-14 md:pb-20 overflow-hidden bg-gradient-to-b from-primary/8 via-background to-background border-b border-border/50">
+      <section id="hero" className="relative pt-6 pb-14 md:pb-20 overflow-hidden bg-gradient-to-b from-primary/8 via-background to-background border-b border-border/50">
         <div className="container-dg">
           {/* Top Value Pill */}
           <div className="flex justify-center mb-6">

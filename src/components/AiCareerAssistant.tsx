@@ -241,15 +241,17 @@ export const AiCareerAssistant = () => {
         {/* Step 1: Clean, De-cluttered Exploring Screen */}
         {step === "exploring" && (
           <div className="space-y-6 animate-fade-in">
-            {/* Header chip + Title */}
-            <div className="flex items-start gap-3.5">
-              <div className="w-9 h-9 rounded-2xl bg-primary/15 flex items-center justify-center text-primary shrink-0 mt-0.5">
-                <Sparkles size={18} />
-              </div>
-              <div>
-                <span className="inline-block text-[11px] font-black text-primary uppercase tracking-widest bg-primary/10 px-2.5 py-0.5 rounded-full mb-1">
+            {/* Step Badge & Heading aligned in front of AI Stars icon */}
+            <div>
+              <div className="mb-2">
+                <span className="inline-block text-[11px] font-black text-primary uppercase tracking-widest bg-primary/10 px-2.5 py-0.5 rounded-full">
                   Step 1 of 4
                 </span>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-2xl bg-primary/15 flex items-center justify-center text-primary shrink-0">
+                  <Sparkles size={18} />
+                </div>
                 <h3 className="text-xl sm:text-2xl font-black text-foreground tracking-tight">
                   What are you exploring right now?
                 </h3>
@@ -291,21 +293,23 @@ export const AiCareerAssistant = () => {
         {/* Step 2: Current Status */}
         {step === "current_status" && (
           <div className="space-y-5 animate-fade-in">
-            <div className="flex items-start gap-3.5">
-              <div className="w-9 h-9 rounded-2xl bg-primary/15 flex items-center justify-center text-primary shrink-0 mt-0.5">
-                <Sparkles size={18} />
-              </div>
-              <div>
-                <span className="inline-block text-[11px] font-black text-primary uppercase tracking-widest bg-primary/10 px-2.5 py-0.5 rounded-full mb-1">
+            <div>
+              <div className="mb-2">
+                <span className="inline-block text-[11px] font-black text-primary uppercase tracking-widest bg-primary/10 px-2.5 py-0.5 rounded-full">
                   Step 2 of 4
                 </span>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-2xl bg-primary/15 flex items-center justify-center text-primary shrink-0">
+                  <Sparkles size={18} />
+                </div>
                 <h3 className="text-xl sm:text-2xl font-black text-foreground tracking-tight">
                   What are you currently doing?
                 </h3>
-                <p className="text-xs font-medium text-foreground/75 mt-1">
-                  This helps match university learning hours and flexibility to your schedule:
-                </p>
               </div>
+              <p className="text-xs font-medium text-foreground/75 mt-1.5 ml-12">
+                This helps match university learning hours and flexibility to your schedule:
+              </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
@@ -327,21 +331,23 @@ export const AiCareerAssistant = () => {
         {/* Step 3: Looking For / Goal */}
         {step === "looking_for" && (
           <div className="space-y-5 animate-fade-in">
-            <div className="flex items-start gap-3.5">
-              <div className="w-9 h-9 rounded-2xl bg-primary/15 flex items-center justify-center text-primary shrink-0 mt-0.5">
-                <Sparkles size={18} />
-              </div>
-              <div>
-                <span className="inline-block text-[11px] font-black text-primary uppercase tracking-widest bg-primary/10 px-2.5 py-0.5 rounded-full mb-1">
+            <div>
+              <div className="mb-2">
+                <span className="inline-block text-[11px] font-black text-primary uppercase tracking-widest bg-primary/10 px-2.5 py-0.5 rounded-full">
                   Step 3 of 4
                 </span>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-2xl bg-primary/15 flex items-center justify-center text-primary shrink-0">
+                  <Sparkles size={18} />
+                </div>
                 <h3 className="text-xl sm:text-2xl font-black text-foreground tracking-tight">
                   What is your primary career goal?
                 </h3>
-                <p className="text-xs font-medium text-foreground/75 mt-1">
-                  We personalize degree recommendations based on expected career ROI:
-                </p>
               </div>
+              <p className="text-xs font-medium text-foreground/75 mt-1.5 ml-12">
+                We personalize degree recommendations based on expected career ROI:
+              </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
@@ -363,21 +369,23 @@ export const AiCareerAssistant = () => {
         {/* Step 4: Preferred Field */}
         {step === "preferred_field" && (
           <div className="space-y-5 animate-fade-in">
-            <div className="flex items-start gap-3.5">
-              <div className="w-9 h-9 rounded-2xl bg-primary/15 flex items-center justify-center text-primary shrink-0 mt-0.5">
-                <Sparkles size={18} />
-              </div>
-              <div>
-                <span className="inline-block text-[11px] font-black text-primary uppercase tracking-widest bg-primary/10 px-2.5 py-0.5 rounded-full mb-1">
+            <div>
+              <div className="mb-2">
+                <span className="inline-block text-[11px] font-black text-primary uppercase tracking-widest bg-primary/10 px-2.5 py-0.5 rounded-full">
                   Step 4 of 4
                 </span>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-2xl bg-primary/15 flex items-center justify-center text-primary shrink-0">
+                  <Sparkles size={18} />
+                </div>
                 <h3 className="text-xl sm:text-2xl font-black text-foreground tracking-tight">
                   What is your preferred domain or field?
                 </h3>
-                <p className="text-xs font-medium text-foreground/75 mt-1">
-                  Final step to pinpoint syllabus, specialization, and top-tier universities:
-                </p>
               </div>
+              <p className="text-xs font-medium text-foreground/75 mt-1.5 ml-12">
+                Final step to pinpoint syllabus, specialization, and top-tier universities:
+              </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">

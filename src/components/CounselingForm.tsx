@@ -295,14 +295,6 @@ export const CounselingForm = ({
 
   return (
     <form onSubmit={submit} className="space-y-4 pt-1">
-      {/* Trust pill */}
-      <div className="flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-3.5 py-1.5 w-fit">
-        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-        <span className="text-xs font-bold text-primary">
-          Counselors Available Now • Free Guidance
-        </span>
-      </div>
-
       {/* Row 1: Full Name (Mandatory) */}
       <div className="space-y-1.5">
         <label className="block text-xs font-bold text-foreground">
@@ -335,8 +327,15 @@ export const CounselingForm = ({
           Phone Number <span className="text-red-500 font-black">*</span>
         </label>
         <div className="relative flex rounded-xl border border-border bg-background focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/25 overflow-hidden transition-all">
-          {/* Country Code Dropdown (India on top & default) */}
-          <div className="relative border-r border-border bg-muted/40 shrink-0 flex items-center">
+          {/* Country Code Dropdown (Compact trigger with Flag & Code only, lists country names on click) */}
+          <div className="relative border-r border-border bg-muted/40 shrink-0 flex items-center w-[96px] justify-center hover:bg-muted/70 transition-colors">
+            {/* Displayed Compact Label */}
+            <div className="pointer-events-none flex items-center gap-1.5 text-xs sm:text-sm font-bold text-foreground pl-2 pr-5 select-none">
+              <span className="text-base leading-none">{selectedCountry.flag}</span>
+              <span>{selectedCountry.dialCode}</span>
+            </div>
+
+            {/* Native Select Overlay */}
             <select
               aria-label="Select Country Code"
               value={selectedCountry.code}
@@ -345,11 +344,11 @@ export const CounselingForm = ({
                 if (found) setSelectedCountry(found);
               }}
               disabled={submitting}
-              className="appearance-none bg-transparent pl-3 pr-7 py-3 text-xs sm:text-sm font-bold text-foreground cursor-pointer outline-none"
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
             >
               {COUNTRIES.map((c) => (
-                <option key={c.code} value={c.code} className="text-foreground bg-card py-1">
-                  {c.flag} {c.dialCode} ({c.name})
+                <option key={c.code} value={c.code} className="text-foreground bg-card py-1.5 text-sm font-medium">
+                  {c.flag} {c.dialCode} — {c.name}
                 </option>
               ))}
             </select>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { 
   GraduationCap, 
   Building2, 
@@ -58,6 +58,27 @@ export const Header = () => {
     }
   })();
 
+  const navigate = useNavigate();
+
+  const handleLogoClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (location.pathname === "/") {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      const hero = document.getElementById("hero") || document.querySelector("main");
+      if (hero) {
+        hero.scrollIntoView({ behavior: "instant", block: "start" });
+      }
+    } else {
+      navigate("/");
+      // Immediate scroll to top of page
+      setTimeout(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        const hero = document.getElementById("hero") || document.querySelector("main");
+        if (hero) hero.scrollIntoView({ behavior: "instant", block: "start" });
+      }, 0);
+    }
+  };
+
   const isActive = (path: string) => {
     if (path === "/") return location.pathname === "/";
     return location.pathname.startsWith(path);
@@ -80,8 +101,13 @@ export const Header = () => {
       <header className="fixed top-8 inset-x-0 sm:inset-x-4 md:inset-x-8 z-[100]">
         <div className="glass-header mx-auto max-w-[1400px] sm:rounded-2xl px-4 sm:px-6 md:px-8 border-b sm:border border-border/50 shadow-md">
           <div className="flex items-center justify-between h-[64px] md:h-[68px]">
-            {/* Logo (Desktop & Mobile) */}
-            <Link to="/" className="flex items-center shrink-0" aria-label="Degree Guru Home">
+            {/* Logo (Desktop & Mobile) - Immediate scroll to top hero */}
+            <Link
+              to="/"
+              onClick={handleLogoClick}
+              className="flex items-center shrink-0 cursor-pointer"
+              aria-label="Degree Guru Home"
+            >
               <img
                 src={theme === "dark" ? logoDark : logoLight}
                 alt="Degree Guru"
