@@ -543,9 +543,9 @@ export const CollegeVidyaCourseExplorer = () => {
   return (
     <div className="space-y-4">
       {/* Course Explorer Two-Column Glassmorphism Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start">
-        {/* Left Sidebar Category Tabs (Desktop & Tablet) */}
-        <div className="lg:col-span-3 flex lg:flex-col gap-1.5 overflow-x-auto pb-2 lg:pb-0 scrollbar-hide">
+      <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 items-start">
+        {/* Left Sidebar Category Tabs: Snug width, larger typography */}
+        <div className="w-full lg:w-48 xl:w-52 shrink-0 flex lg:flex-col gap-2 overflow-x-auto pb-2 lg:pb-0 scrollbar-hide">
           {CATEGORIES.map((cat) => {
             const isSelected = activeTab === cat.id;
             return (
@@ -553,17 +553,19 @@ export const CollegeVidyaCourseExplorer = () => {
                 key={cat.id}
                 type="button"
                 onClick={() => setActiveTab(cat.id)}
-                className={`text-left px-3 py-2 sm:py-2.5 rounded-lg transition-all duration-200 shrink-0 w-auto lg:w-full border cursor-pointer backdrop-blur-md ${
+                className={`text-left px-3.5 py-3 rounded-xl transition-all duration-200 shrink-0 w-auto lg:w-full border cursor-pointer backdrop-blur-md ${
                   isSelected
                     ? "bg-[#6528f7] text-white border-[#6528f7] shadow-md shadow-[#6528f7]/25"
                     : "bg-card/75 dark:bg-card/40 border-border/70 hover:border-[#6528f7]/40 hover:bg-card/90 text-foreground"
                 }`}
               >
-                <div className={`text-xs sm:text-[12.5px] font-bold tracking-tight leading-tight ${isSelected ? "text-white" : "text-foreground"}`}>
+                <div className={`text-sm sm:text-base font-black tracking-tight leading-snug ${isSelected ? "text-white" : "text-foreground"}`}>
                   {cat.title}
                 </div>
-                <div className="mt-1">
-                  <span className="inline-block text-[8.5px] sm:text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-white text-[#6528f7] shadow-xs">
+                <div className="mt-1.5">
+                  <span className={`inline-block text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-md shadow-xs ${
+                    isSelected ? "bg-white text-[#6528f7]" : "bg-primary/10 text-primary"
+                  }`}>
                     {cat.subtitle}
                   </span>
                 </div>
@@ -573,7 +575,7 @@ export const CollegeVidyaCourseExplorer = () => {
         </div>
 
         {/* Right Cards Grid */}
-        <div className="lg:col-span-9">
+        <div className="flex-1 min-w-0 w-full">
           <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-3">
             {activeCategory.courses.map((course, idx) => (
               <div

@@ -113,7 +113,7 @@ export const Header = () => {
                   <div className="glass-dropdown p-5 rounded-2xl shadow-2xl border border-border/80 space-y-4">
                     <div className="pb-2 border-b border-border/50 flex items-center justify-between">
                       <span className="text-[11px] font-black uppercase tracking-wider text-primary">
-                        UGC-DEB Accredited Online Degree Catalog
+                        UGC-DEB Accredited Online Degree Programs
                       </span>
                       <Link to="/courses" className="text-xs font-bold text-muted-foreground hover:text-primary flex items-center gap-1">
                         All Programs <ArrowRight size={12} />

@@ -317,13 +317,13 @@ export const FloatingAiAdvisor = () => {
       {/* Bot Chat Window */}
       {isOpen && (
         <div className="mb-3 w-[92vw] sm:w-[380px] max-w-[400px] h-[540px] max-h-[82vh] rounded-3xl bg-card border border-border shadow-2xl flex flex-col overflow-hidden animate-slide-up backdrop-blur-lg">
-          {/* Header - Flat Purple (#6528f7) with Real Human Counselor Photo */}
+          {/* Header - Flat Purple (#6528f7) with Guru AI 3D Robot Mascot */}
           <div className="px-4 py-3.5 bg-[#6528f7] text-white flex items-center justify-between shadow-sm">
             <div className="flex items-center gap-2.5">
-              <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-white/50 shadow-sm shrink-0 bg-white/10">
+              <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-white/60 shadow-sm shrink-0 bg-white/10">
                 <img
-                  src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&auto=format&fit=crop&q=80"
-                  alt="Expert Counselor"
+                  src="/assets/guru-ai-mascot.png"
+                  alt="Guru AI Mascot"
                   className="w-full h-full object-cover"
                 />
                 <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-400 border border-white" />
@@ -496,10 +496,10 @@ export const FloatingAiAdvisor = () => {
           {isOpen ? (
             <X size={24} />
           ) : (
-            <div className="relative w-full h-full p-1">
+            <div className="relative w-full h-full p-1 bg-white/10 rounded-full">
               <img
-                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&auto=format&fit=crop&q=80"
-                alt="Expert Counselor"
+                src="/assets/guru-ai-mascot.png"
+                alt="Guru AI Mascot"
                 className="w-full h-full rounded-full object-cover group-hover:scale-105 transition-transform"
               />
               <span className="absolute bottom-1 right-1 w-3 h-3 rounded-full bg-emerald-400 border-2 border-[#6528f7] shadow-sm" />

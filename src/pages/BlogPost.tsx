@@ -170,17 +170,8 @@ export const BlogPost = () => {
                   </a>
                 </div>
                 <div className="text-xs text-muted-foreground font-medium flex items-center gap-1.5 flex-wrap">
-                  <Link
-                    to="/author/yash"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-bold text-foreground/85 hover:text-primary hover:underline"
-                  >
+                  <span className="font-bold text-foreground/85">
                     {post.author.role}
-                  </Link>
-                  <span>·</span>
-                  <span className="text-foreground/80">
-                    {post.author.experience || "Over 3.5 years of experience in marketing and brand building"}
                   </span>
                   <span>·</span>
                   <span>{post.publishDate}</span>
@@ -590,23 +581,13 @@ export const BlogPost = () => {
                     </a>
                   </div>
                   <div className="text-xs font-bold text-primary">
-                    {post.author.role} · {post.author.experience || "Over 3.5 years of experience in marketing and brand building"}
+                    {post.author.role}
                   </div>
                   <p className="text-xs text-muted-foreground leading-relaxed max-w-xl">
                     {post.author.bio}
                   </p>
                 </div>
               </div>
-
-              <Link
-                to="/author/yash"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-5 py-2.5 rounded-xl border border-primary/40 bg-primary/10 text-primary text-xs font-bold hover:bg-primary hover:text-white transition-all shrink-0 flex items-center gap-1.5"
-              >
-                <span>View Yash's Profile & Articles</span>
-                <ArrowRight size={13} />
-              </Link>
             </div>
           </div>
 

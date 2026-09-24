@@ -101,14 +101,32 @@
      Disable CSS smooth-scroll globally — combined with heavy blurred blobs and
      scroll-triggered Reveals it causes visible jank. Programmatic smooth scrolls
      (window.scrollTo) still work. */
-  /* Universal high-contrast selection — text turns visible on purple bases, dark modes, and white bases */
+  /* Universal high-contrast selection: white on purple default, purple on white over purple surfaces */
   ::selection {
-    background-color: #fde047;
-    color: #0f172a;
+    background-color: #6528f7;
+    color: #ffffff;
   }
   ::-moz-selection {
-    background-color: #fde047;
-    color: #0f172a;
+    background-color: #6528f7;
+    color: #ffffff;
+  }
+
+  /* When selecting text on purple or primary surfaces */
+  .bg-primary ::selection,
+  [class*="bg-purple-"] ::selection,
+  [class*="from-[#6528f7]"] ::selection,
+  [class*="from-[#4c1d95]"] ::selection,
+  .bg-\[\#6528f7\] ::selection {
+    background-color: #ffffff;
+    color: #6528f7;
+  }
+  .bg-primary ::-moz-selection,
+  [class*="bg-purple-"] ::-moz-selection,
+  [class*="from-[#6528f7]"] ::-moz-selection,
+  [class*="from-[#4c1d95]"] ::-moz-selection,
+  .bg-\[\#6528f7\] ::-moz-selection {
+    background-color: #ffffff;
+    color: #6528f7;
   }
 
   html {

@@ -121,7 +121,7 @@ export const UniversitiesGridShowcase: React.FC = () => {
         {/* Header matching Screenshot 3 */}
         <div className="text-center max-w-3xl mx-auto space-y-2">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#6528f7]/10 text-primary text-xs font-bold">
-            <span role="img" aria-label="university">🏫</span> 100+ Online Universities
+            <span role="img" aria-label="university">🏫</span> 50+ Online Universities
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground tracking-tight">
             Find Best <span className="text-primary">Online Degree Universities</span>

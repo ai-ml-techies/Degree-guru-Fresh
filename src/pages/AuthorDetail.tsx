@@ -91,17 +91,21 @@ export const AuthorDetail = () => {
                     </span>
                   </div>
 
-                  {/* Badges: Experience and MBA from Amity */}
+                  {/* Badges: Research & Education */}
                   <div className="flex flex-wrap items-center justify-center md:justify-start gap-2.5 pt-3">
-                    <span className="px-3.5 py-1.5 rounded-xl bg-purple-100 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 text-xs font-bold border border-purple-200 dark:border-purple-800/50 flex items-center gap-1.5">
-                      <Briefcase size={14} className="text-purple-600 dark:text-purple-400" />
-                      {author.experience}
-                    </span>
+                    {author.experience ? (
+                      <span className="px-3.5 py-1.5 rounded-xl bg-purple-100 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 text-xs font-bold border border-purple-200 dark:border-purple-800/50 flex items-center gap-1.5">
+                        <Briefcase size={14} className="text-purple-600 dark:text-purple-400" />
+                        {author.experience}
+                      </span>
+                    ) : null}
 
-                    <span className="px-3.5 py-1.5 rounded-xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 text-xs font-bold border border-emerald-200 dark:border-emerald-800/50 flex items-center gap-1.5">
-                      <GraduationCap size={15} className="text-emerald-600 dark:text-emerald-400" />
-                      {author.education}
-                    </span>
+                    {author.education ? (
+                      <span className="px-3.5 py-1.5 rounded-xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 text-xs font-bold border border-emerald-200 dark:border-emerald-800/50 flex items-center gap-1.5">
+                        <GraduationCap size={15} className="text-emerald-600 dark:text-emerald-400" />
+                        {author.education}
+                      </span>
+                    ) : null}
                   </div>
                 </div>
 

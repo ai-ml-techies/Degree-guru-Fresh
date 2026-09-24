@@ -31,12 +31,12 @@ export type BlogPost = {
 export const YASH_AUTHOR: BlogAuthor = {
   name: "Yash",
   slug: "yash",
-  role: "Marketing Head",
-  experience: "Over 3.5 years of experience in marketing and brand building",
-  education: "MBA from Amity University",
+  role: "Senior Academic Researcher",
+  experience: "",
+  education: "Higher Education Research",
   verified: true,
   avatar: "/assets/yash-avatar.svg",
-  bio: "Marketing Head at Degree Guru with over 3.5 years of experience in marketing, growth strategy, and brand building. Holds an MBA from Amity University. Specializes in higher education benchmarking, UGC-DEB accreditation audits, and educational technology strategy.",
+  bio: "Senior Academic Researcher and Analyst at Degree Guru. Specializes in university curriculum audits, statutory UGC-DEB accreditation benchmarking, and institutional fee transparency.",
   linkedin: "https://www.linkedin.com/in/yashappy",
 };
 
@@ -46,7 +46,7 @@ export const BLOG_POSTS: BlogPost[] = [
     title: "IGNOU vs Online Universities: The Comprehensive Higher-Ed Allocation Thesis for 2026",
     category: "University Comparisons",
     readTime: "6 min read",
-    publishDate: "March 24, 2026",
+    publishDate: "September 25, 2026",
     summary:
       "Why IGNOU distance education falls short on networking, live classes, and timely book delivery compared to modern online degrees.",
     metaDescription:
@@ -151,7 +151,7 @@ Accredited online universities provide the modern digital framework, networking 
     title: "DU SOL vs Online Universities: Why Distance SOL Loses to Modern Online Degrees",
     category: "University Comparisons",
     readTime: "5 min read",
-    publishDate: "March 20, 2026",
+    publishDate: "September 25, 2026",
     summary:
       "Why DU SOL's distance model compromises on student networking, study material logistics, and live learning vs online universities.",
     metaDescription:
@@ -256,7 +256,7 @@ For career-driven students and working professionals, modern UGC-DEB online univ
     title: "Online MBA vs Distance MBA: Understanding the Pedagogy & Salary Multipliers",
     category: "Online Degrees",
     readTime: "5 min read",
-    publishDate: "February 28, 2026",
+    publishDate: "September 25, 2026",
     summary:
       "Key differences between Online MBA and Distance MBA across digital pedagogy, proctoring, and corporate recognition.",
     metaDescription:
@@ -320,7 +320,7 @@ Leading tech firms, consultancies, and MNCs actively recruit from accredited Onl
     title: "How to Build an ATS-Friendly Resume in 2026: Architecting High-Pass Resumes",
     category: "Resume",
     readTime: "7 min read",
-    publishDate: "March 15, 2026",
+    publishDate: "September 25, 2026",
     summary:
       "Essential rules for beating ATS algorithms with clean formatting, keyword alignment, and quantifiable metrics.",
     metaDescription:

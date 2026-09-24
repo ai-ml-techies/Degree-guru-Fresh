@@ -185,7 +185,7 @@ export const Index = () => {
                 <div className="flex items-center justify-center lg:justify-start">
                   <span className="px-3.5 py-1.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 text-xs font-bold inline-flex items-center gap-1.5 shadow-xs">
                     <Sparkles size={13} />
-                    <span>100% free no forced subscription</span>
+                    <span>100% Free • No Forced Subscription</span>
                   </span>
                 </div>
 
@@ -383,9 +383,6 @@ export const Index = () => {
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight">
             Not Sure Where Your Career Is Going?
           </h2>
-          <p className="text-base sm:text-lg text-white/90 max-w-xl mx-auto leading-relaxed">
-            Get personalized advice, compare top UGC-approved universities, and take charge of your professional journey with Degree Guru.
-          </p>
           <div className="pt-2 flex justify-center">
             <button
               type="button"

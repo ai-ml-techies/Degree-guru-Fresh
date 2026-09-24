@@ -59,7 +59,7 @@ export async function exportResumeToPdf({
 
     const imgData = canvas.toDataURL("image/jpeg", 0.98);
 
-    // Standard A4: 210mm x 297mm
+    // Standard A4: 210mm x 297mm with fixed 10mm all-around margin
     const pdf = new jsPDF({
       orientation: "portrait",
       unit: "mm",
@@ -69,22 +69,46 @@ export async function exportResumeToPdf({
 
     const pageWidth = 210;
     const pageHeight = 297;
-    const imgWidth = pageWidth;
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    const margin = 10; // Fixed 10mm margin on top, bottom, left, and right
+    const printableWidth = pageWidth - margin * 2; // 190mm
+    const printableHeight = pageHeight - margin * 2; // 277mm
 
-    let heightLeft = imgHeight;
-    let position = 0;
+    // Calculate canvas pixel height corresponding to one printable A4 page
+    const pageCanvasHeight = Math.floor((printableHeight / printableWidth) * canvas.width);
+    const totalPages = Math.max(1, Math.ceil(canvas.height / pageCanvasHeight));
 
-    // First page
-    pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight, undefined, "FAST");
-    heightLeft -= pageHeight;
+    for (let page = 0; page < totalPages; page++) {
+      if (page > 0) {
+        pdf.addPage();
+      }
 
-    // Multi-page handling if content exceeds 1 A4 page
-    while (heightLeft > 5) {
-      position -= pageHeight;
-      pdf.addPage();
-      pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight, undefined, "FAST");
-      heightLeft -= pageHeight;
+      const sourceY = page * pageCanvasHeight;
+      const currentChunkHeight = Math.min(pageCanvasHeight, canvas.height - sourceY);
+
+      // Render each page into a dedicated canvas with fixed margins and white backdrop
+      const pageCanvas = document.createElement("canvas");
+      pageCanvas.width = canvas.width;
+      pageCanvas.height = pageCanvasHeight;
+      const ctx = pageCanvas.getContext("2d");
+
+      if (ctx) {
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, pageCanvas.width, pageCanvasHeight);
+        ctx.drawImage(
+          canvas,
+          0,
+          sourceY,
+          canvas.width,
+          currentChunkHeight,
+          0,
+          0,
+          canvas.width,
+          currentChunkHeight
+        );
+      }
+
+      const pageImgData = pageCanvas.toDataURL("image/jpeg", 0.98);
+      pdf.addImage(pageImgData, "JPEG", margin, margin, printableWidth, printableHeight, undefined, "FAST");
     }
 
     const cleanFileName = fileName.endsWith(".pdf") ? fileName : `${fileName}.pdf`;

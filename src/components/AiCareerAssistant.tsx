@@ -17,20 +17,33 @@ import { submitLead } from "@/lib/api";
 
 type Step = "exploring" | "current_status" | "looking_for" | "preferred_field" | "recommendation" | "contact_success";
 
-const EXPLORING_OPTIONS = [
-  "Online MBA",
-  "Online MCA",
-  "Online BCA",
-  "Online BBA",
-  "Online B.Com",
-  "Online DBA",
-  "Online Bachelor's",
-  "Online Master's",
-  "Class 10",
-  "Class 12",
-  "Jobs",
-  "Career Change",
-  "Not Sure Yet",
+export interface ExploringCategory {
+  category: string;
+  iconType: "masters" | "bachelors" | "school" | "career";
+  options: string[];
+}
+
+const EXPLORING_CATEGORIES: ExploringCategory[] = [
+  {
+    category: "Master's & Postgraduation (PG)",
+    iconType: "masters",
+    options: ["Online MBA", "Online MCA", "Online Master's", "Online DBA"],
+  },
+  {
+    category: "Bachelor's & Graduation (UG)",
+    iconType: "bachelors",
+    options: ["Online BBA", "Online BCA", "Online B.Com", "Online Bachelor's"],
+  },
+  {
+    category: "Secondary & Higher Secondary",
+    iconType: "school",
+    options: ["Class 10", "Class 12"],
+  },
+  {
+    category: "Career & Growth Discovery",
+    iconType: "career",
+    options: ["Jobs", "Career Change", "Not Sure Yet"],
+  },
 ];
 
 const CURRENT_STATUS_OPTIONS = [
@@ -199,59 +212,58 @@ export const AiCareerAssistant = () => {
       <div className="absolute -right-20 -top-20 w-60 h-60 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute -left-20 -bottom-20 w-60 h-60 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
 
-      {/* Header */}
-      <div className="flex items-center justify-between pb-5 border-b border-border/60">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-primary to-[#8b5cf6] flex items-center justify-center text-white shadow-md shadow-primary/30">
-            <Bot size={22} />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h3 className="text-base sm:text-lg font-bold text-foreground">Ask Degree Guru</h3>
-              <span className="px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-500 text-[10px] font-bold flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
-                Live AI Advisor
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {step !== "exploring" && (
+      {/* Step Header with Reset button */}
+      {step !== "exploring" && (
+        <div className="flex items-center justify-end pb-2">
           <button
             onClick={handleReset}
-            className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors py-1 px-2.5 rounded-lg hover:bg-muted/50"
+            className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors py-1 px-2.5 rounded-lg hover:bg-muted/50 cursor-pointer"
           >
             <RefreshCw size={13} /> Reset
           </button>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Progressive Interaction Body */}
-      <div className="pt-6 min-h-[280px] flex flex-col justify-center">
-        {/* Step 1: Exploring */}
+      <div className="pt-2 min-h-[280px] flex flex-col justify-center">
+        {/* Step 1: Exploring — Structured by Education & Career Segments */}
         {step === "exploring" && (
-          <div className="space-y-4 animate-fade-in">
+          <div className="space-y-5 animate-fade-in">
             <div className="flex items-start gap-3">
-              <div className="w-7 h-7 rounded-full bg-primary/15 flex items-center justify-center text-primary shrink-0 mt-0.5">
-                <Sparkles size={14} />
+              <div className="w-8 h-8 rounded-full bg-primary/15 flex items-center justify-center text-primary shrink-0 mt-0.5">
+                <Sparkles size={16} />
               </div>
               <div>
                 <p className="text-xs font-semibold text-primary uppercase tracking-wider">Step 1 of 4</p>
-                <h4 className="text-lg sm:text-xl font-bold text-foreground">What are you exploring right now?</h4>
+                <h4 className="text-lg sm:text-2xl font-black text-foreground tracking-tight">What are you exploring right now?</h4>
               </div>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-2.5 pt-2">
-              {EXPLORING_OPTIONS.map((item) => (
-                <button
-                  key={item}
-                  type="button"
-                  onClick={() => handleSelectExploring(item)}
-                  className="px-3.5 py-3 rounded-xl border border-border/70 hover:border-primary/60 bg-card hover:bg-primary/5 text-foreground text-xs sm:text-sm font-semibold transition-all duration-150 text-left flex items-center justify-between group shadow-sm"
-                >
-                  <span>{item}</span>
-                  <ArrowRight size={14} className="text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
-                </button>
+            <div className="space-y-4 pt-1">
+              {EXPLORING_CATEGORIES.map((cat, cIdx) => (
+                <div key={cIdx} className="space-y-2">
+                  <div className="flex items-center gap-2 text-xs font-extrabold text-foreground/85 uppercase tracking-wider">
+                    {cat.iconType === "masters" && <GraduationCap size={15} className="text-[#6528f7]" />}
+                    {cat.iconType === "bachelors" && <Building2 size={15} className="text-emerald-500" />}
+                    {cat.iconType === "school" && <Award size={15} className="text-purple-600" />}
+                    {cat.iconType === "career" && <TrendingUp size={15} className="text-amber-500" />}
+                    <span>{cat.category}</span>
+                  </div>
+
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5">
+                    {cat.options.map((item) => (
+                      <button
+                        key={item}
+                        type="button"
+                        onClick={() => handleSelectExploring(item)}
+                        className="px-3.5 py-2.5 rounded-xl border border-border/70 hover:border-primary/60 bg-card hover:bg-primary/5 text-foreground text-xs sm:text-sm font-semibold transition-all duration-150 text-left flex items-center justify-between group shadow-xs cursor-pointer hover:shadow-sm"
+                      >
+                        <span className="truncate">{item}</span>
+                        <ArrowRight size={13} className="text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all shrink-0 ml-1" />
+                      </button>
+                    ))}
+                  </div>
+                </div>
               ))}
             </div>
           </div>

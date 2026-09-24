@@ -46,9 +46,9 @@ import {
 export const ResumeBuilder = () => {
   // Onboarding state - default open to allow instant template editing
   const [hasOnboarded, setHasOnboarded] = useState<boolean>(true);
-  const [userName, setUserName] = useState<string>("YASH");
-  const [userPhone, setUserPhone] = useState<string>("+91 84484 11672");
-  const [userEmail, setUserEmail] = useState<string>("kumaryashappy@gmail.com");
+  const [userName, setUserName] = useState<string>("Aarav Sharma");
+  const [userPhone, setUserPhone] = useState<string>("+91 98765 43210");
+  const [userEmail, setUserEmail] = useState<string>("aarav.sharma@example.com");
   const [uploadFileName, setUploadFileName] = useState<string>("");
   const [isUploading, setIsUploading] = useState<boolean>(false);
 
@@ -372,7 +372,7 @@ export const ResumeBuilder = () => {
 
   return (
     <>
-      <div className="container-dg py-6 md:py-10">
+      <div className="container-dg pt-2 sm:pt-3 pb-8 md:pb-12">
         <AppBreadcrumb items={[{ label: "Career Tools" }, { label: "Resume Builder" }]} />
 
         {/* Header Bar */}
