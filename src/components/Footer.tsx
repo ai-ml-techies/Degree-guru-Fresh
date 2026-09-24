@@ -66,8 +66,8 @@ export const Footer = () => {
               <h3 className="text-xl font-bold mb-2">
                 Get <span className="text-gradient">free counseling</span> — no cost, ever
               </h3>
-              <p className="text-white/55 text-sm leading-relaxed">
-                Over 5,000 students guided to the right program. Our counselors call back within 2 hours.
+              <p className="text-white/70 text-sm leading-relaxed">
+                Over 5,000 students guided to the right program with 100% unbiased expert career counseling.
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
@@ -98,7 +98,7 @@ export const Footer = () => {
                 </div>
                 <div>
                   <div className="text-sm font-semibold leading-tight">{label}</div>
-                  <div className="text-xs text-white/45 leading-tight">{sub}</div>
+                  <div className="text-xs text-white/60 leading-tight">{sub}</div>
                 </div>
               </div>
             ))}
@@ -106,13 +106,13 @@ export const Footer = () => {
         </div>
       </div>
 
-      {/* Main footer grid */}
+      {/* Main footer grid - Balanced 4 columns */}
       <div className="container-dg py-16">
-        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-10">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {/* Brand column */}
           <div>
             <img src={logoDark} alt="Degree Guru" className="h-14 w-auto mb-5" />
-            <p className="text-white/55 leading-relaxed text-sm mb-6">
+            <p className="text-white/70 leading-relaxed text-sm mb-6">
               India's trusted free career counseling and online degree guidance platform. Helping learners since 2020.
             </p>
             <div className="flex gap-2.5">
@@ -133,14 +133,13 @@ export const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-bold mb-5 text-xs uppercase tracking-widest text-white/40">Quick Links</h4>
-            <ul className="space-y-2.5 text-sm text-white/65">
+            <h4 className="font-bold mb-5 text-xs uppercase tracking-widest text-white/50">Quick Links</h4>
+            <ul className="space-y-2.5 text-sm text-white/75">
               {[
                 { to: "/",            label: "Home"                  },
                 { to: "/about",       label: "About Us"              },
                 { to: "/contact",     label: "Contact Us"            },
                 { to: "/blog",        label: "Blog & Resources"      },
-                { to: "/recruitment", label: "Careers / Recruitment" },
                 { to: "/privacy",     label: "Privacy Policy"        },
                 { to: "/terms",       label: "Terms of Use"          },
               ].map(({ to, label }) => (
@@ -154,28 +153,10 @@ export const Footer = () => {
             </ul>
           </div>
 
-          {/* Jobs */}
-          <div>
-            <h4 className="font-bold mb-5 text-xs uppercase tracking-widest text-white/40">Jobs</h4>
-            <ul className="space-y-2.5 text-sm text-white/65">
-              {[
-                { to: "/jobs/employer",   label: "Post a Job — Free"  },
-                { to: "/jobs/job-seeker", label: "Browse Jobs"        },
-              ].map(({ to, label }) => (
-                <li key={to}>
-                  <Link to={to} className="hover:text-white hover:translate-x-1 transition-all inline-flex items-center gap-1.5 group">
-                    <span className="w-1 h-1 rounded-full bg-primary/60 group-hover:bg-primary transition-colors shrink-0" />
-                    {label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
           {/* Programs */}
           <div>
-            <h4 className="font-bold mb-5 text-xs uppercase tracking-widest text-white/40">Programs</h4>
-            <ul className="space-y-2.5 text-sm text-white/65">
+            <h4 className="font-bold mb-5 text-xs uppercase tracking-widest text-white/50">Programs</h4>
+            <ul className="space-y-2.5 text-sm text-white/75">
               {programs.map(({ to, label }) => (
                 <li key={to}>
                   <Link to={to} className="hover:text-white hover:translate-x-1 transition-all inline-flex items-center gap-1.5 group">

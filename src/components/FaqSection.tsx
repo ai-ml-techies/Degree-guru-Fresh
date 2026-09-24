@@ -25,7 +25,7 @@ const DEFAULT_FAQS = [
   },
   {
     q: "How long does it take for a counselor to call me back?",
-    a: "Our counselors typically call within 2 hours of form submission during working hours (9 AM – 8 PM, all 7 days). You can also reach us instantly on WhatsApp for a quicker response.",
+    a: "Our counselors typically connect promptly after form submission during working hours (9 AM – 8 PM, all 7 days). You can also reach us instantly on WhatsApp for immediate guidance.",
   },
   {
     q: "Which universities does Degree Guru work with?",

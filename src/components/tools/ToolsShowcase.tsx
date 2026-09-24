@@ -73,24 +73,6 @@ const TOOLS_LIST: ToolItem[] = [
     category: "pre",
   },
   {
-    id: "verify",
-    title: "Verify University",
-    description: "Statutory UGC-DEB, AICTE & NAAC grade authenticity check",
-    icon: <ShieldCheck size={22} className="text-emerald-600" />,
-    badge: "Fake Alert",
-    link: "/universities",
-    category: "pre",
-  },
-  {
-    id: "ai-bot",
-    title: "Will AI Take My Job?",
-    description: "Evaluate your role's automation risk & upskilling degrees",
-    icon: <Bot size={22} className="text-rose-500" />,
-    badge: "Future Proof",
-    link: "/career-finder",
-    category: "pre",
-  },
-  {
     id: "coupons",
     title: "University Coupons & Grants",
     description: "Check available institutional fee concessions & grants",
@@ -122,18 +104,15 @@ export const ToolsShowcase = () => {
 
   return (
     <div className="space-y-8">
-      {/* Header with Pre/Post Admission Tabs (College Vidya Inspired) */}
+      {/* Header with Pre/Post Admission Tabs */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold mb-2">
             <Sparkles size={13} /> Decide with Clarity
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground tracking-tight">
-            Tools, Calculators & More — All in One Place
+            Tools Built for Your Career Growth
           </h2>
-          <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-            Empowering students with unbiased financial, career, and admission intelligence.
-          </p>
         </div>
 
         {/* Filter Tabs */}
@@ -174,8 +153,8 @@ export const ToolsShowcase = () => {
         </div>
       </div>
 
-      {/* Tools Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* Tools Cards Grid (Balanced 3-column layout for 6 tools) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {filteredTools.map((tool) => (
           <div
             key={tool.id}
@@ -198,7 +177,7 @@ export const ToolsShowcase = () => {
                 <h4 className="text-sm font-black text-foreground group-hover:text-primary transition-colors">
                   {tool.title}
                 </h4>
-                <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                <p className="text-xs text-foreground/80 mt-1 leading-relaxed font-normal">
                   {tool.description}
                 </p>
               </div>

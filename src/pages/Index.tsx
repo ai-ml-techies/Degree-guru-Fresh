@@ -400,8 +400,8 @@ export const Index = () => {
       <Dialog open={counselingOpen} onOpenChange={setCounselingOpen}>
         <DialogContent className="max-w-md p-6 rounded-3xl bg-card border border-border shadow-2xl">
           <DialogHeader>
-            <DialogTitle className="text-xl font-black text-foreground">
-              Request Free Career Counseling
+            <DialogTitle className="text-xl sm:text-2xl font-black text-foreground tracking-tight">
+              Need Right Guidance?
             </DialogTitle>
           </DialogHeader>
           <CounselingForm

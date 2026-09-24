@@ -69,17 +69,6 @@ export const Sitemap = () => {
       ],
     },
     {
-      title: "Career & Placement Ecosystem",
-      icon: Briefcase,
-      description: "100% placement support, hiring drives, and dedicated student-to-employer matching.",
-      links: [
-        { label: "Candidate Job Portal & Career Switch", href: "/job-seeker" },
-        { label: "Corporate Employer Talent Matching", href: "/employer" },
-        { label: "Corporate Recruitment Services", href: "/recruitment" },
-        { label: "Refer & Earn ₹5,000 Guaranteed Cash Reward", href: "/referral" },
-      ],
-    },
-    {
       title: "Information & Corporate Governance",
       icon: ShieldCheck,
       description: "Legal policies, contact channels, and higher education knowledge base.",

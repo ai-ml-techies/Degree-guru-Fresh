@@ -32,7 +32,7 @@ const Contact = () => (
           <h1 className="text-3xl sm:text-[40px] md:text-[60px] font-extrabold leading-[1.05] mb-5">
             Free Counseling. Honest Answers.
           </h1>
-          <p className="text-soft text-lg">A real human counselor will call you back within 2 hours. No bots. No pressure.</p>
+          <p className="text-soft text-lg">A real human counselor will connect with you promptly. No bots. No pressure.</p>
         </Reveal>
         <Reveal delay={0.15}>
           <div className="relative">

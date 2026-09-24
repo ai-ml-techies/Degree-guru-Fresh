@@ -4,15 +4,15 @@ import {
   Sparkles, 
   ArrowRight, 
   CheckCircle2, 
-  Bot, 
   RefreshCw, 
   GraduationCap, 
   Send,
   Building2,
   TrendingUp,
-  Award
+  Award,
+  Compass,
+  Briefcase
 } from "lucide-react";
-import { CORE_COURSES } from "@/data/courses";
 import { submitLead } from "@/lib/api";
 
 type Step = "exploring" | "current_status" | "looking_for" | "preferred_field" | "recommendation" | "contact_success";
@@ -25,24 +25,24 @@ export interface ExploringCategory {
 
 const EXPLORING_CATEGORIES: ExploringCategory[] = [
   {
-    category: "Master's & Postgraduation (PG)",
+    category: "Post Graduation",
     iconType: "masters",
     options: ["Online MBA", "Online MCA", "Online Master's", "Online DBA"],
   },
   {
-    category: "Bachelor's & Graduation (UG)",
+    category: "Under Graduation",
     iconType: "bachelors",
     options: ["Online BBA", "Online BCA", "Online B.Com", "Online Bachelor's"],
   },
   {
-    category: "Secondary & Higher Secondary",
+    category: "School",
     iconType: "school",
     options: ["Class 10", "Class 12"],
   },
   {
     category: "Career & Growth Discovery",
     iconType: "career",
-    options: ["Jobs", "Career Change", "Not Sure Yet"],
+    options: ["Jobs", "Promotions", "Career Change", "Not Sure Yet"],
   },
 ];
 
@@ -147,6 +147,18 @@ export const AiCareerAssistant = () => {
         universities: ["Birchwood University", "EIMT", "Golden Gate"],
       };
     }
+    if (exploring === "Promotions" || goal.includes("Promotion")) {
+      return {
+        title: "Executive Online MBA / Leadership Acceleration Program",
+        subtitle: "Fast-track internal appraisals, promotion to management, and leadership career milestones",
+        recommendedCourseSlug: "online-mba",
+        linkText: "Explore Executive Online MBA Programs",
+        linkUrl: "/online-mba",
+        avgSalary: "₹10.5L - ₹24L/year (Avg 55%+ Promotion Hike)",
+        badge: "Promotion & Appraisal Growth",
+        universities: ["NMIMS Online", "Amity University", "Manipal (MUJ)", "D.Y. Patil"],
+      };
+    }
     if (exploring === "Online MCA" || field.includes("Technology") || field.includes("Software")) {
       return {
         title: "Online MCA (Master of Computer Applications)",
@@ -207,17 +219,17 @@ export const AiCareerAssistant = () => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto rounded-3xl border border-primary/20 bg-gradient-to-b from-card/90 via-card to-card/95 shadow-2xl p-5 sm:p-8 backdrop-blur-xl relative overflow-hidden">
-      {/* Decorative background glow */}
-      <div className="absolute -right-20 -top-20 w-60 h-60 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute -left-20 -bottom-20 w-60 h-60 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
+    <div className="w-full max-w-4xl mx-auto rounded-3xl border border-primary/20 bg-card shadow-2xl p-6 sm:p-9 backdrop-blur-xl relative overflow-hidden">
+      {/* Subtle decorative glow */}
+      <div className="absolute -right-20 -top-20 w-64 h-64 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -left-20 -bottom-20 w-64 h-64 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
 
       {/* Step Header with Reset button */}
       {step !== "exploring" && (
-        <div className="flex items-center justify-end pb-2">
+        <div className="flex items-center justify-end pb-3">
           <button
             onClick={handleReset}
-            className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors py-1 px-2.5 rounded-lg hover:bg-muted/50 cursor-pointer"
+            className="flex items-center gap-1.5 text-xs font-bold text-foreground/70 hover:text-primary transition-colors py-1.5 px-3 rounded-lg hover:bg-muted cursor-pointer"
           >
             <RefreshCw size={13} /> Reset
           </button>
@@ -225,41 +237,48 @@ export const AiCareerAssistant = () => {
       )}
 
       {/* Progressive Interaction Body */}
-      <div className="pt-2 min-h-[280px] flex flex-col justify-center">
-        {/* Step 1: Exploring — Structured by Education & Career Segments */}
+      <div className="min-h-[280px] flex flex-col justify-center">
+        {/* Step 1: Clean, De-cluttered Exploring Screen */}
         {step === "exploring" && (
-          <div className="space-y-5 animate-fade-in">
-            <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-full bg-primary/15 flex items-center justify-center text-primary shrink-0 mt-0.5">
-                <Sparkles size={16} />
+          <div className="space-y-6 animate-fade-in">
+            {/* Header chip + Title */}
+            <div className="flex items-start gap-3.5">
+              <div className="w-9 h-9 rounded-2xl bg-primary/15 flex items-center justify-center text-primary shrink-0 mt-0.5">
+                <Sparkles size={18} />
               </div>
               <div>
-                <p className="text-xs font-semibold text-primary uppercase tracking-wider">Step 1 of 4</p>
-                <h4 className="text-lg sm:text-2xl font-black text-foreground tracking-tight">What are you exploring right now?</h4>
+                <span className="inline-block text-[11px] font-black text-primary uppercase tracking-widest bg-primary/10 px-2.5 py-0.5 rounded-full mb-1">
+                  Step 1 of 4
+                </span>
+                <h3 className="text-xl sm:text-2xl font-black text-foreground tracking-tight">
+                  What are you exploring right now?
+                </h3>
               </div>
             </div>
 
-            <div className="space-y-4 pt-1">
+            {/* Clean Category Sections */}
+            <div className="space-y-5 pt-1">
               {EXPLORING_CATEGORIES.map((cat, cIdx) => (
-                <div key={cIdx} className="space-y-2">
-                  <div className="flex items-center gap-2 text-xs font-extrabold text-foreground/85 uppercase tracking-wider">
-                    {cat.iconType === "masters" && <GraduationCap size={15} className="text-[#6528f7]" />}
-                    {cat.iconType === "bachelors" && <Building2 size={15} className="text-emerald-500" />}
-                    {cat.iconType === "school" && <Award size={15} className="text-purple-600" />}
-                    {cat.iconType === "career" && <TrendingUp size={15} className="text-amber-500" />}
-                    <span>{cat.category}</span>
+                <div key={cIdx} className="space-y-2.5">
+                  {/* Category Title */}
+                  <div className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                    <span className="text-xs font-black uppercase tracking-wider text-foreground/85">
+                      {cat.category}
+                    </span>
                   </div>
 
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5">
+                  {/* Cards Grid */}
+                  <div className={`grid gap-2.5 ${cat.options.length === 2 ? "grid-cols-2 max-w-md" : "grid-cols-2 sm:grid-cols-4"}`}>
                     {cat.options.map((item) => (
                       <button
                         key={item}
                         type="button"
                         onClick={() => handleSelectExploring(item)}
-                        className="px-3.5 py-2.5 rounded-xl border border-border/70 hover:border-primary/60 bg-card hover:bg-primary/5 text-foreground text-xs sm:text-sm font-semibold transition-all duration-150 text-left flex items-center justify-between group shadow-xs cursor-pointer hover:shadow-sm"
+                        className="px-4 py-3 rounded-xl border border-border bg-background hover:border-primary/80 hover:bg-primary/[0.04] text-foreground text-xs sm:text-sm font-bold transition-all duration-200 text-left flex items-center justify-between group shadow-xs hover:shadow-md hover:-translate-y-0.5 cursor-pointer"
                       >
                         <span className="truncate">{item}</span>
-                        <ArrowRight size={13} className="text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all shrink-0 ml-1" />
+                        <ArrowRight size={13} className="text-foreground/40 group-hover:text-primary group-hover:translate-x-0.5 transition-all shrink-0 ml-1.5" />
                       </button>
                     ))}
                   </div>
@@ -271,58 +290,70 @@ export const AiCareerAssistant = () => {
 
         {/* Step 2: Current Status */}
         {step === "current_status" && (
-          <div className="space-y-4 animate-fade-in">
-            <div className="flex items-start gap-3">
-              <div className="w-7 h-7 rounded-full bg-primary/15 flex items-center justify-center text-primary shrink-0 mt-0.5">
-                <Sparkles size={14} />
+          <div className="space-y-5 animate-fade-in">
+            <div className="flex items-start gap-3.5">
+              <div className="w-9 h-9 rounded-2xl bg-primary/15 flex items-center justify-center text-primary shrink-0 mt-0.5">
+                <Sparkles size={18} />
               </div>
               <div>
-                <p className="text-xs font-semibold text-primary uppercase tracking-wider">Step 2 of 4</p>
-                <h4 className="text-lg sm:text-xl font-bold text-foreground">What are you currently doing?</h4>
-                <p className="text-xs text-muted-foreground mt-0.5">This helps match university format and study hours:</p>
+                <span className="inline-block text-[11px] font-black text-primary uppercase tracking-widest bg-primary/10 px-2.5 py-0.5 rounded-full mb-1">
+                  Step 2 of 4
+                </span>
+                <h3 className="text-xl sm:text-2xl font-black text-foreground tracking-tight">
+                  What are you currently doing?
+                </h3>
+                <p className="text-xs font-medium text-foreground/75 mt-1">
+                  This helps match university learning hours and flexibility to your schedule:
+                </p>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
               {CURRENT_STATUS_OPTIONS.map((item) => (
                 <button
                   key={item}
                   type="button"
                   onClick={() => handleSelectStatus(item)}
-                  className="px-4 py-3.5 rounded-xl border border-border/70 hover:border-primary/60 bg-card hover:bg-primary/5 text-foreground text-xs sm:text-sm font-semibold transition-all duration-150 text-left flex items-center justify-between group shadow-sm"
+                  className="px-4 py-3.5 rounded-xl border border-border bg-background hover:border-primary/80 hover:bg-primary/[0.04] text-foreground text-xs sm:text-sm font-bold transition-all duration-200 text-left flex items-center justify-between group shadow-xs hover:shadow-md cursor-pointer"
                 >
                   <span>{item}</span>
-                  <ArrowRight size={14} className="text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
+                  <ArrowRight size={14} className="text-foreground/40 group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
                 </button>
               ))}
             </div>
           </div>
         )}
 
-        {/* Step 3: Looking For / Outcome */}
+        {/* Step 3: Looking For / Goal */}
         {step === "looking_for" && (
-          <div className="space-y-4 animate-fade-in">
-            <div className="flex items-start gap-3">
-              <div className="w-7 h-7 rounded-full bg-primary/15 flex items-center justify-center text-primary shrink-0 mt-0.5">
-                <Sparkles size={14} />
+          <div className="space-y-5 animate-fade-in">
+            <div className="flex items-start gap-3.5">
+              <div className="w-9 h-9 rounded-2xl bg-primary/15 flex items-center justify-center text-primary shrink-0 mt-0.5">
+                <Sparkles size={18} />
               </div>
               <div>
-                <p className="text-xs font-semibold text-primary uppercase tracking-wider">Step 3 of 4</p>
-                <h4 className="text-lg sm:text-xl font-bold text-foreground">What is your primary goal from this degree?</h4>
-                <p className="text-xs text-muted-foreground mt-0.5">We personalize recommendations based on expected career ROI:</p>
+                <span className="inline-block text-[11px] font-black text-primary uppercase tracking-widest bg-primary/10 px-2.5 py-0.5 rounded-full mb-1">
+                  Step 3 of 4
+                </span>
+                <h3 className="text-xl sm:text-2xl font-black text-foreground tracking-tight">
+                  What is your primary career goal?
+                </h3>
+                <p className="text-xs font-medium text-foreground/75 mt-1">
+                  We personalize degree recommendations based on expected career ROI:
+                </p>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
               {LOOKING_FOR_OPTIONS.map((item) => (
                 <button
                   key={item}
                   type="button"
                   onClick={() => handleSelectGoal(item)}
-                  className="px-4 py-3.5 rounded-xl border border-border/70 hover:border-primary/60 bg-card hover:bg-primary/5 text-foreground text-xs sm:text-sm font-semibold transition-all duration-150 text-left flex items-center justify-between group shadow-sm"
+                  className="px-4 py-3.5 rounded-xl border border-border bg-background hover:border-primary/80 hover:bg-primary/[0.04] text-foreground text-xs sm:text-sm font-bold transition-all duration-200 text-left flex items-center justify-between group shadow-xs hover:shadow-md cursor-pointer"
                 >
                   <span>{item}</span>
-                  <ArrowRight size={14} className="text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
+                  <ArrowRight size={14} className="text-foreground/40 group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
                 </button>
               ))}
             </div>
@@ -331,59 +362,65 @@ export const AiCareerAssistant = () => {
 
         {/* Step 4: Preferred Field */}
         {step === "preferred_field" && (
-          <div className="space-y-4 animate-fade-in">
-            <div className="flex items-start gap-3">
-              <div className="w-7 h-7 rounded-full bg-primary/15 flex items-center justify-center text-primary shrink-0 mt-0.5">
-                <Sparkles size={14} />
+          <div className="space-y-5 animate-fade-in">
+            <div className="flex items-start gap-3.5">
+              <div className="w-9 h-9 rounded-2xl bg-primary/15 flex items-center justify-center text-primary shrink-0 mt-0.5">
+                <Sparkles size={18} />
               </div>
               <div>
-                <p className="text-xs font-semibold text-primary uppercase tracking-wider">Step 4 of 4</p>
-                <h4 className="text-lg sm:text-xl font-bold text-foreground">What is your preferred domain or field?</h4>
-                <p className="text-xs text-muted-foreground mt-0.5">Final touch to pinpoint syllabus & specialization:</p>
+                <span className="inline-block text-[11px] font-black text-primary uppercase tracking-widest bg-primary/10 px-2.5 py-0.5 rounded-full mb-1">
+                  Step 4 of 4
+                </span>
+                <h3 className="text-xl sm:text-2xl font-black text-foreground tracking-tight">
+                  What is your preferred domain or field?
+                </h3>
+                <p className="text-xs font-medium text-foreground/75 mt-1">
+                  Final step to pinpoint syllabus, specialization, and top-tier universities:
+                </p>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
               {PREFERRED_FIELDS.map((item) => (
                 <button
                   key={item}
                   type="button"
                   onClick={() => handleSelectField(item)}
-                  className="px-4 py-3.5 rounded-xl border border-border/70 hover:border-primary/60 bg-card hover:bg-primary/5 text-foreground text-xs sm:text-sm font-semibold transition-all duration-150 text-left flex items-center justify-between group shadow-sm"
+                  className="px-4 py-3.5 rounded-xl border border-border bg-background hover:border-primary/80 hover:bg-primary/[0.04] text-foreground text-xs sm:text-sm font-bold transition-all duration-200 text-left flex items-center justify-between group shadow-xs hover:shadow-md cursor-pointer"
                 >
                   <span>{item}</span>
-                  <ArrowRight size={14} className="text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
+                  <ArrowRight size={14} className="text-foreground/40 group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
                 </button>
               ))}
             </div>
           </div>
         )}
 
-        {/* Step 5: Immediate Value + Personalized AI Roadmap + Optional Lead */}
+        {/* Step 5: Immediate Value + Personalized AI Roadmap */}
         {step === "recommendation" && (
           <div className="space-y-6 animate-fade-in">
             {/* Value Recommendation Card */}
-            <div className="p-5 sm:p-6 rounded-2xl bg-primary/5 border border-primary/20 space-y-4">
+            <div className="p-6 rounded-2xl bg-primary/5 border border-primary/20 space-y-4 shadow-sm">
               <div className="flex items-center justify-between flex-wrap gap-2">
-                <span className="px-3 py-1 rounded-full bg-primary text-primary-foreground text-xs font-bold">
+                <span className="px-3 py-1 rounded-full bg-primary text-primary-foreground text-xs font-black">
                   {rec.badge}
                 </span>
-                <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
-                  <TrendingUp size={14} /> {rec.avgSalary}
+                <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+                  <TrendingUp size={15} /> {rec.avgSalary}
                 </span>
               </div>
 
               <div>
                 <h4 className="text-xl sm:text-2xl font-black text-foreground">{rec.title}</h4>
-                <p className="text-xs sm:text-sm text-muted-foreground mt-1">{rec.subtitle}</p>
+                <p className="text-xs sm:text-sm font-medium text-foreground/80 mt-1 leading-relaxed">{rec.subtitle}</p>
               </div>
 
               {/* Recommended Universities */}
               <div className="pt-2">
-                <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Top Accredited Universities for Your Profile:</p>
+                <p className="text-[11px] font-black uppercase tracking-wider text-foreground/70">Top Accredited Universities for Your Profile:</p>
                 <div className="flex flex-wrap gap-2 mt-2">
                   {rec.universities.map((uni) => (
-                    <span key={uni} className="px-3 py-1 rounded-xl bg-card border border-border text-xs font-semibold text-foreground flex items-center gap-1.5 shadow-sm">
+                    <span key={uni} className="px-3 py-1.5 rounded-xl bg-card border border-border text-xs font-bold text-foreground flex items-center gap-1.5 shadow-xs">
                       <Building2 size={13} className="text-primary" /> {uni}
                     </span>
                   ))}
@@ -394,13 +431,13 @@ export const AiCareerAssistant = () => {
               <div className="pt-2 flex flex-wrap gap-3">
                 <Link
                   to={rec.linkUrl}
-                  className="px-5 py-2.5 rounded-xl bg-primary text-primary-foreground text-xs sm:text-sm font-bold flex items-center gap-2 hover:bg-primary/90 transition-colors shadow-md shadow-primary/20"
+                  className="px-5 py-3 rounded-xl bg-primary text-primary-foreground text-xs sm:text-sm font-extrabold flex items-center gap-2 hover:bg-primary/90 transition-all shadow-md shadow-primary/20"
                 >
                   <GraduationCap size={16} /> {rec.linkText} <ArrowRight size={14} />
                 </Link>
                 <Link
                   to="/roi-calculator"
-                  className="px-4 py-2.5 rounded-xl bg-card border border-border text-xs sm:text-sm font-semibold text-foreground hover:bg-muted/50 transition-colors"
+                  className="px-4 py-3 rounded-xl bg-card border border-border text-xs sm:text-sm font-bold text-foreground hover:bg-muted/50 transition-colors"
                 >
                   Calculate Your Exact ROI
                 </Link>
@@ -408,33 +445,33 @@ export const AiCareerAssistant = () => {
             </div>
 
             {/* Value-First Progressive Contact Form */}
-            <div className="p-5 sm:p-6 rounded-2xl bg-card border border-border/80 shadow-sm space-y-4">
+            <div className="p-6 rounded-2xl bg-card border border-border shadow-sm space-y-4">
               <div className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
                   <Award size={18} />
                 </div>
                 <div>
-                  <h5 className="text-sm sm:text-base font-bold text-foreground">
+                  <h5 className="text-sm sm:text-base font-extrabold text-foreground">
                     Receive Complete Syllabus, Fee Comparison & University Shortlist
                   </h5>
-                  <p className="text-xs text-muted-foreground mt-0.5">
+                  <p className="text-xs font-medium text-foreground/75 mt-0.5">
                     100% Free. No pushy sales calls. Verified guidance directly on WhatsApp.
                   </p>
                 </div>
               </div>
 
               {leadSuccess ? (
-                <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs sm:text-sm font-semibold flex items-center gap-3">
+                <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs sm:text-sm font-bold flex items-center gap-3">
                   <CheckCircle2 size={20} className="shrink-0" />
                   <div>
-                    <p className="font-bold">Recommendation packet generated successfully!</p>
-                    <p className="text-[11px] opacity-90">Our senior academic counselor has sent the fee matrix to your WhatsApp.</p>
+                    <p className="font-extrabold">Recommendation packet generated successfully!</p>
+                    <p className="text-[11px] font-medium opacity-90">Our senior academic counselor has sent the fee matrix to your WhatsApp.</p>
                   </div>
                 </div>
               ) : (
                 <form onSubmit={handleLeadSubmit} className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
                   <div>
-                    <label htmlFor={nameInputId} className="block text-[11px] font-semibold text-muted-foreground mb-1">Your Full Name *</label>
+                    <label htmlFor={nameInputId} className="block text-xs font-bold text-foreground/80 mb-1">Your Full Name *</label>
                     <input
                       id={nameInputId}
                       type="text"
@@ -442,11 +479,11 @@ export const AiCareerAssistant = () => {
                       placeholder="e.g. Yash Sharma"
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
                     />
                   </div>
                   <div>
-                    <label htmlFor={phoneInputId} className="block text-[11px] font-semibold text-muted-foreground mb-1">WhatsApp Mobile *</label>
+                    <label htmlFor={phoneInputId} className="block text-xs font-bold text-foreground/80 mb-1">WhatsApp Mobile *</label>
                     <input
                       id={phoneInputId}
                       type="tel"
@@ -454,11 +491,11 @@ export const AiCareerAssistant = () => {
                       placeholder="e.g. 9876543210"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
                     />
                   </div>
                   <div>
-                    <label htmlFor={emailInputId} className="block text-[11px] font-semibold text-muted-foreground mb-1">Email (Optional)</label>
+                    <label htmlFor={emailInputId} className="block text-xs font-bold text-foreground/80 mb-1">Email (Optional)</label>
                     <div className="flex gap-2">
                       <input
                         id={emailInputId}
@@ -466,7 +503,7 @@ export const AiCareerAssistant = () => {
                         placeholder="name@gmail.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
                       />
                     </div>
                   </div>
@@ -474,7 +511,7 @@ export const AiCareerAssistant = () => {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full sm:w-auto px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all shadow-md hover:shadow-emerald-600/25"
+                      className="w-full sm:w-auto px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-extrabold flex items-center justify-center gap-2 transition-all shadow-md hover:shadow-emerald-600/25 cursor-pointer"
                     >
                       {isSubmitting ? (
                         <>Sending Details...</>
@@ -494,3 +531,5 @@ export const AiCareerAssistant = () => {
     </div>
   );
 };
+
+export default AiCareerAssistant;

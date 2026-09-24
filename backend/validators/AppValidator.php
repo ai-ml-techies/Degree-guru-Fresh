@@ -7,16 +7,29 @@ use yii\base\Model;
 class AppValidator
 {
     /**
-     * Validate  Mobile Number
+     * Validate Mobile Number (Supports Indian 10-digit and International formats)
      */
     public static function validatePhone(Model $model, string $attribute): void
     {
-        $phone = preg_replace('/\D/', '', (string)$model->$attribute);
+        $raw = (string)$model->$attribute;
+        $phone = preg_replace('/\D/', '', $raw);
 
-        if (!preg_match('/^[6-9]\d{9}$/', $phone)) {
+        // If exactly 10 digits, validate standard Indian mobile
+        if (strlen($phone) === 10) {
+            if (!preg_match('/^[6-9]\d{9}$/', $phone)) {
+                $model->addError(
+                    $attribute,
+                    'Please enter a valid 10-digit mobile number.'
+                );
+            }
+            return;
+        }
+
+        // For international numbers with country code prefix (7 to 15 digits total)
+        if (strlen($phone) < 7 || strlen($phone) > 15) {
             $model->addError(
                 $attribute,
-                'Please enter a valid 10-digit  mobile number.'
+                'Please enter a valid mobile number.'
             );
         }
     }

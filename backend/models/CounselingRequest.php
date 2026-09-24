@@ -54,8 +54,8 @@ class CounselingRequest extends ActiveRecord
             [['email', 'resume_path', 'source_page'], 'string', 'max' => 255],
 
             [['dob'], 'date', 'format' => 'php:Y-m-d'],
-            // Phone numbers are stored as strings; enforce max length 10 (digits)
-            [['phone'], 'string', 'max' => 10],
+            // Phone numbers are stored as strings; allow international formatted numbers up to 30 chars
+            [['phone'], 'string', 'max' => 30],
             [['name'], 'validateNameField'],
     
             [['email'], 'validateEmailField'],

@@ -24,7 +24,7 @@
     --secondary: 258 20% 96%;
     --secondary-foreground: 0 0% 5%;
     --muted: 258 20% 96%;
-    --muted-foreground: 0 0% 40%;
+    --muted-foreground: 0 0% 28%;         /* Crisp, balanced, highly readable */
     --accent: 258 93% 56%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 60%;

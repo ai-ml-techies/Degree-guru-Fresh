@@ -46,6 +46,8 @@ export type CounselingPayload = {
   phone: string;
   email?: string;
   dob?: string;
+  state?: string;
+  countryCode?: string;
   message?: string;
   source?: string;
 };
@@ -128,10 +130,12 @@ export async function submitCounselingLead(payload: CounselingPayload): Promise<
   const body = new FormData();
   body.append('name', payload.name);
   body.append('phone', payload.phone);
-  if (payload.email)   body.append('email',   payload.email);
-  if (payload.dob)     body.append('dob',     payload.dob);
-  if (payload.message) body.append('message', payload.message);
-  if (payload.source)  body.append('source',  payload.source);
+  if (payload.email)       body.append('email', payload.email);
+  if (payload.dob)         body.append('dob', payload.dob);
+  if (payload.state)       body.append('state', payload.state);
+  if (payload.countryCode) body.append('country_code', payload.countryCode);
+  if (payload.message)     body.append('message', payload.message);
+  if (payload.source)      body.append('source', payload.source);
 
   const res = await fetch(`${API_BASE}/contact/submit`, { method: 'POST', body });
   const data: CounselingResult = await res.json();
