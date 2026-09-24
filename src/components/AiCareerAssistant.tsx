@@ -238,7 +238,6 @@ export const AiCareerAssistant = () => {
               <div>
                 <p className="text-xs font-semibold text-primary uppercase tracking-wider">Step 1 of 4</p>
                 <h4 className="text-lg sm:text-xl font-bold text-foreground">What are you exploring right now?</h4>
-                <p className="text-xs text-muted-foreground mt-0.5">Select what best matches your current plan or thought:</p>
               </div>
             </div>
 

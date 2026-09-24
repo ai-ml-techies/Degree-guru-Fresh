@@ -14,13 +14,6 @@ export interface UniversityShowcaseItem {
 
 const TOP_UNIVERSITIES: UniversityShowcaseItem[] = [
   {
-    id: "alliance",
-    name: "Alliance University Online",
-    coursesCount: 4,
-    location: "Bengaluru, Karnataka",
-    slug: "alliance-university-online",
-  },
-  {
     id: "amity",
     name: "Amity University Online",
     coursesCount: 14,
@@ -28,11 +21,32 @@ const TOP_UNIVERSITIES: UniversityShowcaseItem[] = [
     slug: "amity-university-online",
   },
   {
+    id: "manipal",
+    name: "Online Manipal",
+    coursesCount: 12,
+    location: "Jaipur, Rajasthan",
+    slug: "manipal-university-jaipur-online",
+  },
+  {
     id: "dpu",
-    name: "DY Patil University Online",
+    name: "DY Patil Vidyapeeth Online",
     coursesCount: 7,
     location: "Pune, Maharashtra",
     slug: "dy-patil-university-online",
+  },
+  {
+    id: "shoolini",
+    name: "Shoolini University Online",
+    coursesCount: 12,
+    location: "Solan, Himachal Pradesh",
+    slug: "universities",
+  },
+  {
+    id: "cu",
+    name: "Chandigarh University Online",
+    coursesCount: 12,
+    location: "Ludhiana, Punjab",
+    slug: "chandigarh-university-online",
   },
   {
     id: "lpu",
@@ -42,25 +56,11 @@ const TOP_UNIVERSITIES: UniversityShowcaseItem[] = [
     slug: "lpu-online",
   },
   {
-    id: "manipal",
-    name: "Manipal University Online",
-    coursesCount: 12,
-    location: "Jaipur, Rajasthan",
-    slug: "manipal-university-jaipur-online",
-  },
-  {
     id: "nmims",
-    name: "NMIMS Online",
+    name: "NMIMS Global Online",
     coursesCount: 4,
     location: "Mumbai, Maharashtra",
     slug: "nmims-online",
-  },
-  {
-    id: "cu",
-    name: "Chandigarh University Online",
-    coursesCount: 12,
-    location: "Ludhiana, Punjab",
-    slug: "chandigarh-university-online",
   },
   {
     id: "bennett",
@@ -71,17 +71,10 @@ const TOP_UNIVERSITIES: UniversityShowcaseItem[] = [
   },
   {
     id: "amrita",
-    name: "Amrita University Online",
+    name: "Amrita Ahead Online",
     coursesCount: 8,
     location: "Coimbatore, Tamil Nadu",
     slug: "amrita-ahead-online",
-  },
-  {
-    id: "vgu",
-    name: "Vivekananda Global University",
-    coursesCount: 7,
-    location: "Jaipur, Rajasthan",
-    slug: "universities",
   },
   {
     id: "sharda",
@@ -91,10 +84,31 @@ const TOP_UNIVERSITIES: UniversityShowcaseItem[] = [
     slug: "sharda-university-online",
   },
   {
-    id: "shoolini",
-    name: "Shoolini University Online",
-    coursesCount: 12,
-    location: "Solan, Himachal Pradesh",
+    id: "parul",
+    name: "Parul University Online",
+    coursesCount: 9,
+    location: "Vadodara, Gujarat",
+    slug: "parul-university-online",
+  },
+  {
+    id: "uttaranchal",
+    name: "Uttaranchal University Online",
+    coursesCount: 6,
+    location: "Dehradun, Uttarakhand",
+    slug: "uttaranchal-university-online",
+  },
+  {
+    id: "alliance",
+    name: "Alliance University Online",
+    coursesCount: 4,
+    location: "Bengaluru, Karnataka",
+    slug: "alliance-university-online",
+  },
+  {
+    id: "vgu",
+    name: "Vivekananda Global University",
+    coursesCount: 7,
+    location: "Jaipur, Rajasthan",
     slug: "universities",
   },
   {
@@ -110,20 +124,6 @@ const TOP_UNIVERSITIES: UniversityShowcaseItem[] = [
     coursesCount: 10,
     location: "Mathura, Uttar Pradesh",
     slug: "gla-university-online",
-  },
-  {
-    id: "uttaranchal",
-    name: "Uttaranchal University Online",
-    coursesCount: 6,
-    location: "Dehradun, Uttarakhand",
-    slug: "uttaranchal-university-online",
-  },
-  {
-    id: "parul",
-    name: "Parul University Online",
-    coursesCount: 9,
-    location: "Vadodara, Gujarat",
-    slug: "parul-university-online",
   },
   {
     id: "smu",
@@ -166,7 +166,7 @@ export const UniversitiesGridShowcase: React.FC = () => {
             <span role="img" aria-label="university">🏫</span> 100+ Online Universities
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground tracking-tight">
-            <span className="text-primary">UGC-approved universities</span>, verified by us and reviewed by learners, on 30+ factors
+            Find Best <span className="text-primary">Online Degree Universities</span>
           </h2>
         </div>
 

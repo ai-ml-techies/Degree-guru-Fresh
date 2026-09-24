@@ -15,6 +15,7 @@ import {
   Send,
   HelpCircle
 } from "lucide-react";
+import { askGeminiAdvisor } from "@/services/geminiService";
 
 type Message = {
   id: string;
@@ -27,6 +28,7 @@ export const FloatingAiAdvisor = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [userInput, setUserInput] = useState<string>("");
   const [messages, setMessages] = useState<Message[]>([]);
+  const [isTyping, setIsTyping] = useState<boolean>(false);
 
   // Initial prompt templates
   const resetConversation = () => {
@@ -155,12 +157,56 @@ export const FloatingAiAdvisor = () => {
     setMessages((prev) => [...prev, userMsg, botResponse]);
   };
 
-  const handleCustomSend = (e: React.FormEvent) => {
+  const handleCustomSend = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!userInput.trim()) return;
-    const text = userInput.trim();
+    if (!userInput.trim() || isTyping) return;
+    const query = userInput.trim();
     setUserInput("");
-    handleSelect(text);
+
+    const userMsg: Message = {
+      id: `u-${Date.now()}`,
+      sender: "user",
+      text: query,
+    };
+
+    setMessages((prev) => [...prev, userMsg]);
+    setIsTyping(true);
+
+    try {
+      const history = messages.map((m) => ({
+        role: m.sender === "user" ? ("user" as const) : ("model" as const),
+        text: m.text,
+      }));
+
+      const aiReply = await askGeminiAdvisor(query, history);
+
+      const botMsg: Message = {
+        id: `b-${Date.now()}`,
+        sender: "bot",
+        text: aiReply,
+        options: [
+          { label: "Explore Online Degrees", action: () => {}, link: "/courses" },
+          { label: "Compare Universities", action: () => {}, link: "/universities/compare" },
+          { label: "Calculate 0% EMI", action: () => {}, link: "/emi-calculator" },
+        ],
+      };
+
+      setMessages((prev) => [...prev, botMsg]);
+    } catch (err) {
+      console.error("Gemini advisor error:", err);
+      const fallbackMsg: Message = {
+        id: `b-${Date.now()}`,
+        sender: "bot",
+        text: "I am here to help you discover the right accredited online degree and compare universities across India. Which course or field are you interested in?",
+        options: [
+          { label: "Explore Online Degrees", action: () => {}, link: "/courses" },
+          { label: "Compare Universities", action: () => {}, link: "/universities/compare" },
+        ],
+      };
+      setMessages((prev) => [...prev, fallbackMsg]);
+    } finally {
+      setIsTyping(false);
+    }
   };
 
   return (
@@ -179,7 +225,7 @@ export const FloatingAiAdvisor = () => {
                   Degree Guru AI Advisor
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                 </div>
-                <div className="text-[11px] text-white/80 font-medium">Independent Learner Assistant</div>
+                <div className="text-[11px] text-white/80 font-medium">Powered by Gemini AI • Real-time Guidance</div>
               </div>
             </div>
             <button
@@ -199,7 +245,7 @@ export const FloatingAiAdvisor = () => {
                 className={`flex flex-col ${m.sender === "user" ? "items-end" : "items-start"}`}
               >
                 <div
-                  className={`max-w-[85%] p-3.5 rounded-2xl leading-relaxed ${
+                  className={`max-w-[85%] p-3.5 rounded-2xl leading-relaxed whitespace-pre-line ${
                     m.sender === "user"
                       ? "bg-primary text-primary-foreground font-semibold rounded-br-none"
                       : "bg-muted text-foreground border border-border/80 rounded-bl-none shadow-sm"
@@ -236,6 +282,15 @@ export const FloatingAiAdvisor = () => {
                 )}
               </div>
             ))}
+
+            {isTyping && (
+              <div className="flex flex-col items-start animate-fade-in">
+                <div className="p-3 rounded-2xl bg-muted text-foreground border border-border/80 rounded-bl-none shadow-sm flex items-center gap-2">
+                  <Sparkles size={14} className="text-primary animate-spin" />
+                  <span className="text-[11px] font-semibold text-muted-foreground">Thinking with Gemini AI...</span>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Quick WhatsApp Link & Input */}

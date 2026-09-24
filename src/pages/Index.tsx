@@ -21,9 +21,8 @@ import {
   MessageCircle,
   HelpCircle,
   Building2,
-  Check
+  Check,
 } from "lucide-react";
-import { UniversityMarquee } from "@/components/UniversityMarquee";
 import { AiCareerAssistant } from "@/components/AiCareerAssistant";
 import { RoiCalculator } from "@/components/RoiCalculator";
 import { FaqSection } from "@/components/FaqSection";
@@ -74,10 +73,6 @@ export const Index = () => {
                 Accelerate Your Career Growth. <br className="hidden sm:inline" />
                 <span className="text-gradient">Earn a Top University Degree.</span>
               </h1>
-
-              <p className="text-base sm:text-xl text-muted-foreground max-w-2xl mx-auto lg:mx-0 leading-relaxed font-normal">
-                Compare accredited UGC-approved online universities, calculate 0% EMI installments, and get 100% free personalized counseling.
-              </p>
 
               {/* Primary & Counselor CTAs */}
               <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-2">
@@ -150,7 +145,7 @@ export const Index = () => {
         <div className="container-dg space-y-6">
           <div className="text-center max-w-3xl mx-auto">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground tracking-tight">
-              Explore Online Degree Programs by Category & Level
+              Explore Online Degree Programs
             </h2>
           </div>
 
@@ -161,8 +156,6 @@ export const Index = () => {
       {/* 4. UGC-APPROVED UNIVERSITIES VISIBILITY SECTION (College Vidya 18-University Grid) */}
       <UniversitiesGridShowcase />
 
-      {/* 5. INFINITE UNIVERSITY LOGO TICKER (Real Logos Scrolling) */}
-      <UniversityMarquee />
 
       {/* 5. TOOLS & CALCULATORS SHOWCASE (College Vidya Inspired with EMI Calculator) */}
       <section className="py-16 md:py-20 border-b border-border/50">
