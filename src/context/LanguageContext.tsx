@@ -1,37 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { SUPPORTED_LANGUAGES, LanguageOption } from "@/data/languages";
 
-export interface LanguageOption {
-  code: string;
-  name: string;
-  nativeName: string;
-  flag: string;
-  group: "preferred" | "indian" | "global";
-}
-
-export const SUPPORTED_LANGUAGES: LanguageOption[] = [
-  // Top 2 Preferred
-  { code: "hi", name: "Hindi", nativeName: "हिन्दी", flag: "🇮🇳", group: "preferred" },
-  { code: "en", name: "English", nativeName: "English", flag: "🇬🇧", group: "preferred" },
-
-  // Indian Regional Languages
-  { code: "bn", name: "Bengali", nativeName: "বাংলা", flag: "🇮🇳", group: "indian" },
-  { code: "mr", name: "Marathi", nativeName: "मराठी", flag: "🇮🇳", group: "indian" },
-  { code: "te", name: "Telugu", nativeName: "తెలుగు", flag: "🇮🇳", group: "indian" },
-  { code: "ta", name: "Tamil", nativeName: "தமிழ்", flag: "🇮🇳", group: "indian" },
-  { code: "gu", name: "Gujarati", nativeName: "ગુજરાતી", flag: "🇮🇳", group: "indian" },
-  { code: "kn", name: "Kannada", nativeName: "ಕನ್ನಡ", flag: "🇮🇳", group: "indian" },
-  { code: "ml", name: "Malayalam", nativeName: "മലയാളം", flag: "🇮🇳", group: "indian" },
-  { code: "pa", name: "Punjabi", nativeName: "ਪੰਜਾਬੀ", flag: "🇮🇳", group: "indian" },
-  { code: "ur", name: "Urdu", nativeName: "اردو", flag: "🇮🇳", group: "indian" },
-  { code: "or", name: "Odia", nativeName: "ଓଡ଼ିଆ", flag: "🇮🇳", group: "indian" },
-
-  // Global Languages
-  { code: "es", name: "Spanish", nativeName: "Español", flag: "🇪🇸", group: "global" },
-  { code: "fr", name: "French", nativeName: "Français", flag: "🇫🇷", group: "global" },
-  { code: "de", name: "German", nativeName: "Deutsch", flag: "🇩🇪", group: "global" },
-  { code: "ar", name: "Arabic", nativeName: "العربية", flag: "🇦🇪", group: "global" },
-  { code: "id", name: "Indonesian", nativeName: "Bahasa Indonesia", flag: "🇮🇩", group: "global" },
-];
+export type { LanguageOption };
 
 interface LanguageContextType {
   language: string;
@@ -49,22 +19,21 @@ const LanguageContext = createContext<LanguageContextType>({
   currentLanguage: SUPPORTED_LANGUAGES[1], // English
 });
 
-const applyGoogleTranslate = (lang: string) => {
+// Safe on-demand helper to translate page if user selects a non-English language
+const applyTranslationSafely = (lang: string) => {
   if (typeof window === "undefined") return;
   try {
-    const hostname = window.location.hostname;
     const cookieVal = lang === "en" ? "/en/en" : `/en/${lang}`;
-    document.cookie = `googtrans=${cookieVal}; path=/; domain=${hostname};`;
     document.cookie = `googtrans=${cookieVal}; path=/;`;
 
-    // Attempt to set select box if already present in DOM
+    // If Google Translate combo already exists in the document, trigger it
     const combo = document.querySelector<HTMLSelectElement>(".goog-te-combo");
     if (combo) {
       combo.value = lang;
       combo.dispatchEvent(new Event("change"));
     }
-  } catch (err) {
-    console.error("Google translate apply error:", err);
+  } catch {
+    // Fail silently so the UI never breaks
   }
 };
 
@@ -85,7 +54,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     } catch {
       // ignore
     }
-    applyGoogleTranslate(lang);
+    applyTranslationSafely(lang);
     window.dispatchEvent(new CustomEvent("dg-lang-change", { detail: lang }));
   };
 
@@ -94,22 +63,17 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   useEffect(() => {
-    // Apply saved language on mount
-    if (language && language !== "en") {
-      setTimeout(() => applyGoogleTranslate(language), 500);
-    }
-
     const handleStorage = (e: StorageEvent) => {
       if (e.key === "dg_lang" && e.newValue) {
         setLanguageState(e.newValue);
-        applyGoogleTranslate(e.newValue);
+        applyTranslationSafely(e.newValue);
       }
     };
     const handleCustom = (e: Event) => {
       const custom = e as CustomEvent<string>;
       if (custom.detail) {
         setLanguageState(custom.detail);
-        applyGoogleTranslate(custom.detail);
+        applyTranslationSafely(custom.detail);
       }
     };
     window.addEventListener("storage", handleStorage);
@@ -118,7 +82,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       window.removeEventListener("storage", handleStorage);
       window.removeEventListener("dg-lang-change", handleCustom);
     };
-  }, [language]);
+  }, []);
 
   const currentLanguage =
     SUPPORTED_LANGUAGES.find((l) => l.code === language) || SUPPORTED_LANGUAGES[1];

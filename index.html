@@ -37,19 +37,6 @@ fbq('track', 'PageView');
 </head>
   <body>
     <div id="root"></div>
-    <div id="google_translate_element" style="display:none"></div>
-    <script type="text/javascript">
-      window.googleTranslateElementInit = function() {
-        if (window.google && window.google.translate) {
-          new window.google.translate.TranslateElement({
-            pageLanguage: 'en',
-            includedLanguages: 'en,hi,bn,mr,te,ta,gu,kn,ml,pa,ur,or,es,fr,de,ar,id',
-            autoDisplay: false
-          }, 'google_translate_element');
-        }
-      };
-    </script>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

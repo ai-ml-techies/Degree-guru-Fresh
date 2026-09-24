@@ -23,7 +23,7 @@ export interface ChatMessage {
 export async function askGeminiAdvisor(
   prompt: string,
   history: ChatMessage[] = [],
-  language: "en" | "hi" = "en"
+  language: string = "en"
 ): Promise<string> {
   if (!GEMINI_API_KEY) {
     return getFallbackAdvice(prompt, language);

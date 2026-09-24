@@ -20,7 +20,8 @@ import {
 } from "lucide-react";
 import { askGeminiAdvisor } from "@/services/geminiService";
 import { GuruMascot } from "@/components/GuruMascot";
-import { useLanguage, SUPPORTED_LANGUAGES } from "@/context/LanguageContext";
+import { useLanguage } from "@/context/LanguageContext";
+import { SUPPORTED_LANGUAGES } from "@/data/languages";
 
 type Message = {
   id: string;

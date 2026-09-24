@@ -17,7 +17,8 @@ import {
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useTheme } from "./ThemeProvider";
-import { useLanguage, SUPPORTED_LANGUAGES } from "@/context/LanguageContext";
+import { useLanguage } from "@/context/LanguageContext";
+import { SUPPORTED_LANGUAGES } from "@/data/languages";
 import { fetchHomeContent } from "@/lib/api";
 import logoLight from "@/assets/logo-light.png";
 import logoDark from "@/assets/logo-dark.png";
