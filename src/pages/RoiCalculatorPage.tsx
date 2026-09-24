@@ -1,5 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { RoiCalculator } from "@/components/RoiCalculator";
+import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 
 export const RoiCalculatorPage = () => {
   return (
@@ -14,6 +15,12 @@ export const RoiCalculatorPage = () => {
       </Helmet>
 
       <div className="container-dg py-8 md:py-14">
+        <AppBreadcrumb
+          items={[
+            { label: "Career Tools" },
+            { label: "Degree ROI Calculator" },
+          ]}
+        />
         <RoiCalculator />
       </div>
     </>

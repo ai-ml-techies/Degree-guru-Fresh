@@ -1,5 +1,6 @@
 import { useState, useId } from "react";
 import { Link } from "react-router-dom";
+import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 import { 
   Compass, 
   Sparkles, 
@@ -238,6 +239,8 @@ export const CareerFinder = () => {
   return (
     <>
       <div className="container-dg py-8 md:py-16">
+        <AppBreadcrumb items={[{ label: "Career Tools" }, { label: "Career Matcher" }]} />
+
         {/* Header Hero */}
         <div className="text-center max-w-3xl mx-auto mb-10 md:mb-14">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold mb-4">

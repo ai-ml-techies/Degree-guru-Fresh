@@ -1,6 +1,9 @@
+import { AppBreadcrumb } from "@/components/AppBreadcrumb";
+
 const Privacy = () => (
-  <section className="py-24">
+  <section className="py-12 md:py-20">
     <div className="container-dg max-w-[800px]">
+      <AppBreadcrumb items={[{ label: "Privacy Policy" }]} />
       <div className="bg-card text-card-foreground rounded-3xl p-6 sm:p-10 md:p-14 shadow-xl border border-border">
         <h1 className="text-4xl md:text-5xl font-extrabold mb-3">Privacy Policy</h1>
         <p className="text-soft mb-10">Last updated: 2026. Friendly, clear, no fine-print games.</p>

@@ -4,10 +4,14 @@ import { ShieldCheck, Sparkles, Users, Briefcase } from "lucide-react";
 import { Link } from "react-router-dom";
 import aboutHero from "@/assets/about-hero.jpg";
 import { Counter } from "@/components/Counter";
+import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 
 const About = () => (
   <>
-    <section className="relative flex items-center overflow-hidden py-14 md:min-h-[60vh] md:py-20">
+    <div className="container-dg pt-6">
+      <AppBreadcrumb items={[{ label: "About Us" }]} />
+    </div>
+    <section className="relative flex items-center overflow-hidden py-8 md:min-h-[50vh] md:py-14">
       <Blobs />
       <div className="container-dg relative z-10 grid lg:grid-cols-2 gap-12 items-center">
         <Reveal>

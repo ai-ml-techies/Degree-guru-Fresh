@@ -9,6 +9,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import contactHero from "@/assets/contact-hero.jpg";
+import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 
 const faqs = [
   { q: "Is career counseling really free?", a: "Yes. Completely free for every student. Top universities support our work, so you pay nothing." },
@@ -20,7 +21,10 @@ const faqs = [
 
 const Contact = () => (
   <>
-    <section className="relative py-14 md:py-20 overflow-hidden">
+    <div className="container-dg pt-6">
+      <AppBreadcrumb items={[{ label: "Contact Us" }]} />
+    </div>
+    <section className="relative py-8 md:py-14 overflow-hidden">
       <Blobs />
       <div className="container-dg relative z-10 grid lg:grid-cols-2 gap-12 items-center">
         <Reveal>

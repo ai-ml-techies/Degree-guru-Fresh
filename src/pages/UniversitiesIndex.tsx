@@ -11,6 +11,7 @@ import {
 } from "@/data/universities";
 import { UniversityLogo } from "@/components/UniversityLogo";
 import { useLeadGate } from "@/context/LeadGateContext";
+import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 import { 
   Building2, 
   Search, 
@@ -66,6 +67,8 @@ export const UniversitiesIndex = () => {
       </Helmet>
 
       <div className="container-dg py-8 md:py-12">
+        <AppBreadcrumb items={[{ label: "Universities" }]} />
+
         {/* Hero */}
         <div className="text-center max-w-3xl mx-auto mb-8">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold mb-3">
@@ -133,10 +136,8 @@ export const UniversitiesIndex = () => {
                   </span>
                 </div>
 
-                <div className="flex items-start gap-3">
-                  <div className="shrink-0 w-full flex items-center justify-center">
-                    <UniversityLogo idOrSlug={uni.slug} size="sm" className="max-w-full w-full" />
-                  </div>
+                <div className="w-full flex items-center justify-center my-1.5">
+                  <UniversityLogo idOrSlug={uni.slug} size="sm" className="max-w-full w-full" />
                 </div>
 
                 <p className="text-[11px] text-muted-foreground mt-2 line-clamp-2 leading-relaxed">

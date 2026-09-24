@@ -1,6 +1,7 @@
 import { useState, useId, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ResumePaper, ResumeData, DEFAULT_RESUME_DATA, RESUME_THEME_COLORS, RESUME_FONTS } from "@/components/resume/ResumePaper";
+import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 import {
   FileText,
   Sparkles,
@@ -372,6 +373,8 @@ export const ResumeBuilder = () => {
   return (
     <>
       <div className="container-dg py-6 md:py-10">
+        <AppBreadcrumb items={[{ label: "Career Tools" }, { label: "Resume Builder" }]} />
+
         {/* Header Bar */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border/70 print:hidden">
           <div>

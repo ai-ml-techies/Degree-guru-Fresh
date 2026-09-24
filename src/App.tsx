@@ -33,6 +33,7 @@ const Blog              = lazy(() => import("./pages/Blog.tsx"));
 const BlogPost          = lazy(() => import("./pages/BlogPost.tsx"));
 const Employer          = lazy(() => import("./pages/jobs/Employer.tsx"));
 const JobSeeker         = lazy(() => import("./pages/jobs/JobSeeker.tsx"));
+const Sitemap           = lazy(() => import("./pages/Sitemap.tsx"));
 const NotFound          = lazy(() => import("./pages/NotFound.tsx"));
 
 const queryClient = new QueryClient();
@@ -80,12 +81,18 @@ const App = () => (
 
                 {/* Knowledge Hub / Blog Platform */}
                 <Route path="/blog" element={<Blog />} />
+                <Route path="/blogs" element={<Blog />} />
                 <Route path="/blog/:postSlug" element={<BlogPost />} />
 
                 {/* Employment / Job Platform */}
                 <Route path="/jobs" element={<JobSeeker />} />
                 <Route path="/jobs/job-seeker" element={<JobSeeker />} />
+                <Route path="/job-seeker" element={<JobSeeker />} />
                 <Route path="/jobs/employer" element={<Employer />} />
+                <Route path="/employer" element={<Employer />} />
+
+                {/* Sitemap */}
+                <Route path="/sitemap" element={<Sitemap />} />
 
                 {/* Direct Clean SEO Course URLs (e.g. /online-mba, /online-bca, /online-mca) */}
                 <Route path="/:courseSlug" element={<CourseDetail />} />

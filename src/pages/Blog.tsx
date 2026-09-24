@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { BLOG_POSTS, BlogPost } from "@/data/blogs";
 import { BookOpen, Clock, Calendar, ArrowRight, Search, Sparkles } from "lucide-react";
+import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 
 export const Blog = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
@@ -36,6 +37,8 @@ export const Blog = () => {
       </Helmet>
 
       <div className="container-dg py-8 md:py-14">
+        <AppBreadcrumb items={[{ label: "Blog" }]} />
+
         {/* Header Hero */}
         <div className="text-center max-w-3xl mx-auto mb-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold mb-3">

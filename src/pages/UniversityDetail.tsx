@@ -1,6 +1,7 @@
 import { useState, useId } from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 import { 
   ACTIVE_ONLINE_UNIVERSITIES, 
   EXECUTIVE_PARTNERS, 
@@ -83,14 +84,12 @@ export const UniversityDetail = () => {
       {/* Hero */}
       <section className="bg-gradient-to-b from-primary/10 via-background to-background py-10 md:py-14 border-b border-border/60">
         <div className="container-dg">
-          {/* Breadcrumbs */}
-          <nav className="flex items-center gap-2 text-xs text-muted-foreground mb-6">
-            <Link to="/" className="hover:text-primary">Home</Link>
-            <span>/</span>
-            <Link to="/universities" className="hover:text-primary">Universities</Link>
-            <span>/</span>
-            <span className="text-foreground font-semibold">{uni.shortName}</span>
-          </nav>
+          <AppBreadcrumb
+            items={[
+              { label: "Universities", href: "/universities" },
+              { label: uni.shortName || uni.name }
+            ]}
+          />
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-7 space-y-4">

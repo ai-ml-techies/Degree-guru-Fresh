@@ -4,6 +4,7 @@ import { ArrowRight, BookOpen } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { Reveal } from "@/components/Reveal";
 import { Blobs } from "@/components/Blobs";
+import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 import { PROGRAMS } from "@/data/programs";
 import { fetchPrograms, type ApiProgram } from "@/lib/api";
 import type { ProgramContent } from "@/data/programs";
@@ -63,9 +64,10 @@ const ProgramsIndex = () => {
         <meta name="twitter:description" content="Browse all online degree programs — BBA, MBA, MCA, B.Com, M.Com and more. Compare universities, fees, and no-cost EMI options with free counseling at Degree Guru." />
         <meta name="twitter:image" content={`${siteUrl}/og-image.png`} />
       </Helmet>
-      <section className="relative py-14 md:py-20 overflow-hidden">
+      <section className="relative py-10 md:py-16 overflow-hidden">
         <Blobs />
         <div className="container-dg relative z-10 max-w-3xl">
+          <AppBreadcrumb items={[{ label: "Programs" }]} />
           <Reveal>
             <p className="overline mb-3">Online Programs</p>
             <h1 className="text-4xl md:text-[56px] font-extrabold leading-[1.05] mb-5">

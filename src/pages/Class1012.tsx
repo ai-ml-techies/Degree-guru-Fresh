@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { CounselingForm } from "@/components/CounselingForm";
+import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 import { Sparkles, ShieldCheck, CheckCircle2, GraduationCap, Clock, Award, BookOpen, ArrowRight, AlertCircle } from "lucide-react";
 import classHero from "@/assets/class-hero.jpg";
 
@@ -17,7 +18,10 @@ export const Class1012 = () => {
       </Helmet>
 
       {/* Hero */}
-      <section className="relative py-12 md:py-18 overflow-hidden bg-gradient-to-b from-primary/10 via-background to-background border-b border-border/50">
+      <section className="relative py-10 md:py-16 overflow-hidden bg-gradient-to-b from-primary/10 via-background to-background border-b border-border/50">
+        <div className="container-dg relative z-10 mb-6">
+          <AppBreadcrumb items={[{ label: "Open Schooling Hub" }]} />
+        </div>
         <div className="container-dg relative z-10 grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-4">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/15 text-primary text-xs font-bold">

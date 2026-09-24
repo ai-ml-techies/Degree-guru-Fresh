@@ -3,122 +3,108 @@ import React from "react";
 interface GuruMascotProps {
   size?: number;
   className?: string;
-  expression?: "happy" | "thinking" | "waving";
 }
 
 export const GuruMascot: React.FC<GuruMascotProps> = ({
-  size = 32,
+  size = 36,
   className = "",
-  expression = "happy",
 }) => {
   return (
     <svg
       width={size}
       height={size}
-      viewBox="0 0 64 64"
+      viewBox="0 0 100 100"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={`inline-block shrink-0 select-none ${className}`}
+      aria-label="Ask Guru AI Mascot"
     >
       <defs>
-        {/* Glow & Gradients */}
-        <linearGradient id="guruFaceGrad" x1="16" y1="18" x2="48" y2="56" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#FFF2D6" />
-          <stop offset="1" stopColor="#FED7AA" />
+        {/* Glow */}
+        <radialGradient id="owlAuraGrad" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.3" />
+          <stop offset="100%" stopColor="#6D28D9" stopOpacity="0" />
+        </radialGradient>
+        {/* Owl Royal Indigo / Violet Plumage */}
+        <linearGradient id="owlBodyGrad" x1="20" y1="20" x2="80" y2="90" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#4F46E5" />
+          <stop offset="50%" stopColor="#6366F1" />
+          <stop offset="100%" stopColor="#4338CA" />
         </linearGradient>
-
-        <linearGradient id="guruCapGrad" x1="10" y1="12" x2="54" y2="24" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#6D28D9" />
-          <stop offset="0.5" stopColor="#7C3AED" />
-          <stop offset="1" stopColor="#4C1D95" />
+        {/* Belly Feathers: Ancient Golden Sand */}
+        <linearGradient id="owlBellyGrad" x1="35" y1="50" x2="65" y2="85" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#FEF3C7" />
+          <stop offset="100%" stopColor="#FDE68A" />
         </linearGradient>
-
-        <linearGradient id="guruRobeGrad" x1="14" y1="50" x2="50" y2="64" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#6366F1" />
-          <stop offset="1" stopColor="#4338CA" />
-        </linearGradient>
-
-        <linearGradient id="guruGoldGrad" x1="32" y1="16" x2="52" y2="30" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#FDE047" />
-          <stop offset="1" stopColor="#EAB308" />
+        {/* Gold Trim / Spectacles */}
+        <linearGradient id="owlGoldGrad" x1="30" y1="35" x2="70" y2="55" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#FDE047" />
+          <stop offset="50%" stopColor="#F59E0B" />
+          <stop offset="100%" stopColor="#D97706" />
         </linearGradient>
       </defs>
 
-      {/* Robe / Collar */}
-      <path
-        d="M16 52C16 46 23 44 32 44C41 44 48 46 48 52V62H16V52Z"
-        fill="url(#guruRobeGrad)"
-      />
-      {/* Golden V-Neck stole */}
-      <path
-        d="M26 44L32 53L38 44"
-        stroke="url(#guruGoldGrad)"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      {/* Subtle Aura */}
+      <circle cx="50" cy="50" r="48" fill="url(#owlAuraGrad)" />
 
-      {/* Head / Face */}
-      <circle cx="32" cy="34" r="16" fill="url(#guruFaceGrad)" />
+      {/* Left & Right Wing Tips */}
+      <path d="M16 52 C12 62 18 78 28 84 C24 74 22 62 25 50 Z" fill="#3730A3" />
+      <path d="M84 52 C88 62 82 78 72 84 C76 74 78 62 75 50 Z" fill="#3730A3" />
 
-      {/* Soft Rosy Cheeks */}
-      <circle cx="23" cy="38" r="2.5" fill="#FCA5A5" opacity="0.6" />
-      <circle cx="41" cy="38" r="2.5" fill="#FCA5A5" opacity="0.6" />
+      {/* Ear Tufts (Ancient Indian Horned Owl) */}
+      <path d="M26 28 C20 12 32 8 36 22 Z" fill="#4338CA" />
+      <path d="M30 24 C26 15 33 12 35 21 Z" fill="#F59E0B" />
+      <path d="M74 28 C80 12 68 8 64 22 Z" fill="#4338CA" />
+      <path d="M70 24 C74 15 67 12 65 21 Z" fill="#F59E0B" />
 
-      {/* Friendly Eyes */}
-      <ellipse cx="26" cy="33" rx="2.5" ry="3.5" fill="#1E1B4B" />
-      <circle cx="25" cy="32" r="1" fill="#FFFFFF" />
+      {/* Main Head & Body */}
+      <ellipse cx="50" cy="55" rx="34" ry="32" fill="url(#owlBodyGrad)" />
 
-      <ellipse cx="38" cy="33" rx="2.5" ry="3.5" fill="#1E1B4B" />
-      <circle cx="37" cy="32" r="1" fill="#FFFFFF" />
+      {/* Soft Cheek Pouches */}
+      <ellipse cx="34" cy="50" rx="14" ry="15" fill="#E0E7FF" />
+      <ellipse cx="66" cy="50" rx="14" ry="15" fill="#E0E7FF" />
 
-      {/* Academic Smart Glasses */}
-      <circle cx="26" cy="33" r="5" stroke="#7C3AED" strokeWidth="1.5" fill="none" opacity="0.85" />
-      <circle cx="38" cy="33" r="5" stroke="#7C3AED" strokeWidth="1.5" fill="none" opacity="0.85" />
-      <path d="M31 33H33" stroke="#7C3AED" strokeWidth="1.5" strokeLinecap="round" />
+      {/* Ancient Indian Sacred Wisdom Tilak (Third eye / knowledge mark) */}
+      <path d="M50 20 C48 24 48 30 50 33 C52 30 52 24 50 20 Z" fill="#EF4444" />
+      <circle cx="50" cy="35" r="1.5" fill="#F59E0B" />
 
-      {/* Warm Smile */}
-      <path
-        d="M28 40C29.5 42 34.5 42 36 40"
-        stroke="#9A3412"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-      />
+      {/* Belly Breast Feathers */}
+      <ellipse cx="50" cy="69" rx="19" ry="17" fill="url(#owlBellyGrad)" />
+      {/* Feather chevrons */}
+      <path d="M44 64 L50 69 L56 64" stroke="#D97706" strokeWidth="1.8" strokeLinecap="round" fill="none" />
+      <path d="M42 71 L50 77 L58 71" stroke="#D97706" strokeWidth="1.8" strokeLinecap="round" fill="none" />
 
-      {/* Graduation Cap (Mortarboard) - Diamond Shape */}
-      <polygon
-        points="32,6 56,15 32,24 8,15"
-        fill="url(#guruCapGrad)"
-        filter="drop-shadow(0px 2px 3px rgba(0,0,0,0.2))"
-      />
-      {/* Cap Skull Base */}
-      <path
-        d="M20 19.5V25C20 28.5 25.5 30 32 30C38.5 30 44 28.5 44 25V19.5"
-        fill="#5B21B6"
-      />
+      {/* Big Wise Owl Eyes */}
+      <circle cx="36" cy="48" r="9" fill="#1E1B4B" />
+      <circle cx="36" cy="48" r="7.5" fill="#0F172A" />
+      <circle cx="36" cy="48" r="6" fill="#F59E0B" />
+      <circle cx="36" cy="48" r="4.2" fill="#090A0F" />
+      <circle cx="34" cy="46" r="1.8" fill="#FFFFFF" />
+      <circle cx="38" cy="50" r="0.8" fill="#FFFFFF" />
 
-      {/* Cap Button on top */}
-      <ellipse cx="32" cy="15" rx="2" ry="1.2" fill="url(#guruGoldGrad)" />
+      <circle cx="64" cy="48" r="9" fill="#1E1B4B" />
+      <circle cx="64" cy="48" r="7.5" fill="#0F172A" />
+      <circle cx="64" cy="48" r="6" fill="#F59E0B" />
+      <circle cx="64" cy="48" r="4.2" fill="#090A0F" />
+      <circle cx="62" cy="46" r="1.8" fill="#FFFFFF" />
+      <circle cx="66" cy="50" r="0.8" fill="#FFFFFF" />
 
-      {/* Cap Tassel Ribbon */}
-      <path
-        d="M32 15C36 15 47 18 47 24"
-        stroke="url(#guruGoldGrad)"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        fill="none"
-      />
-      {/* Hanging Golden Tassel Fringe */}
-      <rect x="45.5" y="24" width="3" height="6" rx="1.2" fill="url(#guruGoldGrad)" />
+      {/* Golden Academic Spectacles (Round Specs) */}
+      <circle cx="36" cy="48" r="10.5" stroke="url(#owlGoldGrad)" strokeWidth="2.5" fill="none" />
+      <circle cx="64" cy="48" r="10.5" stroke="url(#owlGoldGrad)" strokeWidth="2.5" fill="none" />
+      {/* Glasses Bridge */}
+      <path d="M46.5 48 C48.5 45 51.5 45 53.5 48" stroke="url(#owlGoldGrad)" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+      {/* Specs Side Temple Bars */}
+      <path d="M25.5 47 L20 46" stroke="url(#owlGoldGrad)" strokeWidth="2" strokeLinecap="round" fill="none" />
+      <path d="M74.5 47 L80 46" stroke="url(#owlGoldGrad)" strokeWidth="2" strokeLinecap="round" fill="none" />
 
-      {/* Little Sparkle of Wisdom */}
-      <path
-        d="M52 8L53 11L56 12L53 13L52 16L51 13L48 12L51 11Z"
-        fill="#FDE047"
-        opacity="0.9"
-      />
+      {/* Beak */}
+      <path d="M47 52 C47 52 50 61 50 61 C50 61 53 52 53 52 Z" fill="#D97706" />
+      <path d="M48 53 C48 53 50 59 50 59 C50 59 52 53 52 53 Z" fill="#F59E0B" />
+
+      {/* Cute Little Feet / Talons */}
+      <ellipse cx="42" cy="86" rx="4" ry="2.5" fill="#F59E0B" />
+      <ellipse cx="58" cy="86" rx="4" ry="2.5" fill="#F59E0B" />
     </svg>
   );
 };
-
-export default GuruMascot;

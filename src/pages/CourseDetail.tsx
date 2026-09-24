@@ -1,6 +1,7 @@
 import { useState, useId } from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 import { getCourseBySlug, CORE_COURSES } from "@/data/courses";
 import { ACTIVE_ONLINE_UNIVERSITIES } from "@/data/universities";
 import { 
@@ -108,14 +109,12 @@ export const CourseDetail = () => {
       {/* 1. HERO SECTION */}
       <section className="relative overflow-hidden bg-gradient-to-b from-primary/10 via-background to-background pt-8 pb-14 border-b border-border/60">
         <div className="container-dg">
-          {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 text-xs text-muted-foreground mb-6" aria-label="Breadcrumb">
-            <Link to="/" className="hover:text-primary transition-colors">Home</Link>
-            <span>/</span>
-            <Link to="/courses" className="hover:text-primary transition-colors">Online Courses</Link>
-            <span>/</span>
-            <span className="text-foreground font-semibold">{course.fullName}</span>
-          </nav>
+          <AppBreadcrumb
+            items={[
+              { label: "Online Courses", href: "/courses" },
+              { label: course.fullName }
+            ]}
+          />
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             {/* Left Hero Content */}

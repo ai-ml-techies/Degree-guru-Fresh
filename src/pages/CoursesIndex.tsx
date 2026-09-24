@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { CORE_COURSES, CourseData } from "@/data/courses";
 import { CollegeVidyaCourseExplorer } from "@/components/courses/CollegeVidyaCourseExplorer";
+import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 import { 
   GraduationCap, 
   Search, 
@@ -61,7 +62,9 @@ export const CoursesIndex = () => {
         <link rel="canonical" href="https://degreeguru.in/courses/" />
       </Helmet>
 
-      <div className="container-dg py-8 md:py-14 space-y-14">
+      <div className="container-dg py-8 md:py-14 space-y-12">
+        <AppBreadcrumb items={[{ label: "Courses" }]} />
+
         {/* Header Hero */}
         <div className="text-center max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold mb-3">

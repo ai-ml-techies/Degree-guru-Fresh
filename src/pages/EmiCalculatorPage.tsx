@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { EmiCalculator } from "@/components/tools/EmiCalculator";
+import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 import { 
   Calculator, 
   ShieldCheck, 
@@ -27,6 +28,13 @@ export const EmiCalculatorPage = () => {
       </Helmet>
 
       <div className="container-dg py-8 md:py-14 space-y-12">
+        <AppBreadcrumb
+          items={[
+            { label: "Career Tools" },
+            { label: "0% EMI Calculator" },
+          ]}
+        />
+
         {/* Page Hero */}
         <div className="text-center max-w-3xl mx-auto space-y-3">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 text-xs font-bold">

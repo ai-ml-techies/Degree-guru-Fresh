@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { Blobs } from "@/components/Blobs";
 import { Reveal } from "@/components/Reveal";
+import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 import { fetchJobListings, registerJobSeeker, applyToJob, type JobPosting } from "@/lib/api";
 import { toast } from "sonner";
 
@@ -489,6 +490,7 @@ const JobSeeker = () => {
       <section className="relative py-12 md:py-20 overflow-hidden">
         <Blobs />
         <div className="container-dg relative z-10 max-w-3xl mx-auto text-center">
+          <AppBreadcrumb items={[{ label: "Career & Jobs", href: "/recruitment" }, { label: "Find Jobs (Job Seekers)" }]} />
           <Reveal>
             <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-1.5 mb-5">
               <GraduationCap size={14} className="text-primary" />

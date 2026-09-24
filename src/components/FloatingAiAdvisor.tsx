@@ -359,9 +359,8 @@ export const FloatingAiAdvisor = () => {
           {isOpen ? (
             <X size={24} />
           ) : (
-            <div className="flex flex-col items-center justify-center">
-              <GuruMascot size={28} className="group-hover:scale-110 transition-transform" />
-              <span className="text-[9px] font-black uppercase tracking-wider mt-0.5">Ask Guru</span>
+            <div className="flex items-center justify-center">
+              <GuruMascot size={42} className="group-hover:scale-115 transition-transform drop-shadow-md" />
             </div>
           )}
         </span>

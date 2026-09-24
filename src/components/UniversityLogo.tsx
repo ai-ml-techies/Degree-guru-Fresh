@@ -87,17 +87,17 @@ export const UniversityLogo: React.FC<UniversityLogoProps> = ({
     logo = { src: "/logos/adtu.svg", alt: "Assam Down Town University Online" };
   } else if (norm.includes("alliance")) {
     logo = { src: "/logos/alliance.webp", alt: "Alliance University Online" };
-  } else if (norm.includes("vit")) {
-    logo = { src: "/logos/vit.png", alt: "VIT Online" };
+  } else if (norm.includes("vit") || norm.includes("vellore")) {
+    logo = { src: "/logos/vit.svg", alt: "VIT Online" };
   } else if (norm.includes("kuk") || norm.includes("kurukshetra")) {
     logo = { src: "/logos/kuk.png", alt: "Kurukshetra University Online" };
   } else if (norm.includes("vgu") || norm.includes("vivekanand")) {
-    logo = { src: "/logos/vgu.svg", alt: "Vivekananda Global University Online" };
+    logo = { src: "/logos/vgu.png", alt: "Vivekananda Global University Online" };
   } else if (norm.includes("andhra") || norm.includes("anu")) {
     logo = { src: "/logos/andhra.webp", alt: "Andhra University Online" };
   } else if (norm.includes("ccs") || norm.includes("chaudhary")) {
     logo = { src: "/logos/ccsu.png", alt: "Chaudhary Charan Singh University" };
-  } else if (norm.includes("ddu") || norm.includes("deen dayal")) {
+  } else if (norm.includes("ddu") || norm.includes("deen") || norm.includes("gorakhpur")) {
     logo = { src: "/logos/ddu.png", alt: "DDU Gorakhpur University Online" };
   } else if (norm.includes("upes")) {
     logo = { src: "/logos/upes.png", alt: "UPES Online" };
@@ -106,10 +106,10 @@ export const UniversityLogo: React.FC<UniversityLogoProps> = ({
   }
 
   const containerHeight =
-    size === "sm" ? "h-11 px-2.5" : size === "lg" ? "h-16 px-4" : "h-13 px-3";
+    size === "sm" ? "h-14 px-3" : size === "lg" ? "h-18 px-5" : "h-16 px-4";
 
   const imgMaxHeight =
-    size === "sm" ? "max-h-8.5" : size === "lg" ? "max-h-12" : "max-h-10";
+    size === "sm" ? "max-h-9" : size === "lg" ? "max-h-12" : "max-h-10";
 
   // If real logo exists and hasn't errored
   if (logo && !hasError) {
@@ -118,7 +118,7 @@ export const UniversityLogo: React.FC<UniversityLogoProps> = ({
         <img
           src={logo.src}
           alt={logo.alt}
-          className={`${imgMaxHeight} w-auto max-w-[94%] object-contain ${className}`}
+          className={`${imgMaxHeight} w-auto max-w-[90%] object-contain ${className}`}
           onError={() => setHasError(true)}
           loading="lazy"
         />
@@ -127,12 +127,12 @@ export const UniversityLogo: React.FC<UniversityLogoProps> = ({
 
     return (
       <div
-        className={`inline-flex items-center justify-center rounded-xl bg-white shadow-2xs border border-slate-200/80 transition-all duration-200 group-hover:border-primary/40 ${containerHeight} w-full max-w-[240px] ${className}`}
+        className={`inline-flex items-center justify-center rounded-xl bg-white shadow-2xs border border-slate-200/80 transition-all duration-200 group-hover:border-primary/40 ${containerHeight} w-full max-w-[260px] overflow-hidden ${className}`}
       >
         <img
           src={logo.src}
           alt={logo.alt}
-          className={`${imgMaxHeight} w-auto max-w-[94%] object-contain select-none transition-transform duration-200 group-hover:scale-105`}
+          className={`${imgMaxHeight} w-auto max-w-[90%] object-contain select-none transition-transform duration-200 group-hover:scale-105`}
           onError={() => setHasError(true)}
           loading="lazy"
         />

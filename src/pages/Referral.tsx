@@ -1,5 +1,6 @@
 import { useState, useId } from "react";
 import { Helmet } from "react-helmet-async";
+import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 import { 
   Sparkles, 
   Gift, 
@@ -8,7 +9,7 @@ import {
   CheckCircle2, 
   ArrowRight, 
   Users, 
-  Send,
+  Send, 
   IndianRupee
 } from "lucide-react";
 import { submitLead } from "@/lib/api";
@@ -60,6 +61,7 @@ export const Referral = () => {
       </Helmet>
 
       <div className="container-dg py-8 md:py-14">
+        <AppBreadcrumb items={[{ label: "Refer & Earn" }]} />
         <div className="text-center max-w-3xl mx-auto mb-10">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-400 text-xs font-bold mb-3">
             <Gift size={15} /> Transparent Student Ambassador Reward

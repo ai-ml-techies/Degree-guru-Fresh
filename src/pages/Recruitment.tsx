@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Country, State, City } from "country-state-city";
 import { Reveal } from "@/components/Reveal";
 import { Blobs } from "@/components/Blobs";
+import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 import { Briefcase, FileText, Users, TrendingUp, ArrowRight, Upload, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import recruitmentHero from "@/assets/recruitment-hero.jpg";
@@ -17,8 +18,11 @@ const perks = [
 
 const Recruitment = () => (
   <>
-    <section className="relative py-14 md:py-20 overflow-hidden">
+    <section className="relative py-10 md:py-16 overflow-hidden">
       <Blobs />
+      <div className="container-dg relative z-10 mb-6">
+        <AppBreadcrumb items={[{ label: "Career Support & Recruitment" }]} />
+      </div>
       <div className="container-dg relative z-10 grid lg:grid-cols-2 gap-12 items-center">
         <Reveal>
           <p className="overline mb-3">Career Support</p>

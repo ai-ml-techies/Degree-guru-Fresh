@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { Blobs } from "@/components/Blobs";
 import { Reveal } from "@/components/Reveal";
+import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 import { submitEmployerJob } from "@/lib/api";
 import { toast } from "sonner";
 
@@ -191,9 +192,10 @@ const Employer = () => {
       </Helmet>
 
       {/* ── HERO ───────────────────────────────────────────────────────── */}
-      <section className="relative py-16 md:py-24 overflow-hidden">
+      <section className="relative py-12 md:py-20 overflow-hidden">
         <Blobs />
         <div className="container-dg relative z-10 text-center max-w-4xl mx-auto">
+          <AppBreadcrumb items={[{ label: "Career & Jobs", href: "/recruitment" }, { label: "Post a Job (Employers)" }]} />
           <Reveal>
             <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-1.5 mb-6">
               <Building2 size={14} className="text-primary" />

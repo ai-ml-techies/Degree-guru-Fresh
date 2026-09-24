@@ -2,6 +2,7 @@ import { useParams, Link, Navigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { BLOG_POSTS } from "@/data/blogs";
 import { Clock, Calendar, ArrowLeft, ArrowRight, Share2, Compass, Calculator, FileText, CheckCircle2 } from "lucide-react";
+import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 
 export const BlogPost = () => {
   const { postSlug } = useParams<{ postSlug: string }>();
@@ -20,7 +21,15 @@ export const BlogPost = () => {
       </Helmet>
 
       <div className="container-dg py-8 md:py-14 max-w-4xl">
-        {/* Breadcrumbs & Back button */}
+        <AppBreadcrumb
+          items={[
+            { label: "Blog", href: "/blog" },
+            { label: post.category, href: "/blog" },
+            { label: post.title }
+          ]}
+        />
+
+        {/* Back button & category */}
         <div className="flex items-center justify-between gap-4 mb-6">
           <Link
             to="/blog"

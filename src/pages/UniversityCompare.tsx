@@ -4,6 +4,7 @@ import { Helmet } from "react-helmet-async";
 import { ACTIVE_ONLINE_UNIVERSITIES, UniversityData } from "@/data/universities";
 import { UniversityLogo } from "@/components/UniversityLogo";
 import { useLeadGate } from "@/context/LeadGateContext";
+import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 import {
   Layers,
   HelpCircle,
@@ -90,7 +91,14 @@ export const UniversityCompare = () => {
         <link rel="canonical" href="https://degreeguru.in/universities/compare/" />
       </Helmet>
 
-      <div className="container-dg py-8 md:py-14">
+      <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        <AppBreadcrumb
+          items={[
+            { label: "Universities", href: "/universities" },
+            { label: "Compare Universities" },
+          ]}
+        />
+
         {/* Header Hero */}
         <div className="text-center max-w-3xl mx-auto mb-8">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-foreground tracking-tight">
@@ -104,7 +112,7 @@ export const UniversityCompare = () => {
             <button
               type="button"
               onClick={handleAddUniversity}
-              className="px-4 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-bold flex items-center gap-1.5 hover:bg-primary/90 transition-all shadow-sm"
+              className="px-4 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-bold flex items-center gap-1.5 hover:bg-primary/90 transition-all shadow-sm cursor-pointer"
             >
               <Plus size={15} /> Add Another University ({selectedSlugs.length}/4)
             </button>
@@ -116,12 +124,12 @@ export const UniversityCompare = () => {
         {/* ========================================================================= */}
         <div className="bg-card border border-border/80 rounded-3xl overflow-hidden shadow-2xl">
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse min-w-[760px] table-fixed">
+            <table className="w-full text-left border-collapse min-w-[850px] table-fixed">
               {/* Dynamic Colgroup based on number of selected universities */}
               <colgroup>
-                <col className="w-64" />
+                <col className="w-56 sm:w-64" />
                 {comparedUnis.map((u) => (
-                  <col key={u.id} className="min-w-[200px]" />
+                  <col key={u.id} className="min-w-[280px] sm:min-w-[320px]" />
                 ))}
               </colgroup>
 
@@ -129,7 +137,7 @@ export const UniversityCompare = () => {
               <thead>
                 <tr className="bg-muted/50 border-b border-border">
                   <th className="p-4 sm:p-5 text-xs font-bold uppercase tracking-wider text-muted-foreground align-top">
-                    <span className="block text-xs font-black text-foreground">Universities</span>
+                    <span className="block text-sm font-black text-foreground">Universities</span>
                   </th>
 
                   {comparedUnis.map((u, idx) => (
@@ -147,21 +155,21 @@ export const UniversityCompare = () => {
                         </button>
                       )}
 
-                      <div className="space-y-2 pr-6">
+                      <div className="space-y-2.5">
                         <span className="text-[10px] font-bold text-primary uppercase tracking-wider block">
                           University {idx + 1}
                         </span>
 
                         {/* Real University Logo */}
-                        <div className="p-3 rounded-2xl bg-card border border-border/80 flex items-center justify-center min-h-[56px] shadow-sm">
+                        <div className="p-3 rounded-2xl bg-card border border-border/80 flex items-center justify-center min-h-[64px] shadow-sm">
                           <UniversityLogo idOrSlug={u.slug} size="md" />
                         </div>
 
-                        {/* Dropdown Selector - Full Name Once */}
+                        {/* Dropdown Selector - Full Name with generous space */}
                         <select
                           value={u.slug}
                           onChange={(e) => handleChangeUniversity(idx, e.target.value)}
-                          className="w-full p-2 rounded-xl bg-background border border-border text-xs font-bold text-foreground focus:ring-2 focus:ring-primary/40 focus:outline-none"
+                          className="w-full py-2.5 px-3 rounded-xl bg-background border border-border text-xs sm:text-[13px] font-bold text-foreground focus:ring-2 focus:ring-primary/40 focus:outline-none shadow-2xs hover:border-primary/50 transition-colors cursor-pointer"
                         >
                           {ACTIVE_ONLINE_UNIVERSITIES.map((opt) => (
                             <option key={opt.slug} value={opt.slug}>
@@ -170,7 +178,7 @@ export const UniversityCompare = () => {
                           ))}
                         </select>
 
-                        <div className="pt-1">
+                        <div className="pt-0.5">
                           <span className="text-[11px] text-muted-foreground block truncate">{u.location}</span>
                         </div>
                       </div>
@@ -238,6 +246,9 @@ export const UniversityCompare = () => {
                       <span className="px-2.5 py-1 rounded-lg bg-muted text-foreground/90 font-bold">
                         {u.registrationFee || "₹500"}
                       </span>
+                      <span className="block text-[10px] text-muted-foreground mt-1">
+                        Adjusted in course fee
+                      </span>
                     </td>
                   ))}
                 </tr>
@@ -256,10 +267,10 @@ export const UniversityCompare = () => {
                   ))}
                 </tr>
 
-                {/* 4. Loan Partners & EMI Options */}
+                {/* 4. Loan Partners */}
                 <tr className="hover:bg-muted/20 transition-colors">
                   <td className="p-4 sm:p-5 font-bold text-foreground">
-                    0% EMI & Financing Partners
+                    Loan Partners
                   </td>
                   {comparedUnis.map((u) => (
                     <td key={u.id} className="p-4 sm:p-5 text-center border-l border-border/40">
@@ -267,8 +278,7 @@ export const UniversityCompare = () => {
                         <span className="text-emerald-600 dark:text-emerald-400 font-extrabold text-xs flex items-center gap-1">
                           <Check size={16} /> 0% EMI Available
                         </span>
-                        <span className="text-[11px] text-primary font-bold mt-0.5">{u.loanPartners || "Bank / NBFC"}</span>
-                        <span className="text-[10px] text-muted-foreground font-medium mt-0.5">{u.emiStarting || "From ₹3,500/mo"}</span>
+                        <span className="text-[11px] text-primary font-bold mt-1">{u.loanPartners || "Bank / NBFC Partners"}</span>
                       </div>
                     </td>
                   ))}
@@ -314,7 +324,6 @@ export const UniversityCompare = () => {
                   {comparedUnis.map((u) => (
                     <td key={u.id} className="p-4 sm:p-5 text-center text-xs text-foreground border-l border-border/40">
                       <span className="font-semibold text-foreground block">100% Placement Assistance</span>
-                      <span className="text-[10px] text-muted-foreground">100+ Corporate Recruitment Partners</span>
                     </td>
                   ))}
                 </tr>

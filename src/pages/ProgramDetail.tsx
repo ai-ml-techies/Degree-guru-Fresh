@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { useEffect } from "react";
+import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 import { ArrowRight, ChevronRight, Briefcase, Award, ShieldCheck, Star, Wallet } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { Reveal } from "@/components/Reveal";
@@ -136,13 +137,12 @@ const ProgramDetail = () => {
       <section className="relative py-14 md:py-20 overflow-hidden">
         <Blobs />
         <div className="container-dg relative z-10">
-          <nav className="flex items-center gap-2 text-xs text-soft mb-8">
-            <Link to="/" className="hover:text-primary">Home</Link>
-            <ChevronRight size={12} />
-            <Link to="/programs" className="hover:text-primary">Programs</Link>
-            <ChevronRight size={12} />
-            <span className="font-semibold text-foreground">{program.name}</span>
-          </nav>
+          <AppBreadcrumb
+            items={[
+              { label: "Programs", href: "/programs" },
+              { label: program.name }
+            ]}
+          />
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <Reveal>
               <p className="overline mb-3">{program.level}</p>
