@@ -60,7 +60,14 @@ export const Index = () => {
       <section className="relative pt-6 pb-14 md:pb-20 overflow-hidden bg-gradient-to-b from-primary/8 via-background to-background border-b border-border/50">
         <div className="container-dg">
           {/* Top Value Pill */}
-          <div className="flex justify-center mb-6">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 mb-6">
+            <Link 
+              to="/new-home"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 hover:bg-primary/20 border border-primary/30 shadow-xs text-xs font-bold text-primary transition-all hover:scale-[1.02]"
+            >
+              <Sparkles size={13} className="text-primary" />
+              <span>✨ Experience New Career-First Avatar →</span>
+            </Link>
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-card border border-border shadow-sm text-xs font-semibold text-foreground">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span>India's Modern Education, Career & Employment Ecosystem</span>
