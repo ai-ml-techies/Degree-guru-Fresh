@@ -13,7 +13,8 @@ import {
   Sparkles, 
   ArrowRight,
   Globe,
-  Check
+  Check,
+  BookOpen
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useTheme } from "./ThemeProvider";
