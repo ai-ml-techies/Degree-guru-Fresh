@@ -13,64 +13,70 @@ $this->title = 'Contact Page Content Editor';
 $val  = fn(string $key, string $default = '') => Html::encode($s[$key] ?? $default);
 $rawVal = fn(string $key, string $default = '') => $s[$key] ?? $default;
 
-function field(string $name, string $label, string $placeholder, string $val, string $type = 'text', string $hint = ''): string {
-    $id  = 'f_' . preg_replace('/[^a-zA-Z0-9_]/', '_', $name);
-    $html  = '<div class="form-group mb-3">';
-    $html .= '<label for="' . $id . '" class="dg-filter-label">' . $label . '</label>';
-    $html .= '<input type="' . $type . '" id="' . $id . '" name="' . $name . '" class="form-control" placeholder="' . Html::encode($placeholder) . '" value="' . $val . '">';
-    if ($hint !== '') {
-        $html .= '<small class="text-muted d-block mt-1">' . $hint . '</small>';
+if (!function_exists('field')) {
+    function field(string $name, string $label, string $placeholder, string $val, string $type = 'text', string $hint = ''): string {
+        $id  = 'f_' . preg_replace('/[^a-zA-Z0-9_]/', '_', $name);
+        $html  = '<div class="form-group mb-3">';
+        $html .= '<label for="' . $id . '" class="dg-filter-label">' . $label . '</label>';
+        $html .= '<input type="' . $type . '" id="' . $id . '" name="' . $name . '" class="form-control" placeholder="' . Html::encode($placeholder) . '" value="' . $val . '">';
+        if ($hint !== '') {
+            $html .= '<small class="text-muted d-block mt-1">' . $hint . '</small>';
+        }
+        $html .= '</div>';
+        return $html;
     }
-    $html .= '</div>';
-    return $html;
 }
 
-function textarea(string $name, string $label, string $placeholder, string $val, int $rows = 3, string $hint = ''): string {
-    $id   = 'f_' . preg_replace('/[^a-zA-Z0-9_]/', '_', $name);
-    $html  = '<div class="form-group mb-3">';
-    $html .= '<label for="' . $id . '" class="dg-filter-label">' . $label . '</label>';
-    $html .= '<textarea id="' . $id . '" name="' . $name . '" class="form-control" rows="' . $rows . '" placeholder="' . Html::encode($placeholder) . '">' . $val . '</textarea>';
-    if ($hint !== '') {
-        $html .= '<small class="text-muted d-block mt-1">' . $hint . '</small>';
+if (!function_exists('textarea')) {
+    function textarea(string $name, string $label, string $placeholder, string $val, int $rows = 3, string $hint = ''): string {
+        $id   = 'f_' . preg_replace('/[^a-zA-Z0-9_]/', '_', $name);
+        $html  = '<div class="form-group mb-3">';
+        $html .= '<label for="' . $id . '" class="dg-filter-label">' . $label . '</label>';
+        $html .= '<textarea id="' . $id . '" name="' . $name . '" class="form-control" rows="' . $rows . '" placeholder="' . Html::encode($placeholder) . '">' . $val . '</textarea>';
+        if ($hint !== '') {
+            $html .= '<small class="text-muted d-block mt-1">' . $hint . '</small>';
+        }
+        $html .= '</div>';
+        return $html;
     }
-    $html .= '</div>';
-    return $html;
 }
 
-function imageWidget(string $key, string $label, string $currentVal, string $helpText = ''): string {
-    $id = 'img_' . preg_replace('/[^a-zA-Z0-9_]/', '_', $key);
-    $hasImage = trim($currentVal) !== '';
-    $imgSrc = $hasImage ? Html::encode($currentVal) : '';
+if (!function_exists('imageWidget')) {
+    function imageWidget(string $key, string $label, string $currentVal, string $helpText = ''): string {
+        $id = 'img_' . preg_replace('/[^a-zA-Z0-9_]/', '_', $key);
+        $hasImage = trim($currentVal) !== '';
+        $imgSrc = $hasImage ? Html::encode($currentVal) : '';
 
-    $html  = '<div class="dg-image-widget" id="widget_' . $id . '">';
-    $html .= '  <div class="dg-image-widget-header">';
-    $html .= '    <span class="dg-image-widget-title"><i class="fas fa-image text-primary mr-1"></i> ' . $label . '</span>';
-    if ($helpText !== '') {
-        $html .= '    <small class="text-muted">' . $helpText . '</small>';
+        $html  = '<div class="dg-image-widget" id="widget_' . $id . '">';
+        $html .= '  <div class="dg-image-widget-header">';
+        $html .= '    <span class="dg-image-widget-title"><i class="fas fa-image text-primary mr-1"></i> ' . $label . '</span>';
+        if ($helpText !== '') {
+            $html .= '    <small class="text-muted">' . $helpText . '</small>';
+        }
+        $html .= '  </div>';
+
+        $html .= '  <div class="dg-image-widget-flex">';
+        $html .= '    <div class="dg-image-widget-preview" id="prev_box_' . $id . '">';
+        $html .= '      <img id="img_el_' . $id . '" src="' . $imgSrc . '" alt="Preview" style="' . ($hasImage ? '' : 'display:none;') . '">';
+        $html .= '      <i class="fas fa-image no-img-icon" id="no_img_' . $id . '" style="' . ($hasImage ? 'display:none;' : '') . '"></i>';
+        $html .= '    </div>';
+
+        $html .= '    <div class="dg-image-widget-controls">';
+        $html .= '      <div class="dg-upload-progress-text" id="prog_' . $id . '"><i class="fas fa-spinner fa-spin"></i> Uploading image...</div>';
+        $html .= '      <div class="dg-image-actions">';
+        $html .= '        <button type="button" class="btn-image-action btn-upload-trigger" onclick="document.getElementById(\'file_' . $id . '\').click()"><i class="fas fa-cloud-upload-alt"></i> ' . ($hasImage ? 'Change Image' : 'Upload New Image') . '</button>';
+        $html .= '        <button type="button" class="btn-image-action btn-image-remove" id="rem_btn_' . $id . '" onclick="window.dgRemoveImage(\'' . $id . '\')" style="' . ($hasImage ? '' : 'display:none;') . '"><i class="fas fa-trash fa-xs"></i> Remove</button>';
+        $html .= '      </div>';
+
+        $html .= '      <input type="file" id="file_' . $id . '" accept="image/jpeg,image/png,image/webp,image/gif" style="display:none;" onchange="window.dgUploadImageWidget(\'' . $id . '\', this.files[0])">';
+        $html .= '      <input type="url" name="s[' . $key . ']" id="url_' . $id . '" class="form-control form-control-sm" placeholder="Paste image URL (https://...) or upload above" value="' . Html::encode($currentVal) . '" oninput="window.dgUpdatePreviewFromUrl(\'' . $id . '\', this.value)">';
+        $html .= '      <input type="hidden" name="s[' . $key . ']" id="empty_' . $id . '" value="" ' . ($hasImage ? 'disabled' : '') . '>';
+        $html .= '    </div>';
+        $html .= '  </div>';
+        $html .= '</div>';
+
+        return $html;
     }
-    $html .= '  </div>';
-
-    $html .= '  <div class="dg-image-widget-flex">';
-    $html .= '    <div class="dg-image-widget-preview" id="prev_box_' . $id . '">';
-    $html .= '      <img id="img_el_' . $id . '" src="' . $imgSrc . '" alt="Preview" style="' . ($hasImage ? '' : 'display:none;') . '">';
-    $html .= '      <i class="fas fa-image no-img-icon" id="no_img_' . $id . '" style="' . ($hasImage ? 'display:none;' : '') . '"></i>';
-    $html .= '    </div>';
-
-    $html .= '    <div class="dg-image-widget-controls">';
-    $html .= '      <div class="dg-upload-progress-text" id="prog_' . $id . '"><i class="fas fa-spinner fa-spin"></i> Uploading image...</div>';
-    $html .= '      <div class="dg-image-actions">';
-    $html .= '        <button type="button" class="btn-image-action btn-upload-trigger" onclick="document.getElementById(\'file_' . $id . '\').click()"><i class="fas fa-cloud-upload-alt"></i> ' . ($hasImage ? 'Change Image' : 'Upload New Image') . '</button>';
-    $html .= '        <button type="button" class="btn-image-action btn-image-remove" id="rem_btn_' . $id . '" onclick="window.dgRemoveImage(\'' . $id . '\')" style="' . ($hasImage ? '' : 'display:none;') . '"><i class="fas fa-trash fa-xs"></i> Remove</button>';
-    $html .= '      </div>';
-
-    $html .= '      <input type="file" id="file_' . $id . '" accept="image/jpeg,image/png,image/webp,image/gif" style="display:none;" onchange="window.dgUploadImageWidget(\'' . $id . '\', this.files[0])">';
-    $html .= '      <input type="url" name="s[' . $key . ']" id="url_' . $id . '" class="form-control form-control-sm" placeholder="Paste image URL (https://...) or upload above" value="' . Html::encode($currentVal) . '" oninput="window.dgUpdatePreviewFromUrl(\'' . $id . '\', this.value)">';
-    $html .= '      <input type="hidden" name="s[' . $key . ']" id="empty_' . $id . '" value="" ' . ($hasImage ? 'disabled' : '') . '>';
-    $html .= '    </div>';
-    $html .= '  </div>';
-    $html .= '</div>';
-
-    return $html;
 }
 
 $csrf      = Yii::$app->request->csrfParam;

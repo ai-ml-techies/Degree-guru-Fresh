@@ -267,13 +267,19 @@ class CmsController extends Controller
         $keys      = self::sectionKeys()[$section] ?? [];
 
         if (!empty($keys)) {
-            Yii::$app->db
-                ->createCommand()
-                ->delete('site_settings', ['key' => $keys])
-                ->execute();
+            try {
+                Yii::$app->db
+                    ->createCommand()
+                    ->delete('site_settings', ['key' => $keys])
+                    ->execute();
+                Yii::$app->session->setFlash('success', ucfirst($section) . ' section cleared successfully.');
+            } catch (\Throwable $e) {
+                Yii::$app->session->setFlash('error', 'Could not clear section (database offline).');
+            }
+        } else {
+            Yii::$app->session->setFlash('info', 'No fields found to clear.');
         }
 
-        Yii::$app->session->setFlash('success', ucfirst($section) . ' section cleared successfully.');
         return $this->redirect($returnUrl);
     }
 
