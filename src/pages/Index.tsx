@@ -36,8 +36,10 @@ import { ACTIVE_ONLINE_UNIVERSITIES } from "@/data/universities";
 import { BLOG_POSTS } from "@/data/blogs";
 import { fetchHomeContent } from "@/lib/api";
 import heroDesktop from "@/assets/hero-desktop.jpg";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 export const Index = () => {
+  const [counselingOpen, setCounselingOpen] = useState(false);
   const { data: homeContent } = useQuery({
     queryKey: ["home-content"],
     queryFn: fetchHomeContent,
@@ -174,18 +176,16 @@ export const Index = () => {
           <div className="p-8 sm:p-12 md:p-16 rounded-3xl bg-card border border-border/80 shadow-2xl">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
               
-              {/* Left Column: Clean Copy & Single Free Badge */}
-              <div className="lg:col-span-7 space-y-5 text-center lg:text-left">
-                <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold">
-                  <Sparkles size={13} /> AI Career Acceleration
-                </div>
+              {/* Left Column: Clean Copy & Green Tag below heading */}
+              <div className="lg:col-span-7 space-y-4 text-center lg:text-left">
+                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black text-foreground tracking-tight">
+                  ATS Compliant Resume Builder
+                </h3>
 
-                <div className="flex items-center justify-center lg:justify-start gap-3 flex-wrap">
-                  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black text-foreground tracking-tight">
-                    ATS Compliant Resume Builder
-                  </h3>
-                  <span className="px-3.5 py-1 rounded-full bg-emerald-500 text-white text-xs font-black uppercase tracking-wider shadow-sm">
-                    Free
+                <div className="flex items-center justify-center lg:justify-start">
+                  <span className="px-3.5 py-1.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 text-xs font-bold inline-flex items-center gap-1.5 shadow-xs">
+                    <Sparkles size={13} />
+                    <span>100% free no forced subscription</span>
                   </span>
                 </div>
 
@@ -381,29 +381,39 @@ export const Index = () => {
       <section className="py-16 md:py-24 bg-gradient-to-r from-[#6528f7] via-[#7c3aed] to-[#551ebd] text-white text-center relative overflow-hidden">
         <div className="container-dg max-w-3xl space-y-6 relative z-10">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight">
-            Ready to Take the Next Step in Your Education & Career?
+            Not Sure Where Your Career Is Going?
           </h2>
           <p className="text-base sm:text-lg text-white/90 max-w-xl mx-auto leading-relaxed">
             Get personalized advice, compare top UGC-approved universities, and take charge of your professional journey with Degree Guru.
           </p>
-          <div className="pt-2 flex flex-wrap justify-center gap-3.5">
-            <Link
-              to="/courses"
-              className="px-7 py-3.5 rounded-full bg-white text-primary font-extrabold text-sm hover:bg-neutral-100 transition-all shadow-xl"
+          <div className="pt-2 flex justify-center">
+            <button
+              type="button"
+              onClick={() => setCounselingOpen(true)}
+              className="px-9 py-4 rounded-full bg-white text-[#6528f7] font-black text-sm sm:text-base hover:bg-neutral-100 transition-all shadow-2xl hover:scale-105 active:scale-95 flex items-center gap-2.5"
             >
-              Explore All Online Degrees
-            </Link>
-            <a
-              href="https://wa.me/919350199001?text=Hi%20Degree%20Guru%2C%20I%20want%20to%20know%20my%20options"
-              target="_blank"
-              rel="noreferrer"
-              className="px-7 py-3.5 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-sm transition-all shadow-xl flex items-center gap-2"
-            >
-              <MessageCircle size={18} /> Chat on WhatsApp
-            </a>
+              <Sparkles size={18} className="text-[#6528f7]" />
+              <span>Request Free Counseling</span>
+            </button>
           </div>
         </div>
       </section>
+
+      {/* Free Counseling Lead Modal */}
+      <Dialog open={counselingOpen} onOpenChange={setCounselingOpen}>
+        <DialogContent className="max-w-md p-6 rounded-3xl bg-card border border-border shadow-2xl">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-black text-foreground">
+              Request Free Career Counseling
+            </DialogTitle>
+          </DialogHeader>
+          <CounselingForm
+            buttonLabel="Request Free Counseling Call"
+            source="home-pre-footer-cta"
+            onSubmitDone={() => setCounselingOpen(false)}
+          />
+        </DialogContent>
+      </Dialog>
     </>
   );
 };

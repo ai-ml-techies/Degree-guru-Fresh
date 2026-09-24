@@ -101,6 +101,16 @@
      Disable CSS smooth-scroll globally — combined with heavy blurred blobs and
      scroll-triggered Reveals it causes visible jank. Programmatic smooth scrolls
      (window.scrollTo) still work. */
+  /* Universal high-contrast selection — text turns visible on purple bases, dark modes, and white bases */
+  ::selection {
+    background-color: #fde047;
+    color: #0f172a;
+  }
+  ::-moz-selection {
+    background-color: #fde047;
+    color: #0f172a;
+  }
+
   html {
     scroll-behavior: auto;
     -webkit-text-size-adjust: 100%;

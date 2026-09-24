@@ -36,20 +36,17 @@ export const Blog = () => {
         <link rel="canonical" href="https://degreeguru.in/blog/" />
       </Helmet>
 
-      <div className="container-dg py-8 md:py-14">
+      <div className="container-dg pt-4 pb-12 md:pt-6 md:pb-16">
         <AppBreadcrumb items={[{ label: "Blog" }]} />
 
         {/* Header Hero */}
-        <div className="text-center max-w-3xl mx-auto mb-10">
+        <div className="text-center max-w-3xl mx-auto mb-8">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold mb-3">
             <BookOpen size={14} /> Career & Education Knowledge Hub
           </div>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-foreground tracking-tight">
             Education, Career & Resume Insights
           </h1>
-          <p className="text-base sm:text-lg text-muted-foreground mt-2 leading-relaxed">
-            Factual comparisons, industry salary insights, and practical advice to help you decide your next educational step.
-          </p>
         </div>
 
         {/* Search & Categories */}
@@ -83,8 +80,8 @@ export const Blog = () => {
           </div>
         </div>
 
-        {/* Blog Post Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* Blog Post Cards Grid (3 in one row) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtered.map((post) => (
             <div
               key={post.slug}

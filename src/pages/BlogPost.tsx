@@ -13,11 +13,13 @@ import {
   ChevronRight,
   Home,
 } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 export const BlogPost = () => {
   const { postSlug } = useParams<{ postSlug: string }>();
   const post = BLOG_POSTS.find((p) => p.slug === postSlug);
   const [copied, setCopied] = useState(false);
+  const [authorModalOpen, setAuthorModalOpen] = useState(false);
 
   if (!post) {
     return <Navigate to="/blog" replace />;
@@ -82,9 +84,9 @@ export const BlogPost = () => {
       </Helmet>
 
       <div className="bg-background min-h-screen pb-20">
-        {/* Top Breadcrumb Nav — Goes all the way back to Home */}
+        {/* Top Breadcrumb Nav — Goes directly: Home > Blog > {post.title} */}
         <div className="border-b border-border/60 bg-card/60 backdrop-blur-md sticky top-16 z-20">
-          <div className="container-dg py-3.5 flex items-center justify-between gap-4">
+          <div className="container-dg py-2.5 flex items-center justify-between gap-4">
             <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs text-muted-foreground font-semibold truncate">
               <Link to="/" className="hover:text-primary transition-colors flex items-center gap-1 shrink-0">
                 <Home size={13} />
@@ -95,24 +97,13 @@ export const BlogPost = () => {
                 Blog
               </Link>
               <ChevronRight size={12} className="text-muted-foreground/50 shrink-0" />
-              <span className="text-foreground/90 font-bold shrink-0">{post.category}</span>
-              <ChevronRight size={12} className="text-muted-foreground/50 shrink-0 hidden sm:inline" />
-              <span className="text-primary truncate max-w-[260px] hidden sm:inline">{post.title}</span>
+              <span className="text-foreground font-bold truncate max-w-[320px] sm:max-w-[540px]">{post.title}</span>
             </nav>
-
-            <button
-              onClick={handleCopyLink}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border text-xs font-bold text-foreground hover:bg-muted/80 transition-all shrink-0"
-              title="Share report"
-            >
-              {copied ? <Check size={13} className="text-emerald-500" /> : <Share2 size={13} />}
-              <span>{copied ? "Link Copied!" : "Share report"}</span>
-            </button>
           </div>
         </div>
 
-        {/* Main Article Container */}
-        <div className="container-dg pt-8 md:pt-12 max-w-6xl">
+        {/* Main Article Container with reduced top spacing */}
+        <div className="container-dg pt-4 md:pt-7 max-w-6xl">
           {/* Category Pill & Read Time */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-100 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 text-[11px] font-black uppercase tracking-wider mb-4 border border-purple-200 dark:border-purple-800/50">
             <span>{post.category}</span>
@@ -127,25 +118,37 @@ export const BlogPost = () => {
 
           {/* Author and Social Bar */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border/70 mb-8">
-            {/* Author Info with LinkedIn Icon in front of / beside writer name */}
+            {/* Author Info: Clickable Yash showing full credentials & articles */}
             <div className="flex items-center gap-3.5">
-              <div className="relative w-11 h-11 rounded-full overflow-hidden border-2 border-primary/20 bg-muted shrink-0">
+              <button
+                type="button"
+                onClick={() => setAuthorModalOpen(true)}
+                className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-primary/30 bg-muted shrink-0 hover:scale-105 transition-transform cursor-pointer shadow-sm group"
+                title="Click to view Yash's credentials & articles"
+              >
                 <img
                   src={post.author.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&auto=format&fit=crop&q=80"}
                   alt={post.author.name}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform"
                 />
-              </div>
+              </button>
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-black text-foreground">{post.author.name}</span>
-                  {post.author.verified && (
-                    <span title="Verified Academic Editor" className="inline-flex items-center text-blue-500">
-                      <svg className="w-4 h-4 fill-blue-500 text-white" viewBox="0 0 24 24">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15-5-5 1.41-1.41L11 14.17l7.59-7.59L20 8l-9 9z" />
-                      </svg>
-                    </span>
-                  )}
+                  <button
+                    type="button"
+                    onClick={() => setAuthorModalOpen(true)}
+                    className="text-sm font-black text-foreground hover:text-primary transition-colors flex items-center gap-1.5 cursor-pointer text-left"
+                    title="Click to view Yash's credentials & articles"
+                  >
+                    <span>{post.author.name}</span>
+                    {post.author.verified && (
+                      <span title="Verified Academic Editor" className="inline-flex items-center text-blue-500">
+                        <svg className="w-4 h-4 fill-blue-500 text-white" viewBox="0 0 24 24">
+                          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15-5-5 1.41-1.41L11 14.17l7.59-7.59L20 8l-9 9z" />
+                        </svg>
+                      </span>
+                    )}
+                  </button>
 
                   {/* LinkedIn Icon in front of writer name linking to Yash's LinkedIn profile */}
                   <a
@@ -161,14 +164,30 @@ export const BlogPost = () => {
                     </svg>
                   </a>
                 </div>
-                <p className="text-xs text-muted-foreground font-medium">
-                  {post.author.role} · {post.publishDate}
-                </p>
+                <div className="text-xs text-muted-foreground font-medium flex items-center gap-1.5 flex-wrap">
+                  <button
+                    type="button"
+                    onClick={() => setAuthorModalOpen(true)}
+                    className="font-bold text-foreground/85 hover:text-primary hover:underline cursor-pointer"
+                  >
+                    {post.author.role}
+                  </button>
+                  <span>·</span>
+                  <button
+                    type="button"
+                    onClick={() => setAuthorModalOpen(true)}
+                    className="text-foreground/80 hover:text-primary hover:underline cursor-pointer"
+                  >
+                    {post.author.education}
+                  </button>
+                  <span>·</span>
+                  <span>{post.publishDate}</span>
+                </div>
               </div>
             </div>
 
-            {/* Share in Feed: WhatsApp, LinkedIn, Facebook, and X (Twitter) */}
-            <div className="flex items-center gap-2">
+            {/* Share in Feed: WhatsApp, LinkedIn, Facebook, and X (Twitter) with bigger balanced icons */}
+            <div className="flex items-center gap-2.5">
               <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider mr-1">Share</span>
               
               {/* WhatsApp Share */}
@@ -178,9 +197,9 @@ export const BlogPost = () => {
                 rel="noopener noreferrer"
                 aria-label="Share on WhatsApp"
                 title="Share on WhatsApp"
-                className="w-8 h-8 rounded-full bg-[#25D366] text-white flex items-center justify-center hover:opacity-90 transition-transform hover:scale-105 shadow-sm"
+                className="w-10 h-10 rounded-full bg-[#25D366] text-white flex items-center justify-center hover:opacity-95 transition-transform hover:scale-110 shadow-sm shrink-0"
               >
-                <svg className="w-4 h-4 fill-white" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 fill-white" viewBox="0 0 24 24">
                   <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.587-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.007c.106.005.249-.04.39.299.144.347.491 1.196.534 1.284.043.088.072.19.014.305-.058.115-.087.187-.173.289l-.26.309c-.087.098-.178.204-.076.379.102.175.454.748.974 1.211.669.596 1.233.78 1.408.867.175.086.277.072.379-.044.102-.116.433-.505.549-.679.116-.174.232-.145.39-.087s1.011.477 1.184.564.289.13.332.203c.043.072.043.419-.101.824z" />
                 </svg>
               </a>
@@ -192,9 +211,9 @@ export const BlogPost = () => {
                 rel="noopener noreferrer"
                 aria-label="Share to LinkedIn Feed"
                 title="Share to LinkedIn Feed"
-                className="w-8 h-8 rounded-full bg-[#0077B5] text-white flex items-center justify-center hover:opacity-90 transition-transform hover:scale-105 shadow-sm"
+                className="w-10 h-10 rounded-full bg-[#0077B5] text-white flex items-center justify-center hover:opacity-95 transition-transform hover:scale-110 shadow-sm shrink-0"
               >
-                <svg className="w-3.5 h-3.5 fill-white" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 fill-white" viewBox="0 0 24 24">
                   <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 8.76c-.97 0-1.75-.79-1.75-1.76s.78-1.75 1.75-1.75 1.75.78 1.75 1.75-.78 1.76-1.75 1.76m1.4 9.74v-8.37H5.06v8.37h2.8z" />
                 </svg>
               </a>
@@ -206,9 +225,9 @@ export const BlogPost = () => {
                 rel="noopener noreferrer"
                 aria-label="Share on Facebook"
                 title="Share on Facebook"
-                className="w-8 h-8 rounded-full bg-[#1877F2] text-white flex items-center justify-center hover:opacity-90 transition-transform hover:scale-105 shadow-sm"
+                className="w-10 h-10 rounded-full bg-[#1877F2] text-white flex items-center justify-center hover:opacity-95 transition-transform hover:scale-110 shadow-sm shrink-0"
               >
-                <svg className="w-3.5 h-3.5 fill-white" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 fill-white" viewBox="0 0 24 24">
                   <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
                 </svg>
               </a>
@@ -220,9 +239,9 @@ export const BlogPost = () => {
                 rel="noopener noreferrer"
                 aria-label="Share on X"
                 title="Share on X"
-                className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center hover:opacity-90 transition-transform hover:scale-105 shadow-sm"
+                className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center hover:opacity-95 transition-transform hover:scale-110 shadow-sm shrink-0"
               >
-                <svg className="w-3.5 h-3.5 fill-white" viewBox="0 0 24 24">
+                <svg className="w-4.5 h-4.5 fill-white" viewBox="0 0 24 24">
                   <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                 </svg>
               </a>
@@ -535,6 +554,68 @@ export const BlogPost = () => {
             </div>
           </div>
 
+          {/* Author Box — Yash Credentials & Link to his articles */}
+          <div className="mt-12 p-6 sm:p-8 rounded-3xl bg-card border border-border/80 shadow-md">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+              <div className="flex items-start sm:items-center gap-4">
+                <button
+                  type="button"
+                  onClick={() => setAuthorModalOpen(true)}
+                  className="w-16 h-16 rounded-2xl overflow-hidden border-2 border-primary/30 shrink-0 shadow-sm hover:scale-105 transition-transform cursor-pointer"
+                  title="View Yash's Credentials & Articles"
+                >
+                  <img
+                    src={post.author.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&auto=format&fit=crop&q=80"}
+                    alt={post.author.name}
+                    className="w-full h-full object-cover"
+                  />
+                </button>
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setAuthorModalOpen(true)}
+                      className="text-lg font-black text-foreground hover:text-primary transition-colors cursor-pointer"
+                    >
+                      {post.author.name}
+                    </button>
+                    <span className="inline-flex items-center text-blue-500">
+                      <svg className="w-4 h-4 fill-blue-500 text-white" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15-5-5 1.41-1.41L11 14.17l7.59-7.59L20 8l-9 9z" />
+                      </svg>
+                    </span>
+                    <a
+                      href={post.author.linkedin || "https://www.linkedin.com/in/yashappy"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-5 h-5 rounded-md bg-[#0077b5] text-white flex items-center justify-center hover:scale-110 transition-transform shadow-xs"
+                      title="Connect with Yash on LinkedIn"
+                    >
+                      <svg className="w-3 h-3 fill-white" viewBox="0 0 24 24">
+                        <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 8.76c-.97 0-1.75-.79-1.75-1.76s.78-1.75 1.75-1.75 1.75.78 1.75 1.75-.78 1.76-1.75 1.76m1.4 9.74v-8.37H5.06v8.37h2.8z" />
+                      </svg>
+                    </a>
+                  </div>
+                  <div className="text-xs font-bold text-primary">
+                    {post.author.role} · {post.author.education}
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-relaxed max-w-xl">
+                    {post.author.bio}
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setAuthorModalOpen(true)}
+                className="px-5 py-2.5 rounded-xl border border-primary/40 bg-primary/10 text-primary text-xs font-bold hover:bg-primary hover:text-white transition-all shrink-0 flex items-center gap-1.5"
+              >
+                <span>View All Articles by Yash</span>
+                <ArrowRight size={13} />
+              </button>
+            </div>
+          </div>
+
           {/* Related Educational Analyses Section (Bottom) */}
           <div className="mt-16 pt-12 border-t border-border/70 space-y-8">
             <div className="flex items-center justify-between">
@@ -585,6 +666,74 @@ export const BlogPost = () => {
           </div>
         </div>
       </div>
+
+      {/* Yash Author Profile Dialog Modal */}
+      <Dialog open={authorModalOpen} onOpenChange={setAuthorModalOpen}>
+        <DialogContent className="max-w-lg p-6 sm:p-8 rounded-3xl bg-card border border-border shadow-2xl space-y-5">
+          <DialogHeader>
+            <DialogTitle className="sr-only">Author Profile - {post.author.name}</DialogTitle>
+          </DialogHeader>
+
+          <div className="flex items-start gap-4">
+            <div className="w-16 h-16 rounded-2xl overflow-hidden border-2 border-primary/30 shrink-0 shadow-md">
+              <img
+                src={post.author.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&auto=format&fit=crop&q=80"}
+                alt={post.author.name}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <h3 className="text-xl font-black text-foreground">{post.author.name}</h3>
+                <span className="inline-flex items-center text-blue-500">
+                  <svg className="w-4 h-4 fill-blue-500 text-white" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15-5-5 1.41-1.41L11 14.17l7.59-7.59L20 8l-9 9z" />
+                  </svg>
+                </span>
+              </div>
+              <div className="text-xs font-bold text-primary">
+                {post.author.role} · {post.author.education}
+              </div>
+              <a
+                href={post.author.linkedin || "https://www.linkedin.com/in/yashappy"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs text-[#0077b5] font-bold hover:underline pt-1"
+              >
+                <span>Connect on LinkedIn</span>
+                <ArrowRight size={12} />
+              </a>
+            </div>
+          </div>
+
+          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+            {post.author.bio}
+          </p>
+
+          <div className="pt-3 border-t border-border/70 space-y-3">
+            <h4 className="text-xs font-black uppercase tracking-wider text-foreground">
+              Articles Written by Yash ({BLOG_POSTS.length})
+            </h4>
+            <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
+              {BLOG_POSTS.map((bp) => (
+                <Link
+                  key={bp.slug}
+                  to={`/blog/${bp.slug}`}
+                  onClick={() => setAuthorModalOpen(false)}
+                  className={`p-3 rounded-xl border flex items-center justify-between gap-3 text-xs transition-colors ${
+                    bp.slug === post.slug
+                      ? "bg-primary/10 border-primary/30 text-primary font-bold"
+                      : "bg-muted/50 border-border/70 text-foreground hover:bg-primary/5 hover:border-primary/30"
+                  }`}
+                >
+                  <span className="line-clamp-1">{bp.title}</span>
+                  <ArrowRight size={12} className="shrink-0 text-muted-foreground" />
+                </Link>
+              ))}
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };

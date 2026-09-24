@@ -14,14 +14,10 @@ import {
   ArrowRight,
   Send,
   HelpCircle,
-  AlertCircle,
-  Globe,
-  Check
+  AlertCircle
 } from "lucide-react";
 import { askGeminiAdvisor } from "@/services/geminiService";
-import { GuruMascot } from "@/components/GuruMascot";
 import { useLanguage } from "@/context/LanguageContext";
-import { SUPPORTED_LANGUAGES } from "@/data/languages";
 
 type Message = {
   id: string;
@@ -35,8 +31,7 @@ export const FloatingAiAdvisor = () => {
   const [userInput, setUserInput] = useState<string>("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState<boolean>(false);
-  const [langMenuOpen, setLangMenuOpen] = useState<boolean>(false);
-  const { language, setLanguage } = useLanguage();
+  const { language } = useLanguage();
 
   // Initial prompt templates based on language
   const resetConversation = (lang = language) => {
@@ -322,99 +317,30 @@ export const FloatingAiAdvisor = () => {
       {/* Bot Chat Window */}
       {isOpen && (
         <div className="mb-3 w-[92vw] sm:w-[380px] max-w-[400px] h-[540px] max-h-[82vh] rounded-3xl bg-card border border-border shadow-2xl flex flex-col overflow-hidden animate-slide-up backdrop-blur-lg">
-          {/* Header */}
-          <div className="px-4 py-3.5 bg-gradient-to-r from-[#5022c3] via-[#6528f7] to-[#431bb5] text-white flex items-center justify-between shadow-sm">
+          {/* Header - Flat Purple (#6528f7) with Real Human Counselor Photo */}
+          <div className="px-4 py-3.5 bg-[#6528f7] text-white flex items-center justify-between shadow-sm">
             <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-white/15 p-0.5 flex items-center justify-center font-bold text-white shadow-inner">
-                <GuruMascot size={30} />
+              <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-white/50 shadow-sm shrink-0 bg-white/10">
+                <img
+                  src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&auto=format&fit=crop&q=80"
+                  alt="Expert Counselor"
+                  className="w-full h-full object-cover"
+                />
+                <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-400 border border-white" />
               </div>
               <div>
                 <div className="text-sm font-black flex items-center gap-1.5 leading-tight tracking-tight">
                   Guru AI
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                 </div>
-                <div className="text-[10px] text-white/80 font-medium">
+                <div className="text-[10px] text-white/85 font-medium">
                   {language === "hi" ? "शैक्षणिक और करियर सलाहकार" : "Academic & Career Advisor"}
                 </div>
               </div>
             </div>
 
-            {/* Header Controls: EN | हि Toggle, Reset, Close */}
-            <div className="flex items-center gap-1.5">
-              {/* Language Switcher: Hindi & English preferred, plus expanded languages */}
-              <div className="relative">
-                <div className="flex items-center bg-black/25 rounded-full p-0.5 border border-white/20 text-[10px] font-extrabold">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setLanguage("hi");
-                      setLangMenuOpen(false);
-                    }}
-                    className={`px-2 py-0.5 rounded-full transition-all ${
-                      language === "hi" ? "bg-amber-400 text-slate-900 shadow-sm" : "text-white/70 hover:text-white"
-                    }`}
-                    aria-label="Switch to Hindi"
-                  >
-                    हि
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setLanguage("en");
-                      setLangMenuOpen(false);
-                    }}
-                    className={`px-2 py-0.5 rounded-full transition-all ${
-                      language === "en" ? "bg-white text-[#5022c3] shadow-sm" : "text-white/70 hover:text-white"
-                    }`}
-                    aria-label="Switch to English"
-                  >
-                    EN
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setLangMenuOpen(!langMenuOpen)}
-                    className="px-1 py-0.5 text-white/80 hover:text-white transition-colors"
-                    title="All Languages"
-                  >
-                    <Globe size={11} />
-                  </button>
-                </div>
-
-                {langMenuOpen && (
-                  <>
-                    <div className="fixed inset-0 z-40" onClick={() => setLangMenuOpen(false)} />
-                    <div className="absolute right-0 top-full mt-2 w-56 max-h-[300px] overflow-y-auto bg-card text-foreground rounded-2xl shadow-2xl border border-border p-2 z-50 animate-in fade-in zoom-in-95 space-y-2 text-left">
-                      <div className="text-[10px] font-black uppercase text-primary px-2 pt-1 border-b border-border/40 pb-1">
-                        Select Language
-                      </div>
-                      <div className="space-y-0.5">
-                        {SUPPORTED_LANGUAGES.map((l) => (
-                          <button
-                            key={l.code}
-                            type="button"
-                            onClick={() => {
-                              setLanguage(l.code);
-                              setLangMenuOpen(false);
-                            }}
-                            className={`w-full px-2 py-1 rounded-xl text-xs font-semibold flex items-center justify-between transition-colors ${
-                              language === l.code
-                                ? "bg-primary text-primary-foreground font-bold shadow-sm"
-                                : "hover:bg-muted text-foreground"
-                            }`}
-                          >
-                            <span className="flex items-center gap-1.5">
-                              <span>{l.flag}</span>
-                              <span>{l.nativeName}</span>
-                            </span>
-                            {language === l.code && <Check size={12} />}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </>
-                )}
-              </div>
-
+            {/* Header Controls: Clean Reset & Close */}
+            <div className="flex items-center gap-1">
               {/* Reset Button */}
               <button
                 type="button"
@@ -436,17 +362,6 @@ export const FloatingAiAdvisor = () => {
                 <X size={17} />
               </button>
             </div>
-          </div>
-
-          {/* Sub-header Banner */}
-          <div className="px-3.5 py-1.5 bg-primary/10 border-b border-primary/20 flex items-center justify-between text-[10px] text-foreground font-semibold">
-            <span className="flex items-center gap-1.5 text-primary">
-              <Sparkles size={11} />
-              {language === "hi" ? "प्रवेश 2026-27 सहायता खुली है" : "Admissions 2026-27 Counseling Open"}
-            </span>
-            <span className="text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-bold">
-              100% Free
-            </span>
           </div>
 
           {/* Messages Flow */}
@@ -547,44 +462,47 @@ export const FloatingAiAdvisor = () => {
               </button>
             </div>
 
-            {/* Short Caution Disclaimer without any "Powered by" */}
+            {/* Short Caution Disclaimer */}
             <div className="text-center text-[10px] text-muted-foreground/80 pt-0.5 border-t border-border/40">
               {language === "hi"
-                ? "AI-जनित उत्तर · जानकारी हमेशा सटीक नहीं हो सकती"
-                : "AI-generated answers · Verify important details before enrollment"}
+                ? "AI-जनित उत्तर हमेशा 100% सटीक नहीं हो सकते।"
+                : "AI-generated responses may not always be 100% accurate."}
             </div>
           </div>
         </div>
       )}
 
-      {/* Floating Bot Launch Button (Text-free, pure modern mascot) */}
+      {/* Floating Bot Launch Button (Flat purple with full photo of expert counselor like real human) */}
       <button
         onClick={() => setIsOpen((v) => !v)}
-        aria-label={isOpen ? "Close Guru AI" : "Open Guru AI Career Advisor"}
-        className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 shadow-2xl text-white group"
+        aria-label={isOpen ? "Close Guru AI" : "Chat with Guru AI Advisor"}
+        className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 shadow-2xl text-white group"
         style={{
-          background: isOpen
-            ? "hsl(0 0% 20%)"
-            : "linear-gradient(135deg, #6528f7, #8f62f9)",
+          background: isOpen ? "#334155" : "#6528f7",
           boxShadow: isOpen
             ? "0 8px 24px rgba(0,0,0,0.3)"
-            : "0 8px 28px rgba(101, 40, 247, 0.55)",
+            : "0 8px 28px rgba(101, 40, 247, 0.45)",
         }}
       >
         {/* Animated Glow Rings when closed */}
         {!isOpen && (
           <>
-            <span className="absolute inset-0 rounded-full animate-ping opacity-30 bg-[#6528f7]" />
-            <span className="absolute inset-[-4px] rounded-full border-2 border-primary/40 animate-wa-ping" />
+            <span className="absolute inset-0 rounded-full animate-ping opacity-25 bg-[#6528f7]" />
+            <span className="absolute inset-[-3px] rounded-full border-2 border-[#6528f7]/40" />
           </>
         )}
 
-        <span className="relative transition-transform duration-300">
+        <span className="relative transition-transform duration-300 w-full h-full rounded-full flex items-center justify-center overflow-hidden">
           {isOpen ? (
             <X size={24} />
           ) : (
-            <div className="flex items-center justify-center">
-              <GuruMascot size={42} className="group-hover:scale-115 transition-transform drop-shadow-md" />
+            <div className="relative w-full h-full p-1">
+              <img
+                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&auto=format&fit=crop&q=80"
+                alt="Expert Counselor"
+                className="w-full h-full rounded-full object-cover group-hover:scale-105 transition-transform"
+              />
+              <span className="absolute bottom-1 right-1 w-3 h-3 rounded-full bg-emerald-400 border-2 border-[#6528f7] shadow-sm" />
             </div>
           )}
         </span>
