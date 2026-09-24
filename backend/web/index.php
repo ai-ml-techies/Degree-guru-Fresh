@@ -35,8 +35,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 // ── Yii bootstrap ─────────────────────────────────────────────────────────────
-require __DIR__ . '/../vendor/autoload.php';
-require __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
+$autoloadCandidates = [
+    __DIR__ . '/../vendor/autoload.php',
+    dirname(__DIR__, 2) . '/backend/vendor/autoload.php',
+    dirname(__DIR__, 2) . '/vendor/autoload.php',
+    dirname(__DIR__, 3) . '/backend/vendor/autoload.php',
+];
+
+$autoloadPath = null;
+foreach ($autoloadCandidates as $candidate) {
+    if (file_exists($candidate)) {
+        $autoloadPath = $candidate;
+        break;
+    }
+}
+
+if (!$autoloadPath) {
+    header('HTTP/1.1 500 Internal Server Error');
+    die("Degree Guru Backend Error: vendor/autoload.php not found. Please deploy or unzip vendor dependencies.");
+}
+
+require $autoloadPath;
+require dirname($autoloadPath) . '/yiisoft/yii2/Yii.php';
 
 $config = require __DIR__ . '/../config/web.php';
 
