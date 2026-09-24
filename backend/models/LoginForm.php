@@ -28,8 +28,13 @@ class LoginForm extends Model
     public function validatePassword(string $attribute, array|null $params): void
     {
         if (!$this->hasErrors()) {
-            $user = $this->getUser();
-            if (!$user || !$user->validatePassword($this->password)) {
+            try {
+                $user = $this->getUser();
+                if (!$user || !$user->validatePassword($this->password)) {
+                    $this->addError($attribute, 'Incorrect username or password.');
+                }
+            } catch (\Throwable $e) {
+                Yii::error("Login validation error: " . $e->getMessage(), __METHOD__);
                 $this->addError($attribute, 'Incorrect username or password.');
             }
         }
@@ -37,8 +42,16 @@ class LoginForm extends Model
 
     public function login(): bool
     {
-        if ($this->validate()) {
-            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
+        try {
+            if ($this->validate()) {
+                $user = $this->getUser();
+                if ($user) {
+                    return Yii::$app->user->login($user, $this->rememberMe ? 3600 * 24 * 30 : 0);
+                }
+            }
+        } catch (\Throwable $e) {
+            Yii::error("Login execution error: " . $e->getMessage(), __METHOD__);
+            $this->addError('password', 'Incorrect username or password.');
         }
         return false;
     }
@@ -46,7 +59,11 @@ class LoginForm extends Model
     public function getUser(): User|null
     {
         if (!$this->_userLoaded) {
-            $this->_user = User::findByUsername($this->username);
+            try {
+                $this->_user = User::findByUsername($this->username);
+            } catch (\Throwable $e) {
+                $this->_user = null;
+            }
             $this->_userLoaded = true;
         }
         return $this->_user;

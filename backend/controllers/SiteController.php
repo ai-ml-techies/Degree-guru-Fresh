@@ -80,8 +80,13 @@ class SiteController extends Controller
 
         $model = new LoginForm();
 
-        if ($model->load($this->request->post()) && $model->login()) {
-            return $this->redirect(['site/index']);
+        try {
+            if ($model->load($this->request->post()) && $model->login()) {
+                return $this->redirect(['site/index']);
+            }
+        } catch (\Throwable $e) {
+            Yii::error("Login exception: " . $e->getMessage(), __METHOD__);
+            $model->addError('password', 'Incorrect username or password.');
         }
 
         $model->password = '';
