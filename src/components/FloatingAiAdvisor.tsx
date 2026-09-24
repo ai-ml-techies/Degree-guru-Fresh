@@ -16,6 +16,7 @@ import {
   HelpCircle
 } from "lucide-react";
 import { askGeminiAdvisor } from "@/services/geminiService";
+import { GuruMascot } from "@/components/GuruMascot";
 
 type Message = {
   id: string;
@@ -36,7 +37,7 @@ export const FloatingAiAdvisor = () => {
       {
         id: "m-init-1",
         sender: "bot",
-        text: "👋 Hi! I'm Degree Guru AI. What are you interested in exploring today?",
+        text: "👋 Hi! I'm Ask Guru AI. What are you interested in exploring today?",
         options: [
           {
             label: "🎓 Online Master's (MBA, MCA, etc.)",
@@ -217,21 +218,20 @@ export const FloatingAiAdvisor = () => {
           {/* Header */}
           <div className="px-5 py-4 bg-gradient-to-r from-[#6528f7] via-[#7c3aed] to-[#551ebd] text-white flex items-center justify-between shadow-sm">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-2xl bg-white/15 flex items-center justify-center font-bold text-white shadow-inner">
-                <Bot size={20} />
+              <div className="w-10 h-10 rounded-2xl bg-white/15 p-1 flex items-center justify-center font-bold text-white shadow-inner">
+                <GuruMascot size={32} />
               </div>
               <div>
-                <div className="text-sm font-extrabold flex items-center gap-1.5 leading-tight">
-                  Degree Guru AI Advisor
+                <div className="text-base font-extrabold flex items-center gap-1.5 leading-tight">
+                  Ask Guru AI
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                 </div>
-                <div className="text-[11px] text-white/80 font-medium">Powered by Gemini AI • Real-time Guidance</div>
               </div>
             </div>
             <button
               onClick={() => setIsOpen(false)}
               className="w-8 h-8 rounded-full hover:bg-white/20 flex items-center justify-center transition-colors"
-              aria-label="Close AI Advisor"
+              aria-label="Close Ask Guru AI"
             >
               <X size={18} />
             </button>
@@ -360,8 +360,8 @@ export const FloatingAiAdvisor = () => {
             <X size={24} />
           ) : (
             <div className="flex flex-col items-center justify-center">
-              <Bot size={24} className="group-hover:scale-110 transition-transform" />
-              <span className="text-[9px] font-black uppercase tracking-wider mt-0.5">Ask AI</span>
+              <GuruMascot size={28} className="group-hover:scale-110 transition-transform" />
+              <span className="text-[9px] font-black uppercase tracking-wider mt-0.5">Ask Guru</span>
             </div>
           )}
         </span>
@@ -369,7 +369,7 @@ export const FloatingAiAdvisor = () => {
         {/* Floating Tooltip Label */}
         {!isOpen && (
           <div className="absolute right-[72px] bottom-3 bg-foreground text-background text-xs font-bold px-3 py-1.5 rounded-full whitespace-nowrap pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
-            Ask Degree Guru AI
+            Ask Guru AI
           </div>
         )}
       </button>

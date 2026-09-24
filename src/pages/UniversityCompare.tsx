@@ -25,9 +25,9 @@ import {
 export const UniversityCompare = () => {
   // Dynamic list of selected university slugs (allows 2 to 4 universities)
   const [selectedSlugs, setSelectedSlugs] = useState<string[]>([
-    "manipal-university-jaipur",
     "amity-university-online",
     "sharda-university-online",
+    "chandigarh-university-online",
   ]);
 
   const navigate = useNavigate();
@@ -98,12 +98,8 @@ export const UniversityCompare = () => {
           </h1>
         </div>
 
-        {/* Top Controls: Active Count & Add University */}
-        <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
-          <div className="text-xs font-bold text-muted-foreground">
-            Comparing <span className="text-primary font-black">{comparedUnis.length}</span> of 4 Universities
-          </div>
-
+        {/* Top Controls: Add University */}
+        <div className="flex items-center justify-end mb-6">
           {selectedSlugs.length < 4 && (
             <button
               type="button"
@@ -133,10 +129,7 @@ export const UniversityCompare = () => {
               <thead>
                 <tr className="bg-muted/50 border-b border-border">
                   <th className="p-4 sm:p-5 text-xs font-bold uppercase tracking-wider text-muted-foreground align-top">
-                    <span className="block text-xs font-black text-foreground mb-1">Universities</span>
-                    <span className="text-[11px] font-normal text-muted-foreground">
-                      Switch or remove institutions using dropdowns below.
-                    </span>
+                    <span className="block text-xs font-black text-foreground">Universities</span>
                   </th>
 
                   {comparedUnis.map((u, idx) => (
@@ -164,7 +157,7 @@ export const UniversityCompare = () => {
                           <UniversityLogo idOrSlug={u.slug} size="md" />
                         </div>
 
-                        {/* Dropdown Selector */}
+                        {/* Dropdown Selector - Full Name Once */}
                         <select
                           value={u.slug}
                           onChange={(e) => handleChangeUniversity(idx, e.target.value)}
@@ -172,13 +165,12 @@ export const UniversityCompare = () => {
                         >
                           {ACTIVE_ONLINE_UNIVERSITIES.map((opt) => (
                             <option key={opt.slug} value={opt.slug}>
-                              {opt.name} ({opt.shortName})
+                              {opt.name}
                             </option>
                           ))}
                         </select>
 
                         <div className="pt-1">
-                          <span className="text-sm font-black text-foreground block truncate">{u.shortName}</span>
                           <span className="text-[11px] text-muted-foreground block truncate">{u.location}</span>
                         </div>
                       </div>
@@ -321,7 +313,7 @@ export const UniversityCompare = () => {
                   </td>
                   {comparedUnis.map((u) => (
                     <td key={u.id} className="p-4 sm:p-5 text-center text-xs text-foreground border-l border-border/40">
-                      <span className="font-semibold text-foreground block">Resume Reviews & Job Fairs</span>
+                      <span className="font-semibold text-foreground block">100% Placement Assistance</span>
                       <span className="text-[10px] text-muted-foreground">100+ Corporate Recruitment Partners</span>
                     </td>
                   ))}

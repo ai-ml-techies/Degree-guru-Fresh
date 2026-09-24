@@ -111,7 +111,7 @@ export const UniversitiesIndex = () => {
               to="/universities/compare"
               className="px-3.5 py-1.5 rounded-lg bg-card border border-border text-xs font-bold text-foreground hover:bg-muted flex items-center gap-1.5 shadow-sm"
             >
-              <Layers size={14} /> Compare Universities Side-by-Side
+              <Layers size={14} /> Compare Universities
             </Link>
           </div>
         </div>
@@ -166,7 +166,7 @@ export const UniversitiesIndex = () => {
               <div className="pt-2.5 border-t border-border/40 flex items-center justify-between">
                 <div>
                   <span className="text-[9px] text-muted-foreground block">Fee Starts At</span>
-                  <div className="text-xs font-extrabold text-foreground">{uni.feesRange.split(" - ")[0]}</div>
+                  <div className="text-xs font-extrabold text-foreground">{uni.feesRange.split(/[–-]/)[0]?.trim()}</div>
                 </div>
                 <button
                   type="button"

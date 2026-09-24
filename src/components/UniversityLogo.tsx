@@ -78,7 +78,7 @@ export const UniversityLogo: React.FC<UniversityLogoProps> = ({
   } else if (norm.includes("sharda")) {
     logo = { src: "/logos/sharda.png", alt: "Sharda University Online" };
   } else if (norm.includes("parul")) {
-    logo = { src: "/logos/parul.svg", alt: "Parul University Online" };
+    logo = { src: "/logos/parul.png", alt: "Parul University Online" };
   } else if (norm.includes("galgotias")) {
     logo = { src: "/logos/galgotias.png", alt: "Galgotias University Online" };
   } else if (norm.includes("christ")) {
@@ -106,10 +106,10 @@ export const UniversityLogo: React.FC<UniversityLogoProps> = ({
   }
 
   const containerHeight =
-    size === "sm" ? "h-9 px-2" : size === "lg" ? "h-14 px-4" : "h-12 px-3";
+    size === "sm" ? "h-11 px-2.5" : size === "lg" ? "h-16 px-4" : "h-13 px-3";
 
   const imgMaxHeight =
-    size === "sm" ? "max-h-6" : size === "lg" ? "max-h-10" : "max-h-8";
+    size === "sm" ? "max-h-8.5" : size === "lg" ? "max-h-12" : "max-h-10";
 
   // If real logo exists and hasn't errored
   if (logo && !hasError) {
@@ -118,7 +118,7 @@ export const UniversityLogo: React.FC<UniversityLogoProps> = ({
         <img
           src={logo.src}
           alt={logo.alt}
-          className={`${imgMaxHeight} w-auto max-w-[90%] object-contain ${className}`}
+          className={`${imgMaxHeight} w-auto max-w-[94%] object-contain ${className}`}
           onError={() => setHasError(true)}
           loading="lazy"
         />
@@ -127,12 +127,12 @@ export const UniversityLogo: React.FC<UniversityLogoProps> = ({
 
     return (
       <div
-        className={`inline-flex items-center justify-center rounded-xl bg-white shadow-2xs border border-slate-200/80 transition-all duration-200 group-hover:border-primary/40 ${containerHeight} w-full max-w-[200px] ${className}`}
+        className={`inline-flex items-center justify-center rounded-xl bg-white shadow-2xs border border-slate-200/80 transition-all duration-200 group-hover:border-primary/40 ${containerHeight} w-full max-w-[240px] ${className}`}
       >
         <img
           src={logo.src}
           alt={logo.alt}
-          className={`${imgMaxHeight} w-auto max-w-[88%] object-contain select-none transition-transform duration-200 group-hover:scale-105`}
+          className={`${imgMaxHeight} w-auto max-w-[94%] object-contain select-none transition-transform duration-200 group-hover:scale-105`}
           onError={() => setHasError(true)}
           loading="lazy"
         />
