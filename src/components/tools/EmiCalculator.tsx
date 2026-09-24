@@ -90,7 +90,7 @@ export const EmiCalculator: React.FC<EmiCalculatorProps> = ({
             <Calculator size={13} /> 0% Interest Education EMI Planner
           </div>
           <h3 className="text-xl sm:text-2xl font-black text-foreground tracking-tight">
-            Online Degree Fee & EMI Calculator
+            EMI Calculator
           </h3>
           <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
             Estimate affordable monthly installments for UGC-approved online degrees with zero hidden interest.
@@ -258,9 +258,8 @@ export const EmiCalculator: React.FC<EmiCalculatorProps> = ({
 
             {/* Big EMI Highlight */}
             <div className="py-2">
-              <div className="text-3xl sm:text-4xl font-black text-foreground tracking-tight flex items-baseline gap-1">
+              <div className="text-3xl sm:text-4xl font-black text-foreground tracking-tight flex items-baseline">
                 <span>₹{calculations.monthlyEmi.toLocaleString("en-IN")}</span>
-                <span className="text-xs font-semibold text-muted-foreground">/ month</span>
               </div>
               <p className="text-[11px] text-muted-foreground mt-1">
                 For {tenure} equal monthly installments with zero hidden processing charges.
@@ -282,7 +281,7 @@ export const EmiCalculator: React.FC<EmiCalculatorProps> = ({
               <div className="flex items-center justify-between">
                 <span className="text-muted-foreground">Total Interest Payable</span>
                 <span className={`font-bold ${isNoCost ? "text-emerald-600 dark:text-emerald-400" : "text-foreground"}`}>
-                  {isNoCost ? "₹0 (100% Free)" : `₹${calculations.totalInterest.toLocaleString("en-IN")}`}
+                  {isNoCost ? "0%" : `₹${calculations.totalInterest.toLocaleString("en-IN")}`}
                 </span>
               </div>
               <div className="flex items-center justify-between pt-2 border-t border-border/50 text-sm font-black">

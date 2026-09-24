@@ -9,6 +9,7 @@ import { Layout } from "@/components/Layout";
 import { ScrollToTop } from "@/components/ScrollToTop";
 
 import { LeadGateProvider } from "@/context/LeadGateContext";
+import { LanguageProvider } from "@/context/LanguageContext";
 
 const Index             = lazy(() => import("./pages/Index.tsx"));
 const About             = lazy(() => import("./pages/About.tsx"));
@@ -41,8 +42,9 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider>
-      <LeadGateProvider>
-        <TooltipProvider>
+      <LanguageProvider>
+        <LeadGateProvider>
+          <TooltipProvider>
           <Toaster />
           <Sonner />
           <BrowserRouter>
@@ -103,7 +105,8 @@ const App = () => (
           </Layout>
         </BrowserRouter>
         </TooltipProvider>
-      </LeadGateProvider>
+        </LeadGateProvider>
+      </LanguageProvider>
     </ThemeProvider>
   </QueryClientProvider>
 );

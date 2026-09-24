@@ -84,49 +84,81 @@ export const Blog = () => {
         </div>
 
         {/* Blog Post Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {filtered.map((post) => (
             <div
               key={post.slug}
-              className="p-6 sm:p-7 rounded-3xl bg-card border border-border/80 shadow-md hover:shadow-xl transition-all flex flex-col justify-between space-y-4 group"
+              className="rounded-3xl bg-card border border-border/80 shadow-md hover:shadow-xl transition-all overflow-hidden flex flex-col justify-between group"
             >
               <div>
-                <div className="flex items-center justify-between gap-2">
-                  <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-wider">
-                    {post.category}
-                  </span>
-                  <span className="text-xs text-muted-foreground flex items-center gap-1 font-medium">
-                    <Clock size={12} /> {post.readTime}
-                  </span>
+                {/* Card Image */}
+                <div className="relative w-full aspect-[16/9] overflow-hidden bg-muted">
+                  <img
+                    src={post.image}
+                    alt={post.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                  <div className="absolute top-4 left-4">
+                    <span className="px-3 py-1 rounded-full bg-background/90 backdrop-blur-md text-foreground text-[10px] font-black uppercase tracking-wider shadow-sm border border-border/60">
+                      {post.category}
+                    </span>
+                  </div>
                 </div>
 
-                <h2 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors mt-3 leading-snug">
-                  <Link to={`/blog/${post.slug}`}>{post.title}</Link>
-                </h2>
+                <div className="p-6 sm:p-7 space-y-3">
+                  <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1 font-medium">
+                      <Clock size={12} /> {post.readTime}
+                    </span>
+                    <span>·</span>
+                    <span>{post.publishDate}</span>
+                  </div>
 
-                <p className="text-xs sm:text-sm text-muted-foreground mt-2 line-clamp-3 leading-relaxed">
-                  {post.summary}
-                </p>
+                  <h2 className="text-xl font-black text-foreground group-hover:text-primary transition-colors leading-snug">
+                    <Link to={`/blog/${post.slug}`}>{post.title}</Link>
+                  </h2>
 
-                {/* Related tags */}
-                <div className="flex flex-wrap gap-1.5 mt-4 pt-3 border-t border-border/50">
-                  {post.relatedCourses.map((rc, idx) => (
-                    <Link
-                      key={idx}
-                      to={rc.url}
-                      className="px-2 py-0.5 rounded-md bg-muted hover:bg-primary/10 text-muted-foreground hover:text-primary text-[11px] font-semibold transition-colors"
-                    >
-                      {rc.name}
-                    </Link>
-                  ))}
+                  <p className="text-xs sm:text-sm text-muted-foreground line-clamp-3 leading-relaxed">
+                    {post.summary}
+                  </p>
+
+                  {/* Related tags */}
+                  <div className="flex flex-wrap gap-1.5 pt-3">
+                    {post.relatedCourses.map((rc, idx) => (
+                      <Link
+                        key={idx}
+                        to={rc.url}
+                        className="px-2.5 py-1 rounded-lg bg-muted hover:bg-primary/10 text-muted-foreground hover:text-primary text-[11px] font-semibold transition-colors"
+                      >
+                        {rc.name}
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-border/50 flex items-center justify-between">
-                <span className="text-[11px] text-muted-foreground">{post.publishDate}</span>
+              {/* Author & Read More Bar */}
+              <div className="px-6 sm:px-7 py-4 bg-muted/30 border-t border-border/50 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 rounded-full overflow-hidden bg-muted border border-border">
+                    <img
+                      src={post.author.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&auto=format&fit=crop&q=80"}
+                      alt={post.author.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <span className="text-xs font-bold text-foreground flex items-center gap-1">
+                    {post.author.name}
+                    <svg className="w-3.5 h-3.5 fill-blue-500 text-white" viewBox="0 0 24 24">
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15-5-5 1.41-1.41L11 14.17l7.59-7.59L20 8l-9 9z" />
+                    </svg>
+                  </span>
+                </div>
+
                 <Link
                   to={`/blog/${post.slug}`}
-                  className="text-xs font-bold text-primary hover:underline flex items-center gap-1"
+                  className="text-xs font-extrabold text-primary hover:underline flex items-center gap-1 group-hover:translate-x-0.5 transition-transform"
                 >
                   Read Full Guide <ArrowRight size={13} />
                 </Link>

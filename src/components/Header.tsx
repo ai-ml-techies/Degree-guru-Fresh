@@ -11,10 +11,12 @@ import {
   Calculator, 
   FileText, 
   Sparkles, 
-  ArrowRight 
+  ArrowRight,
+  Globe
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useTheme } from "./ThemeProvider";
+import { useLanguage } from "@/context/LanguageContext";
 import { fetchHomeContent } from "@/lib/api";
 import logoLight from "@/assets/logo-light.png";
 import logoDark from "@/assets/logo-dark.png";
@@ -30,6 +32,7 @@ const DEFAULT_ANNOUNCEMENTS = [
 
 export const Header = () => {
   const { theme, toggle } = useTheme();
+  const { language, setLanguage } = useLanguage();
   const location = useLocation();
   const [coursesDropdown, setCoursesDropdown] = useState(false);
   const [universitiesDropdown, setUniversitiesDropdown] = useState(false);
@@ -277,35 +280,55 @@ export const Header = () => {
             </nav>
 
             {/* Desktop Actions & Mobile Right Action */}
-            <div className="flex items-center gap-3 sm:gap-4">
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              {/* Language Switch Toggle (EN | हि) */}
+              <div className="flex items-center rounded-full p-0.5 sm:p-1 bg-muted/60 border border-foreground/15 text-[11px] sm:text-xs font-bold shadow-sm">
+                <button
+                  type="button"
+                  onClick={() => setLanguage("en")}
+                  className={`px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full transition-all ${
+                    language === "en"
+                      ? "bg-primary text-primary-foreground shadow-sm"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                  aria-label="Switch to English"
+                >
+                  EN
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLanguage("hi")}
+                  className={`px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full transition-all ${
+                    language === "hi"
+                      ? "bg-amber-500 text-white shadow-sm"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                  aria-label="Switch to Hindi"
+                >
+                  हि
+                </button>
+              </div>
+
               {/* Theme toggle */}
               <button
                 onClick={toggle}
-                className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full border border-foreground/15 hover:bg-foreground/5 transition-colors"
+                className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-full border border-foreground/15 hover:bg-foreground/5 transition-colors"
                 aria-label="Toggle theme"
               >
-                {theme === "dark" ? <Sun size={17} className="text-amber-400" /> : <Moon size={17} className="text-foreground" />}
+                {theme === "dark" ? <Sun size={16} className="text-amber-400" /> : <Moon size={16} className="text-foreground" />}
               </button>
 
-              {/* Mobile WhatsApp Button (Hidden on Desktop as requested) */}
+              {/* Mobile WhatsApp Button */}
               <a
                 href="https://wa.me/919350199001?text=Hi%20Degree%20Guru%2C%20I%20want%20to%20know%20more%20about%20online%20degrees"
                 target="_blank"
                 rel="noreferrer"
-                className="flex lg:hidden items-center justify-center gap-2 px-3 py-2 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold transition-all shadow-sm"
+                className="flex lg:hidden items-center justify-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold transition-all shadow-sm"
                 aria-label="Contact on WhatsApp"
               >
-                <MessageCircle size={18} className="fill-current" />
+                <MessageCircle size={15} className="fill-current" />
                 <span className="hidden sm:inline">WhatsApp</span>
               </a>
-
-              {/* Desktop Primary CTA: "Find My Course" */}
-              <Link
-                to="/courses"
-                className="hidden lg:inline-flex items-center gap-2 bg-primary text-primary-foreground rounded-full px-5 py-2.5 text-xs xl:text-sm font-bold shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:scale-[1.02] transition-all"
-              >
-                <Sparkles size={14} /> Find My Course
-              </Link>
             </div>
           </div>
         </div>

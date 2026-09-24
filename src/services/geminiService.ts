@@ -22,25 +22,32 @@ export interface ChatMessage {
 
 export async function askGeminiAdvisor(
   prompt: string,
-  history: ChatMessage[] = []
+  history: ChatMessage[] = [],
+  language: "en" | "hi" = "en"
 ): Promise<string> {
   if (!GEMINI_API_KEY) {
-    return getFallbackAdvice(prompt);
+    return getFallbackAdvice(prompt, language);
   }
 
   const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
+
+  const langInstruction = language === "hi"
+    ? "\n\nCRITICAL LANGUAGE INSTRUCTION: You must respond in fluent, respectful, natural Hindi (Devanagari script) with standard education terminology. Make it easy to read and helpful."
+    : "\n\nRespond in clear, professional English.";
 
   // Build contents array with history and current prompt
   const contents = [
     {
       role: "user",
-      parts: [{ text: SYSTEM_INSTRUCTION }],
+      parts: [{ text: SYSTEM_INSTRUCTION + langInstruction }],
     },
     {
       role: "model",
       parts: [
         {
-          text: "Understood. I am Degree Guru AI Advisor. I will provide students and professionals with accurate, concise, and helpful advice on accredited online degrees, university options, and career pathways.",
+          text: language === "hi"
+            ? "नमस्ते! मैं Guru AI हूँ। मैं आपकी ऑनलाइन डिग्री, विश्वविद्यालय चयन और करियर संबंधी प्रश्नों में पूरी सहायता करूँगा।"
+            : "Understood. I am Guru AI. I will provide students and professionals with accurate, concise, and helpful advice on accredited online degrees, university options, and career pathways.",
         },
       ],
     },
@@ -92,8 +99,18 @@ export async function askGeminiAdvisor(
 /**
  * Intelligent local fallback if API is unavailable or rate-limited
  */
-function getFallbackAdvice(query: string): string {
+function getFallbackAdvice(query: string, language: "en" | "hi" = "en"): string {
   const lower = query.toLowerCase();
+
+  if (language === "hi") {
+    if (lower.includes("mba")) {
+      return "ऑनलाइन एमबीए (Online MBA) भारत में सबसे लोकप्रिय डिग्री है। प्रमुख यूजीसी-अनुमोदित विश्वविद्यालय जैसे **Amity Online**, **Online Manipal (MUJ)**, **DPU Pune** और **Chandigarh University** हैं। इनकी कुल फीस लगभग ₹1.2 लाख से ₹2.6 लाख तक होती है, जिसमें 0% ईएमआई (EMI) विकल्प भी उपलब्ध हैं।";
+    }
+    if (lower.includes("fee") || lower.includes("फीस") || lower.includes("emi")) {
+      return "ऑनलाइन डिग्री की फीस बैचलर्स प्रोग्राम के लिए लगभग ₹60,000 से ₹1.8 लाख और मास्टर्स के लिए ₹1.1 लाख से ₹2.6 लाख तक होती है। Degree Guru के साथ आप 0% ब्याज ईएमआई पर एडमिशन ले सकते हैं।";
+    }
+    return "नमस्ते! मैं Guru AI हूँ। मैं आपको यूजीसी-मान्यता प्राप्त ऑनलाइन विश्वविद्यालयों (जैसे Manipal, Amity, DPU, Chandigarh) की सही जानकारी, फीस और 0% EMI विकल्पों में पूरी मदद करूँगा। आप किस डिग्री के बारे में जानना चाहते हैं?";
+  }
 
   if (lower.includes("mba")) {
     return "Online MBA is India's most popular postgraduate program for working professionals. Top UGC-DEB entitled universities include **Amity University Online**, **Online Manipal (MUJ)**, **DPU Pune**, and **Chandigarh University**. Fees range from ₹1.2 Lakh to ₹2.6 Lakh with 0% EMI starting around ₹4,200/month. Specializations include Dual Specialization, Finance, Marketing, HR, and Business Analytics.";
@@ -107,5 +124,5 @@ function getFallbackAdvice(query: string): string {
     return "Online degree fees in India generally range from ₹70,000 to ₹1,90,000 for Bachelor's programs, and ₹1,10,000 to ₹2,80,000 for Master's programs. Degree Guru partners with universities offering **no-cost 0% EMI installments** starting as low as ₹3,500/month with zero upfront processing fees.";
   }
 
-  return "Degree Guru helps you compare 50+ UGC-DEB entitled online universities across India including **Amity Online**, **Online Manipal**, **DPU Pune**, and **Shoolini University**. You can explore accredited degrees, check semester syllabus, calculate 0% EMI, and get free 1-on-1 counselor guidance.";
+  return "I am Guru AI, your dedicated academic counselor. I can help you compare 50+ UGC-DEB entitled online universities, calculate 0% interest EMI options, and discover the best degree for your career goals. Which course are you interested in?";
 }
