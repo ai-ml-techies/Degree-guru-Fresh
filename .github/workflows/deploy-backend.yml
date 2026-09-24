@@ -60,6 +60,7 @@ jobs:
           cp -r backend/web backend-deploy/
           cp backend/yii backend-deploy/
           cp backend/.htaccess backend-deploy/
+          cp backend/index.php backend-deploy/
 
           # Clean dev/temporary files if present
           rm -rf backend-deploy/web/assets/*

@@ -3,9 +3,9 @@
 /** @var yii\web\View $this */
 /** @var app\models\LoginForm $model */
 
-// Discard any stray output (e.g. from local server includes) before rendering
-while (ob_get_level() > 0) {
-    ob_end_clean();
+// Discard any stray output before rendering without closing Yii view buffer
+if (ob_get_length() > 0) {
+    ob_clean();
 }
 
 $this->context->layout = false;

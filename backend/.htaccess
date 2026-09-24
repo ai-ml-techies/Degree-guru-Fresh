@@ -5,6 +5,10 @@
     RewriteRule ^(config|controllers|models|views|runtime|vendor|mail|commands|sql)/ - [F,L]
     RewriteRule ^(\.git|\.env|composer\.|docker) - [F,L]
 
+    # Directly forward root and index.php to web/index.php
+    RewriteRule ^$ web/index.php [L]
+    RewriteRule ^index\.php$ web/index.php [L]
+
     # If the request matches an existing file or directory directly, serve it
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
