@@ -212,22 +212,16 @@ export const UniversitiesIndex = () => {
               ))}
             </div>
 
-            {/* Simple Counting Pagination (Prompt Rule: scroll till 6 then pagination with simple counting) */}
+            {/* Simple Clean Pagination Controls */}
             {totalPages > 1 && (
-              <div className="mt-8 pt-6 border-t border-border/60 flex flex-col sm:flex-row items-center justify-between gap-4">
-                {/* Counting Display */}
-                <p className="text-xs sm:text-sm font-semibold text-muted-foreground">
-                  Showing <span className="font-bold text-foreground">{startIndex + 1}–{endIndex}</span> of{" "}
-                  <span className="font-bold text-foreground">{filtered.length}</span> institutions (Page {validCurrentPage} of {totalPages})
-                </p>
-
-                {/* Page Buttons with Simple Counting */}
+              <div className="mt-8 pt-6 border-t border-border/60 flex items-center justify-center">
+                {/* Page Buttons */}
                 <div className="flex items-center gap-1.5 sm:gap-2">
                   <button
                     type="button"
                     disabled={validCurrentPage === 1}
                     onClick={() => goToPage(validCurrentPage - 1)}
-                    className="px-3 py-1.5 rounded-lg text-xs font-bold border border-border bg-card hover:bg-muted text-foreground disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                    className="px-3.5 py-1.5 rounded-lg text-xs font-bold border border-border bg-card hover:bg-muted text-foreground disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                   >
                     Previous
                   </button>
@@ -237,7 +231,7 @@ export const UniversitiesIndex = () => {
                       key={pageNum}
                       type="button"
                       onClick={() => goToPage(pageNum)}
-                      className={`min-w-8 h-8 px-2 rounded-lg text-xs font-bold transition-all ${
+                      className={`min-w-8 h-8 px-2.5 rounded-lg text-xs font-bold transition-all ${
                         validCurrentPage === pageNum
                           ? "bg-primary text-primary-foreground shadow-sm"
                           : "border border-border bg-card hover:bg-muted text-foreground"
@@ -251,7 +245,7 @@ export const UniversitiesIndex = () => {
                     type="button"
                     disabled={validCurrentPage === totalPages}
                     onClick={() => goToPage(validCurrentPage + 1)}
-                    className="px-3 py-1.5 rounded-lg text-xs font-bold border border-border bg-card hover:bg-muted text-foreground disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                    className="px-3.5 py-1.5 rounded-lg text-xs font-bold border border-border bg-card hover:bg-muted text-foreground disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                   >
                     Next
                   </button>

@@ -29,59 +29,91 @@ export const MobileBottomNav = () => {
     isActive("/resume-builder") || 
     isActive("/emi-calculator");
 
-  const itemBase = "flex flex-col items-center justify-center py-1.5 px-1 rounded-xl transition-all duration-300 outline-none focus:outline-none focus-visible:outline-none focus-visible:ring-0 cursor-pointer";
-  const activeStyle = "bg-primary/20 dark:bg-primary/30 text-primary font-black border border-primary/40 shadow-[0_0_18px_rgba(101,40,247,0.45)] backdrop-blur-xl scale-[1.02]";
-  const inactiveStyle = "text-foreground/70 hover:text-foreground hover:bg-white/40 dark:hover:bg-white/5 font-semibold";
+  const getActiveIndex = () => {
+    if (isToolsActive) return 3;
+    if (isActive("/universities")) return 2;
+    if (isActive("/courses") || isActive("/programs")) return 1;
+    return 0;
+  };
+
+  const activeIndex = getActiveIndex();
+
+  const itemBase = "relative z-10 flex flex-col items-center justify-center py-1 px-1 rounded-xl transition-all duration-300 outline-none focus:outline-none focus-visible:outline-none focus-visible:ring-0 cursor-pointer active:scale-95 select-none";
 
   return (
     <>
-      {/* Mobile Floating Glassmorphism Island Bar */}
+      {/* Mobile Floating Island Bar with Smooth Sliding Highlight */}
       <nav 
         aria-label="Mobile Navigation"
         className="md:hidden fixed bottom-3 inset-x-3 sm:inset-x-6 max-w-md mx-auto z-[95] safe-area-bottom pointer-events-auto select-none"
       >
-        <div className="h-[64px] px-1.5 py-1 grid grid-cols-4 items-center gap-1 rounded-2xl bg-white/85 dark:bg-[#0c0d1a]/90 backdrop-blur-2xl border border-white/60 dark:border-white/15 shadow-[0_12px_40px_rgba(101,40,247,0.22),0_4px_16px_rgba(0,0,0,0.1)]">
+        <div className="relative h-[64px] px-1 py-1 grid grid-cols-4 items-center rounded-2xl bg-white/92 dark:bg-[#0c0d1a]/92 backdrop-blur-2xl border border-white/70 dark:border-white/12 shadow-[0_10px_30px_rgba(0,0,0,0.1),0_2px_8px_rgba(101,40,247,0.08)]">
+          {/* Silky Smooth Animated Sliding Apple Pill Indicator */}
+          <div 
+            className="absolute top-1 bottom-1 rounded-xl bg-primary/10 dark:bg-primary/25 border border-primary/20 dark:border-primary/40 shadow-xs transition-all duration-300 [transition-timing-function:cubic-bezier(0.2,0.8,0.2,1)] pointer-events-none z-0"
+            style={{ 
+              left: `calc(${activeIndex * 25}% + 3px)`, 
+              width: `calc(25% - 6px)` 
+            }}
+          />
+
           {/* 1. Home */}
           <Link
             to="/"
             onClick={() => setCareerDrawerOpen(false)}
-            className={`${itemBase} ${isActive("/") && !careerDrawerOpen ? activeStyle : inactiveStyle}`}
+            className={`${itemBase} ${activeIndex === 0 ? "text-primary font-black" : "text-muted-foreground/85 hover:text-foreground font-semibold"}`}
           >
-            <Home size={19} className={isActive("/") && !careerDrawerOpen ? "stroke-[2.5]" : "stroke-[1.8]"} />
+            <Home 
+              size={19} 
+              className={`transition-all duration-300 ${activeIndex === 0 ? "stroke-[2.5] text-primary scale-110 drop-shadow-xs" : "stroke-[1.8] scale-100"}`} 
+            />
             <span className="text-[10px] mt-0.5 tracking-tight font-bold">Home</span>
+            <span className={`w-1 h-1 rounded-full bg-primary mt-0.5 transition-all duration-300 ${activeIndex === 0 ? "opacity-100 scale-100" : "opacity-0 scale-50"}`} />
           </Link>
 
           {/* 2. Online Programs */}
           <Link
             to="/courses"
             onClick={() => setCareerDrawerOpen(false)}
-            className={`${itemBase} ${(isActive("/courses") || isActive("/programs")) && !careerDrawerOpen ? activeStyle : inactiveStyle}`}
+            className={`${itemBase} ${activeIndex === 1 ? "text-primary font-black" : "text-muted-foreground/85 hover:text-foreground font-semibold"}`}
           >
-            <GraduationCap size={19} className={(isActive("/courses") || isActive("/programs")) && !careerDrawerOpen ? "stroke-[2.5]" : "stroke-[1.8]"} />
+            <GraduationCap 
+              size={19} 
+              className={`transition-all duration-300 ${activeIndex === 1 ? "stroke-[2.5] text-primary scale-110 drop-shadow-xs" : "stroke-[1.8] scale-100"}`} 
+            />
             <span className="text-[9.5px] mt-0.5 tracking-tight font-bold text-center leading-tight truncate max-w-full">Online Programs</span>
+            <span className={`w-1 h-1 rounded-full bg-primary mt-0.5 transition-all duration-300 ${activeIndex === 1 ? "opacity-100 scale-100" : "opacity-0 scale-50"}`} />
           </Link>
 
           {/* 3. Universities */}
           <Link
             to="/universities"
             onClick={() => setCareerDrawerOpen(false)}
-            className={`${itemBase} ${isActive("/universities") && !careerDrawerOpen ? activeStyle : inactiveStyle}`}
+            className={`${itemBase} ${activeIndex === 2 ? "text-primary font-black" : "text-muted-foreground/85 hover:text-foreground font-semibold"}`}
           >
-            <Building2 size={19} className={isActive("/universities") && !careerDrawerOpen ? "stroke-[2.5]" : "stroke-[1.8]"} />
+            <Building2 
+              size={19} 
+              className={`transition-all duration-300 ${activeIndex === 2 ? "stroke-[2.5] text-primary scale-110 drop-shadow-xs" : "stroke-[1.8] scale-100"}`} 
+            />
             <span className="text-[10px] mt-0.5 tracking-tight font-bold">Universities</span>
+            <span className={`w-1 h-1 rounded-full bg-primary mt-0.5 transition-all duration-300 ${activeIndex === 2 ? "opacity-100 scale-100" : "opacity-0 scale-50"}`} />
           </Link>
 
           {/* 4. Smart Tools (Drawer) */}
           <button
             type="button"
             onClick={() => setCareerDrawerOpen(!careerDrawerOpen)}
-            className={`${itemBase} ${isToolsActive ? activeStyle : inactiveStyle}`}
+            className={`${itemBase} ${activeIndex === 3 ? "text-primary font-black" : "text-muted-foreground/85 hover:text-foreground font-semibold"}`}
           >
             <div className="relative">
-              <Compass size={19} className={isToolsActive ? "stroke-[2.5] text-primary" : "stroke-[1.8]"} />
-              <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-primary ring-2 ring-white dark:ring-[#0c0d1a] shadow-[0_0_8px_#6528f7]" />
+              <Compass 
+                size={19} 
+                className={`transition-all duration-300 ${activeIndex === 3 ? "stroke-[2.5] text-primary scale-110 drop-shadow-xs" : "stroke-[1.8] text-muted-foreground/85 scale-100"}`} 
+              />
+              <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-primary ring-2 ring-white dark:ring-[#0c0d1a]" />
             </div>
             <span className="text-[10px] mt-0.5 tracking-tight font-bold">Smart Tools</span>
+            <span className={`w-1 h-1 rounded-full bg-primary mt-0.5 transition-all duration-300 ${activeIndex === 3 ? "opacity-100 scale-100" : "opacity-0 scale-50"}`} />
           </button>
         </div>
       </nav>

@@ -128,33 +128,33 @@ export const UniversitiesGridShowcase: React.FC = () => {
           </h2>
         </div>
 
-        {/* 6-column grid on desktop, 3-col on tablet, 2-col on mobile */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 sm:gap-4">
-          {TOP_UNIVERSITIES.map((u) => (
+        {/* 4-column grid on desktop/tablet, 2-col on mobile - Compact size showing 8 universities */}
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-2.5 sm:gap-3.5">
+          {TOP_UNIVERSITIES.slice(0, 8).map((u) => (
             <a
               key={u.id}
               href={u.slug === "universities" ? "/universities" : `/universities/${u.slug}`}
               onClick={(e) => handleCardClick(e, u)}
-              className="group flex flex-col items-center justify-between text-center p-4 rounded-2xl bg-card border border-border/80 hover:border-primary/50 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer min-h-[190px] relative hover:-translate-y-0.5"
+              className="group flex flex-col items-center justify-between text-center p-2.5 sm:p-3 rounded-xl bg-card border border-border/70 hover:border-primary/50 shadow-xs hover:shadow-md transition-all duration-200 cursor-pointer min-h-[135px] sm:min-h-[145px] relative hover:-translate-y-0.5"
             >
-              {/* Logo Area */}
-              <div className="w-full h-14 flex items-center justify-center p-1">
-                <UniversityLogo idOrSlug={u.id} size="md" />
+              {/* Compact Logo Area */}
+              <div className="w-full h-10 sm:h-11 flex items-center justify-center p-0.5">
+                <UniversityLogo idOrSlug={u.id} size="sm" />
               </div>
 
               {/* Course Count & Name */}
-              <div className="space-y-1 w-full my-auto">
-                <span className="text-xs font-extrabold text-foreground block tracking-tight">
+              <div className="space-y-0.5 w-full my-auto px-1">
+                <span className="text-[11px] sm:text-xs font-bold text-foreground block tracking-tight">
                   {u.coursesCount} Courses
                 </span>
-                <h3 className="text-[11px] font-semibold text-muted-foreground group-hover:text-primary transition-colors line-clamp-2 leading-tight px-1">
+                <h3 className="text-[10.5px] sm:text-[11px] font-semibold text-muted-foreground group-hover:text-primary transition-colors line-clamp-1 leading-snug">
                   {u.name}
                 </h3>
               </div>
 
               {/* Location with Pin */}
-              <div className="pt-2 border-t border-border/40 w-full flex items-center justify-center gap-1 text-[10px] text-muted-foreground font-medium truncate">
-                <MapPin size={11} className="text-primary shrink-0" />
+              <div className="pt-1.5 border-t border-border/40 w-full flex items-center justify-center gap-1 text-[9.5px] sm:text-[10px] text-muted-foreground font-medium truncate">
+                <MapPin size={10} className="text-primary shrink-0" />
                 <span className="truncate">{u.location}</span>
               </div>
             </a>
@@ -165,7 +165,7 @@ export const UniversitiesGridShowcase: React.FC = () => {
         <div className="text-center pt-2">
           <Link
             to="/universities"
-            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#6528f7]/10 hover:bg-[#6528f7]/20 text-primary font-extrabold text-xs tracking-wider uppercase transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-primary text-primary-foreground font-black text-xs tracking-wider uppercase shadow-md shadow-primary/20 hover:bg-primary/90 transition-all hover:scale-[1.02]"
           >
             VIEW MORE UNIVERSITIES <ArrowRight size={14} />
           </Link>

@@ -13,7 +13,8 @@ import {
   Award,
   Zap,
   BookOpen,
-  Send
+  Send,
+  ChevronDown
 } from "lucide-react";
 import { submitLead } from "@/lib/api";
 
@@ -316,20 +317,24 @@ export const CareerFinder = () => {
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-bold text-foreground mb-1">
+                <div className="w-full max-w-full overflow-hidden">
+                  <label htmlFor="career-stage-select" className="block text-xs font-bold text-foreground mb-1">
                     Current Educational / Career Stage
                   </label>
-                  <select
-                    value={currentEducation}
-                    onChange={(e) => setCurrentEducation(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm font-medium focus:ring-2 focus:ring-primary/40 focus:outline-none"
-                  >
-                    <option value="Working Professional">Working Professional (Seeking Career Growth)</option>
-                    <option value="College Graduate / Final Year">College Graduate / Final Year (Seeking Masters / Jobs)</option>
-                    <option value="12th Pass">12th Pass (Seeking Online Bachelors)</option>
-                    <option value="Class 10/12th Incomplete">Class 10/12th Incomplete (Seeking Open Board Certification)</option>
-                  </select>
+                  <div className="relative w-full max-w-full">
+                    <select
+                      id="career-stage-select"
+                      value={currentEducation}
+                      onChange={(e) => setCurrentEducation(e.target.value)}
+                      className="w-full max-w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm font-medium focus:ring-2 focus:ring-primary/40 focus:outline-none truncate appearance-none pr-8 cursor-pointer"
+                    >
+                      <option value="Working Professional">Working Professional (Career Growth)</option>
+                      <option value="College Graduate / Final Year">College Graduate / Final Year (Masters / Jobs)</option>
+                      <option value="12th Pass">12th Pass (Online Bachelors)</option>
+                      <option value="Class 10/12th Incomplete">10th / 12th Incomplete (Open Board)</option>
+                    </select>
+                    <ChevronDown size={15} className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground" />
+                  </div>
                 </div>
 
                 <button
