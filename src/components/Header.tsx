@@ -505,23 +505,11 @@ export const Header = () => {
               {/* Theme toggle */}
               <button
                 onClick={toggle}
-                className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-full border border-foreground/15 hover:bg-foreground/5 transition-colors"
+                className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-full border border-foreground/15 hover:bg-foreground/5 transition-colors cursor-pointer"
                 aria-label="Toggle theme"
               >
                 {theme === "dark" ? <Sun size={16} className="text-amber-400" /> : <Moon size={16} className="text-foreground" />}
               </button>
-
-              {/* Mobile WhatsApp Button */}
-              <a
-                href="https://wa.me/919350199001?text=Hi%20Degree%20Guru%2C%20I%20want%20to%20know%20more%20about%20online%20degrees"
-                target="_blank"
-                rel="noreferrer"
-                className="flex lg:hidden items-center justify-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold transition-all shadow-sm"
-                aria-label="Contact on WhatsApp"
-              >
-                <MessageCircle size={15} className="fill-current" />
-                <span className="hidden sm:inline">WhatsApp</span>
-              </a>
             </div>
           </div>
         </div>

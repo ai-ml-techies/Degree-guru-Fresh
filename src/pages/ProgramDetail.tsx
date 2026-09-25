@@ -133,8 +133,8 @@ const ProgramDetail = () => {
         <meta name="twitter:description" content={metaDesc} />
         <meta name="twitter:image" content={ogImage} />
       </Helmet>
-      {/* HERO */}
-      <section className="relative py-14 md:py-20 overflow-hidden">
+      {/* HERO - Seamlessly flows beneath floating header up to top ticker */}
+      <section className="-mt-[100px] sm:-mt-[114px] md:-mt-[132px] pt-[104px] sm:pt-[118px] md:pt-[132px] pb-14 md:pb-20 relative overflow-hidden bg-gradient-to-b from-primary/15 via-primary/5 to-background border-b border-border/60">
         <Blobs />
         <div className="container-dg relative z-10">
           <AppBreadcrumb

@@ -3,114 +3,85 @@ import { Link, useLocation } from "react-router-dom";
 import { 
   Home, 
   GraduationCap, 
-  Briefcase, 
+  Building2, 
   Compass, 
-  User, 
   X, 
   Calculator, 
   FileText, 
   BookOpen, 
-  Bookmark, 
   Sparkles,
-  PhoneCall,
   ChevronRight
 } from "lucide-react";
 
 export const MobileBottomNav = () => {
   const location = useLocation();
   const [careerDrawerOpen, setCareerDrawerOpen] = useState(false);
-  const [profileDrawerOpen, setProfileDrawerOpen] = useState(false);
 
   const isActive = (path: string) => {
     if (path === "/") return location.pathname === "/";
     return location.pathname.startsWith(path);
   };
 
+  const isToolsActive = 
+    careerDrawerOpen || 
+    isActive("/career-finder") || 
+    isActive("/roi-calculator") || 
+    isActive("/resume-builder") || 
+    isActive("/emi-calculator");
+
+  const itemBase = "flex flex-col items-center justify-center py-1.5 px-1 rounded-xl transition-all duration-300 outline-none focus:outline-none focus-visible:outline-none focus-visible:ring-0 cursor-pointer";
+  const activeStyle = "bg-primary/20 dark:bg-primary/30 text-primary font-black border border-primary/40 shadow-[0_0_18px_rgba(101,40,247,0.45)] backdrop-blur-xl scale-[1.02]";
+  const inactiveStyle = "text-foreground/70 hover:text-foreground hover:bg-white/40 dark:hover:bg-white/5 font-semibold";
+
   return (
     <>
       {/* Mobile Floating Glassmorphism Island Bar */}
       <nav 
         aria-label="Mobile Navigation"
-        className="md:hidden fixed bottom-3 inset-x-3 max-w-md mx-auto z-[95] safe-area-bottom pointer-events-auto"
+        className="md:hidden fixed bottom-3 inset-x-3 sm:inset-x-6 max-w-md mx-auto z-[95] safe-area-bottom pointer-events-auto select-none"
       >
-        <div className="h-[62px] px-1.5 py-1 grid grid-cols-5 items-center rounded-2xl bg-white/85 dark:bg-[#0c0d1a]/90 backdrop-blur-2xl border border-white/60 dark:border-white/12 shadow-[0_10px_35px_rgba(101,40,247,0.2),0_4px_12px_rgba(0,0,0,0.08)]">
+        <div className="h-[64px] px-1.5 py-1 grid grid-cols-4 items-center gap-1 rounded-2xl bg-white/85 dark:bg-[#0c0d1a]/90 backdrop-blur-2xl border border-white/60 dark:border-white/15 shadow-[0_12px_40px_rgba(101,40,247,0.22),0_4px_16px_rgba(0,0,0,0.1)]">
           {/* 1. Home */}
           <Link
             to="/"
-            onClick={() => { setCareerDrawerOpen(false); setProfileDrawerOpen(false); }}
-            className={`flex flex-col items-center justify-center py-1.5 px-1 rounded-xl transition-all duration-200 ${
-              isActive("/") && !careerDrawerOpen && !profileDrawerOpen
-                ? "bg-primary/12 dark:bg-primary/25 text-primary font-black shadow-xs"
-                : "text-foreground/65 hover:text-foreground hover:bg-muted/40"
-            }`}
+            onClick={() => setCareerDrawerOpen(false)}
+            className={`${itemBase} ${isActive("/") && !careerDrawerOpen ? activeStyle : inactiveStyle}`}
           >
-            <Home size={19} className={isActive("/") && !careerDrawerOpen && !profileDrawerOpen ? "stroke-[2.5]" : "stroke-[1.8]"} />
-            <span className="text-[10px] mt-0.5 tracking-tight">Home</span>
+            <Home size={19} className={isActive("/") && !careerDrawerOpen ? "stroke-[2.5]" : "stroke-[1.8]"} />
+            <span className="text-[10px] mt-0.5 tracking-tight font-bold">Home</span>
           </Link>
 
-          {/* 2. Courses */}
+          {/* 2. Online Programs */}
           <Link
             to="/courses"
-            onClick={() => { setCareerDrawerOpen(false); setProfileDrawerOpen(false); }}
-            className={`flex flex-col items-center justify-center py-1.5 px-1 rounded-xl transition-all duration-200 ${
-              (isActive("/courses") || isActive("/programs")) && !careerDrawerOpen && !profileDrawerOpen
-                ? "bg-primary/12 dark:bg-primary/25 text-primary font-black shadow-xs"
-                : "text-foreground/65 hover:text-foreground hover:bg-muted/40"
-            }`}
+            onClick={() => setCareerDrawerOpen(false)}
+            className={`${itemBase} ${(isActive("/courses") || isActive("/programs")) && !careerDrawerOpen ? activeStyle : inactiveStyle}`}
           >
-            <GraduationCap size={19} className={isActive("/courses") ? "stroke-[2.5]" : "stroke-[1.8]"} />
-            <span className="text-[10px] mt-0.5 tracking-tight">Courses</span>
+            <GraduationCap size={19} className={(isActive("/courses") || isActive("/programs")) && !careerDrawerOpen ? "stroke-[2.5]" : "stroke-[1.8]"} />
+            <span className="text-[9.5px] mt-0.5 tracking-tight font-bold text-center leading-tight truncate max-w-full">Online Programs</span>
           </Link>
 
-          {/* 3. Jobs */}
+          {/* 3. Universities */}
           <Link
-            to="/jobs/job-seeker"
-            onClick={() => { setCareerDrawerOpen(false); setProfileDrawerOpen(false); }}
-            className={`flex flex-col items-center justify-center py-1.5 px-1 rounded-xl transition-all duration-200 ${
-              isActive("/jobs") && !careerDrawerOpen && !profileDrawerOpen
-                ? "bg-primary/12 dark:bg-primary/25 text-primary font-black shadow-xs"
-                : "text-foreground/65 hover:text-foreground hover:bg-muted/40"
-            }`}
+            to="/universities"
+            onClick={() => setCareerDrawerOpen(false)}
+            className={`${itemBase} ${isActive("/universities") && !careerDrawerOpen ? activeStyle : inactiveStyle}`}
           >
-            <Briefcase size={19} className={isActive("/jobs") ? "stroke-[2.5]" : "stroke-[1.8]"} />
-            <span className="text-[10px] mt-0.5 tracking-tight">Jobs</span>
+            <Building2 size={19} className={isActive("/universities") && !careerDrawerOpen ? "stroke-[2.5]" : "stroke-[1.8]"} />
+            <span className="text-[10px] mt-0.5 tracking-tight font-bold">Universities</span>
           </Link>
 
-          {/* 4. Career (Action Drawer) */}
+          {/* 4. Smart Tools (Drawer) */}
           <button
             type="button"
-            onClick={() => {
-              setProfileDrawerOpen(false);
-              setCareerDrawerOpen(!careerDrawerOpen);
-            }}
-            className={`flex flex-col items-center justify-center py-1.5 px-1 rounded-xl transition-all duration-200 cursor-pointer ${
-              careerDrawerOpen || isActive("/career-finder") || isActive("/roi-calculator") || isActive("/resume-builder") || isActive("/emi-calculator")
-                ? "bg-primary/12 dark:bg-primary/25 text-primary font-black shadow-xs"
-                : "text-foreground/65 hover:text-foreground hover:bg-muted/40"
-            }`}
+            onClick={() => setCareerDrawerOpen(!careerDrawerOpen)}
+            className={`${itemBase} ${isToolsActive ? activeStyle : inactiveStyle}`}
           >
             <div className="relative">
-              <Compass size={19} className={careerDrawerOpen ? "stroke-[2.5] text-primary" : "stroke-[1.8]"} />
+              <Compass size={19} className={isToolsActive ? "stroke-[2.5] text-primary" : "stroke-[1.8]"} />
               <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-primary ring-2 ring-white dark:ring-[#0c0d1a] shadow-[0_0_8px_#6528f7]" />
             </div>
-            <span className="text-[10px] mt-0.5 tracking-tight">Career</span>
-          </button>
-
-          {/* 5. Profile (Drawer) */}
-          <button
-            type="button"
-            onClick={() => {
-              setCareerDrawerOpen(false);
-              setProfileDrawerOpen(!profileDrawerOpen);
-            }}
-            className={`flex flex-col items-center justify-center py-1.5 px-1 rounded-xl transition-all duration-200 cursor-pointer ${
-              profileDrawerOpen
-                ? "bg-primary/12 dark:bg-primary/25 text-primary font-black shadow-xs"
-                : "text-foreground/65 hover:text-foreground hover:bg-muted/40"
-            }`}
-          >
-            <User size={19} className={profileDrawerOpen ? "stroke-[2.5] text-primary" : "stroke-[1.8]"} />
-            <span className="text-[10px] mt-0.5 tracking-tight">Profile</span>
+            <span className="text-[10px] mt-0.5 tracking-tight font-bold">Smart Tools</span>
           </button>
         </div>
       </nav>

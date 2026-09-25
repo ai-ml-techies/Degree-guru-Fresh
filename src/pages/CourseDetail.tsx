@@ -106,8 +106,8 @@ export const CourseDetail = () => {
         <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
       </Helmet>
 
-      {/* 1. HERO SECTION */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-primary/10 via-background to-background pt-8 pb-14 border-b border-border/60">
+      {/* 1. HERO SECTION - Seamlessly flows beneath the floating header up to the top ticker */}
+      <section className="-mt-[100px] sm:-mt-[114px] md:-mt-[132px] pt-[104px] sm:pt-[118px] md:pt-[132px] pb-14 relative overflow-hidden bg-gradient-to-b from-primary/15 via-primary/5 to-background border-b border-border/60">
         <div className="container-dg">
           <AppBreadcrumb
             items={[
