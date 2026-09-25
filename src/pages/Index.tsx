@@ -58,20 +58,20 @@ export const Index = () => {
       </Helmet>
 
       {/* 1. HERO SECTION (Prompt Rule #7 & #2) */}
-      <section id="hero" className="relative pt-6 pb-14 md:pb-20 overflow-hidden bg-gradient-to-b from-primary/8 via-background to-background border-b border-border/50">
+      <section id="hero" className="relative pt-6 sm:pt-8 md:pt-10 pb-14 md:pb-20 overflow-hidden bg-gradient-to-b from-primary/8 via-background to-background border-b border-border/50 scroll-mt-28 md:scroll-mt-36">
         <div className="container-dg">
           {/* Top Value Pill */}
-          <div className="flex justify-center mb-6">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-card border border-border shadow-sm text-xs font-semibold text-foreground">
+          <div className="flex justify-center mb-6 sm:mb-8">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-card border border-border shadow-sm text-xs sm:text-sm font-semibold text-foreground">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span>India's Modern Education, Career & Employment Ecosystem</span>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             {/* Left Copy */}
-            <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-              <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-foreground tracking-tight leading-[1.15]">
+            <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
+              <h1 className="text-3xl sm:text-5xl lg:text-5xl xl:text-6xl font-black text-foreground tracking-tight leading-[1.15]">
                 Not Sure What’s Next? <span className="block text-gradient mt-1">Find Your Growth Roadmap</span>
               </h1>
 
@@ -95,19 +95,19 @@ export const Index = () => {
               </div>
             </div>
 
-            {/* Right Hero Image (Natural young professional, not generic stock) */}
-            <div className="lg:col-span-5 relative">
-              <div className="relative mx-auto max-w-md lg:max-w-none">
-                <div className="absolute -inset-4 bg-gradient-to-tr from-primary/20 via-[#6528f7]/15 to-transparent rounded-[36px] blur-2xl pointer-events-none" />
+            {/* Right Hero Image (Enlarged, natural young professional, not generic stock) */}
+            <div className="lg:col-span-6 relative">
+              <div className="relative mx-auto max-w-lg sm:max-w-xl lg:max-w-none">
+                <div className="absolute -inset-6 bg-gradient-to-tr from-primary/25 via-[#6528f7]/20 to-transparent rounded-[44px] blur-3xl pointer-events-none" />
                 <img
                   src={heroDesktop}
                   alt="Young student and professional discovering online degree options on Degree Guru"
-                  className="relative rounded-3xl w-full object-cover aspect-[4/3] shadow-2xl border border-border/80"
+                  className="relative rounded-3xl w-full object-cover aspect-[4/3] sm:aspect-[1.15/1] lg:aspect-[1/1] xl:aspect-[1.05/1] max-h-[520px] shadow-2xl border border-border/80"
                   loading="eager"
                 />
 
                 {/* Floating Metric Card 1 */}
-                <div className="absolute -bottom-4 -left-4 sm:bottom-4 sm:-left-6 bg-card/95 backdrop-blur-md p-3.5 sm:p-4 rounded-2xl border border-border shadow-xl flex items-center gap-3">
+                <div className="absolute -bottom-4 -left-3 sm:-bottom-5 sm:-left-5 bg-card/95 backdrop-blur-md p-3.5 sm:p-4 rounded-2xl border border-border shadow-xl flex items-center gap-3 z-10 transition-transform hover:scale-105">
                   <div className="w-10 h-10 rounded-xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
                     <TrendingUp size={20} />
                   </div>
@@ -118,7 +118,7 @@ export const Index = () => {
                 </div>
 
                 {/* Floating Metric Card 2 */}
-                <div className="absolute -top-3 -right-3 bg-card/95 backdrop-blur-md px-3.5 py-2 rounded-xl border border-border shadow-lg flex items-center gap-2 text-xs font-bold text-foreground">
+                <div className="absolute -top-3 -right-2 sm:-top-4 sm:-right-4 bg-card/95 backdrop-blur-md px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl border border-border shadow-lg flex items-center gap-2 text-xs sm:text-sm font-bold text-foreground z-10 transition-transform hover:scale-105">
                   <ShieldCheck size={16} className="text-primary" />
                   <span>100% Free Counseling</span>
                 </div>

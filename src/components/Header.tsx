@@ -64,17 +64,15 @@ export const Header = () => {
     e.preventDefault();
     if (location.pathname === "/") {
       window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-      const hero = document.getElementById("hero") || document.querySelector("main");
-      if (hero) {
-        hero.scrollIntoView({ behavior: "instant", block: "start" });
-      }
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
     } else {
       navigate("/");
-      // Immediate scroll to top of page
+      // Immediate scroll to absolute top of page
       setTimeout(() => {
         window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-        const hero = document.getElementById("hero") || document.querySelector("main");
-        if (hero) hero.scrollIntoView({ behavior: "instant", block: "start" });
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
       }, 0);
     }
   };
