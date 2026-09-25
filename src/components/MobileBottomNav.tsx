@@ -47,7 +47,7 @@ export const MobileBottomNav = () => {
         aria-label="Mobile Navigation"
         className="md:hidden fixed bottom-3 inset-x-3 sm:inset-x-6 max-w-md mx-auto z-[95] safe-area-bottom pointer-events-auto select-none"
       >
-        <div className="relative h-[64px] px-1 py-1 grid grid-cols-4 items-center rounded-2xl bg-white/92 dark:bg-[#0c0d1a]/92 backdrop-blur-2xl border border-white/70 dark:border-white/12 shadow-[0_10px_30px_rgba(0,0,0,0.1),0_2px_8px_rgba(101,40,247,0.08)]">
+        <div className="relative h-[64px] px-1 py-1 grid grid-cols-4 items-center rounded-2xl bg-white/96 dark:bg-[#181932]/96 backdrop-blur-2xl border border-black/10 dark:border-white/20 shadow-[0_12px_40px_rgba(0,0,0,0.3),0_0_0_1px_rgba(255,255,255,0.08)]">
           {/* Silky Smooth Animated Sliding Apple Pill Indicator */}
           <div 
             className="absolute top-1 bottom-1 rounded-xl bg-primary/10 dark:bg-primary/25 border border-primary/20 dark:border-primary/40 shadow-xs transition-all duration-300 [transition-timing-function:cubic-bezier(0.2,0.8,0.2,1)] pointer-events-none z-0"

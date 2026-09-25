@@ -61,14 +61,6 @@ export const Index = () => {
       {/* 1. HERO SECTION (Prompt Rule #7 & #2) */}
       <section id="hero" className="relative pt-6 sm:pt-8 md:pt-10 pb-14 md:pb-20 overflow-hidden bg-gradient-to-b from-primary/8 via-background to-background border-b border-border/50 scroll-mt-28 md:scroll-mt-36">
         <div className="container-dg">
-          {/* Top Value Pill */}
-          <div className="flex justify-center mb-6 sm:mb-8">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-card border border-border shadow-sm text-xs sm:text-sm font-semibold text-foreground">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>India's Modern Education, Career & Employment Ecosystem</span>
-            </div>
-          </div>
-
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             {/* Left Copy */}
             <div className="lg:col-span-6 space-y-6 text-center lg:text-left">

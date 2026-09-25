@@ -149,34 +149,37 @@ export const Footer = () => {
             </ul>
           </div>
 
-          {/* Online UG Courses */}
-          <div>
-            <h4 className="font-bold mb-5 text-xs uppercase tracking-widest text-white/50">Online UG Courses</h4>
-            <ul className="space-y-2.5 text-sm text-white/75">
-              {ugPrograms.map(({ to, label }) => (
-                <li key={to}>
-                  <Link to={to} className="hover:text-white hover:translate-x-1 transition-all inline-flex items-center gap-1.5 group">
-                    <span className="w-1 h-1 rounded-full bg-primary/60 group-hover:bg-primary transition-colors shrink-0" />
-                    {label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Online UG Courses & Online PG Courses - Side by side in one row on mobile (2-col grid) */}
+          <div className="col-span-1 sm:col-span-2 lg:col-span-2 grid grid-cols-2 gap-4 sm:gap-8">
+            {/* Online UG Courses */}
+            <div>
+              <h4 className="font-bold mb-4 sm:mb-5 text-xs uppercase tracking-widest text-white/50">Online UG Courses</h4>
+              <ul className="space-y-2 sm:space-y-2.5 text-xs sm:text-sm text-white/75">
+                {ugPrograms.map(({ to, label }) => (
+                  <li key={to}>
+                    <Link to={to} className="hover:text-white hover:translate-x-1 transition-all inline-flex items-center gap-1.5 group">
+                      <span className="w-1 h-1 rounded-full bg-primary/60 group-hover:bg-primary transition-colors shrink-0" />
+                      {label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          {/* Online PG Courses */}
-          <div>
-            <h4 className="font-bold mb-5 text-xs uppercase tracking-widest text-white/50">Online PG Courses</h4>
-            <ul className="space-y-2.5 text-sm text-white/75">
-              {pgPrograms.map(({ to, label }) => (
-                <li key={to}>
-                  <Link to={to} className="hover:text-white hover:translate-x-1 transition-all inline-flex items-center gap-1.5 group">
-                    <span className="w-1 h-1 rounded-full bg-primary/60 group-hover:bg-primary transition-colors shrink-0" />
-                    {label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            {/* Online PG Courses */}
+            <div>
+              <h4 className="font-bold mb-4 sm:mb-5 text-xs uppercase tracking-widest text-white/50">Online PG Courses</h4>
+              <ul className="space-y-2 sm:space-y-2.5 text-xs sm:text-sm text-white/75">
+                {pgPrograms.map(({ to, label }) => (
+                  <li key={to}>
+                    <Link to={to} className="hover:text-white hover:translate-x-1 transition-all inline-flex items-center gap-1.5 group">
+                      <span className="w-1 h-1 rounded-full bg-primary/60 group-hover:bg-primary transition-colors shrink-0" />
+                      {label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           {/* Contact */}
@@ -231,8 +234,8 @@ export const Footer = () => {
       </div>
 
       <div className="container-dg">
-        {/* Bottom bar */}
-        <div className="border-t border-white/8 pt-8 pb-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        {/* Bottom bar - pb-32 on mobile to clear the floating mobile navigation bar */}
+        <div className="border-t border-white/8 pt-8 pb-32 sm:pb-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <p className="text-xs text-white/35">
             © 2026 Degree Guru. All rights reserved. Built for India's learners.
           </p>
