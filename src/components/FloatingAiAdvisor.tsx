@@ -327,7 +327,6 @@ export const FloatingAiAdvisor = () => {
                   alt="Guru AI Mascot"
                   className="w-full h-full object-cover"
                 />
-                <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-400 border border-white" />
               </div>
               <div>
                 <div className="text-sm font-black flex items-center gap-1.5 leading-tight tracking-tight">
@@ -473,34 +472,48 @@ export const FloatingAiAdvisor = () => {
         </div>
       )}
 
-      {/* Floating Bot Launch Button — Clean, Flat, No Gradient, No Multiple Ring Strokes */}
-      <button
-        onClick={() => setIsOpen((v) => !v)}
-        aria-label={isOpen ? "Close Guru AI" : "Chat with Guru AI Advisor"}
-        className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 shadow-xl overflow-hidden ${
-          isOpen ? "bg-slate-800 text-white" : "bg-white border border-border/80"
-        }`}
-      >
-        {isOpen ? (
-          <X size={24} />
-        ) : (
-          <div className="relative w-full h-full">
-            <img
-              src="/assets/guru-ai-mascot.png"
-              alt="Guru AI Mascot"
-              className="w-full h-full rounded-full object-cover"
-            />
-            <span className="absolute bottom-1 right-1 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-white shadow-sm" />
-          </div>
+      {/* Floating Bot Launch Button & "Ask Guru AI" text pill */}
+      <div className="flex items-center gap-2.5">
+        {!isOpen && (
+          <button
+            type="button"
+            onClick={() => setIsOpen(true)}
+            className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-card/95 hover:bg-card text-foreground border border-border/80 shadow-lg text-xs font-bold transition-all hover:scale-105 active:scale-95 group select-none"
+            aria-label="Ask Guru AI"
+          >
+            <Sparkles size={13} className="text-primary group-hover:rotate-12 transition-transform" />
+            <span>Ask Guru AI</span>
+          </button>
         )}
 
-        {/* Floating Tooltip Label */}
-        {!isOpen && (
-          <div className="absolute right-[72px] bottom-3 bg-foreground text-background text-xs font-bold px-3 py-1.5 rounded-full whitespace-nowrap pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
-            Guru AI
-          </div>
-        )}
-      </button>
+        <button
+          onClick={() => setIsOpen((v) => !v)}
+          aria-label={isOpen ? "Close Guru AI" : "Ask Guru AI"}
+          className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 shadow-xl ${
+            isOpen ? "bg-slate-800 text-white" : "bg-white border border-border/80"
+          }`}
+        >
+          {/* Active Chatbot Ring when closed */}
+          {!isOpen && (
+            <>
+              <span className="absolute -inset-1 rounded-full border-2 border-primary/50 animate-ping opacity-35 pointer-events-none" />
+              <span className="absolute -inset-1 rounded-full border border-primary/40 pointer-events-none" />
+            </>
+          )}
+
+          {isOpen ? (
+            <X size={24} />
+          ) : (
+            <div className="relative w-full h-full overflow-hidden rounded-full">
+              <img
+                src="/assets/guru-ai-mascot.png"
+                alt="Guru AI Mascot"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
+        </button>
+      </div>
     </div>
   );
 };

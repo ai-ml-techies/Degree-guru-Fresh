@@ -378,8 +378,8 @@ export const Header = () => {
                   translate="no"
                 >
                   <Globe size={14} className="text-primary shrink-0" />
-                  <span className="font-extrabold text-[12px] tracking-tight uppercase notranslate" translate="no">
-                    {language === "hi" ? "हिन्दी" : (currentLanguage?.code ? currentLanguage.code.toUpperCase() : (language ? language.toUpperCase() : "EN"))}
+                  <span className="font-extrabold text-[13px] tracking-tight notranslate" translate="no">
+                    {currentLanguage?.shortPreview || (language === "hi" ? "हि" : (language ? language.toUpperCase() : "EN"))}
                   </span>
                   <ChevronDown
                     size={12}

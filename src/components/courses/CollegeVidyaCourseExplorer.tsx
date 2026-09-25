@@ -38,14 +38,6 @@ const CATEGORIES: CategoryGroup[] = [
     subtitle: "After Graduation",
     courses: [
       {
-        badge: "✦ Right MBA",
-        badgeStyle: "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300",
-        title: "MBA Sorted",
-        ctaText: "Find My MBA",
-        slug: "online-mba",
-        icon: <GraduationCap size={26} className="text-primary" />,
-      },
-      {
         badge: "9+ Specializations",
         badgeStyle: "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/40 dark:text-amber-300",
         title: "Online MBA",
