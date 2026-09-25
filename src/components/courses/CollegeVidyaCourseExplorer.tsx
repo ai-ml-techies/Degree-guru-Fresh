@@ -33,6 +33,61 @@ export interface CategoryGroup {
 
 const CATEGORIES: CategoryGroup[] = [
   {
+    id: "ug",
+    title: "UG Courses",
+    subtitle: "After 12th",
+    courses: [
+      {
+        badge: "✦ High ROI",
+        badgeStyle: "bg-teal-50 text-teal-700 border-teal-200 dark:bg-teal-950/40 dark:text-teal-300",
+        title: "Online BBA",
+        ctaText: "Compare 85 Now",
+        slug: "online-bba",
+        icon: <Briefcase size={26} className="text-primary" />,
+      },
+      {
+        badge: "14+ Specializations",
+        badgeStyle: "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/40 dark:text-amber-300",
+        title: "Online BCA",
+        ctaText: "Compare 64 Now",
+        slug: "online-bca",
+        icon: <Cpu size={26} className="text-[#6528f7]" />,
+      },
+      {
+        badge: "✦ Corporate Finance",
+        badgeStyle: "bg-teal-50 text-teal-700 border-teal-200 dark:bg-teal-950/40 dark:text-teal-300",
+        title: "Online B.Com",
+        ctaText: "Compare 52 Now",
+        slug: "online-bcom",
+        icon: <Award size={26} className="text-emerald-600" />,
+      },
+      {
+        badge: "Liberal Arts",
+        badgeStyle: "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/40 dark:text-amber-300",
+        title: "Online BA",
+        ctaText: "Compare 45 Now",
+        slug: "online-ba",
+        icon: <BookOpen size={26} className="text-purple-600" />,
+      },
+      {
+        badge: "✦ Tech Stack",
+        badgeStyle: "bg-teal-50 text-teal-700 border-teal-200 dark:bg-teal-950/40 dark:text-teal-300",
+        title: "Online B.Sc (CS & IT)",
+        ctaText: "Compare 28 Now",
+        slug: "courses",
+        icon: <Cpu size={26} className="text-[#6528f7]" />,
+      },
+      {
+        badge: "Impact Careers",
+        badgeStyle: "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/40 dark:text-amber-300",
+        title: "Online BSW (Social Work)",
+        ctaText: "Compare 12 Now",
+        slug: "courses",
+        icon: <Users size={26} className="text-amber-600" />,
+      },
+    ],
+  },
+  {
     id: "pg",
     title: "PG Courses",
     subtitle: "After Graduation",
@@ -110,22 +165,6 @@ const CATEGORIES: CategoryGroup[] = [
         icon: <Award size={26} className="text-amber-600" />,
       },
       {
-        badge: "✦ NEW",
-        badgeStyle: "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300",
-        title: "Online MBA after Diploma",
-        ctaText: "Compare 10 Now",
-        slug: "online-mba",
-        icon: <FileCheck size={26} className="text-emerald-600" />,
-      },
-      {
-        badge: "5+ Specializations",
-        badgeStyle: "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/40 dark:text-amber-300",
-        title: "Online Master of Education (M.Ed)",
-        ctaText: "Compare 2 Now",
-        slug: "courses",
-        icon: <BookOpen size={26} className="text-[#6528f7]" />,
-      },
-      {
         badge: "2 Years",
         badgeStyle: "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/40 dark:text-amber-300",
         title: "Online Global MCA",
@@ -148,14 +187,6 @@ const CATEGORIES: CategoryGroup[] = [
         ctaText: "Compare 3 Now",
         slug: "online-dba",
         icon: <Award size={26} className="text-teal-600" />,
-      },
-      {
-        badge: "✦ Edu Leader",
-        badgeStyle: "bg-teal-50 text-teal-700 border-teal-200 dark:bg-teal-950/40 dark:text-teal-300",
-        title: "Online M.Ed & Ed.D",
-        ctaText: "Compare 1 Now",
-        slug: "courses",
-        icon: <GraduationCap size={26} className="text-[#6528f7]" />,
       },
     ],
   },
@@ -284,14 +315,6 @@ const CATEGORIES: CategoryGroup[] = [
         icon: <Award size={26} className="text-rose-600" />,
       },
       {
-        badge: "5+ Specializations",
-        badgeStyle: "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/40 dark:text-amber-300",
-        title: "Online Doctor of Education (Ed.D)",
-        ctaText: "Compare 2 Now",
-        slug: "online-dba",
-        icon: <BookOpen size={26} className="text-[#6528f7]" />,
-      },
-      {
         badge: "3 - 5 Years",
         badgeStyle: "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/40 dark:text-amber-300",
         title: "PhD Distance",
@@ -353,61 +376,6 @@ const CATEGORIES: CategoryGroup[] = [
         ctaText: "Compare 11 Now",
         slug: "courses",
         icon: <Cpu size={26} className="text-[#6528f7]" />,
-      },
-    ],
-  },
-  {
-    id: "ug",
-    title: "UG Courses",
-    subtitle: "After 12th",
-    courses: [
-      {
-        badge: "✦ High ROI",
-        badgeStyle: "bg-teal-50 text-teal-700 border-teal-200 dark:bg-teal-950/40 dark:text-teal-300",
-        title: "Online BBA",
-        ctaText: "Compare 85 Now",
-        slug: "online-bba",
-        icon: <Briefcase size={26} className="text-primary" />,
-      },
-      {
-        badge: "14+ Specializations",
-        badgeStyle: "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/40 dark:text-amber-300",
-        title: "Online BCA",
-        ctaText: "Compare 64 Now",
-        slug: "online-bca",
-        icon: <Cpu size={26} className="text-[#6528f7]" />,
-      },
-      {
-        badge: "✦ Corporate Finance",
-        badgeStyle: "bg-teal-50 text-teal-700 border-teal-200 dark:bg-teal-950/40 dark:text-teal-300",
-        title: "Online B.Com",
-        ctaText: "Compare 52 Now",
-        slug: "online-bcom",
-        icon: <Award size={26} className="text-emerald-600" />,
-      },
-      {
-        badge: "Liberal Arts",
-        badgeStyle: "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/40 dark:text-amber-300",
-        title: "Online BA",
-        ctaText: "Compare 45 Now",
-        slug: "online-ba",
-        icon: <BookOpen size={26} className="text-purple-600" />,
-      },
-      {
-        badge: "✦ Tech Stack",
-        badgeStyle: "bg-teal-50 text-teal-700 border-teal-200 dark:bg-teal-950/40 dark:text-teal-300",
-        title: "Online B.Sc (CS & IT)",
-        ctaText: "Compare 28 Now",
-        slug: "courses",
-        icon: <Cpu size={26} className="text-[#6528f7]" />,
-      },
-      {
-        badge: "Impact Careers",
-        badgeStyle: "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/40 dark:text-amber-300",
-        title: "Online BSW (Social Work)",
-        ctaText: "Compare 12 Now",
-        slug: "courses",
-        icon: <Users size={26} className="text-amber-600" />,
       },
     ],
   },
@@ -515,7 +483,7 @@ const CATEGORIES: CategoryGroup[] = [
 ];
 
 export const CollegeVidyaCourseExplorer = () => {
-  const [activeTab, setActiveTab] = useState<string>("pg");
+  const [activeTab, setActiveTab] = useState<string>("ug");
   const navigate = useNavigate();
   const { requireContact } = useLeadGate();
 

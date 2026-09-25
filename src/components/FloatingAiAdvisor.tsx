@@ -32,7 +32,15 @@ export const FloatingAiAdvisor = () => {
   const [userInput, setUserInput] = useState<string>("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState<boolean>(false);
+  const [showAskPill, setShowAskPill] = useState<boolean>(true);
   const { language } = useLanguage();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowAskPill(false);
+    }, 2800);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Initial prompt templates based on language
   const resetConversation = (lang = language) => {
@@ -314,7 +322,7 @@ export const FloatingAiAdvisor = () => {
   };
 
   return (
-    <div className="fixed right-4 sm:right-6 bottom-20 md:bottom-8 z-[90]">
+    <div className="fixed right-4 sm:right-6 bottom-20 md:bottom-8 z-[90] flex flex-col items-end">
       {/* Bot Chat Window */}
       {isOpen && (
         <div className="mb-3 w-[92vw] sm:w-[380px] max-w-[400px] h-[540px] max-h-[82vh] rounded-3xl bg-card border border-border shadow-2xl flex flex-col overflow-hidden animate-slide-up backdrop-blur-lg">
@@ -444,7 +452,7 @@ export const FloatingAiAdvisor = () => {
             </form>
 
             {/* WhatsApp Human Counselor Row */}
-            <div className="flex items-center justify-between text-[10px] text-muted-foreground px-1">
+            <div className="flex items-center text-[10px] text-muted-foreground px-1">
               <a
                 href="https://wa.me/919350199001?text=Hi%20Degree%20Guru%2C%20I%20need%20human%20career%20counseling"
                 target="_blank"
@@ -453,13 +461,6 @@ export const FloatingAiAdvisor = () => {
               >
                 <WhatsAppIcon className="w-3.5 h-3.5 shrink-0" /> {language === "hi" ? "काउंसलर से बात करें" : "Talk to Counselor"}
               </a>
-              <button
-                type="button"
-                onClick={() => resetConversation(language)}
-                className="hover:underline text-muted-foreground"
-              >
-                {language === "hi" ? "नया चैट" : "New Chat"}
-              </button>
             </div>
 
             {/* Short Caution Disclaimer */}
@@ -473,12 +474,14 @@ export const FloatingAiAdvisor = () => {
       )}
 
       {/* Floating Bot Launch Button & "Ask Guru AI" text pill */}
-      <div className="flex items-center gap-2.5">
+      <div className="flex items-center justify-end gap-2.5 w-full">
         {!isOpen && (
           <button
             type="button"
             onClick={() => setIsOpen(true)}
-            className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-card/95 hover:bg-card text-foreground border border-border/80 shadow-lg text-xs font-bold transition-all hover:scale-105 active:scale-95 group select-none"
+            className={`hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-card/95 hover:bg-card text-foreground border border-border/80 shadow-lg text-xs font-bold transition-all duration-500 hover:scale-105 active:scale-95 group select-none ${
+              showAskPill ? "opacity-100 translate-x-0" : "opacity-0 translate-x-3 pointer-events-none"
+            }`}
             aria-label="Ask Guru AI"
           >
             <Sparkles size={13} className="text-primary group-hover:rotate-12 transition-transform" />
@@ -489,7 +492,7 @@ export const FloatingAiAdvisor = () => {
         <button
           onClick={() => setIsOpen((v) => !v)}
           aria-label={isOpen ? "Close Guru AI" : "Ask Guru AI"}
-          className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 shadow-xl ${
+          className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 shadow-xl shrink-0 ${
             isOpen ? "bg-slate-800 text-white" : "bg-white border border-border/80"
           }`}
         >

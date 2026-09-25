@@ -343,9 +343,6 @@ export const Index = () => {
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground tracking-tight mt-1">
                 Latest Career & Education Guides
               </h2>
-              <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-                Factual comparisons for informed choices.
-              </p>
             </div>
             <Link to="/blog" className="text-xs sm:text-sm font-bold text-primary hover:underline flex items-center gap-1">
               View All Articles <ArrowRight size={14} />
@@ -354,17 +351,37 @@ export const Index = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {BLOG_POSTS.slice(0, 2).map((post) => (
-              <div key={post.slug} className="p-6 rounded-3xl bg-card border border-border/80 shadow-md space-y-3">
-                <span className="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold uppercase">
-                  {post.category}
-                </span>
-                <h3 className="text-lg font-bold text-foreground hover:text-primary transition-colors">
-                  <Link to={`/blog/${post.slug}`}>{post.title}</Link>
-                </h3>
-                <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
-                  {post.summary}
-                </p>
-                <div className="pt-2 flex justify-between items-center text-xs">
+              <div
+                key={post.slug}
+                className="rounded-3xl bg-card border border-border/80 shadow-md hover:shadow-xl transition-all overflow-hidden flex flex-col justify-between group"
+              >
+                <div>
+                  {/* Blog Image */}
+                  <div className="relative w-full aspect-[16/9] overflow-hidden bg-muted">
+                    <img
+                      src={post.image}
+                      alt={post.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
+                    />
+                    <div className="absolute top-4 left-4">
+                      <span className="px-3 py-1 rounded-full bg-background/90 backdrop-blur-md text-foreground text-[10px] font-black uppercase tracking-wider shadow-sm border border-border/60">
+                        {post.category}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="p-6 space-y-2.5">
+                    <h3 className="text-lg sm:text-xl font-bold text-foreground group-hover:text-primary transition-colors leading-snug">
+                      <Link to={`/blog/${post.slug}`}>{post.title}</Link>
+                    </h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 leading-relaxed">
+                      {post.summary}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="px-6 pb-6 pt-3 flex justify-between items-center text-xs border-t border-border/40">
                   <span className="text-muted-foreground">{post.readTime}</span>
                   <Link to={`/blog/${post.slug}`} className="text-primary font-bold hover:underline flex items-center gap-1">
                     Read Article →

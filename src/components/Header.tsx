@@ -368,7 +368,12 @@ export const Header = () => {
             {/* Desktop Actions & Mobile Right Action */}
             <div className="flex items-center gap-2.5 sm:gap-3">
               {/* Language Switcher: Only the active language displayed in header, all others in dropdown */}
-              <div className="relative notranslate" translate="no">
+              <div 
+                className="relative notranslate" 
+                translate="no"
+                onMouseEnter={() => setLangDropdownOpen(true)}
+                onMouseLeave={() => setLangDropdownOpen(false)}
+              >
                 <button
                   type="button"
                   onClick={() => setLangDropdownOpen(!langDropdownOpen)}
@@ -389,105 +394,103 @@ export const Header = () => {
                   />
                 </button>
 
-                {/* Dropdown with every language categorized, top 2 preferred */}
-                {langDropdownOpen && (
-                  <>
-                    <div
-                      className="fixed inset-0 z-40"
-                      onClick={() => setLangDropdownOpen(false)}
-                    />
-                    <div className="absolute right-0 top-full mt-2 w-64 max-h-[420px] overflow-y-auto glass-dropdown rounded-2xl shadow-2xl border border-border/80 p-3 z-50 animate-in fade-in zoom-in-95 space-y-3 notranslate" translate="no">
-                      <div>
-                        <div className="text-[10px] font-black uppercase tracking-wider text-primary px-2 pb-1.5 border-b border-border/40 notranslate" translate="no">
-                          Preferred Languages
-                        </div>
-                        <div className="space-y-0.5 pt-1">
-                          {SUPPORTED_LANGUAGES.filter((l) => l.group === "preferred").map((l) => (
-                            <button
-                              key={l.code}
-                              onClick={() => {
-                                setLanguage(l.code);
-                                setLangDropdownOpen(false);
-                              }}
-                              className={`w-full px-2.5 py-1.5 rounded-xl text-xs font-bold flex items-center justify-between transition-colors notranslate ${
-                                language === l.code
-                                  ? "bg-primary text-primary-foreground shadow-sm"
-                                  : "hover:bg-muted text-foreground"
-                              }`}
-                              translate="no"
-                            >
-                              <span className="flex items-center gap-2 notranslate" translate="no">
-                                <span className="font-extrabold text-[13px]">{l.nativeName}</span>
-                                {l.nativeName !== l.name && (
-                                  <span className="text-[11px] opacity-75 font-normal">({l.name})</span>
-                                )}
-                              </span>
-                              {language === l.code && <Check size={14} className="shrink-0" />}
-                            </button>
-                          ))}
-                        </div>
+                {/* Dropdown with every language categorized, opens on hover and closes likewise */}
+                <div
+                  className={`absolute right-0 top-full pt-2 transition-all duration-200 ease-out z-50 ${
+                    langDropdownOpen ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-2 pointer-events-none"
+                  }`}
+                >
+                  <div className="w-64 max-h-[420px] overflow-y-auto glass-dropdown rounded-2xl shadow-2xl border border-border/80 p-3 space-y-3 notranslate" translate="no">
+                    <div>
+                      <div className="text-[10px] font-black uppercase tracking-wider text-primary px-2 pb-1.5 border-b border-border/40 notranslate" translate="no">
+                        Preferred Languages
                       </div>
-
-                      <div>
-                        <div className="text-[10px] font-black uppercase tracking-wider text-muted-foreground px-2 pb-1 border-b border-border/40 notranslate" translate="no">
-                          Indian Regional
-                        </div>
-                        <div className="space-y-0.5 pt-1">
-                          {SUPPORTED_LANGUAGES.filter((l) => l.group === "indian").map((l) => (
-                            <button
-                              key={l.code}
-                              onClick={() => {
-                                setLanguage(l.code);
-                                setLangDropdownOpen(false);
-                              }}
-                              className={`w-full px-2.5 py-1.5 rounded-xl text-xs font-semibold flex items-center justify-between transition-colors notranslate ${
-                                language === l.code
-                                  ? "bg-primary text-primary-foreground shadow-sm"
-                                  : "hover:bg-muted text-foreground"
-                              }`}
-                              translate="no"
-                            >
-                              <span className="flex items-center gap-2 notranslate" translate="no">
-                                <span className="font-bold text-[13px]">{l.nativeName}</span>
+                      <div className="space-y-0.5 pt-1">
+                        {SUPPORTED_LANGUAGES.filter((l) => l.group === "preferred").map((l) => (
+                          <button
+                            key={l.code}
+                            onClick={() => {
+                              setLanguage(l.code);
+                              setLangDropdownOpen(false);
+                            }}
+                            className={`w-full px-2.5 py-1.5 rounded-xl text-xs font-bold flex items-center justify-between transition-colors notranslate ${
+                              language === l.code
+                                ? "bg-primary text-primary-foreground shadow-sm"
+                                : "hover:bg-muted text-foreground"
+                            }`}
+                            translate="no"
+                          >
+                            <span className="flex items-center gap-2 notranslate" translate="no">
+                              <span className="font-extrabold text-[13px]">{l.nativeName}</span>
+                              {l.nativeName !== l.name && (
                                 <span className="text-[11px] opacity-75 font-normal">({l.name})</span>
-                              </span>
-                              {language === l.code && <Check size={14} className="shrink-0" />}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div>
-                        <div className="text-[10px] font-black uppercase tracking-wider text-muted-foreground px-2 pb-1 border-b border-border/40 notranslate" translate="no">
-                          Global Languages
-                        </div>
-                        <div className="space-y-0.5 pt-1">
-                          {SUPPORTED_LANGUAGES.filter((l) => l.group === "global").map((l) => (
-                            <button
-                              key={l.code}
-                              onClick={() => {
-                                setLanguage(l.code);
-                                setLangDropdownOpen(false);
-                              }}
-                              className={`w-full px-2.5 py-1.5 rounded-xl text-xs font-semibold flex items-center justify-between transition-colors notranslate ${
-                                language === l.code
-                                  ? "bg-primary text-primary-foreground shadow-sm"
-                                  : "hover:bg-muted text-foreground"
-                              }`}
-                              translate="no"
-                            >
-                              <span className="flex items-center gap-2 notranslate" translate="no">
-                                <span className="font-bold text-[13px]">{l.nativeName}</span>
-                                <span className="text-[11px] opacity-75 font-normal">({l.name})</span>
-                              </span>
-                              {language === l.code && <Check size={14} className="shrink-0" />}
-                            </button>
-                          ))}
-                        </div>
+                              )}
+                            </span>
+                            {language === l.code && <Check size={14} className="shrink-0" />}
+                          </button>
+                        ))}
                       </div>
                     </div>
-                  </>
-                )}
+
+                    <div>
+                      <div className="text-[10px] font-black uppercase tracking-wider text-muted-foreground px-2 pb-1 border-b border-border/40 notranslate" translate="no">
+                        Indian Regional
+                      </div>
+                      <div className="space-y-0.5 pt-1">
+                        {SUPPORTED_LANGUAGES.filter((l) => l.group === "indian").map((l) => (
+                          <button
+                            key={l.code}
+                            onClick={() => {
+                              setLanguage(l.code);
+                              setLangDropdownOpen(false);
+                            }}
+                            className={`w-full px-2.5 py-1.5 rounded-xl text-xs font-semibold flex items-center justify-between transition-colors notranslate ${
+                              language === l.code
+                                ? "bg-primary text-primary-foreground shadow-sm"
+                                : "hover:bg-muted text-foreground"
+                            }`}
+                            translate="no"
+                          >
+                            <span className="flex items-center gap-2 notranslate" translate="no">
+                              <span className="font-bold text-[13px]">{l.nativeName}</span>
+                              <span className="text-[11px] opacity-75 font-normal">({l.name})</span>
+                            </span>
+                            {language === l.code && <Check size={14} className="shrink-0" />}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="text-[10px] font-black uppercase tracking-wider text-muted-foreground px-2 pb-1 border-b border-border/40 notranslate" translate="no">
+                        Global Languages
+                      </div>
+                      <div className="space-y-0.5 pt-1">
+                        {SUPPORTED_LANGUAGES.filter((l) => l.group === "global").map((l) => (
+                          <button
+                            key={l.code}
+                            onClick={() => {
+                              setLanguage(l.code);
+                              setLangDropdownOpen(false);
+                            }}
+                            className={`w-full px-2.5 py-1.5 rounded-xl text-xs font-semibold flex items-center justify-between transition-colors notranslate ${
+                              language === l.code
+                                ? "bg-primary text-primary-foreground shadow-sm"
+                                : "hover:bg-muted text-foreground"
+                            }`}
+                            translate="no"
+                          >
+                            <span className="flex items-center gap-2 notranslate" translate="no">
+                              <span className="font-bold text-[13px]">{l.nativeName}</span>
+                              <span className="text-[11px] opacity-75 font-normal">({l.name})</span>
+                            </span>
+                            {language === l.code && <Check size={14} className="shrink-0" />}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               {/* Theme toggle */}
