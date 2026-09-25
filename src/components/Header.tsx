@@ -435,7 +435,7 @@ export const Header = () => {
                     <div className="absolute right-0 top-full mt-2 w-64 max-h-[420px] overflow-y-auto glass-dropdown rounded-2xl shadow-2xl border border-border/80 p-3 z-50 animate-in fade-in zoom-in-95 space-y-3">
                       <div>
                         <div className="text-[10px] font-black uppercase tracking-wider text-primary px-2 pb-1.5 border-b border-border/40">
-                          ⭐ Preferred Languages
+                          Preferred Languages
                         </div>
                         <div className="space-y-0.5 pt-1">
                           {SUPPORTED_LANGUAGES.filter((l) => l.group === "preferred").map((l) => (
