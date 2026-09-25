@@ -124,8 +124,8 @@ export const Header = () => {
                 onMouseLeave={() => setCoursesDropdown(false)}
               >
                 <button 
-                  className={`flex items-center gap-1.5 text-sm font-medium py-2 transition-colors ${
-                    isActive("/online-") || isActive("/courses") ? "text-primary font-semibold" : "text-foreground/80 hover:text-primary"
+                  className={`flex items-center gap-1.5 text-sm font-semibold py-2 transition-colors ${
+                    isActive("/online-") || isActive("/courses") ? "text-primary" : "text-foreground/90 hover:text-primary"
                   }`}
                   aria-expanded={coursesDropdown}
                 >
@@ -233,8 +233,8 @@ export const Header = () => {
                 onMouseLeave={() => setUniversitiesDropdown(false)}
               >
                 <button 
-                  className={`flex items-center gap-1.5 text-sm font-medium py-2 transition-colors ${
-                    isActive("/universities") ? "text-primary font-semibold" : "text-foreground/80 hover:text-primary"
+                  className={`flex items-center gap-1.5 text-sm font-semibold py-2 transition-colors ${
+                    isActive("/universities") ? "text-primary" : "text-foreground/90 hover:text-primary"
                   }`}
                   aria-expanded={universitiesDropdown}
                 >
@@ -293,10 +293,10 @@ export const Header = () => {
                 onMouseLeave={() => setCareerDropdown(false)}
               >
                 <button 
-                  className={`flex items-center gap-1.5 text-sm font-medium py-2 transition-colors ${
+                  className={`flex items-center gap-1.5 text-sm font-semibold py-2 transition-colors ${
                     isActive("/career-finder") || isActive("/roi-calculator") || isActive("/resume-builder")
-                      ? "text-primary font-semibold"
-                      : "text-foreground/80 hover:text-primary"
+                      ? "text-primary"
+                      : "text-foreground/90 hover:text-primary"
                   }`}
                   aria-expanded={careerDropdown}
                 >

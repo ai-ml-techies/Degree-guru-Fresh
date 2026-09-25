@@ -78,8 +78,18 @@ export const EmiCalculator: React.FC<EmiCalculatorProps> = ({
     );
   };
 
+  const handleFeeChange = (newFee: number) => {
+    setFee(newFee);
+    const maxDp = Math.max(0, newFee - 10000);
+    if (downPayment > maxDp) {
+      setDownPayment(maxDp);
+    }
+  };
+
   const tenureOptions = [3, 6, 9, 12, 18, 24, 36];
-  const feePresets = [60000, 95000, 130000, 180000, 250000];
+  const feePresets = [100000, 300000, 750000, 1500000, 2500000, 5000000];
+  const maxDownPayment = Math.max(0, fee - 10000);
+  const dpStep = fee > 1000000 ? 25000 : (fee > 300000 ? 10000 : 5000);
 
   return (
     <div className={`w-full bg-card border border-border/80 rounded-3xl overflow-hidden shadow-xl ${compact ? "p-5 sm:p-6" : "p-6 sm:p-8 md:p-10"}`}>
@@ -92,7 +102,7 @@ export const EmiCalculator: React.FC<EmiCalculatorProps> = ({
           <h3 className="text-xl sm:text-2xl font-black text-foreground tracking-tight">
             EMI Calculator
           </h3>
-          <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
+          <p className="text-xs sm:text-sm text-foreground/75 font-medium mt-0.5">
             Estimate affordable monthly installments for UGC-approved online degrees with zero hidden interest.
           </p>
         </div>
@@ -105,7 +115,7 @@ export const EmiCalculator: React.FC<EmiCalculatorProps> = ({
             className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
               isNoCost
                 ? "bg-amber-500 text-white shadow-md"
-                : "text-muted-foreground hover:text-foreground"
+                : "text-foreground/70 hover:text-foreground"
             }`}
           >
             <Sparkles size={13} /> 0% No-Cost EMI
@@ -116,7 +126,7 @@ export const EmiCalculator: React.FC<EmiCalculatorProps> = ({
             className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
               !isNoCost
                 ? "bg-primary text-primary-foreground shadow-md"
-                : "text-muted-foreground hover:text-foreground"
+                : "text-foreground/70 hover:text-foreground"
             }`}
           >
             Standard Loan
@@ -127,53 +137,63 @@ export const EmiCalculator: React.FC<EmiCalculatorProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 pt-6">
         {/* Left Inputs (7 cols) */}
         <div className="lg:col-span-7 space-y-6">
-          {/* Total Course Fee Slider */}
+          {/* Total Course Fee Slider (Till 50 Lakhs) */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <label className="text-xs sm:text-sm font-bold text-foreground">
                 Total Program Fee
               </label>
-              <div className="text-base sm:text-lg font-black text-primary flex items-center">
+              <div className="text-base sm:text-lg font-black text-primary flex items-center gap-1.5">
                 <span>₹{fee.toLocaleString("en-IN")}</span>
+                {fee >= 100000 && (
+                  <span className="text-xs font-bold text-foreground/60">
+                    ({(fee / 100000).toFixed(fee % 100000 === 0 ? 0 : 2)} L)
+                  </span>
+                )}
               </div>
             </div>
 
             <input
               type="range"
-              min={30000}
-              max={350000}
-              step={5000}
+              min={25000}
+              max={5000000}
+              step={fee < 500000 ? 5000 : 25000}
               value={fee}
-              onChange={(e) => setFee(Number(e.target.value))}
+              onChange={(e) => handleFeeChange(Number(e.target.value))}
               className="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
             />
 
             {/* Presets */}
             <div className="flex flex-wrap items-center gap-1.5 pt-1">
-              <span className="text-[10px] text-muted-foreground font-semibold mr-1">Quick Select:</span>
-              {feePresets.map((preset) => (
-                <button
-                  key={preset}
-                  type="button"
-                  onClick={() => setFee(preset)}
-                  className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all ${
-                    fee === preset
-                      ? "bg-primary/20 text-primary border border-primary/40"
-                      : "bg-muted text-muted-foreground hover:text-foreground border border-transparent"
-                  }`}
-                >
-                  ₹{(preset / 1000).toFixed(0)}k
-                </button>
-              ))}
+              <span className="text-[11px] text-foreground/70 font-bold mr-1">Quick Select:</span>
+              {feePresets.map((preset) => {
+                const label = preset >= 100000 
+                  ? `₹${(preset / 100000).toFixed(preset % 100000 === 0 ? 0 : 1)}L` 
+                  : `₹${(preset / 1000).toFixed(0)}k`;
+                return (
+                  <button
+                    key={preset}
+                    type="button"
+                    onClick={() => handleFeeChange(preset)}
+                    className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all ${
+                      fee === preset
+                        ? "bg-primary text-primary-foreground shadow-xs"
+                        : "bg-muted text-foreground/75 hover:text-foreground hover:bg-muted/80"
+                    }`}
+                  >
+                    {label}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
-          {/* Initial Down Payment */}
+          {/* Initial Down Payment (Scales with Fee) */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <label className="text-xs sm:text-sm font-bold text-foreground flex items-center gap-1.5">
                 <span>Down Payment / Initial Deposit</span>
-                <span className="text-[10px] font-normal text-muted-foreground">(Optional)</span>
+                <span className="text-[10px] font-normal text-foreground/60">(Optional)</span>
               </label>
               <div className="text-sm font-bold text-foreground">
                 ₹{downPayment.toLocaleString("en-IN")}
@@ -183,12 +203,16 @@ export const EmiCalculator: React.FC<EmiCalculatorProps> = ({
             <input
               type="range"
               min={0}
-              max={Math.min(50000, fee - 10000)}
-              step={2000}
+              max={maxDownPayment}
+              step={dpStep}
               value={downPayment}
               onChange={(e) => setDownPayment(Number(e.target.value))}
               className="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
             />
+            <div className="flex justify-between text-[10px] text-foreground/60 font-semibold px-0.5">
+              <span>₹0 (Zero Down Payment)</span>
+              <span>Max: ₹{maxDownPayment.toLocaleString("en-IN")}</span>
+            </div>
           </div>
 
           {/* Loan Tenure in Months */}
@@ -220,7 +244,7 @@ export const EmiCalculator: React.FC<EmiCalculatorProps> = ({
             </div>
           </div>
 
-          {/* If Standard Loan, show Interest Rate */}
+          {/* If Standard Loan, show Interest Rate (till 30%) */}
           {!isNoCost && (
             <div className="space-y-3 pt-2">
               <div className="flex items-center justify-between">
@@ -231,13 +255,17 @@ export const EmiCalculator: React.FC<EmiCalculatorProps> = ({
               </div>
               <input
                 type="range"
-                min={7.5}
-                max={16}
-                step={0.25}
+                min={6}
+                max={30}
+                step={0.5}
                 value={interestRate}
                 onChange={(e) => setInterestRate(Number(e.target.value))}
                 className="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
               />
+              <div className="flex justify-between text-[10px] text-foreground/60 font-semibold px-0.5">
+                <span>6% p.a.</span>
+                <span>30% p.a.</span>
+              </div>
             </div>
           )}
         </div>
