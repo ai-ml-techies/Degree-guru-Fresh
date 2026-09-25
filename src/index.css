@@ -524,3 +524,42 @@ body {
   display: none !important;
 }
 
+/* ==========================================================================
+   Hindi / Devanagari Typography & Matra Collision Fixes
+   ========================================================================== */
+
+/* Apply Mukta & Noto Sans Devanagari when Hindi or translated */
+:lang(hi),
+[lang="hi"],
+.translated-ltr,
+.translated-rtl,
+body.hi-lang {
+  font-family: 'Mukta', 'Noto Sans Devanagari', 'Poppins', system-ui, sans-serif !important;
+}
+
+/* Fix heading line-height so Devanagari upper matras and lower matras never collide */
+h1, h2, h3, h4 {
+  line-height: 1.32;
+}
+
+:lang(hi) h1, :lang(hi) h2, :lang(hi) h3, :lang(hi) h4,
+.translated-ltr h1, .translated-ltr h2, .translated-ltr h3, .translated-ltr h4,
+html[lang="hi"] h1, html[lang="hi"] h2, html[lang="hi"] h3, html[lang="hi"] h4 {
+  font-family: 'Mukta', 'Noto Sans Devanagari', 'Poppins', sans-serif !important;
+  line-height: 1.42 !important;
+  letter-spacing: 0.015em !important;
+  word-spacing: 0.03em !important;
+}
+
+/* Ensure paragraph, links, and buttons have breathable line height in Hindi */
+:lang(hi) p, :lang(hi) li,
+.translated-ltr p, .translated-ltr li {
+  line-height: 1.68;
+}
+
+/* Fix dropdown and header button from being translated */
+.notranslate, [translate="no"] {
+  -webkit-transform: none;
+  transform: none;
+}
+

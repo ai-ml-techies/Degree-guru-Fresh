@@ -72,7 +72,7 @@ export const Index = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             {/* Left Copy */}
             <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
-              <h1 className="text-3xl sm:text-5xl lg:text-5xl xl:text-6xl font-black text-foreground tracking-tight leading-[1.15]">
+              <h1 className="text-3xl sm:text-5xl lg:text-5xl xl:text-6xl font-black text-foreground tracking-normal leading-[1.24] sm:leading-[1.26] md:leading-[1.32]">
                 Not Sure What’s Next? <span className="block text-gradient mt-1">Find Your Growth Roadmap</span>
               </h1>
 

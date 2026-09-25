@@ -115,7 +115,7 @@ export const BlogPost = () => {
           </div>
 
           {/* Large Editorial Headline */}
-          <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-foreground tracking-tight leading-[1.16] mb-6">
+          <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-foreground tracking-normal leading-[1.28] sm:leading-[1.32] mb-6">
             {post.title}
           </h1>
 

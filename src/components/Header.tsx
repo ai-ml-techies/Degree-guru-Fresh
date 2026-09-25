@@ -35,7 +35,7 @@ const DEFAULT_ANNOUNCEMENTS = [
 
 export const Header = () => {
   const { theme, toggle } = useTheme();
-  const { language, setLanguage } = useLanguage();
+  const { language, setLanguage, currentLanguage } = useLanguage();
   const location = useLocation();
   const [coursesDropdown, setCoursesDropdown] = useState(false);
   const [universitiesDropdown, setUniversitiesDropdown] = useState(false);
@@ -368,17 +368,18 @@ export const Header = () => {
             {/* Desktop Actions & Mobile Right Action */}
             <div className="flex items-center gap-2.5 sm:gap-3">
               {/* Language Switcher: Only the active language displayed in header, all others in dropdown */}
-              <div className="relative">
+              <div className="relative notranslate" translate="no">
                 <button
                   type="button"
                   onClick={() => setLangDropdownOpen(!langDropdownOpen)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted/70 hover:bg-muted border border-border/80 text-xs font-bold text-foreground transition-all shadow-sm"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted/70 hover:bg-muted border border-border/80 text-xs font-bold text-foreground transition-all shadow-sm notranslate"
                   aria-label="Select Language"
                   aria-expanded={langDropdownOpen}
+                  translate="no"
                 >
                   <Globe size={14} className="text-primary shrink-0" />
-                  <span className="font-extrabold text-[12px] tracking-tight">
-                    {language === "hi" ? "हि" : (currentLanguage?.code?.toUpperCase() || "EN")}
+                  <span className="font-extrabold text-[12px] tracking-tight uppercase notranslate" translate="no">
+                    {language === "hi" ? "हिन्दी" : (currentLanguage?.code ? currentLanguage.code.toUpperCase() : (language ? language.toUpperCase() : "EN"))}
                   </span>
                   <ChevronDown
                     size={12}
@@ -395,9 +396,9 @@ export const Header = () => {
                       className="fixed inset-0 z-40"
                       onClick={() => setLangDropdownOpen(false)}
                     />
-                    <div className="absolute right-0 top-full mt-2 w-64 max-h-[420px] overflow-y-auto glass-dropdown rounded-2xl shadow-2xl border border-border/80 p-3 z-50 animate-in fade-in zoom-in-95 space-y-3">
+                    <div className="absolute right-0 top-full mt-2 w-64 max-h-[420px] overflow-y-auto glass-dropdown rounded-2xl shadow-2xl border border-border/80 p-3 z-50 animate-in fade-in zoom-in-95 space-y-3 notranslate" translate="no">
                       <div>
-                        <div className="text-[10px] font-black uppercase tracking-wider text-primary px-2 pb-1.5 border-b border-border/40">
+                        <div className="text-[10px] font-black uppercase tracking-wider text-primary px-2 pb-1.5 border-b border-border/40 notranslate" translate="no">
                           Preferred Languages
                         </div>
                         <div className="space-y-0.5 pt-1">
@@ -408,26 +409,28 @@ export const Header = () => {
                                 setLanguage(l.code);
                                 setLangDropdownOpen(false);
                               }}
-                              className={`w-full px-2.5 py-1.5 rounded-xl text-xs font-bold flex items-center justify-between transition-colors ${
+                              className={`w-full px-2.5 py-1.5 rounded-xl text-xs font-bold flex items-center justify-between transition-colors notranslate ${
                                 language === l.code
                                   ? "bg-primary text-primary-foreground shadow-sm"
                                   : "hover:bg-muted text-foreground"
                               }`}
+                              translate="no"
                             >
-                              <span className="flex items-center gap-2">
-                                <span>{l.flag}</span>
-                                <span>{l.nativeName}</span>
-                                <span className="text-[10px] opacity-75 font-normal">({l.name})</span>
+                              <span className="flex items-center gap-2 notranslate" translate="no">
+                                <span className="font-extrabold text-[13px]">{l.nativeName}</span>
+                                {l.nativeName !== l.name && (
+                                  <span className="text-[11px] opacity-75 font-normal">({l.name})</span>
+                                )}
                               </span>
-                              {language === l.code && <Check size={14} />}
+                              {language === l.code && <Check size={14} className="shrink-0" />}
                             </button>
                           ))}
                         </div>
                       </div>
 
                       <div>
-                        <div className="text-[10px] font-black uppercase tracking-wider text-muted-foreground px-2 pb-1 border-b border-border/40">
-                          🇮🇳 Indian Regional
+                        <div className="text-[10px] font-black uppercase tracking-wider text-muted-foreground px-2 pb-1 border-b border-border/40 notranslate" translate="no">
+                          Indian Regional
                         </div>
                         <div className="space-y-0.5 pt-1">
                           {SUPPORTED_LANGUAGES.filter((l) => l.group === "indian").map((l) => (
@@ -437,26 +440,26 @@ export const Header = () => {
                                 setLanguage(l.code);
                                 setLangDropdownOpen(false);
                               }}
-                              className={`w-full px-2.5 py-1.5 rounded-xl text-xs font-semibold flex items-center justify-between transition-colors ${
+                              className={`w-full px-2.5 py-1.5 rounded-xl text-xs font-semibold flex items-center justify-between transition-colors notranslate ${
                                 language === l.code
                                   ? "bg-primary text-primary-foreground shadow-sm"
                                   : "hover:bg-muted text-foreground"
                               }`}
+                              translate="no"
                             >
-                              <span className="flex items-center gap-2">
-                                <span>{l.flag}</span>
-                                <span>{l.nativeName}</span>
-                                <span className="text-[10px] opacity-75 font-normal">({l.name})</span>
+                              <span className="flex items-center gap-2 notranslate" translate="no">
+                                <span className="font-bold text-[13px]">{l.nativeName}</span>
+                                <span className="text-[11px] opacity-75 font-normal">({l.name})</span>
                               </span>
-                              {language === l.code && <Check size={14} />}
+                              {language === l.code && <Check size={14} className="shrink-0" />}
                             </button>
                           ))}
                         </div>
                       </div>
 
                       <div>
-                        <div className="text-[10px] font-black uppercase tracking-wider text-muted-foreground px-2 pb-1 border-b border-border/40">
-                          🌐 Global Languages
+                        <div className="text-[10px] font-black uppercase tracking-wider text-muted-foreground px-2 pb-1 border-b border-border/40 notranslate" translate="no">
+                          Global Languages
                         </div>
                         <div className="space-y-0.5 pt-1">
                           {SUPPORTED_LANGUAGES.filter((l) => l.group === "global").map((l) => (
@@ -466,18 +469,18 @@ export const Header = () => {
                                 setLanguage(l.code);
                                 setLangDropdownOpen(false);
                               }}
-                              className={`w-full px-2.5 py-1.5 rounded-xl text-xs font-semibold flex items-center justify-between transition-colors ${
+                              className={`w-full px-2.5 py-1.5 rounded-xl text-xs font-semibold flex items-center justify-between transition-colors notranslate ${
                                 language === l.code
                                   ? "bg-primary text-primary-foreground shadow-sm"
                                   : "hover:bg-muted text-foreground"
                               }`}
+                              translate="no"
                             >
-                              <span className="flex items-center gap-2">
-                                <span>{l.flag}</span>
-                                <span>{l.nativeName}</span>
-                                <span className="text-[10px] opacity-75 font-normal">({l.name})</span>
+                              <span className="flex items-center gap-2 notranslate" translate="no">
+                                <span className="font-bold text-[13px]">{l.nativeName}</span>
+                                <span className="text-[11px] opacity-75 font-normal">({l.name})</span>
                               </span>
-                              {language === l.code && <Check size={14} />}
+                              {language === l.code && <Check size={14} className="shrink-0" />}
                             </button>
                           ))}
                         </div>

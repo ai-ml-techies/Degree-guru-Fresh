@@ -201,7 +201,7 @@ const Employer = () => {
               <Building2 size={14} className="text-primary" />
               <span className="text-primary text-xs font-bold uppercase tracking-widest">For Employers</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl md:text-[52px] font-extrabold leading-[1.1] mb-5">
+            <h1 className="text-3xl sm:text-4xl md:text-[52px] font-extrabold leading-[1.25] sm:leading-[1.28] md:leading-[1.32] mb-5">
               Hire Skilled &amp; Qualified Talent{" "}
               <span className="text-gradient">for Your Business</span>
             </h1>

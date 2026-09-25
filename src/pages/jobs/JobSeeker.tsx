@@ -496,7 +496,7 @@ const JobSeeker = () => {
               <GraduationCap size={14} className="text-primary" />
               <span className="text-primary text-xs font-bold uppercase tracking-widest">For Job Seekers</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl md:text-[48px] font-extrabold leading-[1.1] mb-4">
+            <h1 className="text-3xl sm:text-4xl md:text-[48px] font-extrabold leading-[1.25] sm:leading-[1.28] md:leading-[1.32] mb-4">
               Find Your <span className="text-gradient">Dream Job</span>
             </h1>
             <p className="text-soft text-base md:text-lg mb-8 max-w-xl mx-auto">

@@ -122,7 +122,7 @@ export const CourseDetail = () => {
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/15 text-primary text-xs font-bold">
                 <ShieldCheck size={14} /> 100% UGC-DEB & AICTE Approved Degree
               </div>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-foreground tracking-tight leading-[1.15]">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-foreground tracking-normal leading-[1.28] sm:leading-[1.32] md:leading-[1.38]">
                 {course.fullName}
               </h1>
               <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">

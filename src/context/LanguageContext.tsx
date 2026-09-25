@@ -16,7 +16,7 @@ const LanguageContext = createContext<LanguageContextType>({
   setLanguage: () => {},
   toggleLanguage: () => {},
   languages: SUPPORTED_LANGUAGES,
-  currentLanguage: SUPPORTED_LANGUAGES[1], // English
+  currentLanguage: SUPPORTED_LANGUAGES[0], // English
 });
 
 // Safe on-demand helper to translate entire website when user selects Hindi or another language
@@ -110,8 +110,19 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     };
   }, []);
 
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      document.documentElement.lang = language;
+      if (language === "hi") {
+        document.body.classList.add("hi-lang");
+      } else {
+        document.body.classList.remove("hi-lang");
+      }
+    }
+  }, [language]);
+
   const currentLanguage =
-    SUPPORTED_LANGUAGES.find((l) => l.code === language) || SUPPORTED_LANGUAGES[1];
+    SUPPORTED_LANGUAGES.find((l) => l.code === language) || SUPPORTED_LANGUAGES[0];
 
   return (
     <LanguageContext.Provider
