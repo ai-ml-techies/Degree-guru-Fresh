@@ -78,9 +78,9 @@ export const RESUME_FONTS = [
     description: "Google's flagship sans-serif, standard for tech and product roles.",
   },
   {
-    id: "raleway",
-    name: "Raleway",
-    family: "'Raleway', sans-serif",
+    id: "googlesans",
+    name: "Google Sans",
+    family: "'Google Sans', 'Product Sans', sans-serif",
     badge: "Degree Guru Style",
     category: "Brand Sans",
     description: "Degree Guru's signature modern aesthetic font.",

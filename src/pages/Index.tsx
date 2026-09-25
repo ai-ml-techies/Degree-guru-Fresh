@@ -349,39 +349,39 @@ export const Index = () => {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {BLOG_POSTS.slice(0, 2).map((post) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+            {BLOG_POSTS.slice(0, 3).map((post) => (
               <div
                 key={post.slug}
                 className="rounded-3xl bg-card border border-border/80 shadow-md hover:shadow-xl transition-all overflow-hidden flex flex-col justify-between group"
               >
                 <div>
                   {/* Blog Image */}
-                  <div className="relative w-full aspect-[16/9] overflow-hidden bg-muted">
+                  <div className="relative w-full aspect-[16/10] overflow-hidden bg-muted">
                     <img
                       src={post.image}
                       alt={post.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       loading="lazy"
                     />
-                    <div className="absolute top-4 left-4">
-                      <span className="px-3 py-1 rounded-full bg-background/90 backdrop-blur-md text-foreground text-[10px] font-black uppercase tracking-wider shadow-sm border border-border/60">
+                    <div className="absolute top-3.5 left-3.5">
+                      <span className="px-2.5 py-1 rounded-full bg-background/90 backdrop-blur-md text-foreground text-[10px] font-black uppercase tracking-wider shadow-sm border border-border/60">
                         {post.category}
                       </span>
                     </div>
                   </div>
 
-                  <div className="p-6 space-y-2.5">
-                    <h3 className="text-lg sm:text-xl font-bold text-foreground group-hover:text-primary transition-colors leading-snug">
+                  <div className="p-5 space-y-2">
+                    <h3 className="text-base sm:text-lg font-bold text-foreground group-hover:text-primary transition-colors leading-snug line-clamp-2">
                       <Link to={`/blog/${post.slug}`}>{post.title}</Link>
                     </h3>
-                    <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 leading-relaxed">
+                    <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
                       {post.summary}
                     </p>
                   </div>
                 </div>
 
-                <div className="px-6 pb-6 pt-3 flex justify-between items-center text-xs border-t border-border/40">
+                <div className="px-5 pb-5 pt-3 flex justify-between items-center text-xs border-t border-border/40">
                   <span className="text-muted-foreground">{post.readTime}</span>
                   <Link to={`/blog/${post.slug}`} className="text-primary font-bold hover:underline flex items-center gap-1">
                     Read Article →

@@ -12,8 +12,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Raleway', 'Mukta', 'Noto Sans Devanagari', 'system-ui', 'sans-serif'],
-        display: ['Raleway', 'Mukta', 'Noto Sans Devanagari', 'system-ui', 'sans-serif'],
+        sans: ['"Google Sans"', '"Product Sans"', 'Mukta', 'Noto Sans Devanagari', 'system-ui', 'sans-serif'],
+        display: ['"Google Sans"', '"Product Sans"', 'Mukta', 'Noto Sans Devanagari', 'system-ui', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
