@@ -19,18 +19,44 @@ const LanguageContext = createContext<LanguageContextType>({
   currentLanguage: SUPPORTED_LANGUAGES[1], // English
 });
 
-// Safe on-demand helper to translate page if user selects a non-English language
+// Safe on-demand helper to translate entire website when user selects Hindi or another language
 const applyTranslationSafely = (lang: string) => {
   if (typeof window === "undefined") return;
   try {
+    const host = window.location.hostname;
     const cookieVal = lang === "en" ? "/en/en" : `/en/${lang}`;
+
+    // Set cookie for path=/ and domains
     document.cookie = `googtrans=${cookieVal}; path=/;`;
+    if (host && host !== "localhost") {
+      document.cookie = `googtrans=${cookieVal}; path=/; domain=${host};`;
+      document.cookie = `googtrans=${cookieVal}; path=/; domain=.${host};`;
+    }
+
+    if (lang === "en") {
+      document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      document.cookie = "googtrans=/en/en; path=/;";
+      if (host && host !== "localhost") {
+        document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${host};`;
+        document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.${host};`;
+        document.cookie = `googtrans=/en/en; path=/; domain=${host};`;
+      }
+    }
 
     // If Google Translate combo already exists in the document, trigger it
     const combo = document.querySelector<HTMLSelectElement>(".goog-te-combo");
     if (combo) {
       combo.value = lang;
       combo.dispatchEvent(new Event("change"));
+      if (lang === "en") {
+        setTimeout(() => {
+          window.location.reload();
+        }, 150);
+      }
+    } else {
+      setTimeout(() => {
+        window.location.reload();
+      }, 100);
     }
   } catch {
     // Fail silently so the UI never breaks

@@ -367,61 +367,26 @@ export const Header = () => {
 
             {/* Desktop Actions & Mobile Right Action */}
             <div className="flex items-center gap-2.5 sm:gap-3">
-              {/* Language Switcher: Full Website Translation with Hindi & English Preferred on Top */}
+              {/* Language Switcher: Only the active language displayed in header, all others in dropdown */}
               <div className="relative">
-                <div className="flex items-center rounded-full p-0.5 sm:p-1 bg-muted/60 border border-foreground/15 text-[11px] sm:text-xs font-bold shadow-sm">
-                  {/* Top 1 Preferred: Hindi */}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setLanguage("hi");
-                      setLangDropdownOpen(false);
-                    }}
-                    className={`px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full transition-all ${
-                      language === "hi"
-                        ? "bg-amber-500 text-white shadow-sm"
-                        : "text-muted-foreground hover:text-foreground"
+                <button
+                  type="button"
+                  onClick={() => setLangDropdownOpen(!langDropdownOpen)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted/70 hover:bg-muted border border-border/80 text-xs font-bold text-foreground transition-all shadow-sm"
+                  aria-label="Select Language"
+                  aria-expanded={langDropdownOpen}
+                >
+                  <Globe size={14} className="text-primary shrink-0" />
+                  <span className="font-extrabold text-[12px] tracking-tight">
+                    {language === "hi" ? "हि" : (currentLanguage?.code?.toUpperCase() || "EN")}
+                  </span>
+                  <ChevronDown
+                    size={12}
+                    className={`text-muted-foreground transition-transform duration-200 ${
+                      langDropdownOpen ? "rotate-180 text-primary" : ""
                     }`}
-                    aria-label="हिन्दी"
-                    title="हिन्दी"
-                  >
-                    हि
-                  </button>
-
-                  {/* Top 2 Preferred: English */}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setLanguage("en");
-                      setLangDropdownOpen(false);
-                    }}
-                    className={`px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full transition-all ${
-                      language === "en"
-                        ? "bg-primary text-primary-foreground shadow-sm"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
-                    aria-label="English"
-                    title="English"
-                  >
-                    EN
-                  </button>
-
-                  {/* Expand dropdown for all other languages */}
-                  <button
-                    type="button"
-                    onClick={() => setLangDropdownOpen(!langDropdownOpen)}
-                    className={`px-1.5 py-0.5 sm:py-1 rounded-full transition-colors flex items-center gap-0.5 ${
-                      language !== "en" && language !== "hi"
-                        ? "bg-primary/20 text-primary font-black"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
-                    aria-label="More languages"
-                    title="All Languages"
-                  >
-                    <Globe size={13} />
-                    <ChevronDown size={11} className={`transition-transform duration-200 ${langDropdownOpen ? "rotate-180" : ""}`} />
-                  </button>
-                </div>
+                  />
+                </button>
 
                 {/* Dropdown with every language categorized, top 2 preferred */}
                 {langDropdownOpen && (

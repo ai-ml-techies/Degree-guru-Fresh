@@ -37,6 +37,7 @@ import { BLOG_POSTS } from "@/data/blogs";
 import { fetchHomeContent } from "@/lib/api";
 import heroDesktop from "@/assets/hero-desktop.jpg";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { WhatsAppCircleIcon } from "@/components/SocialIcons";
 
 export const Index = () => {
   const [counselingOpen, setCounselingOpen] = useState(false);
@@ -88,9 +89,10 @@ export const Index = () => {
                   href="https://wa.me/919350199001?text=Hi%20Degree%20Guru%2C%20I%20would%20like%20to%20talk%20to%20a%20counselor"
                   target="_blank"
                   rel="noreferrer"
-                  className="px-5 py-3.5 rounded-2xl bg-emerald-600/10 hover:bg-emerald-600/20 text-emerald-700 dark:text-emerald-400 font-bold text-sm transition-all flex items-center gap-2"
+                  className="px-5 py-3.5 rounded-2xl bg-emerald-600/10 hover:bg-emerald-600/20 text-emerald-700 dark:text-emerald-400 font-bold text-sm transition-all flex items-center gap-2 group"
                 >
-                  <MessageCircle size={17} /> Talk to a Counselor
+                  <WhatsAppCircleIcon className="w-5 h-5 rounded-full shrink-0 group-hover:scale-110 transition-transform" />
+                  <span>Talk to a Counselor</span>
                 </a>
               </div>
             </div>

@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { askGeminiAdvisor } from "@/services/geminiService";
 import { useLanguage } from "@/context/LanguageContext";
+import { WhatsAppIcon } from "@/components/SocialIcons";
 
 type Message = {
   id: string;
@@ -451,7 +452,7 @@ export const FloatingAiAdvisor = () => {
                 rel="noreferrer"
                 className="text-emerald-600 dark:text-emerald-400 font-bold hover:underline flex items-center gap-1"
               >
-                <MessageCircle size={11} /> {language === "hi" ? "काउंसलर से बात करें" : "Talk to Counselor"}
+                <WhatsAppIcon className="w-3.5 h-3.5 shrink-0" /> {language === "hi" ? "काउंसलर से बात करें" : "Talk to Counselor"}
               </a>
               <button
                 type="button"
@@ -472,40 +473,26 @@ export const FloatingAiAdvisor = () => {
         </div>
       )}
 
-      {/* Floating Bot Launch Button (Flat purple with full photo of expert counselor like real human) */}
+      {/* Floating Bot Launch Button — Clean, Flat, No Gradient, No Multiple Ring Strokes */}
       <button
         onClick={() => setIsOpen((v) => !v)}
         aria-label={isOpen ? "Close Guru AI" : "Chat with Guru AI Advisor"}
-        className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 shadow-2xl text-white group"
-        style={{
-          background: isOpen ? "#334155" : "#6528f7",
-          boxShadow: isOpen
-            ? "0 8px 24px rgba(0,0,0,0.3)"
-            : "0 8px 28px rgba(101, 40, 247, 0.45)",
-        }}
+        className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 shadow-xl overflow-hidden ${
+          isOpen ? "bg-slate-800 text-white" : "bg-white border border-border/80"
+        }`}
       >
-        {/* Animated Glow Rings when closed */}
-        {!isOpen && (
-          <>
-            <span className="absolute inset-0 rounded-full animate-ping opacity-25 bg-[#6528f7]" />
-            <span className="absolute inset-[-3px] rounded-full border-2 border-[#6528f7]/40" />
-          </>
+        {isOpen ? (
+          <X size={24} />
+        ) : (
+          <div className="relative w-full h-full">
+            <img
+              src="/assets/guru-ai-mascot.png"
+              alt="Guru AI Mascot"
+              className="w-full h-full rounded-full object-cover"
+            />
+            <span className="absolute bottom-1 right-1 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-white shadow-sm" />
+          </div>
         )}
-
-        <span className="relative transition-transform duration-300 w-full h-full rounded-full flex items-center justify-center overflow-hidden">
-          {isOpen ? (
-            <X size={24} />
-          ) : (
-            <div className="relative w-full h-full p-1 bg-white/10 rounded-full">
-              <img
-                src="/assets/guru-ai-mascot.png"
-                alt="Guru AI Mascot"
-                className="w-full h-full rounded-full object-cover group-hover:scale-105 transition-transform"
-              />
-              <span className="absolute bottom-1 right-1 w-3 h-3 rounded-full bg-emerald-400 border-2 border-[#6528f7] shadow-sm" />
-            </div>
-          )}
-        </span>
 
         {/* Floating Tooltip Label */}
         {!isOpen && (
