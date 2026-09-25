@@ -37,7 +37,6 @@ const ugPrograms = [
   { to: "/online-bca", label: "Online BCA" },
   { to: "/online-bcom", label: "Online B.Com" },
   { to: "/online-ba", label: "Online BA" },
-  { to: "/class-10-12", label: "Class 10 / 12 Online" },
 ];
 
 const pgPrograms = [
@@ -46,7 +45,6 @@ const pgPrograms = [
   { to: "/online-mcom", label: "Online M.Com" },
   { to: "/online-ma", label: "Online MA" },
   { to: "/online-msc", label: "Online M.Sc" },
-  { to: "/online-dba", label: "Online DBA (Doctorate)" },
 ];
 
 export const Footer = () => {
@@ -111,7 +109,7 @@ export const Footer = () => {
           <div className="sm:col-span-2 lg:col-span-1">
             <img src={logoDark} alt="Degree Guru" className="h-14 w-auto mb-5" />
             <p className="text-white/70 leading-relaxed text-sm mb-6">
-              India's trusted free career counseling and online degree guidance platform. Helping learners since 2020.
+              India's trusted free career counseling and online degree guidance platform.
             </p>
             <div className="flex gap-2.5">
               {socials.map((s) => (
@@ -230,9 +228,11 @@ export const Footer = () => {
             </ul>
           </div>
         </div>
+      </div>
 
+      <div className="container-dg">
         {/* Bottom bar */}
-        <div className="border-t border-white/8 pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="border-t border-white/8 pt-8 pb-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <p className="text-xs text-white/35">
             © 2026 Degree Guru. All rights reserved. Built for India's learners.
           </p>

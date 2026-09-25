@@ -128,6 +128,8 @@ $config = [
                 // to existing controllers/actions. Frontend should call /api/...
                 // so these are explicitly routed to the existing actions.
                 'api/contact/submit'   => 'contact/submit',
+                'api/contact/send-otp' => 'contact/send-otp',
+                'api/contact/verify-otp' => 'contact/verify-otp',
                 'api/contact/index'    => 'contact/index',
                 'api/contact/view'     => 'contact/view',
 
@@ -174,6 +176,8 @@ $config = [
 
                 // Counseling leads
                 'contact/submit'        => 'contact/submit',
+                'contact/send-otp'      => 'contact/send-otp',
+                'contact/verify-otp'    => 'contact/verify-otp',
                 'contact/index'         => 'contact/index',
                 'contact/view'          => 'contact/view',
                 'contact/update-status' => 'contact/update-status',

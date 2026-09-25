@@ -147,68 +147,64 @@ export const Header = () => {
                     <div className="grid grid-cols-2 gap-x-6 gap-y-4">
                       {/* Master's / Postgraduate (PG) */}
                       <div className="space-y-1.5">
-                        <div className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wide text-foreground pb-1 border-b border-border/40">
-                          <GraduationCap size={14} className="text-[#6528f7]" />
+                        <div className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-foreground pb-1.5 border-b border-border/50">
+                          <GraduationCap size={15} className="text-[#6528f7]" />
                           <span>Master's Degrees (PG)</span>
                         </div>
                         <div className="space-y-1 pt-1">
-                          <Link to="/online-mba" className="p-1.5 rounded-xl hover:bg-primary/10 transition-colors flex flex-col group">
-                            <span className="text-xs font-bold text-foreground group-hover:text-primary">Online MBA</span>
-                            <span className="text-[10px] text-muted-foreground">Master of Business Administration</span>
+                          <Link to="/online-mba" className="p-2 rounded-xl hover:bg-primary/10 transition-colors flex flex-col group">
+                            <span className="text-sm font-bold text-foreground group-hover:text-primary">Online MBA</span>
+                            <span className="text-xs text-muted-foreground">Master of Business Administration</span>
                           </Link>
-                          <Link to="/online-mca" className="p-1.5 rounded-xl hover:bg-primary/10 transition-colors flex flex-col group">
-                            <span className="text-xs font-bold text-foreground group-hover:text-primary">Online MCA</span>
-                            <span className="text-[10px] text-muted-foreground">Master of Computer Applications</span>
+                          <Link to="/online-mca" className="p-2 rounded-xl hover:bg-primary/10 transition-colors flex flex-col group">
+                            <span className="text-sm font-bold text-foreground group-hover:text-primary">Online MCA</span>
+                            <span className="text-xs text-muted-foreground">Master of Computer Applications</span>
                           </Link>
-                          <Link to="/online-mcom" className="p-1.5 rounded-xl hover:bg-primary/10 transition-colors flex flex-col group">
-                            <span className="text-xs font-bold text-foreground group-hover:text-primary">Online M.Com</span>
-                            <span className="text-[10px] text-muted-foreground">Master of Commerce</span>
+                          <Link to="/online-mcom" className="p-2 rounded-xl hover:bg-primary/10 transition-colors flex flex-col group">
+                            <span className="text-sm font-bold text-foreground group-hover:text-primary">Online M.Com</span>
+                            <span className="text-xs text-muted-foreground">Master of Commerce</span>
                           </Link>
-                          <Link to="/online-ma" className="p-1.5 rounded-xl hover:bg-primary/10 transition-colors flex flex-col group">
-                            <span className="text-xs font-bold text-foreground group-hover:text-primary">Online MA</span>
-                            <span className="text-[10px] text-muted-foreground">Master of Arts</span>
+                          <Link to="/online-ma" className="p-2 rounded-xl hover:bg-primary/10 transition-colors flex flex-col group">
+                            <span className="text-sm font-bold text-foreground group-hover:text-primary">Online MA</span>
+                            <span className="text-xs text-muted-foreground">Master of Arts</span>
                           </Link>
-                          <Link to="/online-msc" className="p-1.5 rounded-xl hover:bg-primary/10 transition-colors flex flex-col group">
-                            <span className="text-xs font-bold text-foreground group-hover:text-primary">Online M.Sc</span>
-                            <span className="text-[10px] text-muted-foreground">Data Science & AI Tracks</span>
+                          <Link to="/online-msc" className="p-2 rounded-xl hover:bg-primary/10 transition-colors flex flex-col group">
+                            <span className="text-sm font-bold text-foreground group-hover:text-primary">Online M.Sc</span>
+                            <span className="text-xs text-muted-foreground">Data Science & AI Tracks</span>
                           </Link>
                         </div>
                       </div>
 
                       {/* Bachelor's / Undergraduate (UG) */}
                       <div className="space-y-1.5">
-                        <div className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wide text-foreground pb-1 border-b border-border/40">
-                          <BookOpen size={14} className="text-emerald-500" />
+                        <div className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-foreground pb-1.5 border-b border-border/50">
+                          <BookOpen size={15} className="text-emerald-500" />
                           <span>Bachelor's Degrees (UG)</span>
                         </div>
                         <div className="space-y-1 pt-1">
-                          <Link to="/online-bba" className="p-1.5 rounded-xl hover:bg-primary/10 transition-colors flex flex-col group">
-                            <span className="text-xs font-bold text-foreground group-hover:text-primary">Online BBA</span>
-                            <span className="text-[10px] text-muted-foreground">Bachelor of Business Administration</span>
+                          <Link to="/online-bba" className="p-2 rounded-xl hover:bg-primary/10 transition-colors flex flex-col group">
+                            <span className="text-sm font-bold text-foreground group-hover:text-primary">Online BBA</span>
+                            <span className="text-xs text-muted-foreground">Bachelor of Business Administration</span>
                           </Link>
-                          <Link to="/online-bca" className="p-1.5 rounded-xl hover:bg-primary/10 transition-colors flex flex-col group">
-                            <span className="text-xs font-bold text-foreground group-hover:text-primary">Online BCA</span>
-                            <span className="text-[10px] text-muted-foreground">Bachelor of Computer Applications</span>
+                          <Link to="/online-bca" className="p-2 rounded-xl hover:bg-primary/10 transition-colors flex flex-col group">
+                            <span className="text-sm font-bold text-foreground group-hover:text-primary">Online BCA</span>
+                            <span className="text-xs text-muted-foreground">Bachelor of Computer Applications</span>
                           </Link>
-                          <Link to="/online-bcom" className="p-1.5 rounded-xl hover:bg-primary/10 transition-colors flex flex-col group">
-                            <span className="text-xs font-bold text-foreground group-hover:text-primary">Online B.Com</span>
-                            <span className="text-[10px] text-muted-foreground">Bachelor of Commerce</span>
+                          <Link to="/online-bcom" className="p-2 rounded-xl hover:bg-primary/10 transition-colors flex flex-col group">
+                            <span className="text-sm font-bold text-foreground group-hover:text-primary">Online B.Com</span>
+                            <span className="text-xs text-muted-foreground">Bachelor of Commerce</span>
                           </Link>
-                          <Link to="/online-ba" className="p-1.5 rounded-xl hover:bg-primary/10 transition-colors flex flex-col group">
-                            <span className="text-xs font-bold text-foreground group-hover:text-primary">Online BA</span>
-                            <span className="text-[10px] text-muted-foreground">Bachelor of Arts</span>
-                          </Link>
-                          <Link to="/online-dba" className="p-1.5 rounded-xl hover:bg-primary/10 transition-colors flex flex-col group">
-                            <span className="text-xs font-bold text-foreground group-hover:text-primary">Online DBA (Doctorate)</span>
-                            <span className="text-[10px] text-muted-foreground">Doctor of Business Administration</span>
+                          <Link to="/online-ba" className="p-2 rounded-xl hover:bg-primary/10 transition-colors flex flex-col group">
+                            <span className="text-sm font-bold text-foreground group-hover:text-primary">Online BA</span>
+                            <span className="text-xs text-muted-foreground">Bachelor of Arts</span>
                           </Link>
                         </div>
                       </div>
                     </div>
 
                     {/* Secondary & School Boards Strip */}
-                    <div className="pt-2.5 border-t border-border/50 flex flex-wrap items-center justify-between gap-2 text-xs">
-                      <div className="flex items-center gap-3">
+                    <div className="pt-3 border-t border-border/50 flex flex-wrap items-center justify-between gap-2 text-xs">
+                      <div className="flex items-center gap-4">
                         <Link to="/class-10" className="font-semibold text-primary hover:underline flex items-center gap-1">
                           Class 10th (Online Exams) →
                         </Link>
@@ -216,7 +212,7 @@ export const Header = () => {
                           Class 12th (Online Exams) →
                         </Link>
                       </div>
-                      <Link to="/offline-courses" className="text-muted-foreground hover:text-foreground text-[11px] font-medium">
+                      <Link to="/offline-courses" className="text-muted-foreground hover:text-foreground text-xs font-medium">
                         Offline Campus (M.K. University) →
                       </Link>
                     </div>
@@ -239,45 +235,53 @@ export const Header = () => {
                   Universities <ChevronDown size={14} className={`transition-transform duration-200 ${universitiesDropdown ? "rotate-180 text-primary" : ""}`} />
                 </button>
                 <div
-                  className={`absolute top-full left-0 pt-2 w-[420px] transition-all duration-200 ease-out ${
+                  className={`absolute top-full left-0 pt-2 w-[440px] transition-all duration-200 ease-out ${
                     universitiesDropdown ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-2 pointer-events-none"
                   }`}
                 >
-                  <div className="glass-dropdown p-4 rounded-2xl shadow-2xl border border-border/70 space-y-2">
+                  <div className="glass-dropdown p-5 rounded-2xl shadow-2xl border border-border/70 space-y-2.5">
+                    <div className="pb-2 border-b border-border/50 flex items-center justify-between">
+                      <span className="text-[11px] font-black uppercase tracking-wider text-primary">
+                        Accredited Universities
+                      </span>
+                      <Link to="/universities" className="text-xs font-bold text-muted-foreground hover:text-primary flex items-center gap-1">
+                        View All <ArrowRight size={12} />
+                      </Link>
+                    </div>
                     <Link
                       to="/universities"
-                      className="p-2.5 rounded-xl hover:bg-primary/10 transition-colors flex items-center gap-3 group"
+                      className="p-3 rounded-xl hover:bg-primary/10 transition-colors flex items-center gap-3.5 group"
                     >
-                      <div className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
-                        <Building2 size={16} />
+                      <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                        <Building2 size={18} />
                       </div>
                       <div>
-                        <div className="text-xs font-bold text-foreground group-hover:text-primary">Online Universities Directory</div>
-                        <div className="text-[11px] text-muted-foreground">Browse 50+ UGC-DEB approved institutions</div>
+                        <div className="text-sm font-bold text-foreground group-hover:text-primary">Online Universities Directory</div>
+                        <div className="text-xs text-muted-foreground mt-0.5">Browse 50+ UGC-DEB approved institutions</div>
                       </div>
                     </Link>
                     <Link
                       to="/universities/compare"
-                      className="p-2.5 rounded-xl hover:bg-primary/10 transition-colors flex items-center gap-3 group"
+                      className="p-3 rounded-xl hover:bg-emerald-500/10 transition-colors flex items-center gap-3.5 group"
                     >
-                      <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
-                        <GraduationCap size={16} />
+                      <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0">
+                        <GraduationCap size={18} />
                       </div>
                       <div>
-                        <div className="text-xs font-bold text-foreground group-hover:text-primary">Compare Universities</div>
-                        <div className="text-[11px] text-muted-foreground">Side-by-side fees, EMI & LMS comparison</div>
+                        <div className="text-sm font-bold text-foreground group-hover:text-emerald-500">Compare Universities</div>
+                        <div className="text-xs text-muted-foreground mt-0.5">Side-by-side fees, EMI & LMS comparison</div>
                       </div>
                     </Link>
                     <Link
                       to="/offline-courses"
-                      className="p-2.5 rounded-xl hover:bg-amber-500/10 transition-colors flex items-center gap-3 group border-t border-border/40 pt-3"
+                      className="p-3 rounded-xl hover:bg-amber-500/10 transition-colors flex items-center gap-3.5 group border-t border-border/40 pt-3"
                     >
-                      <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center">
-                        <Building2 size={16} />
+                      <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center shrink-0">
+                        <Building2 size={18} />
                       </div>
                       <div>
-                        <div className="text-xs font-bold text-foreground group-hover:text-amber-500">Offline Education</div>
-                        <div className="text-[11px] text-muted-foreground">M.K. University, Patan — regular offline degrees</div>
+                        <div className="text-sm font-bold text-foreground group-hover:text-amber-500">Offline Education</div>
+                        <div className="text-xs text-muted-foreground mt-0.5">M.K. University, Patan — regular offline degrees</div>
                       </div>
                     </Link>
                   </div>
@@ -301,63 +305,68 @@ export const Header = () => {
                   Career Tools <ChevronDown size={14} className={`transition-transform duration-200 ${careerDropdown ? "rotate-180 text-primary" : ""}`} />
                 </button>
                 <div
-                  className={`absolute top-full left-0 pt-2 w-[380px] transition-all duration-200 ease-out ${
+                  className={`absolute top-full left-0 pt-2 w-[420px] transition-all duration-200 ease-out ${
                     careerDropdown ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-2 pointer-events-none"
                   }`}
                 >
-                  <div className="glass-dropdown p-4 rounded-2xl shadow-2xl border border-border/70 space-y-2">
+                  <div className="glass-dropdown p-5 rounded-2xl shadow-2xl border border-border/70 space-y-2">
+                    <div className="pb-2 border-b border-border/50 flex items-center justify-between">
+                      <span className="text-[11px] font-black uppercase tracking-wider text-primary">
+                        Free Career & AI Tools
+                      </span>
+                    </div>
                     <Link
                       to="/career-finder"
-                      className="p-2.5 rounded-xl hover:bg-primary/10 transition-colors flex items-center gap-3 group"
+                      className="p-3 rounded-xl hover:bg-primary/10 transition-colors flex items-center gap-3.5 group"
                     >
-                      <div className="w-8 h-8 rounded-lg bg-[#6528f7]/10 text-[#6528f7] flex items-center justify-center">
-                        <Compass size={16} />
+                      <div className="w-10 h-10 rounded-xl bg-[#6528f7]/10 text-[#6528f7] flex items-center justify-center shrink-0">
+                        <Compass size={18} />
                       </div>
                       <div>
-                        <div className="text-xs font-bold text-foreground group-hover:text-primary flex items-center gap-1.5">
+                        <div className="text-sm font-bold text-foreground group-hover:text-primary flex items-center gap-1.5">
                           Career Finder <span className="text-[9px] px-1.5 py-0.5 rounded-md bg-primary/15 text-primary font-bold">100% Free</span>
                         </div>
-                        <div className="text-[11px] text-muted-foreground">12-dimension strength & career match</div>
+                        <div className="text-xs text-muted-foreground mt-0.5">12-dimension strength & career match</div>
                       </div>
                     </Link>
                     <Link
                       to="/roi-calculator"
-                      className="p-2.5 rounded-xl hover:bg-emerald-500/10 transition-colors flex items-center gap-3 group"
+                      className="p-3 rounded-xl hover:bg-emerald-500/10 transition-colors flex items-center gap-3.5 group"
                     >
-                      <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
-                        <Calculator size={16} />
+                      <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0">
+                        <Calculator size={18} />
                       </div>
                       <div>
-                        <div className="text-xs font-bold text-foreground group-hover:text-emerald-500">Degree ROI Calculator</div>
-                        <div className="text-[11px] text-muted-foreground">Salary jump, payback & investment ROI</div>
+                        <div className="text-sm font-bold text-foreground group-hover:text-emerald-500">Degree ROI Calculator</div>
+                        <div className="text-xs text-muted-foreground mt-0.5">Salary jump, payback & investment ROI</div>
                       </div>
                     </Link>
                     <Link
                       to="/resume-builder"
-                      className="p-2.5 rounded-xl hover:bg-purple-500/10 transition-colors flex items-center gap-3 group"
+                      className="p-3 rounded-xl hover:bg-purple-500/10 transition-colors flex items-center gap-3.5 group"
                     >
-                      <div className="w-8 h-8 rounded-lg bg-purple-500/10 text-purple-500 flex items-center justify-center">
-                        <FileText size={16} />
+                      <div className="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-500 flex items-center justify-center shrink-0">
+                        <FileText size={18} />
                       </div>
                       <div>
-                        <div className="text-xs font-bold text-foreground group-hover:text-purple-500 flex items-center gap-1.5">
+                        <div className="text-sm font-bold text-foreground group-hover:text-purple-500 flex items-center gap-1.5">
                           AI Resume Builder <span className="text-[9px] px-1.5 py-0.5 rounded-md bg-purple-500/15 text-purple-500 font-bold">ATS Score</span>
                         </div>
-                        <div className="text-[11px] text-muted-foreground">Job-ready resume with AI quantification</div>
+                        <div className="text-xs text-muted-foreground mt-0.5">Job-ready resume with AI quantification</div>
                       </div>
                     </Link>
                     <Link
                       to="/emi-calculator"
-                      className="p-2.5 rounded-xl hover:bg-amber-500/10 transition-colors flex items-center gap-3 group"
+                      className="p-3 rounded-xl hover:bg-amber-500/10 transition-colors flex items-center gap-3.5 group"
                     >
-                      <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center">
-                        <Calculator size={16} />
+                      <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center shrink-0">
+                        <Calculator size={18} />
                       </div>
                       <div>
-                        <div className="text-xs font-bold text-foreground group-hover:text-amber-500 flex items-center gap-1.5">
+                        <div className="text-sm font-bold text-foreground group-hover:text-amber-500 flex items-center gap-1.5">
                           EMI Calculator <span className="text-[9px] px-1.5 py-0.5 rounded-md bg-amber-500/15 text-amber-600 dark:text-amber-400 font-bold">0% No-Cost</span>
                         </div>
-                        <div className="text-[11px] text-muted-foreground">Monthly fee installments & approval check</div>
+                        <div className="text-xs text-muted-foreground mt-0.5">Monthly fee installments & approval check</div>
                       </div>
                     </Link>
                   </div>

@@ -28,52 +28,52 @@ export const MobileBottomNav = () => {
 
   return (
     <>
-      {/* Mobile Fixed Bottom Bar */}
+      {/* Mobile Floating Glassmorphism Island Bar */}
       <nav 
         aria-label="Mobile Navigation"
-        className="md:hidden fixed bottom-0 inset-x-0 z-[95] mobile-bottom-dock border-t border-border/40 shadow-2xl safe-area-bottom"
+        className="md:hidden fixed bottom-3 inset-x-3 max-w-md mx-auto z-[95] safe-area-bottom pointer-events-auto"
       >
-        <div className="grid grid-cols-5 h-16 items-center px-1">
+        <div className="h-[62px] px-1.5 py-1 grid grid-cols-5 items-center rounded-2xl bg-white/85 dark:bg-[#0c0d1a]/90 backdrop-blur-2xl border border-white/60 dark:border-white/12 shadow-[0_10px_35px_rgba(101,40,247,0.2),0_4px_12px_rgba(0,0,0,0.08)]">
           {/* 1. Home */}
           <Link
             to="/"
             onClick={() => { setCareerDrawerOpen(false); setProfileDrawerOpen(false); }}
-            className={`flex flex-col items-center justify-center py-1 rounded-xl transition-all duration-200 ${
+            className={`flex flex-col items-center justify-center py-1.5 px-1 rounded-xl transition-all duration-200 ${
               isActive("/") && !careerDrawerOpen && !profileDrawerOpen
-                ? "text-primary font-semibold scale-105"
-                : "text-muted-foreground hover:text-foreground"
+                ? "bg-primary/12 dark:bg-primary/25 text-primary font-black shadow-xs"
+                : "text-foreground/65 hover:text-foreground hover:bg-muted/40"
             }`}
           >
-            <Home size={20} className={isActive("/") && !careerDrawerOpen && !profileDrawerOpen ? "stroke-[2.5]" : "stroke-[1.8]"} />
-            <span className="text-[10px] mt-1 font-medium tracking-tight">Home</span>
+            <Home size={19} className={isActive("/") && !careerDrawerOpen && !profileDrawerOpen ? "stroke-[2.5]" : "stroke-[1.8]"} />
+            <span className="text-[10px] mt-0.5 tracking-tight">Home</span>
           </Link>
 
           {/* 2. Courses */}
           <Link
             to="/courses"
             onClick={() => { setCareerDrawerOpen(false); setProfileDrawerOpen(false); }}
-            className={`flex flex-col items-center justify-center py-1 rounded-xl transition-all duration-200 ${
-              isActive("/courses") || isActive("/programs")
-                ? "text-primary font-semibold scale-105"
-                : "text-muted-foreground hover:text-foreground"
+            className={`flex flex-col items-center justify-center py-1.5 px-1 rounded-xl transition-all duration-200 ${
+              (isActive("/courses") || isActive("/programs")) && !careerDrawerOpen && !profileDrawerOpen
+                ? "bg-primary/12 dark:bg-primary/25 text-primary font-black shadow-xs"
+                : "text-foreground/65 hover:text-foreground hover:bg-muted/40"
             }`}
           >
-            <GraduationCap size={20} className={isActive("/courses") ? "stroke-[2.5]" : "stroke-[1.8]"} />
-            <span className="text-[10px] mt-1 font-medium tracking-tight">Courses</span>
+            <GraduationCap size={19} className={isActive("/courses") ? "stroke-[2.5]" : "stroke-[1.8]"} />
+            <span className="text-[10px] mt-0.5 tracking-tight">Courses</span>
           </Link>
 
           {/* 3. Jobs */}
           <Link
             to="/jobs/job-seeker"
             onClick={() => { setCareerDrawerOpen(false); setProfileDrawerOpen(false); }}
-            className={`flex flex-col items-center justify-center py-1 rounded-xl transition-all duration-200 ${
-              isActive("/jobs")
-                ? "text-primary font-semibold scale-105"
-                : "text-muted-foreground hover:text-foreground"
+            className={`flex flex-col items-center justify-center py-1.5 px-1 rounded-xl transition-all duration-200 ${
+              isActive("/jobs") && !careerDrawerOpen && !profileDrawerOpen
+                ? "bg-primary/12 dark:bg-primary/25 text-primary font-black shadow-xs"
+                : "text-foreground/65 hover:text-foreground hover:bg-muted/40"
             }`}
           >
-            <Briefcase size={20} className={isActive("/jobs") ? "stroke-[2.5]" : "stroke-[1.8]"} />
-            <span className="text-[10px] mt-1 font-medium tracking-tight">Jobs</span>
+            <Briefcase size={19} className={isActive("/jobs") ? "stroke-[2.5]" : "stroke-[1.8]"} />
+            <span className="text-[10px] mt-0.5 tracking-tight">Jobs</span>
           </Link>
 
           {/* 4. Career (Action Drawer) */}
@@ -83,17 +83,17 @@ export const MobileBottomNav = () => {
               setProfileDrawerOpen(false);
               setCareerDrawerOpen(!careerDrawerOpen);
             }}
-            className={`flex flex-col items-center justify-center py-1 rounded-xl transition-all duration-200 ${
-              careerDrawerOpen || isActive("/career-finder") || isActive("/roi-calculator") || isActive("/resume-builder")
-                ? "text-primary font-semibold scale-105"
-                : "text-muted-foreground hover:text-foreground"
+            className={`flex flex-col items-center justify-center py-1.5 px-1 rounded-xl transition-all duration-200 cursor-pointer ${
+              careerDrawerOpen || isActive("/career-finder") || isActive("/roi-calculator") || isActive("/resume-builder") || isActive("/emi-calculator")
+                ? "bg-primary/12 dark:bg-primary/25 text-primary font-black shadow-xs"
+                : "text-foreground/65 hover:text-foreground hover:bg-muted/40"
             }`}
           >
             <div className="relative">
-              <Compass size={20} className={careerDrawerOpen ? "stroke-[2.5] text-primary" : "stroke-[1.8]"} />
-              <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-primary animate-pulse" />
+              <Compass size={19} className={careerDrawerOpen ? "stroke-[2.5] text-primary" : "stroke-[1.8]"} />
+              <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-primary ring-2 ring-white dark:ring-[#0c0d1a] shadow-[0_0_8px_#6528f7]" />
             </div>
-            <span className="text-[10px] mt-1 font-medium tracking-tight">Career</span>
+            <span className="text-[10px] mt-0.5 tracking-tight">Career</span>
           </button>
 
           {/* 5. Profile (Drawer) */}
@@ -103,14 +103,14 @@ export const MobileBottomNav = () => {
               setCareerDrawerOpen(false);
               setProfileDrawerOpen(!profileDrawerOpen);
             }}
-            className={`flex flex-col items-center justify-center py-1 rounded-xl transition-all duration-200 ${
+            className={`flex flex-col items-center justify-center py-1.5 px-1 rounded-xl transition-all duration-200 cursor-pointer ${
               profileDrawerOpen
-                ? "text-primary font-semibold scale-105"
-                : "text-muted-foreground hover:text-foreground"
+                ? "bg-primary/12 dark:bg-primary/25 text-primary font-black shadow-xs"
+                : "text-foreground/65 hover:text-foreground hover:bg-muted/40"
             }`}
           >
-            <User size={20} className={profileDrawerOpen ? "stroke-[2.5] text-primary" : "stroke-[1.8]"} />
-            <span className="text-[10px] mt-1 font-medium tracking-tight">Profile</span>
+            <User size={19} className={profileDrawerOpen ? "stroke-[2.5] text-primary" : "stroke-[1.8]"} />
+            <span className="text-[10px] mt-0.5 tracking-tight">Profile</span>
           </button>
         </div>
       </nav>

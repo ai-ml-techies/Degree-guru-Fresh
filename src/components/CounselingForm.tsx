@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { ArrowRight, CheckCircle2, User, Phone, Mail, Calendar, MessageSquare, Sparkles, Loader2, MapPin, ChevronDown } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ArrowRight, CheckCircle2, User, Phone, Mail, Calendar, MessageSquare, Sparkles, Loader2, MapPin, ChevronDown, ShieldCheck, KeyRound, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
-import { submitCounselingLead } from "@/lib/api";
+import { submitCounselingLead, sendEmailOtp, verifyEmailOtp } from "@/lib/api";
 
 interface CountryCode {
   name: string;
@@ -121,15 +121,112 @@ export const CounselingForm = ({
     state: "",
     message: defaultProgram || "",
   });
+
+  // OTP Verification state
+  const [emailVerified, setEmailVerified] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [otpSending, setOtpSending] = useState(false);
+  const [otpVerifying, setOtpVerifying] = useState(false);
+  const [otpCountdown, setOtpCountdown] = useState(0);
+  const [devOtpHint, setDevOtpHint] = useState<string | null>(null);
+
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [focusedField, setFocusedField] = useState<string | null>(null);
 
+  // Countdown timer for resend OTP
+  useEffect(() => {
+    if (otpCountdown > 0) {
+      const timer = setTimeout(() => setOtpCountdown(otpCountdown - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [otpCountdown]);
+
   const handle = (k: string) => (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => setForm({ ...form, [k]: e.target.value });
+  ) => {
+    if (k === "email") {
+      // If user edits email, reset verification
+      setEmailVerified(false);
+      setOtpSent(false);
+      setOtp("");
+      setDevOtpHint(null);
+    }
+    setForm({ ...form, [k]: e.target.value });
+  };
 
   const isIndia = selectedCountry.code === "IN";
+
+  // Trigger Send OTP
+  const handleSendOtp = async () => {
+    const trimmedEmail = form.email.trim().toLowerCase();
+    if (!trimmedEmail) {
+      toast.error("Please enter your email address first.");
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(trimmedEmail)) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+    const domain = trimmedEmail.split("@")[1] ?? "";
+    const blockedDomains = [
+      "mailinator.com",
+      "tempmail.com",
+      "10minutemail.com",
+      "guerrillamail.com",
+      "yopmail.com",
+      "temp-mail.org",
+      "dyleris.com",
+    ];
+    if (blockedDomains.includes(domain)) {
+      toast.error("Temporary/disposable email addresses are not permitted.");
+      return;
+    }
+
+    setOtpSending(true);
+    try {
+      const res = await sendEmailOtp(trimmedEmail);
+      if (res.success) {
+        setOtpSent(true);
+        setOtpCountdown(45);
+        if (res.dev_otp) setDevOtpHint(res.dev_otp);
+        toast.success("Verification code sent to your email!");
+      } else {
+        toast.error(res.message || "Failed to send verification code.");
+      }
+    } catch {
+      toast.error("Could not send code. Please try again.");
+    } finally {
+      setOtpSending(false);
+    }
+  };
+
+  // Trigger Verify OTP
+  const handleVerifyOtp = async () => {
+    const cleanOtp = otp.trim();
+    if (!cleanOtp) {
+      toast.error("Please enter the verification code.");
+      return;
+    }
+    setOtpVerifying(true);
+    try {
+      const res = await verifyEmailOtp(form.email, cleanOtp);
+      if (res.success) {
+        setEmailVerified(true);
+        setOtpSent(false);
+        setDevOtpHint(null);
+        toast.success("Email verified successfully! ✓");
+      } else {
+        toast.error(res.message || "Invalid verification code. Please check and try again.");
+      }
+    } catch {
+      toast.error("Verification failed. Please try again.");
+    } finally {
+      setOtpVerifying(false);
+    }
+  };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -169,7 +266,7 @@ export const CounselingForm = ({
       }
     }
 
-    // 3. Validate Email (Mandatory)
+    // 3. Validate Email & OTP Verification (Mandatory)
     const trimmedEmail = form.email.trim().toLowerCase();
     if (!trimmedEmail) {
       toast.error("Please enter your email address.");
@@ -180,18 +277,12 @@ export const CounselingForm = ({
       toast.error("Please enter a valid email address.");
       return;
     }
-    const domain = trimmedEmail.split("@")[1] ?? "";
-    const blockedDomains = [
-      "mailinator.com",
-      "tempmail.com",
-      "10minutemail.com",
-      "guerrillamail.com",
-      "yopmail.com",
-      "temp-mail.org",
-      "dyleris.com",
-    ];
-    if (blockedDomains.includes(domain)) {
-      toast.error("Temporary/disposable email addresses are not permitted.");
+
+    if (!emailVerified) {
+      toast.error("Please verify your email with the OTP code first.");
+      if (!otpSent) {
+        handleSendOtp();
+      }
       return;
     }
 
@@ -216,8 +307,6 @@ export const CounselingForm = ({
       ? phoneDigits.slice(-10)
       : `${selectedCountry.dialCode} ${phoneDigits}`;
 
-    // Backend fallback for message: backend requires non-empty message, so if user didn't enter custom message,
-    // construct helpful context with their State / Country so counselor knows origin.
     const messagePayload = form.message.trim()
       ? `[${form.state}, ${selectedCountry.name}] ${form.message.trim()}`
       : `Seeking guidance for online degree programs [${form.state}, ${selectedCountry.name}]`;
@@ -247,6 +336,9 @@ export const CounselingForm = ({
             state: "",
             message: defaultProgram || "",
           });
+          setEmailVerified(false);
+          setOtpSent(false);
+          setOtp("");
           setSubmitted(false);
           onSubmitDone?.();
         }, 3500);
@@ -262,31 +354,31 @@ export const CounselingForm = ({
   };
 
   const fieldCls = (field: string) =>
-    `w-full bg-background border rounded-xl pl-11 pr-4 py-3 text-sm font-medium text-foreground transition-all duration-200 outline-none placeholder:text-foreground/40 placeholder:font-normal ${
+    `w-full bg-background border rounded-xl pl-9 pr-3.5 py-2.5 text-xs sm:text-sm font-medium text-foreground transition-all duration-200 outline-none placeholder:text-foreground/40 placeholder:font-normal ${
       focusedField === field
-        ? "border-primary ring-2 ring-primary/25 bg-background shadow-sm"
+        ? "border-primary ring-2 ring-primary/20 bg-background shadow-xs"
         : "border-border hover:border-foreground/30"
     }`;
 
-  const iconCls = "absolute left-3.5 top-1/2 -translate-y-1/2 text-foreground/50 transition-colors duration-200";
-  const iconActiveCls = "absolute left-3.5 top-1/2 -translate-y-1/2 text-primary transition-colors duration-200";
+  const iconCls = "absolute left-3 top-1/2 -translate-y-1/2 text-foreground/45 transition-colors duration-200 pointer-events-none";
+  const iconActiveCls = "absolute left-3 top-1/2 -translate-y-1/2 text-primary transition-colors duration-200 pointer-events-none";
 
   if (submitted) {
     return (
-      <div className="p-8 md:p-10 flex flex-col items-center justify-center gap-4 text-center min-h-[360px] animate-[fade-in-up_0.5s_ease_forwards]">
-        <div className="w-20 h-20 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
-          <CheckCircle2 size={44} className="text-emerald-500" />
+      <div className="p-6 md:p-8 flex flex-col items-center justify-center gap-3 text-center min-h-[300px] animate-[fade-in-up_0.4s_ease_forwards]">
+        <div className="w-16 h-16 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
+          <CheckCircle2 size={36} className="text-emerald-500" />
         </div>
-        <h3 className="text-2xl font-black text-foreground">You're all set!</h3>
-        <p className="text-sm font-medium text-foreground/80 max-w-sm leading-relaxed">
+        <h3 className="text-xl font-black text-foreground">You're all set!</h3>
+        <p className="text-xs sm:text-sm font-medium text-foreground/80 max-w-xs leading-relaxed">
           Our expert academic counselor will connect with you at{" "}
           <span className="font-bold text-foreground">
             {selectedCountry.dialCode} {form.phone}
           </span>{" "}
-          shortly with tailored university choices and fee structures.
+          shortly with tailored university choices.
         </p>
-        <div className="flex items-center gap-2 text-xs font-semibold text-primary bg-primary/10 border border-primary/20 rounded-full px-4 py-2 mt-2">
-          <Sparkles size={14} className="text-primary" />
+        <div className="flex items-center gap-1.5 text-xs font-semibold text-primary bg-primary/10 border border-primary/20 rounded-full px-3.5 py-1.5 mt-1">
+          <Sparkles size={13} className="text-primary" />
           100% Free Guidance • Unbiased & Student-First
         </div>
       </div>
@@ -294,23 +386,18 @@ export const CounselingForm = ({
   }
 
   return (
-    <form onSubmit={submit} className="space-y-4 pt-1">
-      {/* Row 1: Full Name (Mandatory) */}
-      <div className="space-y-1.5">
-        <label className="block text-xs font-bold text-foreground">
+    <form onSubmit={submit} className="space-y-3 pt-1">
+      {/* Row 1: Full Name */}
+      <div className="space-y-1">
+        <label className="block text-[11px] font-bold text-foreground">
           Full Name <span className="text-red-500 font-black">*</span>
         </label>
         <div className="relative">
-          <User size={16} className={focusedField === "name" ? iconActiveCls : iconCls} />
+          <User size={15} className={focusedField === "name" ? iconActiveCls : iconCls} />
           <input
             className={fieldCls("name")}
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value.replace(/[0-9]/g, "") })}
-            onPaste={(e) => {
-              e.preventDefault();
-              const paste = e.clipboardData.getData("text").replace(/[0-9]/g, "");
-              setForm({ ...form, name: (form.name + paste).slice(0, 150) });
-            }}
             onFocus={() => setFocusedField("name")}
             onBlur={() => setFocusedField(null)}
             placeholder="Enter your full name"
@@ -321,21 +408,18 @@ export const CounselingForm = ({
         </div>
       </div>
 
-      {/* Row 2: Phone Number with Country Code (Mandatory) */}
-      <div className="space-y-1.5">
-        <label className="block text-xs font-bold text-foreground">
+      {/* Row 2: Phone Number with Country Code */}
+      <div className="space-y-1">
+        <label className="block text-[11px] font-bold text-foreground">
           Phone Number <span className="text-red-500 font-black">*</span>
         </label>
-        <div className="relative flex rounded-xl border border-border bg-background focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/25 overflow-hidden transition-all">
-          {/* Country Code Dropdown (Compact trigger with Flag & Code only, lists country names on click) */}
-          <div className="relative border-r border-border bg-muted/40 shrink-0 flex items-center w-[96px] justify-center hover:bg-muted/70 transition-colors">
-            {/* Displayed Compact Label */}
-            <div className="pointer-events-none flex items-center gap-1.5 text-xs sm:text-sm font-bold text-foreground pl-2 pr-5 select-none">
-              <span className="text-base leading-none">{selectedCountry.flag}</span>
+        <div className="relative flex rounded-xl border border-border bg-background focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 overflow-hidden transition-all">
+          {/* Country Code Trigger */}
+          <div className="relative border-r border-border bg-muted/40 shrink-0 flex items-center w-[84px] justify-center hover:bg-muted/70 transition-colors">
+            <div className="pointer-events-none flex items-center gap-1 text-xs font-bold text-foreground pl-1.5 pr-4 select-none">
+              <span className="text-sm leading-none">{selectedCountry.flag}</span>
               <span>{selectedCountry.dialCode}</span>
             </div>
-
-            {/* Native Select Overlay */}
             <select
               aria-label="Select Country Code"
               value={selectedCountry.code}
@@ -347,42 +431,70 @@ export const CounselingForm = ({
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
             >
               {COUNTRIES.map((c) => (
-                <option key={c.code} value={c.code} className="text-foreground bg-card py-1.5 text-sm font-medium">
+                <option key={c.code} value={c.code} className="text-foreground bg-card py-1 text-xs font-medium">
                   {c.flag} {c.dialCode} — {c.name}
                 </option>
               ))}
             </select>
-            <ChevronDown size={13} className="absolute right-2 text-foreground/50 pointer-events-none" />
+            <ChevronDown size={11} className="absolute right-1.5 text-foreground/50 pointer-events-none" />
           </div>
 
           <div className="relative flex-1 flex items-center">
-            <Phone size={15} className="absolute left-3 text-foreground/45 pointer-events-none" />
+            <Phone size={14} className="absolute left-2.5 text-foreground/45 pointer-events-none" />
             <input
               type="tel"
               value={form.phone}
               onChange={handle("phone")}
               onFocus={() => setFocusedField("phone")}
               onBlur={() => setFocusedField(null)}
-              placeholder={isIndia ? "10-digit mobile number" : "Mobile / Phone number"}
+              placeholder={isIndia ? "10-digit mobile number" : "Mobile number"}
               maxLength={isIndia ? 11 : 16}
               required
               disabled={submitting}
-              className="w-full bg-transparent pl-9 pr-4 py-3 text-sm font-semibold text-foreground outline-none placeholder:text-foreground/40 placeholder:font-normal"
+              className="w-full bg-transparent pl-8 pr-3 py-2.5 text-xs sm:text-sm font-semibold text-foreground outline-none placeholder:text-foreground/40 placeholder:font-normal"
             />
           </div>
         </div>
       </div>
 
-      {/* Row 3: Email Address (Mandatory) */}
-      <div className="space-y-1.5">
-        <label className="block text-xs font-bold text-foreground">
-          Email Address <span className="text-red-500 font-black">*</span>
-        </label>
+      {/* Row 3: Email Address with OTP Verification */}
+      <div className="space-y-1">
+        <div className="flex items-center justify-between">
+          <label className="block text-[11px] font-bold text-foreground">
+            Email Address <span className="text-red-500 font-black">*</span>
+          </label>
+          {emailVerified ? (
+            <span className="inline-flex items-center gap-1 text-[10px] font-extrabold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+              <CheckCircle2 size={11} className="text-emerald-500" />
+              Verified ✓
+            </span>
+          ) : (
+            <button
+              type="button"
+              onClick={handleSendOtp}
+              disabled={otpSending || !form.email || otpCountdown > 0}
+              className="text-[11px] font-bold text-primary hover:text-primary/80 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 cursor-pointer transition-colors"
+            >
+              {otpSending ? (
+                <>
+                  <Loader2 size={11} className="animate-spin" /> Sending…
+                </>
+              ) : otpCountdown > 0 ? (
+                `Resend (${otpCountdown}s)`
+              ) : (
+                "Verify via OTP"
+              )}
+            </button>
+          )}
+        </div>
+
         <div className="relative">
-          <Mail size={16} className={focusedField === "email" ? iconActiveCls : iconCls} />
+          <Mail size={15} className={focusedField === "email" ? iconActiveCls : iconCls} />
           <input
             type="email"
-            className={fieldCls("email")}
+            className={`${fieldCls("email")} ${
+              emailVerified ? "border-emerald-500/60 bg-emerald-500/5 focus:border-emerald-500" : ""
+            }`}
             value={form.email}
             onChange={handle("email")}
             onFocus={() => setFocusedField("email")}
@@ -393,105 +505,142 @@ export const CounselingForm = ({
             disabled={submitting}
           />
         </div>
+
+        {/* OTP Input Drawer when OTP is sent & not yet verified */}
+        {otpSent && !emailVerified && (
+          <div className="p-3 bg-primary/5 dark:bg-primary/10 border border-primary/20 rounded-xl space-y-2 animate-[fade-in_0.3s_ease]">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-bold text-foreground flex items-center gap-1.5">
+                <KeyRound size={13} className="text-primary" /> Enter 6-digit OTP sent to email:
+              </span>
+              {devOtpHint && (
+                <span className="text-[10px] font-mono text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
+                  Test OTP: {devOtpHint}
+                </span>
+              )}
+            </div>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                maxLength={6}
+                value={otp}
+                onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                placeholder="6-digit code"
+                className="flex-1 bg-background border border-border focus:border-primary focus:ring-1 focus:ring-primary rounded-lg px-3 py-1.5 text-center font-mono font-bold tracking-widest text-sm text-foreground outline-none"
+              />
+              <button
+                type="button"
+                onClick={handleVerifyOtp}
+                disabled={otpVerifying || otp.length < 4}
+                className="px-3.5 py-1.5 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 transition-all"
+              >
+                {otpVerifying ? <Loader2 size={12} className="animate-spin" /> : "Verify"}
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* Row 4: Date of Birth (Mandatory) */}
-      <div className="space-y-1.5">
-        <label className="block text-xs font-bold text-foreground">
-          Date of Birth <span className="text-red-500 font-black">*</span>
-        </label>
-        <div className="relative">
-          <Calendar size={16} className={focusedField === "dob" ? iconActiveCls : iconCls} />
-          <input
-            type="date"
-            className={fieldCls("dob")}
-            value={form.dob}
-            onChange={handle("dob")}
-            onFocus={() => setFocusedField("dob")}
-            onBlur={() => setFocusedField(null)}
-            required
-            disabled={submitting}
-          />
+      {/* Row 4: Date of Birth and State in ONE row to save vertical height */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {/* Date of Birth */}
+        <div className="space-y-1">
+          <label className="block text-[11px] font-bold text-foreground">
+            Date of Birth <span className="text-red-500 font-black">*</span>
+          </label>
+          <div className="relative">
+            <Calendar size={15} className={focusedField === "dob" ? iconActiveCls : iconCls} />
+            <input
+              type="date"
+              className={fieldCls("dob")}
+              value={form.dob}
+              onChange={handle("dob")}
+              onFocus={() => setFocusedField("dob")}
+              onBlur={() => setFocusedField(null)}
+              required
+              disabled={submitting}
+            />
+          </div>
         </div>
-      </div>
 
-      {/* Row 5: State / Union Territory Dropdown (Mandatory) */}
-      <div className="space-y-1.5">
-        <label className="block text-xs font-bold text-foreground">
-          {isIndia ? "State / Union Territory" : "State / Province / Region"}{" "}
-          <span className="text-red-500 font-black">*</span>
-        </label>
-        <div className="relative">
-          <MapPin size={16} className={focusedField === "state" ? iconActiveCls : iconCls} />
-          {isIndia ? (
-            <>
-              <select
-                className={`${fieldCls("state")} appearance-none pr-9 cursor-pointer`}
+        {/* State / Union Territory */}
+        <div className="space-y-1">
+          <label className="block text-[11px] font-bold text-foreground">
+            {isIndia ? "State / Union Territory" : "State / Province"}{" "}
+            <span className="text-red-500 font-black">*</span>
+          </label>
+          <div className="relative">
+            <MapPin size={15} className={focusedField === "state" ? iconActiveCls : iconCls} />
+            {isIndia ? (
+              <>
+                <select
+                  className={`${fieldCls("state")} appearance-none pr-8 cursor-pointer truncate`}
+                  value={form.state}
+                  onChange={handle("state")}
+                  onFocus={() => setFocusedField("state")}
+                  onBlur={() => setFocusedField(null)}
+                  required
+                  disabled={submitting}
+                >
+                  <option value="" disabled className="text-foreground/40">
+                    Select your State
+                  </option>
+                  <optgroup label="── States ──">
+                    {INDIAN_STATES_AND_UTS.slice(0, 28).map((st) => (
+                      <option key={st} value={st} className="text-foreground bg-card py-1 text-xs">
+                        {st}
+                      </option>
+                    ))}
+                  </optgroup>
+                  <optgroup label="── Union Territories ──">
+                    {INDIAN_STATES_AND_UTS.slice(28).map((ut) => (
+                      <option key={ut} value={ut} className="text-foreground bg-card py-1 text-xs">
+                        {ut}
+                      </option>
+                    ))}
+                  </optgroup>
+                </select>
+                <ChevronDown size={13} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-foreground/50 pointer-events-none" />
+              </>
+            ) : (
+              <input
+                type="text"
+                className={fieldCls("state")}
                 value={form.state}
                 onChange={handle("state")}
                 onFocus={() => setFocusedField("state")}
                 onBlur={() => setFocusedField(null)}
+                placeholder="Enter State / Province"
                 required
                 disabled={submitting}
-              >
-                <option value="" disabled className="text-foreground/40">
-                  Select your State or Union Territory
-                </option>
-                <optgroup label="── States ──">
-                  {INDIAN_STATES_AND_UTS.slice(0, 28).map((st) => (
-                    <option key={st} value={st} className="text-foreground bg-card py-1">
-                      {st}
-                    </option>
-                  ))}
-                </optgroup>
-                <optgroup label="── Union Territories ──">
-                  {INDIAN_STATES_AND_UTS.slice(28).map((ut) => (
-                    <option key={ut} value={ut} className="text-foreground bg-card py-1">
-                      {ut}
-                    </option>
-                  ))}
-                </optgroup>
-              </select>
-              <ChevronDown size={14} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-foreground/50 pointer-events-none" />
-            </>
-          ) : (
-            <input
-              type="text"
-              className={fieldCls("state")}
-              value={form.state}
-              onChange={handle("state")}
-              onFocus={() => setFocusedField("state")}
-              onBlur={() => setFocusedField(null)}
-              placeholder="Enter your State / Province / Region"
-              required
-              disabled={submitting}
-            />
-          )}
+              />
+            )}
+          </div>
         </div>
       </div>
 
-      {/* Row 6: What are you looking for? (Message - Optional) */}
+      {/* Row 5: What are you looking for? (Message - Optional) */}
       {!compact && (
-        <div className="space-y-1.5">
-          <label className="block text-xs font-bold text-foreground flex items-center justify-between">
+        <div className="space-y-1">
+          <label className="block text-[11px] font-bold text-foreground flex items-center justify-between">
             <span>What are you looking for?</span>
-            <span className="text-[11px] font-normal text-foreground/60">(Optional)</span>
+            <span className="text-[10px] font-normal text-foreground/60">(Optional)</span>
           </label>
           <div className="relative">
             <MessageSquare
-              size={16}
-              className={`absolute left-3.5 top-3.5 transition-colors duration-200 ${
-                focusedField === "message" ? "text-primary" : "text-foreground/50"
+              size={15}
+              className={`absolute left-3 top-2.5 transition-colors duration-200 ${
+                focusedField === "message" ? "text-primary" : "text-foreground/45"
               }`}
             />
-            <textarea
-              rows={2}
-              className={`${fieldCls("message")} pl-11 resize-none font-normal`}
+            <input
+              type="text"
+              className={`${fieldCls("message")} text-xs font-normal`}
               value={form.message}
               onChange={handle("message")}
               onFocus={() => setFocusedField("message")}
               onBlur={() => setFocusedField(null)}
-              placeholder="Which program, degree, or university are you interested in?"
+              placeholder="Target degree, program, or university preference"
               disabled={submitting}
             />
           </div>
@@ -502,25 +651,25 @@ export const CounselingForm = ({
       <button
         type="submit"
         disabled={submitting}
-        className="btn-primary btn-primary-pulse w-full py-3.5 mt-2 rounded-xl text-sm font-extrabold text-white flex items-center justify-center gap-2 group disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer shadow-lg shadow-primary/20 hover:shadow-primary/35 transition-all"
+        className="btn-primary btn-primary-pulse w-full py-3 mt-1 rounded-xl text-xs sm:text-sm font-extrabold text-white flex items-center justify-center gap-2 group disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer shadow-md shadow-primary/20 hover:shadow-primary/30 transition-all"
       >
         {submitting ? (
           <span className="flex items-center justify-center gap-2">
-            <Loader2 size={18} className="animate-spin" /> Submitting Guidance Request…
+            <Loader2 size={16} className="animate-spin" /> Submitting Guidance Request…
           </span>
         ) : (
           <span className="flex items-center justify-center gap-2">
             {buttonLabel}
-            <ArrowRight size={18} className="transition-transform duration-200 group-hover:translate-x-1" />
+            <ArrowRight size={16} className="transition-transform duration-200 group-hover:translate-x-1" />
           </span>
         )}
       </button>
 
-      {/* Trust Badges - 2hr callback completely removed */}
-      <div className="flex items-center justify-center gap-6 pt-1">
+      {/* Trust Badges */}
+      <div className="flex items-center justify-center gap-4 pt-0.5">
         {["100% Free", "Zero Spam", "Verified Advisors"].map((tag) => (
-          <span key={tag} className="flex items-center gap-1.5 text-xs font-semibold text-foreground/75">
-            <CheckCircle2 size={13} className="text-emerald-500 shrink-0" />
+          <span key={tag} className="flex items-center gap-1 text-[11px] font-semibold text-foreground/75">
+            <CheckCircle2 size={12} className="text-emerald-500 shrink-0" />
             {tag}
           </span>
         ))}

@@ -36,7 +36,7 @@ import { ACTIVE_ONLINE_UNIVERSITIES } from "@/data/universities";
 import { BLOG_POSTS } from "@/data/blogs";
 import { fetchHomeContent } from "@/lib/api";
 import heroDesktop from "@/assets/hero-desktop.jpg";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { WhatsAppCircleIcon } from "@/components/SocialIcons";
 
 export const Index = () => {
@@ -417,11 +417,14 @@ export const Index = () => {
 
       {/* Free Counseling Lead Modal */}
       <Dialog open={counselingOpen} onOpenChange={setCounselingOpen}>
-        <DialogContent className="max-w-md p-6 rounded-3xl bg-card border border-border shadow-2xl">
-          <DialogHeader>
-            <DialogTitle className="text-xl sm:text-2xl font-black text-foreground tracking-tight">
+        <DialogContent className="max-w-md p-5 sm:p-6 rounded-3xl bg-card border border-border shadow-2xl max-h-[92vh] overflow-y-auto">
+          <DialogHeader className="pb-1 text-left">
+            <DialogTitle className="text-lg sm:text-xl font-black text-foreground tracking-tight">
               Need Right Guidance?
             </DialogTitle>
+            <DialogDescription className="text-xs text-muted-foreground">
+              Connect with an accredited academic counselor for 100% unbiased guidance.
+            </DialogDescription>
           </DialogHeader>
           <CounselingForm
             buttonLabel="Request Free Counseling Call"

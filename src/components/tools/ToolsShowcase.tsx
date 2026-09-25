@@ -84,12 +84,12 @@ const TOOLS_LIST: ToolItem[] = [
 ];
 
 export const ToolsShowcase = () => {
-  const [filter, setFilter] = useState<"all" | "pre" | "post">("all");
+  const [filter, setFilter] = useState<"pre" | "post">("pre");
   const navigate = useNavigate();
   const { requireContact } = useLeadGate();
 
   const filteredTools = TOOLS_LIST.filter(
-    (t) => filter === "all" || t.category === filter || t.category === "all"
+    (t) => t.category === filter || t.category === "all"
   );
 
   const handleToolClick = (t: ToolItem) => {
@@ -117,17 +117,6 @@ export const ToolsShowcase = () => {
 
         {/* Filter Tabs */}
         <div className="flex items-center gap-2 bg-muted/60 p-1.5 rounded-2xl border border-border shrink-0 self-start sm:self-auto">
-          <button
-            type="button"
-            onClick={() => setFilter("all")}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
-              filter === "all"
-                ? "bg-card text-foreground shadow-sm border border-border/80"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            All Tools
-          </button>
           <button
             type="button"
             onClick={() => setFilter("pre")}
