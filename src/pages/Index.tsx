@@ -71,10 +71,10 @@ export const Index = () => {
               {/* Primary & Counselor CTAs */}
               <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-2">
                 <Link
-                  to="/know-yourself"
+                  to="/courses"
                   className="px-6 py-3.5 rounded-2xl bg-primary text-primary-foreground font-extrabold text-sm shadow-xl shadow-primary/25 hover:bg-primary/90 hover:scale-[1.02] transition-all flex items-center gap-2"
                 >
-                  <Sparkles size={18} /> Know Yourself <ArrowRight size={15} />
+                  <GraduationCap size={18} /> Find My Course <ArrowRight size={15} />
                 </Link>
 
                 <a
