@@ -47,10 +47,10 @@ export const MobileBottomNav = () => {
         aria-label="Mobile Navigation"
         className="md:hidden fixed bottom-3 inset-x-3 sm:inset-x-6 max-w-md mx-auto z-[95] safe-area-bottom pointer-events-auto select-none"
       >
-        <div className="relative h-[64px] px-1 py-1 grid grid-cols-4 items-center rounded-2xl bg-white/96 dark:bg-[#181932]/96 backdrop-blur-2xl border border-black/10 dark:border-white/20 shadow-[0_12px_40px_rgba(0,0,0,0.3),0_0_0_1px_rgba(255,255,255,0.08)]">
-          {/* Silky Smooth Animated Sliding Apple Pill Indicator */}
+        <div className="relative h-[66px] px-1 py-1 grid grid-cols-4 items-center rounded-2xl bg-white/80 dark:bg-[#1a1b38]/85 backdrop-blur-3xl saturate-[180%] border border-white/60 dark:border-white/20 shadow-[0_12px_36px_rgba(0,0,0,0.18),0_0_24px_rgba(101,40,247,0.18),inset_0_1px_1.5px_rgba(255,255,255,0.4),inset_0_-1px_1px_rgba(0,0,0,0.2)]">
+          {/* Liquid Glass Animated Sliding Pill Indicator */}
           <div 
-            className="absolute top-1 bottom-1 rounded-xl bg-primary/10 dark:bg-primary/25 border border-primary/20 dark:border-primary/40 shadow-xs transition-all duration-300 [transition-timing-function:cubic-bezier(0.2,0.8,0.2,1)] pointer-events-none z-0"
+            className="absolute top-1 bottom-1 rounded-xl bg-gradient-to-b from-[#6528f7]/20 via-[#6528f7]/15 to-[#6528f7]/8 dark:from-[#6528f7]/40 dark:via-[#6528f7]/28 dark:to-[#6528f7]/15 border border-[#6528f7]/35 dark:border-[#a78bfa]/40 shadow-[0_4px_16px_rgba(101,40,247,0.25),inset_0_1px_1.5px_rgba(255,255,255,0.35)] backdrop-blur-xl transition-all duration-300 [transition-timing-function:cubic-bezier(0.25,1,0.5,1)] pointer-events-none z-0"
             style={{ 
               left: `calc(${activeIndex * 25}% + 3px)`, 
               width: `calc(25% - 6px)` 
@@ -61,59 +61,56 @@ export const MobileBottomNav = () => {
           <Link
             to="/"
             onClick={() => setCareerDrawerOpen(false)}
-            className={`${itemBase} ${activeIndex === 0 ? "text-primary font-black" : "text-muted-foreground/85 hover:text-foreground font-semibold"}`}
+            className={`${itemBase} ${activeIndex === 0 ? "text-primary dark:text-[#c4b5fd] font-black" : "text-neutral-600 dark:text-neutral-200 hover:text-foreground dark:hover:text-white font-bold"}`}
           >
             <Home 
               size={19} 
-              className={`transition-all duration-300 ${activeIndex === 0 ? "stroke-[2.5] text-primary scale-110 drop-shadow-xs" : "stroke-[1.8] scale-100"}`} 
+              className={`transition-all duration-300 ${activeIndex === 0 ? "stroke-[2.5] text-primary dark:text-[#a78bfa] scale-110 drop-shadow-[0_2px_8px_rgba(101,40,247,0.4)]" : "stroke-[1.8] scale-100"}`} 
             />
-            <span className="text-[10px] mt-0.5 tracking-tight font-bold">Home</span>
-            <span className={`w-1 h-1 rounded-full bg-primary mt-0.5 transition-all duration-300 ${activeIndex === 0 ? "opacity-100 scale-100" : "opacity-0 scale-50"}`} />
+            <span className="text-[11px] mt-0.5 tracking-tight leading-tight">Home</span>
+            <span className={`w-1.5 h-1.5 rounded-full bg-primary dark:bg-[#a78bfa] shadow-[0_0_6px_#6528f7] mt-0.5 transition-all duration-300 ${activeIndex === 0 ? "opacity-100 scale-100" : "opacity-0 scale-50"}`} />
           </Link>
 
           {/* 2. Online Programs */}
           <Link
             to="/courses"
             onClick={() => setCareerDrawerOpen(false)}
-            className={`${itemBase} ${activeIndex === 1 ? "text-primary font-black" : "text-muted-foreground/85 hover:text-foreground font-semibold"}`}
+            className={`${itemBase} ${activeIndex === 1 ? "text-primary dark:text-[#c4b5fd] font-black" : "text-neutral-600 dark:text-neutral-200 hover:text-foreground dark:hover:text-white font-bold"}`}
           >
             <GraduationCap 
               size={19} 
-              className={`transition-all duration-300 ${activeIndex === 1 ? "stroke-[2.5] text-primary scale-110 drop-shadow-xs" : "stroke-[1.8] scale-100"}`} 
+              className={`transition-all duration-300 ${activeIndex === 1 ? "stroke-[2.5] text-primary dark:text-[#a78bfa] scale-110 drop-shadow-[0_2px_8px_rgba(101,40,247,0.4)]" : "stroke-[1.8] scale-100"}`} 
             />
-            <span className="text-[9.5px] mt-0.5 tracking-tight font-bold text-center leading-tight truncate max-w-full">Online Programs</span>
-            <span className={`w-1 h-1 rounded-full bg-primary mt-0.5 transition-all duration-300 ${activeIndex === 1 ? "opacity-100 scale-100" : "opacity-0 scale-50"}`} />
+            <span className="text-[10.5px] mt-0.5 tracking-tight text-center leading-tight truncate max-w-full">Online Programs</span>
+            <span className={`w-1.5 h-1.5 rounded-full bg-primary dark:bg-[#a78bfa] shadow-[0_0_6px_#6528f7] mt-0.5 transition-all duration-300 ${activeIndex === 1 ? "opacity-100 scale-100" : "opacity-0 scale-50"}`} />
           </Link>
 
           {/* 3. Universities */}
           <Link
             to="/universities"
             onClick={() => setCareerDrawerOpen(false)}
-            className={`${itemBase} ${activeIndex === 2 ? "text-primary font-black" : "text-muted-foreground/85 hover:text-foreground font-semibold"}`}
+            className={`${itemBase} ${activeIndex === 2 ? "text-primary dark:text-[#c4b5fd] font-black" : "text-neutral-600 dark:text-neutral-200 hover:text-foreground dark:hover:text-white font-bold"}`}
           >
             <Building2 
               size={19} 
-              className={`transition-all duration-300 ${activeIndex === 2 ? "stroke-[2.5] text-primary scale-110 drop-shadow-xs" : "stroke-[1.8] scale-100"}`} 
+              className={`transition-all duration-300 ${activeIndex === 2 ? "stroke-[2.5] text-primary dark:text-[#a78bfa] scale-110 drop-shadow-[0_2px_8px_rgba(101,40,247,0.4)]" : "stroke-[1.8] scale-100"}`} 
             />
-            <span className="text-[10px] mt-0.5 tracking-tight font-bold">Universities</span>
-            <span className={`w-1 h-1 rounded-full bg-primary mt-0.5 transition-all duration-300 ${activeIndex === 2 ? "opacity-100 scale-100" : "opacity-0 scale-50"}`} />
+            <span className="text-[11px] mt-0.5 tracking-tight leading-tight">Universities</span>
+            <span className={`w-1.5 h-1.5 rounded-full bg-primary dark:bg-[#a78bfa] shadow-[0_0_6px_#6528f7] mt-0.5 transition-all duration-300 ${activeIndex === 2 ? "opacity-100 scale-100" : "opacity-0 scale-50"}`} />
           </Link>
 
           {/* 4. Smart Tools (Drawer) */}
           <button
             type="button"
             onClick={() => setCareerDrawerOpen(!careerDrawerOpen)}
-            className={`${itemBase} ${activeIndex === 3 ? "text-primary font-black" : "text-muted-foreground/85 hover:text-foreground font-semibold"}`}
+            className={`${itemBase} ${activeIndex === 3 ? "text-primary dark:text-[#c4b5fd] font-black" : "text-neutral-600 dark:text-neutral-200 hover:text-foreground dark:hover:text-white font-bold"}`}
           >
-            <div className="relative">
-              <Compass 
-                size={19} 
-                className={`transition-all duration-300 ${activeIndex === 3 ? "stroke-[2.5] text-primary scale-110 drop-shadow-xs" : "stroke-[1.8] text-muted-foreground/85 scale-100"}`} 
-              />
-              <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-primary ring-2 ring-white dark:ring-[#0c0d1a]" />
-            </div>
-            <span className="text-[10px] mt-0.5 tracking-tight font-bold">Smart Tools</span>
-            <span className={`w-1 h-1 rounded-full bg-primary mt-0.5 transition-all duration-300 ${activeIndex === 3 ? "opacity-100 scale-100" : "opacity-0 scale-50"}`} />
+            <Compass 
+              size={19} 
+              className={`transition-all duration-300 ${activeIndex === 3 ? "stroke-[2.5] text-primary dark:text-[#a78bfa] scale-110 drop-shadow-[0_2px_8px_rgba(101,40,247,0.4)]" : "stroke-[1.8] scale-100"}`} 
+            />
+            <span className="text-[11px] mt-0.5 tracking-tight leading-tight">Smart Tools</span>
+            <span className={`w-1.5 h-1.5 rounded-full bg-primary dark:bg-[#a78bfa] shadow-[0_0_6px_#6528f7] mt-0.5 transition-all duration-300 ${activeIndex === 3 ? "opacity-100 scale-100" : "opacity-0 scale-50"}`} />
           </button>
         </div>
       </nav>

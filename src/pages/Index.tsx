@@ -414,9 +414,6 @@ export const Index = () => {
             <DialogTitle className="text-lg sm:text-xl font-black text-foreground tracking-tight">
               Need Right Guidance?
             </DialogTitle>
-            <DialogDescription className="text-xs text-muted-foreground">
-              Connect with an accredited academic counselor for 100% unbiased guidance.
-            </DialogDescription>
           </DialogHeader>
           <CounselingForm
             buttonLabel="Request Free Counseling Call"

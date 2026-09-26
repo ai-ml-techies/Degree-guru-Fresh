@@ -180,16 +180,16 @@
     box-shadow: var(--glass-shadow-hover);
   }
   .glass-header {
-    background: rgba(255, 255, 255, 0.94);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(101, 40, 247, 0.04);
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(28px) saturate(190%);
+    -webkit-backdrop-filter: blur(28px) saturate(190%);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 10px 32px rgba(101, 40, 247, 0.08), inset 0 1px 1.5px rgba(255, 255, 255, 0.9);
   }
   .dark .glass-header {
-    background: rgba(22, 23, 44, 0.96);
+    background: rgba(26, 27, 52, 0.88);
     border: 1px solid rgba(255, 255, 255, 0.18);
-    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.5), 0 0 1px 1px rgba(255, 255, 255, 0.08);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45), 0 0 20px rgba(101, 40, 247, 0.15), inset 0 1px 1.5px rgba(255, 255, 255, 0.25);
   }
   .glass-dropdown {
     background: hsl(var(--background));
