@@ -144,6 +144,25 @@ export const MobileBottomNav = () => {
 
             <div className="grid grid-cols-1 gap-2.5 py-4">
               <Link
+                to="/know-yourself"
+                onClick={() => setCareerDrawerOpen(false)}
+                className="flex items-center justify-between p-3 rounded-2xl bg-primary/10 hover:bg-primary/15 border border-primary/30 transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-primary text-primary-foreground flex items-center justify-center shadow-md shadow-primary/20">
+                    <Sparkles size={20} />
+                  </div>
+                  <div>
+                    <div className="text-sm font-bold text-foreground flex items-center gap-1.5">
+                      Know Yourself <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary text-primary-foreground font-black">Flagship</span>
+                    </div>
+                    <p className="text-[11px] text-muted-foreground">Adaptive discovery & personalized roadmap</p>
+                  </div>
+                </div>
+                <ChevronRight size={16} className="text-primary" />
+              </Link>
+
+              <Link
                 to="/career-finder"
                 onClick={() => setCareerDrawerOpen(false)}
                 className="flex items-center justify-between p-3 rounded-2xl bg-card hover:bg-muted/40 border border-border/60 transition-colors"

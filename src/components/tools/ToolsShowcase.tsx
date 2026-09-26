@@ -28,6 +28,15 @@ interface ToolItem {
 
 const TOOLS_LIST: ToolItem[] = [
   {
+    id: "know-yourself",
+    title: "Know Yourself",
+    description: "Adaptive career discovery assessment & personalized roadmap",
+    icon: <Sparkles size={22} className="text-primary" />,
+    badge: "Flagship",
+    link: "/know-yourself",
+    category: "pre",
+  },
+  {
     id: "emi",
     title: "EMI Calculator",
     description: "Calculate 0% interest monthly installments & loan tenure",

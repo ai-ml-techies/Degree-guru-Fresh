@@ -28,6 +28,7 @@ const CareerFinder      = lazy(() => import("./pages/CareerFinder.tsx"));
 const RoiCalculatorPage = lazy(() => import("./pages/RoiCalculatorPage.tsx"));
 const EmiCalculatorPage = lazy(() => import("./pages/EmiCalculatorPage.tsx"));
 const ResumeBuilder     = lazy(() => import("./pages/ResumeBuilder.tsx"));
+const KnowYourself      = lazy(() => import("./pages/KnowYourself.tsx"));
 const OfflineCourses    = lazy(() => import("./pages/OfflineCourses.tsx"));
 const Referral          = lazy(() => import("./pages/Referral.tsx"));
 const Blog              = lazy(() => import("./pages/Blog.tsx"));
@@ -74,6 +75,8 @@ const App = () => (
                 <Route path="/offline-courses" element={<OfflineCourses />} />
 
                 {/* Career Discovery Tools */}
+                <Route path="/know-yourself" element={<KnowYourself />} />
+                <Route path="/knowyourself" element={<KnowYourself />} />
                 <Route path="/career-finder" element={<CareerFinder />} />
                 <Route path="/roi-calculator" element={<RoiCalculatorPage />} />
                 <Route path="/emi-calculator" element={<EmiCalculatorPage />} />

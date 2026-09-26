@@ -316,6 +316,20 @@ export const Header = () => {
                       </span>
                     </div>
                     <Link
+                      to="/know-yourself"
+                      className="p-3 rounded-xl hover:bg-primary/10 transition-colors flex items-center gap-3.5 group bg-primary/5 border border-primary/20"
+                    >
+                      <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                        <Sparkles size={18} />
+                      </div>
+                      <div>
+                        <div className="text-sm font-bold text-foreground group-hover:text-primary flex items-center gap-1.5">
+                          Know Yourself <span className="text-[9px] px-1.5 py-0.5 rounded-md bg-primary text-primary-foreground font-bold">New</span>
+                        </div>
+                        <div className="text-xs text-muted-foreground mt-0.5">Adaptive discovery & personalized roadmap</div>
+                      </div>
+                    </Link>
+                    <Link
                       to="/career-finder"
                       className="p-3 rounded-xl hover:bg-primary/10 transition-colors flex items-center gap-3.5 group"
                     >
