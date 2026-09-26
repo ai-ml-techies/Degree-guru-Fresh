@@ -49,30 +49,30 @@ export const FloatingAiAdvisor = () => {
         {
           id: "m-init-1",
           sender: "bot",
-          text: "नमस्ते! मैं Guru AI हूँ। मैं आपकी ऑनलाइन डिग्री, विश्वविद्यालय चयन, फीस और प्रवेश से जुड़े सभी सवालों में मदद कर सकता हूँ।\n\nआप क्या जानना चाहते हैं?",
+          text: "नमस्ते! मैं Degree Guru AI काउंसलर हूँ। आज मैं आपकी कैसे मदद कर सकता हूँ?",
           options: [
             {
-              label: "🎓 ऑनलाइन मास्टर्स (MBA, MCA, M.Com)",
+              label: "ऑनलाइन मास्टर्स (MBA, MCA, M.Com)",
               action: () => handleSelect("Online Master's", "hi"),
             },
             {
-              label: "🏛️ ऑनलाइन बैचलर्स (BCA, BBA, B.Com)",
+              label: "ऑनलाइन बैचलर्स (BCA, BBA, B.Com)",
               action: () => handleSelect("Online Bachelor's", "hi"),
             },
             {
-              label: "🎯 10वीं व 12वीं ओपन स्कूलिंग (100% ऑनलाइन)",
+              label: "10वीं व 12वीं ओपन स्कूलिंग (100% ऑनलाइन)",
               action: () => handleSelect("Class 10 & 12", "hi"),
             },
             {
-              label: "💼 जॉब्स और करियर सहायता",
+              label: "जॉब्स और करियर सहायता",
               action: () => handleSelect("Jobs & Career", "hi"),
             },
             {
-              label: "📄 फ्री ATS रिज्यूमे बनाएं",
+              label: "फ्री ATS रिज्यूमे बनाएं",
               action: () => handleSelect("Resume Builder", "hi"),
             },
             {
-              label: "💰 0% ब्याज EMI कैलकुलेटर",
+              label: "0% ब्याज EMI कैलकुलेटर",
               action: () => handleSelect("EMI Calculator", "hi"),
             },
           ],
@@ -83,30 +83,30 @@ export const FloatingAiAdvisor = () => {
         {
           id: "m-init-1",
           sender: "bot",
-          text: "👋 Hi! I'm Guru AI. I can guide you through accredited online degrees, university fee structures, and career decisions.\n\nWhat are you interested in exploring today?",
+          text: "Hi! I'm Degree Guru AI Counselor. How may I help you today?",
           options: [
             {
-              label: "🎓 Online Master's (MBA, MCA, etc.)",
+              label: "Online Master's (MBA, MCA, etc.)",
               action: () => handleSelect("Online Master's", "en"),
             },
             {
-              label: "🏛️ Online Bachelor's (BCA, BBA, B.Com)",
+              label: "Online Bachelor's (BCA, BBA, B.Com)",
               action: () => handleSelect("Online Bachelor's", "en"),
             },
             {
-              label: "🎯 Class 10 & 12 (Direct Online Exams)",
+              label: "Class 10 & 12 (Direct Online Exams)",
               action: () => handleSelect("Class 10 & 12", "en"),
             },
             {
-              label: "💼 Find Jobs & Career Switch",
+              label: "Find Jobs & Career Switch",
               action: () => handleSelect("Jobs & Career", "en"),
             },
             {
-              label: "📄 Build ATS Resume (Free)",
+              label: "Build ATS Resume (Free)",
               action: () => handleSelect("Resume Builder", "en"),
             },
             {
-              label: "💰 Calculate 0% EMI",
+              label: "Calculate 0% EMI",
               action: () => handleSelect("EMI Calculator", "en"),
             },
           ],
@@ -338,11 +338,11 @@ export const FloatingAiAdvisor = () => {
               </div>
               <div>
                 <div className="text-sm font-black flex items-center gap-1.5 leading-tight tracking-tight">
-                  Guru AI
+                  Degree Guru AI
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                 </div>
                 <div className="text-[10px] text-white/85 font-medium">
-                  {language === "hi" ? "शैक्षणिक और करियर सलाहकार" : "Academic & Career Advisor"}
+                  {language === "hi" ? "शैक्षणिक और करियर सलाहकार" : "AI Career Counselor"}
                 </div>
               </div>
             </div>
@@ -425,7 +425,7 @@ export const FloatingAiAdvisor = () => {
                   <div className="w-1.5 h-1.5 rounded-full bg-primary animate-bounce [animation-delay:0.2s]" />
                   <div className="w-1.5 h-1.5 rounded-full bg-primary animate-bounce [animation-delay:0.4s]" />
                   <span className="text-[10px] font-semibold text-muted-foreground ml-1">
-                    {language === "hi" ? "Guru AI सोच रहा है..." : "Guru AI is typing..."}
+                    {language === "hi" ? "AI काउंसलर सोच रहा है..." : "AI Counselor is typing..."}
                   </span>
                 </div>
               </div>

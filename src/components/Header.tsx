@@ -26,12 +26,15 @@ import logoDark from "@/assets/logo-dark.png";
 import { CORE_COURSES } from "@/data/courses";
 
 const DEFAULT_ANNOUNCEMENTS = [
-  "🎓 100% Free Career Counseling & Discovery — No Hidden Fees",
-  "🏛️ 50+ UGC-DEB Approved Online Universities & Accredited Programs",
-  "🚀 Free AI ATS-Friendly Resume Builder & Job Applications",
-  "💸 No-Cost EMI Starting from ₹3,500/Month",
-  "🤝 Refer & Earn ₹5,000 Guaranteed Reward for Every Enrolled Friend",
+  "100% Free Career Counseling & Discovery — No Hidden Fees",
+  "50+ UGC-DEB Approved Online Universities & Accredited Programs",
+  "Free AI ATS-Friendly Resume Builder & Job Applications",
+  "No-Cost EMI Starting from ₹3,500/Month",
+  "Refer & Earn ₹5,000 Guaranteed Reward for Every Enrolled Friend",
 ];
+
+const stripEmojis = (str: string) =>
+  str.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{1F600}-\u{1F64F}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}]/gu, "").trim();
 
 export const Header = () => {
   const { theme, toggle } = useTheme();
@@ -52,7 +55,8 @@ export const Header = () => {
     try {
       const raw = homeContent?.announcements_json;
       const parsed = JSON.parse(raw || "[]");
-      return Array.isArray(parsed) && parsed.length > 0 ? parsed : DEFAULT_ANNOUNCEMENTS;
+      const list = Array.isArray(parsed) && parsed.length > 0 ? parsed : DEFAULT_ANNOUNCEMENTS;
+      return list.map(stripEmojis);
     } catch { 
       return DEFAULT_ANNOUNCEMENTS; 
     }
