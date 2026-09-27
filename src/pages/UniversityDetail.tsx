@@ -1195,29 +1195,25 @@ export const UniversityDetail = () => {
                                       />
                                     </button>
 
-                                    {/* Specializations Expandable Dropdown List */}
+                                    {/* Clean Clickable Specializations List */}
                                     {expandedProgramId === prog.id && (
-                                      <div className="mt-2.5 p-3 rounded-2xl bg-muted/40 border border-border/70 space-y-2 animate-in fade-in-50 duration-200">
-                                        <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground block">
-                                          Available Specializations ({prog.specializations.length}):
-                                        </span>
-                                        <div className="flex flex-wrap gap-1.5 max-h-44 overflow-y-auto pr-1">
-                                          {prog.specializations.map((spec, sIdx) => (
-                                            <span
-                                              key={sIdx}
-                                              className="text-[11px] font-medium px-2.5 py-1 rounded-lg bg-card border border-border/70 text-foreground"
-                                            >
-                                              {spec}
+                                      <div className="mt-2.5 p-2 rounded-2xl bg-muted/30 border border-border/70 flex flex-col gap-1.5 animate-in fade-in-50 duration-200">
+                                        {prog.specializations.map((spec, sIdx) => (
+                                          <Link
+                                            key={sIdx}
+                                            to={`/${prog.slug}?spec=${encodeURIComponent(spec)}#specializations`}
+                                            className="group flex items-center justify-between px-3 py-2 rounded-xl bg-card hover:bg-primary border border-border/70 hover:border-primary text-xs font-semibold text-foreground hover:text-primary-foreground transition-all duration-150 shadow-2xs"
+                                          >
+                                            <span className="flex items-center gap-2 min-w-0 pr-2 leading-snug">
+                                              <span className="w-1.5 h-1.5 rounded-full bg-primary group-hover:bg-primary-foreground shrink-0 transition-colors" />
+                                              <span className="line-clamp-1 group-hover:line-clamp-none">{spec}</span>
                                             </span>
-                                          ))}
-                                        </div>
-                                        <Link
-                                          to={`/${prog.slug}`}
-                                          className="inline-flex items-center gap-1 text-[11px] font-bold text-primary hover:underline pt-1"
-                                        >
-                                          <span>Explore complete {prog.name} syllabus & specializations</span>
-                                          <ArrowRight size={11} />
-                                        </Link>
+                                            <ArrowRight
+                                              size={12}
+                                              className="opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all shrink-0 ml-1"
+                                            />
+                                          </Link>
+                                        ))}
                                       </div>
                                     )}
                                   </div>

@@ -1,5 +1,5 @@
 import { useState, useId, useEffect } from "react";
-import { useParams, Link, Navigate } from "react-router-dom";
+import { useParams, useSearchParams, Link, Navigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 import { getCourseBySlug, CORE_COURSES } from "@/data/courses";
@@ -37,6 +37,8 @@ import { submitLead } from "@/lib/api";
 
 export const CourseDetail = () => {
   const { courseSlug } = useParams<{ courseSlug: string }>();
+  const [searchParams] = useSearchParams();
+  const targetSpec = searchParams.get("spec");
   const course = getCourseBySlug(courseSlug || "");
 
   const [activeSemTab, setActiveSemTab] = useState<number>(0);
@@ -55,8 +57,15 @@ export const CourseDetail = () => {
           el.scrollIntoView({ behavior: "smooth", block: "start" });
         }, 150);
       }
+    } else if (window.location.hash === "#specializations" || targetSpec) {
+      const el = document.getElementById("specializations");
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 150);
+      }
     }
-  }, []);
+  }, [courseSlug, targetSpec]);
 
   const toggleCompare = (slug: string) => {
     if (selectedCompareUnis.includes(slug)) {
@@ -389,7 +398,7 @@ export const CourseDetail = () => {
       </section>
 
       {/* 8. SPECIALIZATIONS */}
-      <section className="py-14 border-b border-border/50">
+      <section id="specializations" className="py-14 border-b border-border/50 scroll-mt-28">
         <div className="container-dg max-w-5xl">
           <div className="text-center max-w-2xl mx-auto mb-8">
             <span className="text-xs font-bold uppercase tracking-wider text-primary">In-Demand Tracks</span>
@@ -401,15 +410,45 @@ export const CourseDetail = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-            {course.specializations.map((spec, i) => (
-              <div key={i} className="p-3.5 rounded-2xl bg-card border border-border/70 hover:border-primary/50 transition-colors shadow-sm flex items-center gap-2.5">
-                <span className="w-6 h-6 rounded-lg bg-primary/10 text-primary flex items-center justify-center text-xs font-bold shrink-0">
-                  {i + 1}
-                </span>
-                <span className="text-xs sm:text-sm font-semibold text-foreground">{spec}</span>
-              </div>
-            ))}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+            {course.specializations.map((spec, i) => {
+              const isSelected = Boolean(
+                targetSpec &&
+                  (spec.toLowerCase().includes(targetSpec.toLowerCase()) ||
+                    targetSpec.toLowerCase().includes(spec.toLowerCase()))
+              );
+
+              return (
+                <div
+                  key={i}
+                  className={`p-3.5 rounded-2xl border transition-all shadow-xs flex items-start gap-2.5 ${
+                    isSelected
+                      ? "bg-primary/10 border-primary ring-2 ring-primary/40 shadow-md"
+                      : "bg-card border-border/70 hover:border-primary/50"
+                  }`}
+                >
+                  <span
+                    className={`w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 ${
+                      isSelected
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-primary/10 text-primary"
+                    }`}
+                  >
+                    {i + 1}
+                  </span>
+                  <div className="min-w-0">
+                    <span className="text-xs sm:text-sm font-semibold text-foreground block leading-snug">
+                      {spec}
+                    </span>
+                    {isSelected && (
+                      <span className="inline-block mt-1 px-2 py-0.5 rounded-md bg-primary text-primary-foreground text-[10px] font-bold">
+                        Selected Track
+                      </span>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>

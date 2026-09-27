@@ -108,47 +108,44 @@ export const UniversityCompare = () => {
 
         {/* Header Hero */}
         <div className="text-center max-w-3xl mx-auto mb-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold mb-3">
-            <ShieldCheck size={14} /> Side-by-Side Objective Benchmarking
-          </div>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-foreground tracking-tight">
             Compare Online Universities
           </h1>
-          <p className="text-xs sm:text-sm text-muted-foreground mt-2 max-w-xl mx-auto">
-            Evaluate UGC-DEB accredited online universities side-by-side on semester tuition fees, statutory recognitions, examination mode, and EMI options.
-          </p>
         </div>
 
         {/* Selected Universities Quick Bar & Action */}
-        <div className="flex flex-wrap items-center justify-between gap-3 mb-4 bg-muted/40 p-3 sm:p-4 rounded-2xl border border-border/70">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 bg-muted/40 p-3.5 sm:p-4 rounded-2xl border border-border/70">
           <div className="flex items-center gap-2 flex-wrap">
             <span className="text-xs font-bold text-foreground">Comparing ({comparedUnis.length}/4):</span>
-            {comparedUnis.map((u, i) => (
-              <span
-                key={u.id}
-                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-card border border-border text-xs font-bold text-foreground shadow-2xs"
-              >
-                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                <span className="max-w-[120px] sm:max-w-none truncate">{u.shortName}</span>
-                {comparedUnis.length > 2 && (
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveUniversity(i)}
-                    className="text-muted-foreground hover:text-red-500 transition-colors ml-0.5"
-                    title={`Remove ${u.shortName}`}
-                  >
-                    <X size={12} />
-                  </button>
-                )}
-              </span>
-            ))}
+            <div className="flex items-center gap-1.5 flex-wrap">
+              {comparedUnis.map((u, i) => (
+                <span
+                  key={u.id}
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-card border border-border text-xs font-bold text-foreground shadow-2xs"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                  <span className="max-w-[140px] sm:max-w-none truncate">{u.shortName}</span>
+                  {comparedUnis.length > 2 && (
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveUniversity(i)}
+                      className="text-muted-foreground hover:text-red-500 transition-colors ml-0.5 p-0.5"
+                      title={`Remove ${u.shortName}`}
+                      aria-label={`Remove ${u.shortName}`}
+                    >
+                      <X size={12} />
+                    </button>
+                  )}
+                </span>
+              ))}
+            </div>
           </div>
 
           {selectedSlugs.length < 4 && (
             <button
               type="button"
               onClick={handleAddUniversity}
-              className="px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl bg-primary text-primary-foreground text-xs font-bold flex items-center gap-1.5 hover:bg-primary/90 transition-all shadow-sm cursor-pointer ml-auto"
+              className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-bold hover:bg-primary/90 transition-all shadow-sm cursor-pointer self-start sm:self-auto shrink-0"
             >
               <Plus size={14} /> Add Another University
             </button>
@@ -172,6 +169,9 @@ export const UniversityCompare = () => {
                 {comparedUnis.map((u) => (
                   <col key={u.id} className="min-w-[210px] sm:min-w-[260px] md:min-w-[300px]" />
                 ))}
+                {selectedSlugs.length < 4 && (
+                  <col className="min-w-[180px] sm:min-w-[220px]" />
+                )}
               </colgroup>
 
               {/* Table Header: Dropdown & Remove Button */}
@@ -189,7 +189,7 @@ export const UniversityCompare = () => {
                         <button
                           type="button"
                           onClick={() => handleRemoveUniversity(idx)}
-                          className="absolute top-2.5 right-2.5 text-muted-foreground hover:text-red-500 hover:bg-muted transition-all p-1.5 rounded-full"
+                          className="absolute top-2.5 right-2.5 text-muted-foreground hover:text-red-500 hover:bg-muted transition-all p-1.5 rounded-full z-10"
                           title="Remove from comparison"
                           aria-label={`Remove ${u.shortName}`}
                         >
@@ -197,18 +197,18 @@ export const UniversityCompare = () => {
                         </button>
                       )}
 
-                      <div className="space-y-2">
-                        <span className="text-[10px] font-extrabold text-primary uppercase tracking-wider block">
+                      <div className="flex flex-col items-center text-center space-y-2">
+                        <span className="text-[10px] font-black text-primary uppercase tracking-wider block">
                           University {idx + 1}
                         </span>
 
-                        {/* Real University Logo */}
-                        <div className="p-2 sm:p-3 rounded-2xl bg-card border border-border/80 flex items-center justify-center h-16 sm:h-20 shadow-2xs">
+                        {/* Real University Logo with Uniform Dimensions */}
+                        <div className="w-full h-16 rounded-2xl bg-white dark:bg-card border border-border/80 flex items-center justify-center p-2.5 shadow-2xs">
                           <UniversityLogo idOrSlug={u.slug} size="md" />
                         </div>
 
-                        {/* Full University Name & Location */}
-                        <div>
+                        {/* Fixed Height Full University Name & Location for Symmetric Pattern */}
+                        <div className="w-full h-14 flex flex-col justify-center items-center">
                           <div className="text-xs sm:text-sm font-bold text-foreground line-clamp-2 leading-snug">
                             {u.name}
                           </div>
@@ -216,20 +216,39 @@ export const UniversityCompare = () => {
                         </div>
 
                         {/* Dropdown Selector - Change University */}
-                        <select
-                          value={u.slug}
-                          onChange={(e) => handleChangeUniversity(idx, e.target.value)}
-                          className="w-full py-1.5 px-2 rounded-lg bg-background border border-border text-[11px] font-semibold text-foreground focus:ring-2 focus:ring-primary/40 focus:outline-none shadow-2xs hover:border-primary/50 transition-colors cursor-pointer"
-                        >
-                          {ACTIVE_ONLINE_UNIVERSITIES.map((opt) => (
-                            <option key={opt.slug} value={opt.slug}>
-                              {opt.shortName} — {opt.location}
-                            </option>
-                          ))}
-                        </select>
+                        <div className="w-full pt-1">
+                          <select
+                            value={u.slug}
+                            onChange={(e) => handleChangeUniversity(idx, e.target.value)}
+                            className="w-full py-1.5 px-2 rounded-xl bg-background border border-border text-[11px] font-semibold text-foreground text-center focus:ring-2 focus:ring-primary/40 focus:outline-none shadow-2xs hover:border-primary/50 transition-colors cursor-pointer"
+                          >
+                            {ACTIVE_ONLINE_UNIVERSITIES.map((opt) => (
+                              <option key={opt.slug} value={opt.slug}>
+                                {opt.shortName} ({opt.location})
+                              </option>
+                            ))}
+                          </select>
+                        </div>
                       </div>
                     </th>
                   ))}
+
+                  {/* Empty Slot to Add Another University directly in table */}
+                  {selectedSlugs.length < 4 && (
+                    <th className="p-3.5 sm:p-5 align-middle border-l border-dashed border-border/80 bg-muted/15">
+                      <button
+                        type="button"
+                        onClick={handleAddUniversity}
+                        className="w-full h-full min-h-[170px] rounded-2xl border-2 border-dashed border-primary/30 hover:border-primary/70 bg-primary/5 hover:bg-primary/10 transition-all flex flex-col items-center justify-center p-4 text-center cursor-pointer group"
+                      >
+                        <div className="w-10 h-10 rounded-full bg-primary/15 text-primary flex items-center justify-center mb-2 group-hover:scale-110 transition-transform shadow-xs">
+                          <Plus size={20} />
+                        </div>
+                        <span className="text-xs font-bold text-foreground">Add University</span>
+                        <span className="text-[10px] text-muted-foreground mt-0.5">Compare ({comparedUnis.length + 1}/4)</span>
+                      </button>
+                    </th>
+                  )}
                 </tr>
               </thead>
 
@@ -246,6 +265,11 @@ export const UniversityCompare = () => {
                       </span>
                     </td>
                   ))}
+                  {selectedSlugs.length < 4 && (
+                    <td className="p-3 sm:p-4.5 text-center border-l border-dashed border-border/40 bg-muted/5 text-muted-foreground/30 text-xs">
+                      —
+                    </td>
+                  )}
                 </tr>
 
                 {/* 2. Statutory Accreditations */}
@@ -261,6 +285,11 @@ export const UniversityCompare = () => {
                       </div>
                     </td>
                   ))}
+                  {selectedSlugs.length < 4 && (
+                    <td className="p-3 sm:p-4.5 text-center border-l border-dashed border-border/40 bg-muted/5 text-muted-foreground/30 text-xs">
+                      —
+                    </td>
+                  )}
                 </tr>
 
                 {/* 3. Program Fee Range */}
@@ -274,6 +303,11 @@ export const UniversityCompare = () => {
                       <span className="block text-[10px] text-muted-foreground font-normal mt-0.5">Approx. Full Course</span>
                     </td>
                   ))}
+                  {selectedSlugs.length < 4 && (
+                    <td className="p-3 sm:p-4.5 text-center border-l border-dashed border-border/40 bg-muted/5 text-muted-foreground/30 text-xs">
+                      —
+                    </td>
+                  )}
                 </tr>
 
                 {/* Registration Fee */}
@@ -291,6 +325,11 @@ export const UniversityCompare = () => {
                       </span>
                     </td>
                   ))}
+                  {selectedSlugs.length < 4 && (
+                    <td className="p-3 sm:p-4.5 text-center border-l border-dashed border-border/40 bg-muted/5 text-muted-foreground/30 text-xs">
+                      —
+                    </td>
+                  )}
                 </tr>
 
                 {/* Exam Fee */}
@@ -305,6 +344,11 @@ export const UniversityCompare = () => {
                       </span>
                     </td>
                   ))}
+                  {selectedSlugs.length < 4 && (
+                    <td className="p-3 sm:p-4.5 text-center border-l border-dashed border-border/40 bg-muted/5 text-muted-foreground/30 text-xs">
+                      —
+                    </td>
+                  )}
                 </tr>
 
                 {/* 4. Loan Partners */}
@@ -322,6 +366,11 @@ export const UniversityCompare = () => {
                       </div>
                     </td>
                   ))}
+                  {selectedSlugs.length < 4 && (
+                    <td className="p-3 sm:p-4.5 text-center border-l border-dashed border-border/40 bg-muted/5 text-muted-foreground/30 text-xs">
+                      —
+                    </td>
+                  )}
                 </tr>
 
                 {/* 5. Examination Format */}
@@ -336,6 +385,11 @@ export const UniversityCompare = () => {
                       </span>
                     </td>
                   ))}
+                  {selectedSlugs.length < 4 && (
+                    <td className="p-3 sm:p-4.5 text-center border-l border-dashed border-border/40 bg-muted/5 text-muted-foreground/30 text-xs">
+                      —
+                    </td>
+                  )}
                 </tr>
 
                 {/* 6. Learning Management System (LMS) */}
@@ -348,6 +402,11 @@ export const UniversityCompare = () => {
                       <span className="text-[11px] sm:text-xs">Live Weekend Masterclasses + 24/7 Mobile LMS</span>
                     </td>
                   ))}
+                  {selectedSlugs.length < 4 && (
+                    <td className="p-3 sm:p-4.5 text-center border-l border-dashed border-border/40 bg-muted/5 text-muted-foreground/30 text-xs">
+                      —
+                    </td>
+                  )}
                 </tr>
 
                 {/* 7. Career Support & Placement */}
@@ -360,6 +419,11 @@ export const UniversityCompare = () => {
                       <span className="font-semibold text-foreground block text-[11px] sm:text-xs">100% Placement Assistance</span>
                     </td>
                   ))}
+                  {selectedSlugs.length < 4 && (
+                    <td className="p-3 sm:p-4.5 text-center border-l border-dashed border-border/40 bg-muted/5 text-muted-foreground/30 text-xs">
+                      —
+                    </td>
+                  )}
                 </tr>
 
                 {/* 8. Student Rating */}
@@ -376,6 +440,11 @@ export const UniversityCompare = () => {
                       <span className="block text-[10px] text-muted-foreground">Verified Alumni Feedback</span>
                     </td>
                   ))}
+                  {selectedSlugs.length < 4 && (
+                    <td className="p-3 sm:p-4.5 text-center border-l border-dashed border-border/40 bg-muted/5 text-muted-foreground/30 text-xs">
+                      —
+                    </td>
+                  )}
                 </tr>
 
                 {/* 9. Action CTAs */}
@@ -395,6 +464,18 @@ export const UniversityCompare = () => {
                       </button>
                     </td>
                   ))}
+                  {selectedSlugs.length < 4 && (
+                    <td className="p-3 sm:p-4.5 text-center border-l border-dashed border-border/40 bg-muted/5">
+                      <button
+                        type="button"
+                        onClick={handleAddUniversity}
+                        className="w-full sm:w-auto px-3.5 py-2 rounded-xl bg-primary/10 hover:bg-primary/20 text-primary text-xs font-bold transition-all inline-flex items-center justify-center gap-1 cursor-pointer"
+                      >
+                        <Plus size={13} />
+                        <span>Add University</span>
+                      </button>
+                    </td>
+                  )}
                 </tr>
               </tbody>
             </table>
