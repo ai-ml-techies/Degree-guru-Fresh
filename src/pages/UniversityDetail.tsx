@@ -766,37 +766,35 @@ export const UniversityDetail = () => {
 
       <div className="min-h-screen bg-background text-foreground font-sans">
         {/* ───────────────────────────────────────────────────────────────── */}
-        {/* 1. CLEAN OFFICIAL REAL CAMPUS PHOTO HERO (Seamless Architecture, No Stroke) */}
+        {/* 1. BREADCRUMB ROW                                                 */}
         {/* ───────────────────────────────────────────────────────────────── */}
-        <section className="-mt-[100px] sm:-mt-[114px] md:-mt-[132px] relative w-full h-80 sm:h-96 md:h-[420px] overflow-hidden bg-neutral-900">
-          <img
-            src={campusImage}
-            alt={`${uni.name} Campus`}
-            className="w-full h-full object-cover object-center transition-transform duration-700 hover:scale-102"
-            loading="eager"
+        <div className="container-dg max-w-6xl pt-4 pb-2">
+          <AppBreadcrumb
+            items={[
+              { label: "Universities", href: "/universities" },
+              { label: uni.shortName || uni.name }
+            ]}
           />
-          {/* Subtle top & bottom scrim so the campus architecture shines brightly and cleanly */}
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-black/25 to-black/60 pointer-events-none" />
+        </div>
 
-          {/* Breadcrumb over campus photo */}
-          <div className="absolute top-[108px] sm:top-[122px] md:top-[140px] inset-x-0">
-            <div className="container-dg max-w-6xl">
-              <div className="inline-flex px-3 py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/10 [&_a]:text-white/80 [&_span]:text-white/90 [&_svg]:text-white/60">
-                <AppBreadcrumb
-                  items={[
-                    { label: "Universities", href: "/universities" },
-                    { label: uni.shortName || uni.name }
-                  ]}
-                />
-              </div>
-            </div>
+        {/* ───────────────────────────────────────────────────────────────── */}
+        {/* 2. CLEAN NOT FULL SIZE BANNER IMAGE                               */}
+        {/* ───────────────────────────────────────────────────────────────── */}
+        <div className="container-dg max-w-6xl pt-1 sm:pt-2">
+          <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden border border-border/80 shadow-md bg-slate-900 aspect-[16/9] sm:aspect-[21/9] max-h-[340px] sm:max-h-[420px]">
+            <img
+              src={campusImage}
+              alt={`${uni.name} Campus Facade`}
+              className="w-full h-full object-cover object-[center_30%] transition-transform duration-500 hover:scale-101"
+              loading="eager"
+            />
           </div>
-        </section>
+        </div>
 
         {/* ───────────────────────────────────────────────────────────────── */}
-        {/* 2. UNIVERSITY PROFILE CARD (Overlapping Hero Banner)              */}
+        {/* 3. UNIVERSITY PROFILE CARD (Overlapping clean banner)              */}
         {/* ───────────────────────────────────────────────────────────────── */}
-        <div className="relative -mt-16 sm:-mt-20 z-20 pb-4 sm:pb-6">
+        <div className="relative -mt-10 sm:-mt-16 z-20 pb-4 sm:pb-6">
           <div className="container-dg max-w-6xl">
             <div className="p-5 sm:p-7 rounded-3xl bg-card border border-border/80 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-5 sm:gap-6">
               <div className="flex items-start gap-4 sm:gap-6">
@@ -1195,24 +1193,17 @@ export const UniversityDetail = () => {
                                       />
                                     </button>
 
-                                    {/* Clean Clickable Specializations List */}
+                                    {/* Clean Specialization Badges (Directly on Card, No Redirection) */}
                                     {expandedProgramId === prog.id && (
-                                      <div className="mt-2.5 p-2 rounded-2xl bg-muted/30 border border-border/70 flex flex-col gap-1.5 animate-in fade-in-50 duration-200">
+                                      <div className="mt-2.5 p-2.5 rounded-2xl bg-muted/30 border border-border/70 flex flex-wrap gap-1.5 animate-in fade-in-50 duration-200">
                                         {prog.specializations.map((spec, sIdx) => (
-                                          <Link
+                                          <div
                                             key={sIdx}
-                                            to={`/${prog.slug}?spec=${encodeURIComponent(spec)}#specializations`}
-                                            className="group flex items-center justify-between px-3 py-2 rounded-xl bg-card hover:bg-primary border border-border/70 hover:border-primary text-xs font-semibold text-foreground hover:text-primary-foreground transition-all duration-150 shadow-2xs"
+                                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-card border border-border/70 hover:border-primary/50 text-xs font-semibold text-foreground transition-all duration-150 shadow-2xs hover:bg-primary/5 cursor-default select-none"
                                           >
-                                            <span className="flex items-center gap-2 min-w-0 pr-2 leading-snug">
-                                              <span className="w-1.5 h-1.5 rounded-full bg-primary group-hover:bg-primary-foreground shrink-0 transition-colors" />
-                                              <span className="line-clamp-1 group-hover:line-clamp-none">{spec}</span>
-                                            </span>
-                                            <ArrowRight
-                                              size={12}
-                                              className="opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all shrink-0 ml-1"
-                                            />
-                                          </Link>
+                                            <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                                            <span>{spec}</span>
+                                          </div>
                                         ))}
                                       </div>
                                     )}
