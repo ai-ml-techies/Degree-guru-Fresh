@@ -823,6 +823,9 @@ export const getCourseBySlug = (slug: string) => {
     admissionSteps: found.admissionProcess,
     faqs: found.faqs.map(f => ({ q: f.question, a: f.answer })),
     jobRoles: found.jobRoles.map(j => `${j.role} (${j.salaryRange})`),
+    rawJobRoles: found.jobRoles,
+    careerOpportunitiesText: found.careerOpportunities,
+    careerProgressionText: found.careerProgression,
   };
 };
 
@@ -844,6 +847,9 @@ export const CORE_COURSES = COURSES.map(c => ({
   admissionSteps: c.admissionProcess,
   faqs: c.faqs.map(f => ({ q: f.question, a: f.answer })),
   jobRoles: c.jobRoles.map(j => `${j.role} (${j.salaryRange})`),
+  rawJobRoles: c.jobRoles,
+  careerOpportunitiesText: c.careerOpportunities,
+  careerProgressionText: c.careerProgression,
 }));
 
 export type CourseData = (typeof CORE_COURSES)[0];

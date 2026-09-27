@@ -734,68 +734,135 @@ export const CourseDetail = () => {
       </section>
 
       {/* 14, 15, 16, 17, 18. CAREER OPPORTUNITIES, JOB ROLES, SKILLS & ROI */}
-      <section className="py-14 bg-muted/20 border-b border-border/50">
-        <div className="container-dg max-w-5xl space-y-8">
-          <div className="text-center max-w-2xl mx-auto">
+      <section id="job-roles" className="py-14 bg-muted/20 border-b border-border/50 scroll-mt-28">
+        <div className="container-dg max-w-6xl space-y-10">
+          <div className="text-center max-w-2xl mx-auto space-y-2">
             <span className="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
-              Employment Impact
+              Career Trajectory & Compensation
             </span>
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mt-1">
-              Career Opportunities & ROI Analysis
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">
+              Job Roles & Career Opportunities
             </h2>
+            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+              {course.careerOpportunitiesText || `Graduates of ${course.fullName} command high-impact leadership and technical roles across top multinational corporations and high-growth startups.`}
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {/* Job Roles */}
-            <div className="p-6 rounded-3xl bg-card border border-border/80 shadow-sm space-y-3">
-              <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-wider">
-                <Briefcase size={16} /> Target Job Roles
-              </div>
-              <div className="space-y-1.5">
-                {course.jobRoles.map((role, idx) => (
-                  <div key={idx} className="p-2 rounded-xl bg-muted/40 text-xs font-semibold text-foreground">
-                    • {role}
-                  </div>
-                ))}
-              </div>
+          {/* Detailed Job Roles Grid */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-sm sm:text-base font-bold text-foreground flex items-center gap-2">
+                <Briefcase size={18} className="text-primary" />
+                <span>High-Demand Job Profiles for {course.shortName}</span>
+              </h3>
+              <span className="text-xs text-muted-foreground hidden sm:inline">
+                Verified Market Compensation 2026
+              </span>
             </div>
 
-            {/* Skills Gained */}
-            <div className="p-6 rounded-3xl bg-card border border-border/80 shadow-sm space-y-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+              {(course.rawJobRoles || []).map((job, idx) => (
+                <div
+                  key={idx}
+                  className="group p-5 rounded-3xl bg-card border border-border/80 shadow-xs hover:border-primary/50 hover:shadow-md transition-all flex flex-col justify-between space-y-4"
+                >
+                  <div className="space-y-3">
+                    <div className="flex items-start justify-between gap-2">
+                      <span className="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold text-xs shrink-0">
+                        0{idx + 1}
+                      </span>
+                      <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 text-xs font-bold shrink-0 border border-emerald-500/20">
+                        {job.salaryRange}
+                      </span>
+                    </div>
+
+                    <div>
+                      <h4 className="text-base font-bold text-foreground group-hover:text-primary transition-colors leading-snug">
+                        {job.role}
+                      </h4>
+                      <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
+                        Key Industries: <strong className="text-foreground/80">{job.topIndustries}</strong>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="pt-3 border-t border-border/50 flex items-center justify-between text-xs">
+                    <span className="text-muted-foreground font-medium">Hiring Tier-1 MNCs</span>
+                    <a
+                      href="#counseling-form"
+                      className="font-bold text-primary hover:underline inline-flex items-center gap-1"
+                    >
+                      <span>Inquire</span>
+                      <ArrowRight size={12} />
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Career Progression Flow */}
+          {course.careerProgressionText && (
+            <div className="p-6 sm:p-7 rounded-3xl bg-card border border-border/80 shadow-sm space-y-3">
+              <span className="text-xs font-bold uppercase tracking-wider text-primary">
+                Hierarchical Growth Pathway
+              </span>
+              <h3 className="text-base sm:text-lg font-bold text-foreground">
+                Career Progression for {course.shortName} Professionals
+              </h3>
+              <p className="text-xs sm:text-sm text-foreground/90 leading-relaxed font-medium bg-muted/40 p-4 rounded-2xl border border-border/60">
+                {course.careerProgressionText}
+              </p>
+            </div>
+          )}
+
+          {/* Skills Acquired & Financial ROI Breakdown */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-5">
+            {/* Key Skills Acquired */}
+            <div className="md:col-span-7 p-6 rounded-3xl bg-card border border-border/80 shadow-sm space-y-4">
               <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-wider">
-                <Sparkles size={16} /> Key Skills Acquired
+                <Sparkles size={16} /> Key Industry Skills Acquired
               </div>
-              <div className="flex flex-wrap gap-1.5">
+              <h3 className="text-base font-bold text-foreground">
+                Competencies That Drive 40%–70% Salary Hikes
+              </h3>
+              <div className="flex flex-wrap gap-2 pt-1">
                 {course.skillsGained.map((skill, idx) => (
-                  <span key={idx} className="px-2.5 py-1 rounded-lg bg-primary/10 text-primary dark:text-purple-300 text-xs font-semibold">
+                  <span
+                    key={idx}
+                    className="px-3 py-1.5 rounded-xl bg-primary/10 text-primary dark:text-purple-300 text-xs font-semibold border border-primary/15"
+                  >
                     ✓ {skill}
                   </span>
                 ))}
               </div>
             </div>
 
-            {/* ROI Metrics */}
-            <div className="p-6 rounded-3xl bg-card border border-border/80 shadow-sm space-y-3">
+            {/* Financial ROI */}
+            <div className="md:col-span-5 p-6 rounded-3xl bg-card border border-border/80 shadow-sm space-y-4">
               <div className="flex items-center gap-2 text-emerald-500 font-bold text-xs uppercase tracking-wider">
-                <TrendingUp size={16} /> Financial ROI
+                <TrendingUp size={16} /> Financial ROI & Payback
               </div>
               <div className="space-y-3 pt-1">
-                <div>
-                  <span className="text-[11px] text-muted-foreground">Average Salary Hike</span>
-                  <div className="text-xl font-extrabold text-emerald-600 dark:text-emerald-400">
+                <div className="p-3 rounded-2xl bg-muted/30 border border-border/50">
+                  <span className="text-[11px] text-muted-foreground block">Average Salary Hike Post Degree</span>
+                  <div className="text-xl font-black text-emerald-600 dark:text-emerald-400 mt-0.5">
                     {course.roiMetrics.averageSalaryJump}
                   </div>
                 </div>
-                <div>
-                  <span className="text-[11px] text-muted-foreground">Estimated Payback Period</span>
-                  <div className="text-base font-bold text-foreground">
-                    {course.roiMetrics.estimatedPaybackMonths}
+
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="p-3 rounded-2xl bg-muted/30 border border-border/50">
+                    <span className="text-[10px] text-muted-foreground block">Payback Period</span>
+                    <span className="text-xs font-bold text-foreground mt-0.5 block">
+                      {course.roiMetrics.estimatedPaybackMonths}
+                    </span>
                   </div>
-                </div>
-                <div>
-                  <span className="text-[11px] text-muted-foreground">Market Salary Potential</span>
-                  <div className="text-sm font-semibold text-muted-foreground">
-                    {course.roiMetrics.expectedSalaryRange}
+                  <div className="p-3 rounded-2xl bg-muted/30 border border-border/50">
+                    <span className="text-[10px] text-muted-foreground block">Top Bracket</span>
+                    <span className="text-xs font-bold text-foreground mt-0.5 block">
+                      {course.roiMetrics.expectedSalaryRange}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -805,7 +872,7 @@ export const CourseDetail = () => {
           <div className="text-center pt-2">
             <Link
               to="/resume-builder"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold transition-all shadow-md"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-bold transition-all shadow-md"
             >
               <Sparkles size={14} /> Build Your ATS Resume for {course.shortName} Roles
             </Link>

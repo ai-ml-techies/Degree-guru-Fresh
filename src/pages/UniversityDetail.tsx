@@ -37,7 +37,8 @@ import {
   ZoomIn,
   Sparkles,
   ExternalLink,
-  ChevronRight
+  ChevronRight,
+  ChevronDown
 } from "lucide-react";
 import { submitLead } from "@/lib/api";
 import { Button } from "@/components/ui/button";
@@ -48,6 +49,462 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+
+interface UniqueProgramItem {
+  id: string;
+  name: string;
+  fullName: string;
+  levelKey: "ug" | "pg" | "integrated" | "collaborative";
+  degreeLevel: string;
+  slug: string;
+  duration: string;
+  eligibility: string;
+  tuitionFee: number;
+  semesterFee: number;
+  specializations: string[];
+  industryPartner?: string;
+  thumbnail: string;
+}
+
+const UNIQUE_AMITY_PROGRAMS: UniqueProgramItem[] = [
+  // ── PG COURSES (Unique Master Degrees) ──
+  {
+    id: "amity-pg-mba",
+    name: "Online MBA",
+    fullName: "Online Master of Business Administration",
+    levelKey: "pg",
+    degreeLevel: "Postgraduate (PG)",
+    slug: "online-mba",
+    duration: "2 Years (4 Sems)",
+    eligibility: "Bachelor's degree with min 50% marks (45% for reserved)",
+    tuitionFee: 207000,
+    semesterFee: 56300,
+    thumbnail: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80",
+    specializations: [
+      "Dual Specialization (Marketing, Finance, HR, IT, Operations)",
+      "Hospital & Healthcare Management (HHM)",
+      "Digital Marketing & E-Commerce",
+      "Business Analytics & Data Science",
+      "International Finance & Global Accounting (ACCA)",
+      "Human Resource Management",
+      "Operations & Supply Chain Management",
+      "Information Technology (IT) Management",
+      "Banking, Financial Services & Insurance (BFSI)",
+      "Retail Operations Management (with Lenskart)",
+      "Entrepreneurship & Leadership",
+      "International Business",
+      "General Management",
+    ],
+  },
+  {
+    id: "amity-pg-mca",
+    name: "Online MCA",
+    fullName: "Online Master of Computer Applications",
+    levelKey: "pg",
+    degreeLevel: "Postgraduate (PG)",
+    slug: "online-mca",
+    duration: "2 Years (4 Sems)",
+    eligibility: "BCA / B.Sc (IT/CS) or Bachelor's with Mathematics",
+    tuitionFee: 183080,
+    semesterFee: 49800,
+    thumbnail: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80",
+    specializations: [
+      "General (Advanced Distributed Systems & Web Architecture)",
+      "Cybersecurity & Cloud Architecture (with HCLTech)",
+      "Software Engineering & DevOps (with HCLTech)",
+      "AR/VR Development & Spatial Computing (with TCS iON)",
+      "Machine Learning & Artificial Intelligence (with TCS iON)",
+      "FinTech Systems & Blockchain",
+    ],
+  },
+  {
+    id: "amity-pg-mcom",
+    name: "Online M.Com",
+    fullName: "Online Master of Commerce (Financial Management)",
+    levelKey: "pg",
+    degreeLevel: "Postgraduate (PG)",
+    slug: "online-mcom",
+    duration: "2 Years (4 Sems)",
+    eligibility: "B.Com / BBA / Economics graduate",
+    tuitionFee: 138000,
+    semesterFee: 37500,
+    thumbnail: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=80",
+    specializations: [
+      "Financial Management (FM)",
+      "International Finance & Trade",
+      "Corporate Accounting & Auditing",
+      "Banking & Insurance Management",
+    ],
+  },
+  {
+    id: "amity-pg-ma",
+    name: "Online MA",
+    fullName: "Online Master of Arts (Journalism & Public Policy)",
+    levelKey: "pg",
+    degreeLevel: "Postgraduate (PG)",
+    slug: "online-ma",
+    duration: "2 Years (4 Sems)",
+    eligibility: "Bachelor's degree in any discipline",
+    tuitionFee: 138000,
+    semesterFee: 37500,
+    thumbnail: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=600&q=80",
+    specializations: [
+      "Journalism & Mass Communication (MA-JMC)",
+      "Public Policy & Governance (MA-PPG)",
+      "English Literature & Critical Studies",
+      "Psychology & Behavioral Sciences",
+    ],
+  },
+  {
+    id: "amity-pg-msc",
+    name: "Online M.Sc",
+    fullName: "Online Master of Science (Data Science)",
+    levelKey: "pg",
+    degreeLevel: "Postgraduate (PG)",
+    slug: "online-msc",
+    duration: "2 Years (4 Sems)",
+    eligibility: "B.Sc/BCA/B.Tech or Bachelor's with Math/Stats",
+    tuitionFee: 253000,
+    semesterFee: 68800,
+    thumbnail: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80",
+    specializations: [
+      "Data Science & Big Data Analytics",
+      "Applied Machine Learning & Artificial Intelligence",
+      "Applied Mathematics & Computational Statistics",
+    ],
+  },
+
+  // ── UG COURSES (Unique Bachelor Degrees) ──
+  {
+    id: "amity-ug-bba",
+    name: "Online BBA",
+    fullName: "Online Bachelor of Business Administration",
+    levelKey: "ug",
+    degreeLevel: "Undergraduate (UG)",
+    slug: "online-bba",
+    duration: "3 Years (6 Sems)",
+    eligibility: "10+2 from recognized board with min 45% marks",
+    tuitionFee: 175120,
+    semesterFee: 33200,
+    thumbnail: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80",
+    specializations: [
+      "General Business Management",
+      "Digital Marketing & Brand Strategy",
+      "Banking & Financial Services",
+      "Human Resource Management",
+      "Retail & Operations Management (with Lenskart)",
+      "Data Analytics for Business (with HCLTech)",
+      "Business Analytics Program (with KPMG)",
+    ],
+  },
+  {
+    id: "amity-ug-bca",
+    name: "Online BCA",
+    fullName: "Online Bachelor of Computer Applications",
+    levelKey: "ug",
+    degreeLevel: "Undergraduate (UG)",
+    slug: "online-bca",
+    duration: "3 Years (6 Sems)",
+    eligibility: "10+2 with Mathematics / Computer or Bridge Course",
+    tuitionFee: 154000,
+    semesterFee: 29200,
+    thumbnail: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80",
+    specializations: [
+      "General Software Development",
+      "Data Engineering (with HCLTech)",
+      "Software Engineering & Agile (with HCLTech)",
+      "Cloud Security Architecture (with TCS iON)",
+      "Data Analytics & BI (with TCS iON)",
+      "Advanced Data Engineering (with KPMG)",
+      "FinTech & Financial Technologies",
+      "Full Stack Web Development",
+    ],
+  },
+  {
+    id: "amity-ug-bcom",
+    name: "Online B.Com",
+    fullName: "Online Bachelor of Commerce",
+    levelKey: "ug",
+    degreeLevel: "Undergraduate (UG)",
+    slug: "online-bcom",
+    duration: "3 Years (6 Sems)",
+    eligibility: "10+2 from recognized board",
+    tuitionFee: 101200,
+    semesterFee: 19200,
+    thumbnail: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=80",
+    specializations: [
+      "General Commerce & Accounting",
+      "B.Com (Honors)",
+      "International Accounting (ACCA UK Accredited)",
+      "Banking & Financial Services",
+      "Vernacular Medium (Regional Languages)",
+    ],
+  },
+  {
+    id: "amity-ug-ba",
+    name: "Online BA",
+    fullName: "Online Bachelor of Arts",
+    levelKey: "ug",
+    degreeLevel: "Undergraduate (UG)",
+    slug: "online-ba",
+    duration: "3 Years (6 Sems)",
+    eligibility: "10+2 from recognized board",
+    tuitionFee: 101200,
+    semesterFee: 19200,
+    thumbnail: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=600&q=80",
+    specializations: [
+      "General Humanities (History, Pol Sci, Sociology)",
+      "Journalism & Mass Communication (BA-JMC)",
+      "English Literature",
+      "Vernacular Medium",
+    ],
+  },
+
+  // ── INTEGRATED DUAL DEGREE ──
+  {
+    id: "amity-int-bba-mba",
+    name: "Integrated BBA - MBA",
+    fullName: "Integrated Bachelor of Business Administration - Master of Business Administration",
+    levelKey: "integrated",
+    degreeLevel: "Integrated Dual Degree",
+    slug: "online-mba",
+    duration: "4.5 to 5 Years (Dual Degree)",
+    eligibility: "10+2 from recognized board with min 50% marks",
+    tuitionFee: 370570,
+    semesterFee: 67200,
+    thumbnail: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80",
+    specializations: [
+      "Marketing Management Dual Track",
+      "Financial Management Dual Track",
+      "Human Resource Management Track",
+      "Business Analytics Dual Track",
+    ],
+  },
+  {
+    id: "amity-int-bcom-mba",
+    name: "Integrated B.Com - MBA",
+    fullName: "Integrated Bachelor of Commerce - Master of Business Administration",
+    levelKey: "integrated",
+    degreeLevel: "Integrated Dual Degree",
+    slug: "online-mba",
+    duration: "4.5 to 5 Years (Dual Degree)",
+    eligibility: "10+2 Commerce/All Streams with min 50% marks",
+    tuitionFee: 297160,
+    semesterFee: 53900,
+    thumbnail: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=80",
+    specializations: [
+      "Corporate Accounting & Finance Track",
+      "Banking & Capital Markets Track",
+      "Marketing & Retail Operations Track",
+    ],
+  },
+  {
+    id: "amity-int-bca-mca",
+    name: "Integrated BCA - MCA",
+    fullName: "Integrated Bachelor of Computer Applications - Master of Computer Applications",
+    levelKey: "integrated",
+    degreeLevel: "Integrated Dual Degree",
+    slug: "online-mca",
+    duration: "4.5 to 5 Years (Dual Degree)",
+    eligibility: "10+2 with Math/Computer or Equivalent",
+    tuitionFee: 326870,
+    semesterFee: 59300,
+    thumbnail: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80",
+    specializations: [
+      "Full Stack Software Engineering Track",
+      "Cloud Computing & DevOps Track",
+      "Artificial Intelligence & Machine Learning Track",
+    ],
+  },
+
+  // ── INDUSTRY COLLABORATIVE ──
+  {
+    id: "amity-col-bba-lenskart",
+    name: "BBA - Lenskart",
+    fullName: "BBA in Retail & Operations Management (Co-Created with Lenskart)",
+    levelKey: "collaborative",
+    degreeLevel: "Industry Collaborative",
+    slug: "online-bba",
+    industryPartner: "Lenskart",
+    duration: "3 Years (6 Sems)",
+    eligibility: "10+2 from recognized board + Selection Interview",
+    tuitionFee: 242000,
+    semesterFee: 45900,
+    thumbnail: "https://images.unsplash.com/photo-1556740738-b6a63e27c4df?auto=format&fit=crop&w=600&q=80",
+    specializations: [
+      "Retail Store Operations & Inventory",
+      "Omnichannel Merchandising Strategy",
+      "Customer Experience & CRM Management",
+    ],
+  },
+  {
+    id: "amity-col-bba-kpmg",
+    name: "BBA - KPMG",
+    fullName: "BBA in Business Analytics Program (Co-Created with KPMG)",
+    levelKey: "collaborative",
+    degreeLevel: "Industry Collaborative",
+    slug: "online-bba",
+    industryPartner: "KPMG",
+    duration: "3 Years (6 Sems)",
+    eligibility: "10+2 with min 50% marks",
+    tuitionFee: 202400,
+    semesterFee: 38400,
+    thumbnail: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80",
+    specializations: [
+      "Financial Analytics with KPMG Industry Data",
+      "Marketing & Predictive Analytics",
+      "Executive BI & Data Storytelling",
+    ],
+  },
+  {
+    id: "amity-col-bba-hcl",
+    name: "BBA - HCLTech",
+    fullName: "BBA in Data Analytics (Co-Created with HCLTech)",
+    levelKey: "collaborative",
+    degreeLevel: "Industry Collaborative",
+    slug: "online-bba",
+    industryPartner: "HCLTech",
+    duration: "3 Years (6 Sems)",
+    eligibility: "10+2 with Math/Stats preferred",
+    tuitionFee: 220000,
+    semesterFee: 41700,
+    thumbnail: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80",
+    specializations: [
+      "Data Visualization & Business Dashboards",
+      "Business Intelligence Engineering",
+      "Python Analytics for Enterprises",
+    ],
+  },
+  {
+    id: "amity-col-bca-hcl",
+    name: "BCA - HCLTech",
+    fullName: "BCA in Software & Data Engineering (Co-Created with HCLTech)",
+    levelKey: "collaborative",
+    degreeLevel: "Industry Collaborative",
+    slug: "online-bca",
+    industryPartner: "HCLTech",
+    duration: "3 Years (6 Sems)",
+    eligibility: "10+2 from recognized board",
+    tuitionFee: 220000,
+    semesterFee: 41700,
+    thumbnail: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80",
+    specializations: [
+      "Enterprise Data Engineering Track",
+      "Software Engineering & Agile DevOps",
+    ],
+  },
+  {
+    id: "amity-col-bca-tcs",
+    name: "BCA - TCS iON",
+    fullName: "BCA in Cloud Security & Data Analytics (Co-Created with TCS iON)",
+    levelKey: "collaborative",
+    degreeLevel: "Industry Collaborative",
+    slug: "online-bca",
+    industryPartner: "TCS iON",
+    duration: "3 Years (6 Sems)",
+    eligibility: "10+2 from recognized board",
+    tuitionFee: 220000,
+    semesterFee: 41700,
+    thumbnail: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80",
+    specializations: [
+      "Cloud Security Architecture & Defense",
+      "Enterprise Data Analytics & Storage",
+    ],
+  },
+  {
+    id: "amity-col-bcom-acca",
+    name: "B.Com - ACCA",
+    fullName: "B.Com with International ACCA UK Accreditation",
+    levelKey: "collaborative",
+    degreeLevel: "Industry Collaborative",
+    slug: "online-bcom",
+    industryPartner: "ACCA",
+    duration: "3 Years (6 Sems)",
+    eligibility: "10+2 with Commerce / Math",
+    tuitionFee: 242000,
+    semesterFee: 45900,
+    thumbnail: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=80",
+    specializations: [
+      "Global Corporate Taxation & IFRS",
+      "International Audit & Assurance",
+      "Strategic Financial Management",
+    ],
+  },
+  {
+    id: "amity-col-mba-lenskart",
+    name: "MBA - Lenskart",
+    fullName: "MBA in Executive Retail Operations (Co-Created with Lenskart)",
+    levelKey: "collaborative",
+    degreeLevel: "Industry Collaborative",
+    slug: "online-mba",
+    industryPartner: "Lenskart",
+    duration: "2 Years (4 Sems)",
+    eligibility: "Bachelor's degree + Interview selection",
+    tuitionFee: 253000,
+    semesterFee: 68800,
+    thumbnail: "https://images.unsplash.com/photo-1556740738-b6a63e27c4df?auto=format&fit=crop&w=600&q=80",
+    specializations: [
+      "Executive Retail Store Leadership",
+      "Supply Chain Optimization & Logistics",
+      "Omnichannel Digital Retailing",
+    ],
+  },
+  {
+    id: "amity-col-mba-acca",
+    name: "MBA - ACCA",
+    fullName: "MBA in Global Accounting & Finance (Accredited by ACCA UK)",
+    levelKey: "collaborative",
+    degreeLevel: "Industry Collaborative",
+    slug: "online-mba",
+    industryPartner: "ACCA",
+    duration: "2 Years (4 Sems)",
+    eligibility: "Bachelor's degree with Commerce/Finance background",
+    tuitionFee: 302680,
+    semesterFee: 82300,
+    thumbnail: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80",
+    specializations: [
+      "International Financial Management",
+      "Strategic Business Leadership (SBL)",
+      "Advanced Corporate Reporting (SBR)",
+    ],
+  },
+  {
+    id: "amity-col-mca-hcl",
+    name: "MCA - HCLTech",
+    fullName: "MCA in Cybersecurity & Cloud Software (Co-Created with HCLTech)",
+    levelKey: "collaborative",
+    degreeLevel: "Industry Collaborative",
+    slug: "online-mca",
+    industryPartner: "HCLTech",
+    duration: "2 Years (4 Sems)",
+    eligibility: "Bachelor's with Computer/IT or Math",
+    tuitionFee: 253000,
+    semesterFee: 68800,
+    thumbnail: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80",
+    specializations: [
+      "Enterprise Cybersecurity & Threat Intelligence",
+      "Cloud Systems Engineering & DevOps",
+    ],
+  },
+  {
+    id: "amity-col-mca-tcs",
+    name: "MCA - TCS iON",
+    fullName: "MCA in AR/VR & Applied Machine Learning (Co-Created with TCS iON)",
+    levelKey: "collaborative",
+    degreeLevel: "Industry Collaborative",
+    slug: "online-mca",
+    industryPartner: "TCS iON",
+    duration: "2 Years (4 Sems)",
+    eligibility: "Bachelor's with Computer/IT or Math",
+    tuitionFee: 253000,
+    semesterFee: 68800,
+    thumbnail: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80",
+    specializations: [
+      "AR/VR Spatial Computing & Unreal Engine",
+      "Applied Machine Learning & Deep Neural Nets",
+    ],
+  },
+];
 
 export const UniversityDetail = () => {
   const { uniSlug } = useParams<{ uniSlug: string }>();
@@ -60,6 +517,7 @@ export const UniversityDetail = () => {
   const [courseCategoryTab, setCourseCategoryTab] = useState<"ug" | "pg" | "collaborative" | "integrated">("ug");
   const [paymentMode, setPaymentMode] = useState<"direct" | "loan">("direct");
   const [searchQuery, setSearchQuery] = useState("");
+  const [expandedProgramId, setExpandedProgramId] = useState<string | null>(null);
   const [selectedFaculty, setSelectedFaculty] = useState<{
     name: string;
     designation: string;
@@ -175,6 +633,51 @@ export const UniversityDetail = () => {
     };
   });
 
+  // Unique programs for current tab & search
+  const displayPrograms = useMemo(() => {
+    if (isAmity) {
+      return UNIQUE_AMITY_PROGRAMS.filter((prog) => {
+        if (courseCategoryTab !== prog.levelKey) return false;
+        if (searchQuery.trim()) {
+          const q = searchQuery.toLowerCase();
+          const matchName = prog.name.toLowerCase().includes(q);
+          const matchFull = prog.fullName.toLowerCase().includes(q);
+          const matchPartner = prog.industryPartner?.toLowerCase().includes(q);
+          const matchSpec = prog.specializations.some((s) => s.toLowerCase().includes(q));
+          return matchName || matchFull || matchPartner || matchSpec;
+        }
+        return true;
+      });
+    }
+
+    // Generic universities
+    return genericPrograms
+      .filter((prog) => {
+        if (courseCategoryTab === "ug" && prog.levelKey !== "ug") return false;
+        if (courseCategoryTab === "pg" && prog.levelKey !== "pg") return false;
+        if (courseCategoryTab === "integrated" || courseCategoryTab === "collaborative") return false;
+        if (searchQuery.trim()) {
+          const q = searchQuery.toLowerCase();
+          return prog.name.toLowerCase().includes(q);
+        }
+        return true;
+      })
+      .map((p, i) => ({
+        id: `gen-${i}`,
+        name: p.name,
+        fullName: p.name,
+        levelKey: p.levelKey as "ug" | "pg" | "integrated" | "collaborative",
+        degreeLevel: p.level,
+        slug: p.slug,
+        duration: p.duration,
+        eligibility: p.eligibility,
+        tuitionFee: 120000,
+        semesterFee: 30000,
+        specializations: p.specializations,
+        thumbnail: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80",
+      }));
+  }, [isAmity, courseCategoryTab, searchQuery, genericPrograms]);
+
   // 6 HD Authority Recognition Cards (From User Screenshot)
   const authorityLogos = [
     { name: "UGC-DEB", img: "/assets/approvals/ugc-deb.png" },
@@ -263,43 +766,42 @@ export const UniversityDetail = () => {
 
       <div className="min-h-screen bg-background text-foreground font-sans">
         {/* ───────────────────────────────────────────────────────────────── */}
-        {/* 1. SIMPLE CLEAR BREADCRUMB (Standard Page Flow like other pages)    */}
+        {/* 1. CLEAN OFFICIAL REAL CAMPUS PHOTO HERO (Seamless Architecture, No Stroke) */}
         {/* ───────────────────────────────────────────────────────────────── */}
-        <div className="bg-muted/30 border-b border-border/50 py-3">
-          <div className="container-dg max-w-6xl">
-            <AppBreadcrumb
-              items={[
-                { label: "Universities", href: "/universities" },
-                { label: uni.shortName || uni.name }
-              ]}
-            />
+        <section className="-mt-[100px] sm:-mt-[114px] md:-mt-[132px] relative w-full h-80 sm:h-96 md:h-[420px] overflow-hidden bg-neutral-900">
+          <img
+            src={campusImage}
+            alt={`${uni.name} Campus`}
+            className="w-full h-full object-cover object-center transition-transform duration-700 hover:scale-102"
+            loading="eager"
+          />
+          {/* Subtle top & bottom scrim so the campus architecture shines brightly and cleanly */}
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-black/25 to-black/60 pointer-events-none" />
+
+          {/* Breadcrumb over campus photo */}
+          <div className="absolute top-[108px] sm:top-[122px] md:top-[140px] inset-x-0">
+            <div className="container-dg max-w-6xl">
+              <div className="inline-flex px-3 py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/10 [&_a]:text-white/80 [&_span]:text-white/90 [&_svg]:text-white/60">
+                <AppBreadcrumb
+                  items={[
+                    { label: "Universities", href: "/universities" },
+                    { label: uni.shortName || uni.name }
+                  ]}
+                />
+              </div>
+            </div>
           </div>
-        </div>
+        </section>
 
         {/* ───────────────────────────────────────────────────────────────── */}
-        {/* 2. HD UNIVERSITY FRONT IMAGE (Clearly Visible, Crisp, Unstretched) */}
+        {/* 2. UNIVERSITY PROFILE CARD (Overlapping Hero Banner)              */}
         {/* ───────────────────────────────────────────────────────────────── */}
-        <div className="container-dg max-w-6xl pt-1 sm:pt-2">
-          <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden border border-border/80 shadow-md bg-slate-900 aspect-[16/9] sm:aspect-[21/9] max-h-[340px] sm:max-h-[420px]">
-            <img
-              src={campusImage}
-              alt={`${uni.name} Campus Facade`}
-              className="w-full h-full object-cover object-[center_30%] transition-transform duration-500 hover:scale-101"
-              loading="eager"
-            />
-          </div>
-        </div>
-
-        {/* ───────────────────────────────────────────────────────────────── */}
-        {/* 3. UNIVERSITY PROFILE CARD                                        */}
-        {/*    Logo pushed left & above, single-line name, no authority pills */}
-        {/* ───────────────────────────────────────────────────────────────── */}
-        <div className="relative -mt-7 sm:-mt-11 z-10 pb-3 sm:pb-5">
+        <div className="relative -mt-16 sm:-mt-20 z-20 pb-4 sm:pb-6">
           <div className="container-dg max-w-6xl">
-            <div className="p-4 sm:p-7 rounded-3xl bg-card border border-border/80 shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4 sm:gap-5 relative">
-              <div className="flex items-start gap-3 sm:gap-5 w-full md:w-auto">
-                {/* Logo DP pushed left and above */}
-                <div className="-mt-11 sm:-mt-16 -ml-2 sm:-ml-3 w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-2xl bg-white p-2 sm:p-2.5 border-2 border-border shadow-md flex items-center justify-center shrink-0 z-10">
+            <div className="p-5 sm:p-7 rounded-3xl bg-card border border-border/80 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-5 sm:gap-6">
+              <div className="flex items-start gap-4 sm:gap-6">
+                {/* University Logo DP */}
+                <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-2xl sm:rounded-3xl bg-white p-2.5 sm:p-3.5 border-2 border-border shadow-md flex items-center justify-center shrink-0">
                   <img
                     src={isAmity ? "/logos/amity.png" : "/logos/cu.png"}
                     alt={uni.name}
@@ -307,14 +809,14 @@ export const UniversityDetail = () => {
                   />
                 </div>
 
-                <div className="space-y-1 sm:space-y-1.5 flex-1 min-w-0">
-                  {/* Clean H1 in one line with reduced font size */}
-                  <h1 className="text-lg sm:text-2xl md:text-3xl font-bold text-foreground tracking-tight whitespace-nowrap overflow-hidden text-ellipsis">
+                <div className="space-y-1.5">
+                  {/* Clean H1 Title */}
+                  <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground tracking-tight">
                     {uni.name}
                   </h1>
 
-                  {/* Rating & Location (NO AICTE/NIRF/WES/UGC-DEB badges here per user request) */}
-                  <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm text-muted-foreground">
+                  {/* Rating & Location */}
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm text-muted-foreground font-normal">
                     <span className="flex items-center gap-1 text-foreground font-semibold">
                       <Star size={13} className="fill-amber-400 text-amber-400" />
                       4.3 / 5 ({uni.reviewsCount || "4,120"}+ reviews)
@@ -355,16 +857,16 @@ export const UniversityDetail = () => {
         </div>
 
         {/* ───────────────────────────────────────────────────────────────── */}
-        {/* 4. CLEAN STICKY SUBNAV TABS (Premium Underline, Fully Visible)      */}
+        {/* 3. CLEAN STICKY SUBNAV TABS (Flush directly under header)         */}
         {/* ───────────────────────────────────────────────────────────────── */}
-        <div className="sticky top-[96px] sm:top-[110px] md:top-[128px] z-30 bg-background border-b border-border shadow-xs">
+        <div className="sticky top-[96px] md:top-[100px] z-30 bg-background/95 backdrop-blur-md border-b border-border shadow-xs">
           <div className="container-dg max-w-6xl">
             <div className="flex items-center gap-1 sm:gap-4 overflow-x-auto no-scrollbar py-0 text-xs sm:text-sm font-medium">
               {[
                 { id: "overview", label: "About" },
                 { id: "courses", label: isAmity ? "Courses & Fees (2026)" : "Courses & Fees" },
                 { id: "placements", label: "Placements" },
-                { id: "faculty", label: "Meet your Faculty" },
+                { id: "faculty", label: "Faculty" },
                 { id: "admission", label: "Admission Process" },
               ].map((tab) => (
                 <button
@@ -608,29 +1110,26 @@ export const UniversityDetail = () => {
                         ))}
                       </div>
 
-                      {/* PROGRAM CARDS GRID (Matching Image 3: Mobile scrollable cards, Desktop responsive grid) */}
-                      <div className="flex sm:grid sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-5 overflow-x-auto sm:overflow-visible pb-3 sm:pb-0 no-scrollbar snap-x">
-                        {filteredAmityPrograms.slice(0, 10).map((prog) => {
-                          const plan = paymentMode === "direct" ? prog.direct : prog.loan;
-                          const thumb = getCourseThumbnail(prog);
-
+                      {/* PROGRAM CARDS GRID (Unique Degrees with Specializations Dropdown & Links) */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                        {displayPrograms.map((prog) => {
                           return (
                             <div
-                              key={prog.sNo}
-                              className="w-[280px] sm:w-auto shrink-0 snap-start group rounded-3xl bg-card border border-border/80 shadow-xs hover:border-primary/40 hover:shadow-md transition-all overflow-hidden flex flex-col justify-between"
+                              key={prog.id}
+                              className="group rounded-3xl bg-card border border-border/80 shadow-xs hover:border-primary/40 hover:shadow-md transition-all overflow-hidden flex flex-col justify-between"
                             >
                               <div>
-                                {/* Top Thumbnail with Amity Badge (Matching Image 3) */}
+                                {/* Top Thumbnail with University Badge & Partner Badge */}
                                 <div className="relative h-44 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
                                   <img
-                                    src={thumb}
+                                    src={prog.thumbnail}
                                     alt={prog.name}
                                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-103"
                                     loading="lazy"
                                   />
-                                  {/* White Amity Crest Badge Overlay */}
+                                  {/* White University Crest Badge Overlay */}
                                   <div className="absolute top-3 left-3 px-2 py-1 rounded-lg bg-white/95 backdrop-blur-sm shadow-xs border border-slate-200/90 flex items-center">
-                                    <img src="/logos/amity.png" alt="Amity" className="h-5 w-auto object-contain" />
+                                    <img src={isAmity ? "/logos/amity.png" : "/logos/cu.png"} alt="University Logo" className="h-5 w-auto object-contain" />
                                   </div>
 
                                   {prog.industryPartner && (
@@ -641,22 +1140,32 @@ export const UniversityDetail = () => {
                                 </div>
 
                                 {/* Content Details */}
-                                <div className="p-5 space-y-2.5">
-                                  <span className="text-[10px] font-bold tracking-wider uppercase text-muted-foreground block">
-                                    AMITY UNIVERSITY ONLINE
-                                  </span>
-                                  <h3 className="text-base font-bold text-foreground group-hover:text-primary transition-colors leading-snug">
-                                    {prog.name}
+                                <div className="p-5 space-y-3">
+                                  <div className="flex items-center justify-between">
+                                    <span className="text-[10px] font-bold tracking-wider uppercase text-muted-foreground">
+                                      {uni.name}
+                                    </span>
+                                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-primary/10 text-primary">
+                                      {prog.degreeLevel}
+                                    </span>
+                                  </div>
+
+                                  <h3 className="text-base sm:text-lg font-bold text-foreground group-hover:text-primary transition-colors leading-snug">
+                                    <Link to={`/${prog.slug}`} className="hover:underline">
+                                      {prog.name}
+                                    </Link>
                                   </h3>
+
                                   <p className="text-xs text-muted-foreground line-clamp-1">
                                     {prog.eligibility}
                                   </p>
 
+                                  {/* Tuition Fee & Duration */}
                                   <div className="pt-2 flex items-center justify-between text-xs border-t border-border/40">
                                     <div className="space-y-0.5">
                                       <span className="text-[10px] text-muted-foreground block">Tuition Fee</span>
                                       <span className="text-sm font-bold text-foreground">
-                                        ₹{plan.oneTimeFee.toLocaleString("en-IN")}
+                                        ₹{prog.tuitionFee.toLocaleString("en-IN")}
                                       </span>
                                     </div>
                                     <div className="text-right space-y-0.5">
@@ -666,24 +1175,69 @@ export const UniversityDetail = () => {
                                       </span>
                                     </div>
                                   </div>
+
+                                  {/* Specializations Dropdown Button */}
+                                  <div className="pt-1">
+                                    <button
+                                      type="button"
+                                      onClick={() => setExpandedProgramId(expandedProgramId === prog.id ? null : prog.id)}
+                                      className="w-full flex items-center justify-between px-3.5 py-2 rounded-xl bg-muted/50 hover:bg-muted text-xs font-semibold text-foreground border border-border/60 transition-colors cursor-pointer"
+                                    >
+                                      <span className="flex items-center gap-1.5 text-primary font-bold">
+                                        <Layers size={13} />
+                                        <span>{prog.specializations.length} Specializations</span>
+                                      </span>
+                                      <ChevronDown
+                                        size={14}
+                                        className={`text-muted-foreground transition-transform duration-200 ${
+                                          expandedProgramId === prog.id ? "rotate-180" : ""
+                                        }`}
+                                      />
+                                    </button>
+
+                                    {/* Specializations Expandable Dropdown List */}
+                                    {expandedProgramId === prog.id && (
+                                      <div className="mt-2.5 p-3 rounded-2xl bg-muted/40 border border-border/70 space-y-2 animate-in fade-in-50 duration-200">
+                                        <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground block">
+                                          Available Specializations ({prog.specializations.length}):
+                                        </span>
+                                        <div className="flex flex-wrap gap-1.5 max-h-44 overflow-y-auto pr-1">
+                                          {prog.specializations.map((spec, sIdx) => (
+                                            <span
+                                              key={sIdx}
+                                              className="text-[11px] font-medium px-2.5 py-1 rounded-lg bg-card border border-border/70 text-foreground"
+                                            >
+                                              {spec}
+                                            </span>
+                                          ))}
+                                        </div>
+                                        <Link
+                                          to={`/${prog.slug}`}
+                                          className="inline-flex items-center gap-1 text-[11px] font-bold text-primary hover:underline pt-1"
+                                        >
+                                          <span>Explore complete {prog.name} syllabus & specializations</span>
+                                          <ArrowRight size={11} />
+                                        </Link>
+                                      </div>
+                                    )}
+                                  </div>
                                 </div>
                               </div>
 
-                              {/* Card Footer Link */}
+                              {/* Card Footer Actions */}
                               <div className="p-5 pt-0 flex items-center justify-between">
-                                <a
-                                  href="#counseling-box"
-                                  onClick={() => setSelectedCourse(prog.name)}
+                                <Link
+                                  to={`/${prog.slug}`}
                                   className="text-xs font-semibold text-primary group-hover:underline inline-flex items-center gap-1"
                                 >
                                   <span>Read more</span>
                                   <ChevronRight size={14} />
-                                </a>
+                                </Link>
 
                                 <a
                                   href="#counseling-box"
                                   onClick={() => setSelectedCourse(prog.name)}
-                                  className="px-3.5 py-1.5 rounded-xl bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 transition-colors shadow-xs"
+                                  className="px-4 py-1.5 rounded-xl bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 transition-colors shadow-xs"
                                 >
                                   Apply Now
                                 </a>
@@ -876,7 +1430,7 @@ export const UniversityDetail = () => {
                   </section>
                 )}
 
-                {/* ── TAB 4: FACULTY (Exact Members from User Reference) ── */}
+                {/* ── TAB 4: FACULTY ── */}
                 {activeTab === "faculty" && (
                   <section className="space-y-6">
                     <div className="p-6 sm:p-7 rounded-3xl bg-card border border-border/80 shadow-sm space-y-6">
@@ -885,24 +1439,24 @@ export const UniversityDetail = () => {
                           Distinguished Mentors
                         </span>
                         <h2 className="text-xl sm:text-2xl font-bold text-foreground">
-                          Meet your Faculty
+                          Faculty
                         </h2>
                         <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                           Learn directly from internationally acclaimed researchers, professors, and industry leaders with decades of academic rigor and corporate executive experience.
                         </p>
                       </div>
 
-                      {/* 6 Faculty Cards (Matching User Reference) */}
-                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                      {/* 2-Column Spacious Grid (Resolves text clipping next to counseling sidebar) */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
                         {facultyMembers.map((fac) => (
                           <div
                             key={fac.id}
-                            className="p-4 rounded-2xl bg-card border border-border/80 shadow-xs hover:border-primary/40 hover:shadow-md transition-all flex flex-col justify-between"
+                            className="p-5 rounded-3xl bg-card border border-border/80 shadow-xs hover:border-primary/40 hover:shadow-md transition-all flex flex-col justify-between space-y-4"
                           >
                             <div className="space-y-3">
                               {/* Avatar & Core Designation */}
-                              <div className="flex items-start gap-3">
-                                <div className="w-16 h-16 rounded-xl bg-slate-100 overflow-hidden border border-border/60 shrink-0">
+                              <div className="flex items-start gap-3.5 sm:gap-4">
+                                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-slate-100 overflow-hidden border border-border/60 shrink-0">
                                   <img
                                     src={fac.avatar}
                                     alt={fac.name}
@@ -910,33 +1464,34 @@ export const UniversityDetail = () => {
                                     loading="lazy"
                                   />
                                 </div>
-                                <div className="space-y-0.5">
-                                  <h3 className="text-sm font-bold text-foreground leading-tight">
+                                <div className="space-y-1 min-w-0">
+                                  <h3 className="text-base font-bold text-foreground leading-tight">
                                     {fac.name}
                                   </h3>
-                                  <p className="text-xs font-medium text-primary">
+                                  <p className="text-xs font-semibold text-primary">
                                     {fac.designation}
                                   </p>
-                                  <p className="text-[11px] text-muted-foreground truncate max-w-[150px]">
+                                  <p className="text-xs text-muted-foreground">
                                     {fac.qualification}
                                   </p>
                                 </div>
                               </div>
 
-                              <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+                              <p className="text-xs text-muted-foreground line-clamp-3 leading-relaxed">
                                 {fac.bio}
                               </p>
                             </div>
 
-                            {/* View More Modal Trigger */}
-                            <div className="pt-3 mt-2 border-t border-border/40">
+                            {/* View Profile Modal Trigger */}
+                            <div className="pt-3 border-t border-border/40 flex items-center justify-between">
+                              <span className="text-[11px] text-muted-foreground font-medium">Weekend Masterclasses</span>
                               <Dialog>
                                 <DialogTrigger asChild>
                                   <button
                                     onClick={() => setSelectedFaculty(fac)}
-                                    className="text-xs font-semibold text-primary hover:text-primary/80 transition-colors inline-flex items-center gap-1"
+                                    className="text-xs font-semibold text-primary hover:text-primary/80 transition-colors inline-flex items-center gap-1 cursor-pointer"
                                   >
-                                    <span>View More</span>
+                                    <span>View Profile</span>
                                     <ArrowRight size={12} />
                                   </button>
                                 </DialogTrigger>
