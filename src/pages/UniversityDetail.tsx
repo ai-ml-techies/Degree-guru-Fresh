@@ -1,4 +1,4 @@
-import { useState, useId, useMemo } from "react";
+import { useState, useId, useMemo, useEffect } from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { AppBreadcrumb } from "@/components/AppBreadcrumb";
@@ -60,7 +60,15 @@ export const UniversityDetail = () => {
   const [courseCategoryTab, setCourseCategoryTab] = useState<"ug" | "pg" | "collaborative" | "integrated">("ug");
   const [paymentMode, setPaymentMode] = useState<"direct" | "loan">("direct");
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedFaculty, setSelectedFaculty] = useState<any | null>(null);
+  const [selectedFaculty, setSelectedFaculty] = useState<{
+    name: string;
+    designation: string;
+    qualification: string;
+    experience: string;
+    specialization: string;
+    image?: string;
+    bio?: string;
+  } | null>(null);
 
   // Always reset scroll to absolute top hero section on load / refresh
   useEffect(() => {
@@ -80,6 +88,25 @@ export const UniversityDetail = () => {
   const nameInputId = useId();
   const phoneInputId = useId();
   const courseSelectId = useId();
+
+  // Filtered Programs for Amity (called unconditionally before early return)
+  const filteredAmityPrograms = useMemo(() => {
+    return AMITY_JULY_26_FEE_STRUCTURE.filter((prog) => {
+      if (courseCategoryTab === "pg" && prog.type !== "PG") return false;
+      if (courseCategoryTab === "ug" && prog.type !== "UG") return false;
+      if (courseCategoryTab === "integrated" && prog.type !== "UG - PG") return false;
+      if (courseCategoryTab === "collaborative" && !prog.industryPartner) return false;
+
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase();
+        const matchName = prog.name.toLowerCase().includes(q);
+        const matchPartner = prog.industryPartner?.toLowerCase().includes(q);
+        const matchCat = prog.category.toLowerCase().includes(q);
+        return matchName || matchPartner || matchCat;
+      }
+      return true;
+    });
+  }, [courseCategoryTab, searchQuery]);
 
   if (!uni) {
     return <Navigate to="/universities" replace />;
@@ -127,25 +154,6 @@ export const UniversityDetail = () => {
     }
     return "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80";
   };
-
-  // Filtered Programs for Amity
-  const filteredAmityPrograms = useMemo(() => {
-    return AMITY_JULY_26_FEE_STRUCTURE.filter((prog) => {
-      if (courseCategoryTab === "pg" && prog.type !== "PG") return false;
-      if (courseCategoryTab === "ug" && prog.type !== "UG") return false;
-      if (courseCategoryTab === "integrated" && prog.type !== "UG - PG") return false;
-      if (courseCategoryTab === "collaborative" && !prog.industryPartner) return false;
-
-      if (searchQuery.trim()) {
-        const q = searchQuery.toLowerCase();
-        const matchName = prog.name.toLowerCase().includes(q);
-        const matchPartner = prog.industryPartner?.toLowerCase().includes(q);
-        const matchCat = prog.category.toLowerCase().includes(q);
-        return matchName || matchPartner || matchCat;
-      }
-      return true;
-    });
-  }, [courseCategoryTab, searchQuery]);
 
   // Generic programs for other universities
   const genericPrograms = (uni.popularCourses || []).map((courseName) => {
@@ -361,7 +369,7 @@ export const UniversityDetail = () => {
               ].map((tab) => (
                 <button
                   key={tab.id}
-                  onClick={() => setActiveTab(tab.id as any)}
+                  onClick={() => setActiveTab(tab.id as "overview" | "courses" | "placements" | "faculty" | "admission")}
                   className={`py-3 sm:py-3.5 px-3.5 sm:px-5 border-b-2 text-xs sm:text-sm font-semibold transition-all whitespace-nowrap outline-none focus:outline-none focus-visible:outline-none ${
                     activeTab === tab.id
                       ? "border-primary text-primary font-bold bg-primary/5 rounded-t-lg"
@@ -588,7 +596,7 @@ export const UniversityDetail = () => {
                         ].map((cat) => (
                           <button
                             key={cat.id}
-                            onClick={() => setCourseCategoryTab(cat.id as any)}
+                            onClick={() => setCourseCategoryTab(cat.id as "ug" | "pg" | "collaborative" | "integrated")}
                             className={`px-4 py-2 rounded-full text-xs font-semibold transition-all whitespace-nowrap ${
                               courseCategoryTab === cat.id
                                 ? "bg-primary text-primary-foreground shadow-sm"
