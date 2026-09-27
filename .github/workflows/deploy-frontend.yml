@@ -50,6 +50,6 @@ jobs:
           username: ${{ secrets.FTP_FRONTEND_USERNAME || secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_FRONTEND_PASSWORD || secrets.FTP_PASSWORD }}
           local-dir: ./dist/
-          server-dir: ${{ secrets.FTP_FRONTEND_DIR || 'public_html/' }}
+          server-dir: ./
           timeout: 600000
           dangerous-clean-slate: false
