@@ -2,7 +2,6 @@ import { useState, useId, useMemo } from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { AppBreadcrumb } from "@/components/AppBreadcrumb";
-import { UniversityLogo } from "@/components/UniversityLogo";
 import { 
   UNIVERSITIES, 
   ACTIVE_ONLINE_UNIVERSITIES, 
@@ -36,7 +35,6 @@ import {
   UserCheck,
   Search,
   ZoomIn,
-  Building,
   Sparkles,
   ExternalLink
 } from "lucide-react";
@@ -104,13 +102,11 @@ export const UniversityDetail = () => {
   // ── Amity Programs from July 26 Official Fee Structure ──
   const filteredAmityPrograms = useMemo(() => {
     return AMITY_JULY_26_FEE_STRUCTURE.filter((prog) => {
-      // Filter by category/level
       if (courseFilter === "pg" && prog.type !== "PG") return false;
       if (courseFilter === "ug" && prog.type !== "UG") return false;
       if (courseFilter === "integrated" && prog.type !== "UG - PG") return false;
       if (courseFilter === "collaborative" && !prog.industryPartner) return false;
 
-      // Filter by query
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
         const matchName = prog.name.toLowerCase().includes(q);
@@ -142,47 +138,17 @@ export const UniversityDetail = () => {
     };
   });
 
-  // ── Real Authority Recognition Cards (From User Screenshot) ──
+  // ── Real Authority Recognition Cards (Clear, Big Logos, No typed redundant names) ──
   const authorityLogos = [
-    {
-      name: "UGC-DEB",
-      desc: "University Grants Commission",
-      sub: "Distance Education Bureau",
-      img: "/assets/approvals/ugc-deb.png"
-    },
-    {
-      name: "AICTE",
-      desc: "All India Council for Technical Education",
-      sub: "Approved MBA & MCA",
-      img: "/assets/approvals/aicte.png"
-    },
-    {
-      name: "NIRF",
-      desc: "National Institutional Ranking Framework",
-      sub: "Ranked 22nd in India (2025)",
-      img: "/assets/approvals/nirf.png"
-    },
-    {
-      name: "WES",
-      desc: "World Education Services",
-      sub: "Valid for USA & Canada PR/Study",
-      img: "/assets/approvals/wes.png"
-    },
-    {
-      name: "QS World University Rankings",
-      desc: "QS Stars & Global Rankings",
-      sub: "Top 10 Online MBA in Asia-Pacific",
-      img: "/assets/approvals/qs.png"
-    },
-    {
-      name: "DEC",
-      desc: "Digital Education Council",
-      sub: "Global Quality Benchmarks",
-      img: "/assets/approvals/dec.png"
-    },
+    { name: "UGC-DEB", img: "/assets/approvals/ugc-deb.png" },
+    { name: "AICTE", img: "/assets/approvals/aicte.png" },
+    { name: "NIRF", img: "/assets/approvals/nirf.png" },
+    { name: "WES", img: "/assets/approvals/wes.png" },
+    { name: "QS World University Rankings", img: "/assets/approvals/qs.png" },
+    { name: "DEC", img: "/assets/approvals/dec.png" },
   ];
 
-  // ── Placement Companies with Real SVGs (No Fillers) ──
+  // ── Placement Companies with Real SVGs ──
   const placementCompanies = [
     { name: "Google", logo: "/assets/companies/google.svg" },
     { name: "Microsoft", logo: "/assets/companies/microsoft.svg" },
@@ -198,7 +164,7 @@ export const UniversityDetail = () => {
     { name: "Wipro", logo: "/assets/companies/wipro.svg" },
   ];
 
-  // ── Exact Faculty Members from User Screenshot ──
+  // ── Faculty Members from User Reference ──
   const facultyMembers = [
     {
       id: "sunil-kumar",
@@ -260,42 +226,42 @@ export const UniversityDetail = () => {
 
       <div className="min-h-screen bg-background text-foreground font-sans">
         {/* ───────────────────────────────────────────────────────────────── */}
-        {/* 1. CLEAN OFFICIAL REAL CAMPUS PHOTO HERO (Seamless Architecture)   */}
+        {/* 1. SIMPLE CLEAR BREADCRUMB (Standard Page Flow like other pages)    */}
         {/* ───────────────────────────────────────────────────────────────── */}
-        <section className="-mt-[100px] sm:-mt-[114px] md:-mt-[132px] relative w-full h-80 sm:h-96 md:h-[420px] overflow-hidden bg-neutral-900">
-          <img
-            src={campusImage}
-            alt={`${uni.name} Official Campus`}
-            className="w-full h-full object-cover object-center transition-transform duration-700 hover:scale-102"
-            loading="eager"
-          />
-          {/* Subtle top & bottom scrim so the campus architecture shines brightly and cleanly */}
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-black/25 to-black/60 pointer-events-none" />
-
-          {/* Breadcrumb over campus photo */}
-          <div className="absolute top-[108px] sm:top-[122px] md:top-[140px] inset-x-0">
-            <div className="container-dg max-w-6xl">
-              <div className="inline-flex px-3 py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/10 [&_a]:text-white/80 [&_span]:text-white/90 [&_svg]:text-white/60">
-                <AppBreadcrumb
-                  items={[
-                    { label: "Universities", href: "/universities" },
-                    { label: uni.shortName || uni.name }
-                  ]}
-                />
-              </div>
-            </div>
+        <div className="bg-muted/30 border-b border-border/50 py-3">
+          <div className="container-dg max-w-6xl">
+            <AppBreadcrumb
+              items={[
+                { label: "Universities", href: "/universities" },
+                { label: uni.shortName || uni.name }
+              ]}
+            />
           </div>
-        </section>
+        </div>
 
         {/* ───────────────────────────────────────────────────────────────── */}
-        {/* 2. UNIVERSITY PROFILE CARD (Prominent DP, No Badges Above H1)      */}
+        {/* 2. UNIVERSITY FRONT IMAGE (Clearly Visible, Crisp, Unstretched)   */}
         {/* ───────────────────────────────────────────────────────────────── */}
-        <div className="relative -mt-16 sm:-mt-20 z-20 pb-6">
+        <div className="container-dg max-w-6xl pt-4 sm:pt-6">
+          <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden border border-border/80 shadow-md bg-slate-900 aspect-[16/7] sm:aspect-[21/8] max-h-[360px] sm:max-h-[420px]">
+            <img
+              src={campusImage}
+              alt={`${uni.name} Campus Front Facade`}
+              className="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-101"
+              loading="eager"
+            />
+          </div>
+        </div>
+
+        {/* ───────────────────────────────────────────────────────────────── */}
+        {/* 3. UNIVERSITY PROFILE CARD (Prominent DP, Badges, 4.3 Rating)     */}
+        {/* ───────────────────────────────────────────────────────────────── */}
+        <div className="relative -mt-8 sm:-mt-12 z-20 pb-6">
           <div className="container-dg max-w-6xl">
             <div className="p-6 sm:p-7 rounded-3xl bg-card border border-border/80 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
               <div className="flex items-start gap-4 sm:gap-6">
-                {/* University Logo DP (Enlarged prominent size per user request) */}
-                <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-2xl sm:rounded-3xl bg-white p-3 sm:p-4 border-2 border-border shadow-md flex items-center justify-center shrink-0">
+                {/* University Logo DP */}
+                <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-2xl bg-white p-2.5 sm:p-3 border-2 border-border shadow-md flex items-center justify-center shrink-0">
                   <img
                     src={isAmity ? "/logos/amity.png" : "/logos/cu.png"}
                     alt={uni.name}
@@ -309,20 +275,42 @@ export const UniversityDetail = () => {
                     {uni.name}
                   </h1>
 
-                  {/* University Rating (4.3 per request) & Core Location/Est Info */}
-                  <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm text-muted-foreground font-normal">
+                  {/* Core Badges, Rating & Meta */}
+                  <div className="flex flex-wrap items-center gap-2.5 text-xs sm:text-sm">
+                    {/* Authority Badges matching reference screenshot */}
+                    <div className="flex items-center gap-1.5">
+                      <span className="px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-700 dark:text-amber-400 font-bold text-[11px] border border-amber-500/20">
+                        AICTE
+                      </span>
+                      <span className="px-2 py-0.5 rounded-md bg-blue-500/10 text-blue-700 dark:text-blue-400 font-bold text-[11px] border border-blue-500/20">
+                        NIRF
+                      </span>
+                      <span className="px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-bold text-[11px] border border-emerald-500/20">
+                        WES
+                      </span>
+                      <span className="px-2 py-0.5 rounded-md bg-primary/10 text-primary font-bold text-[11px] border border-primary/20">
+                        UGC-DEB
+                      </span>
+                    </div>
+
+                    <span className="text-muted-foreground">•</span>
+
+                    {/* University Rating (4.3 per user request) */}
                     <span className="flex items-center gap-1 text-foreground font-semibold">
                       <Star size={14} className="fill-amber-400 text-amber-400" />
                       4.3 / 5 ({uni.reviewsCount || "4,120"}+ reviews)
                     </span>
-                    <span>•</span>
-                    <span className="flex items-center gap-1">
+
+                    <span className="text-muted-foreground hidden sm:inline">•</span>
+
+                    <span className="flex items-center gap-1 text-muted-foreground">
                       <MapPin size={13} className="text-primary" /> {uni.location}
                     </span>
+
                     {uni.established && (
                       <>
-                        <span>•</span>
-                        <span className="flex items-center gap-1">
+                        <span className="text-muted-foreground hidden sm:inline">•</span>
+                        <span className="flex items-center gap-1 text-muted-foreground">
                           <Calendar size={13} /> Est. {uni.established}
                         </span>
                       </>
@@ -351,7 +339,7 @@ export const UniversityDetail = () => {
         </div>
 
         {/* ───────────────────────────────────────────────────────────────── */}
-        {/* 3. STICKY SUBNAV TABS                                             */}
+        {/* 4. STICKY SUBNAV TABS                                             */}
         {/* ───────────────────────────────────────────────────────────────── */}
         <div className="sticky top-16 z-30 bg-background/95 backdrop-blur-md border-y border-border/60">
           <div className="container-dg max-w-6xl">
@@ -380,7 +368,7 @@ export const UniversityDetail = () => {
         </div>
 
         {/* ───────────────────────────────────────────────────────────────── */}
-        {/* 4. MAIN CONTENT & COUNSELING SIDEBAR                              */}
+        {/* 5. MAIN CONTENT & COUNSELING SIDEBAR                              */}
         {/* ───────────────────────────────────────────────────────────────── */}
         <div className="py-8">
           <div className="container-dg max-w-6xl">
@@ -392,8 +380,8 @@ export const UniversityDetail = () => {
                 {activeTab === "overview" && (
                   <section className="space-y-6">
                     {/* About Section */}
-                    <div className="p-6 rounded-3xl bg-card border border-border/80 shadow-sm space-y-4">
-                      <h2 className="text-lg font-semibold text-foreground">
+                    <div className="p-6 sm:p-7 rounded-3xl bg-card border border-border/80 shadow-sm space-y-4">
+                      <h2 className="text-lg sm:text-xl font-bold text-foreground">
                         About {uni.shortName || uni.name}
                       </h2>
 
@@ -437,47 +425,36 @@ export const UniversityDetail = () => {
                       </div>
                     </div>
 
-                    {/* ── STATUTORY RECOGNITION (Real Authority Logos Matching Image 5) ── */}
-                    <div className="p-6 rounded-3xl bg-card border border-border/80 shadow-sm space-y-4">
-                      <div className="flex items-center justify-between">
-                        <div className="space-y-0.5">
-                          <h3 className="text-base font-bold text-foreground">
-                            {uni.name} Approved By
-                          </h3>
-                          <p className="text-xs text-muted-foreground">
-                            Government statutory accreditations and international ranking bodies.
-                          </p>
-                        </div>
+                    {/* ── STATUTORY RECOGNITION (Bigger easily visible logos, no typed text fillers) ── */}
+                    <div className="p-6 sm:p-7 rounded-3xl bg-card border border-border/80 shadow-sm space-y-4">
+                      <div className="space-y-0.5">
+                        <h3 className="text-lg font-bold text-foreground">
+                          {uni.name} Approved By
+                        </h3>
+                        <p className="text-xs text-muted-foreground">
+                          Official statutory approvals and global ranking accreditations.
+                        </p>
                       </div>
 
-                      {/* 6 Real Logo Cards */}
-                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 pt-1">
+                      {/* 6 Big, Clean Authority Cards (No typed text names per request) */}
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3.5 pt-2">
                         {authorityLogos.map((auth, i) => (
                           <div
                             key={i}
-                            className="group rounded-2xl bg-white border border-border shadow-xs overflow-hidden flex flex-col items-center hover:shadow-md transition-shadow text-center"
+                            className="group h-28 sm:h-32 rounded-2xl bg-white border border-border shadow-xs hover:shadow-md hover:border-primary/40 transition-all flex items-center justify-center p-2.5 overflow-hidden"
                           >
-                            {/* Logo Top */}
-                            <div className="w-full h-24 p-3 flex items-center justify-center bg-white">
-                              <img
-                                src={auth.img}
-                                alt={auth.name}
-                                className="max-h-16 w-auto object-contain transition-transform group-hover:scale-105"
-                                loading="lazy"
-                              />
-                            </div>
-                            {/* Subtitle Pill */}
-                            <div className="w-full py-2 px-1 bg-slate-50 dark:bg-slate-900/80 border-t border-border/50">
-                              <span className="text-[11px] font-semibold text-slate-800 dark:text-slate-200 block truncate">
-                                {auth.name}
-                              </span>
-                            </div>
+                            <img
+                              src={auth.img}
+                              alt={auth.name}
+                              className="w-full h-full object-contain transition-transform duration-200 group-hover:scale-105"
+                              loading="lazy"
+                            />
                           </div>
                         ))}
                       </div>
                     </div>
 
-                    {/* ── SAMPLE DEGREE CERTIFICATE SECTION (Matching Image 5) ── */}
+                    {/* ── SAMPLE DEGREE CERTIFICATE SECTION (Clear image with Clickable Zoom) ── */}
                     <div className="p-6 sm:p-7 rounded-3xl bg-card border border-border/80 shadow-sm space-y-5">
                       <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
                         {/* Left Column: Value propositions */}
@@ -524,36 +501,39 @@ export const UniversityDetail = () => {
                           </div>
                         </div>
 
-                        {/* Right Column: Framed Sample Certificate with Lightbox Zoom */}
+                        {/* Right Column: Framed Sample Certificate with Instant Clickable Zoom */}
                         <div className="md:col-span-5 flex justify-center">
                           <Dialog>
                             <DialogTrigger asChild>
-                              <div className="cursor-pointer group relative rounded-2xl overflow-hidden border border-border shadow-xl hover:shadow-2xl transition-all max-w-[260px] bg-black/5">
+                              <div className="cursor-pointer group relative rounded-2xl overflow-hidden border-2 border-border/80 shadow-xl hover:shadow-2xl hover:border-primary/50 transition-all max-w-[280px] sm:max-w-[320px] bg-white">
                                 <img
                                   src="/assets/universities/amity-sample-degree.png"
                                   alt="Amity University Sample Degree Certificate"
                                   className="w-full h-auto object-contain transition-transform duration-300 group-hover:scale-102"
                                 />
-                                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1.5 text-white text-xs font-semibold">
-                                  <ZoomIn size={16} /> Click to Inspect
+                                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 text-white text-xs font-semibold backdrop-blur-[2px]">
+                                  <ZoomIn size={18} />
+                                  <span>Click to Zoom</span>
                                 </div>
                               </div>
                             </DialogTrigger>
-                            <DialogContent className="max-w-3xl p-6 bg-card border-border">
+                            <DialogContent className="max-w-4xl p-6 bg-card border-border overflow-hidden">
                               <DialogHeader>
                                 <DialogTitle className="text-base font-bold text-foreground">
-                                  Official Specimen — Amity University Degree
+                                  Amity University Online — Official Degree Specimen
                                 </DialogTitle>
                               </DialogHeader>
-                              <div className="flex flex-col items-center justify-center p-2">
+                              <div className="flex flex-col items-center justify-center p-2 max-h-[80vh] overflow-y-auto">
                                 <img
                                   src="/assets/universities/amity-sample-degree.png"
                                   alt="Amity University Online Degree Full Specimen"
-                                  className="max-h-[70vh] w-auto object-contain rounded-xl border border-border shadow-2xl"
+                                  className="max-h-[75vh] w-auto object-contain rounded-xl border border-border shadow-2xl"
                                 />
-                                <p className="text-xs text-muted-foreground mt-3 text-center">
-                                  Awarded on completion of UGC-DEB entitled degree programs. Legally equivalent to on-campus degrees.
-                                </p>
+                                <div className="mt-3 text-center">
+                                  <p className="text-xs text-muted-foreground font-medium">
+                                    Official specimen conferred under UGC-DEB regulations. Legally equivalent to on-campus degrees.
+                                  </p>
+                                </div>
                               </div>
                             </DialogContent>
                           </Dialog>
@@ -892,7 +872,7 @@ export const UniversityDetail = () => {
                   </section>
                 )}
 
-                {/* ── TAB 4: FACULTY (Exact Members from User Screenshot) ── */}
+                {/* ── TAB 4: FACULTY (Exact Members from User Reference) ── */}
                 {activeTab === "faculty" && (
                   <section className="space-y-6">
                     <div className="p-6 sm:p-7 rounded-3xl bg-card border border-border/80 shadow-sm space-y-6">
@@ -908,7 +888,7 @@ export const UniversityDetail = () => {
                         </p>
                       </div>
 
-                      {/* 6 Faculty Cards (Matching User Image 4) */}
+                      {/* 6 Faculty Cards (Matching User Reference) */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                         {facultyMembers.map((fac) => (
                           <div
