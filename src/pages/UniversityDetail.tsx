@@ -36,7 +36,8 @@ import {
   Search,
   ZoomIn,
   Sparkles,
-  ExternalLink
+  ExternalLink,
+  ChevronRight
 } from "lucide-react";
 import { submitLead } from "@/lib/api";
 import { Button } from "@/components/ui/button";
@@ -56,7 +57,7 @@ export const UniversityDetail = () => {
     [...ACTIVE_ONLINE_UNIVERSITIES, ...EXECUTIVE_PARTNERS, ...INCLUDED_PARTNERS].find((u) => u.slug === uniSlug);
 
   const [activeTab, setActiveTab] = useState<"overview" | "courses" | "placements" | "faculty" | "admission">("overview");
-  const [courseFilter, setCourseFilter] = useState<"all" | "pg" | "ug" | "integrated" | "collaborative">("all");
+  const [courseCategoryTab, setCourseCategoryTab] = useState<"all" | "ug" | "pg" | "collaborative" | "integrated">("ug");
   const [paymentMode, setPaymentMode] = useState<"direct" | "loan">("direct");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFaculty, setSelectedFaculty] = useState<any | null>(null);
@@ -99,13 +100,33 @@ export const UniversityDetail = () => {
     }
   };
 
-  // ── Amity Programs from July 26 Official Fee Structure ──
+  // Thumbnail image helper for program cards
+  const getCourseThumbnail = (prog: AmityProgramFee) => {
+    if (prog.industryPartner === "Lenskart") {
+      return "https://images.unsplash.com/photo-1556740738-b6a63e27c4df?auto=format&fit=crop&w=600&q=80";
+    }
+    if (prog.type === "UG - PG") {
+      return "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80";
+    }
+    if (prog.category === "IT & Computer") {
+      return "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80";
+    }
+    if (prog.category === "Commerce") {
+      return "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=80";
+    }
+    if (prog.category === "Humanities & Media") {
+      return "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=600&q=80";
+    }
+    return "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80";
+  };
+
+  // Filtered Programs for Amity
   const filteredAmityPrograms = useMemo(() => {
     return AMITY_JULY_26_FEE_STRUCTURE.filter((prog) => {
-      if (courseFilter === "pg" && prog.type !== "PG") return false;
-      if (courseFilter === "ug" && prog.type !== "UG") return false;
-      if (courseFilter === "integrated" && prog.type !== "UG - PG") return false;
-      if (courseFilter === "collaborative" && !prog.industryPartner) return false;
+      if (courseCategoryTab === "pg" && prog.type !== "PG") return false;
+      if (courseCategoryTab === "ug" && prog.type !== "UG") return false;
+      if (courseCategoryTab === "integrated" && prog.type !== "UG - PG") return false;
+      if (courseCategoryTab === "collaborative" && !prog.industryPartner) return false;
 
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
@@ -116,9 +137,9 @@ export const UniversityDetail = () => {
       }
       return true;
     });
-  }, [courseFilter, searchQuery]);
+  }, [courseCategoryTab, searchQuery]);
 
-  // Fallback courses for non-Amity universities
+  // Generic programs for other universities
   const genericPrograms = (uni.popularCourses || []).map((courseName) => {
     const matched = COURSES.find((c) => c.title.toLowerCase() === courseName.toLowerCase()) ||
       COURSES.find((c) => courseName.toLowerCase().includes(c.slug.replace("online-", "")));
@@ -138,7 +159,7 @@ export const UniversityDetail = () => {
     };
   });
 
-  // ── Real Authority Recognition Cards (Clear, Big Logos, No typed redundant names) ──
+  // 6 HD Authority Recognition Cards (From User Screenshot)
   const authorityLogos = [
     { name: "UGC-DEB", img: "/assets/approvals/ugc-deb.png" },
     { name: "AICTE", img: "/assets/approvals/aicte.png" },
@@ -148,7 +169,7 @@ export const UniversityDetail = () => {
     { name: "DEC", img: "/assets/approvals/dec.png" },
   ];
 
-  // ── Placement Companies with Real SVGs ──
+  // Real Corporate Placement Logos
   const placementCompanies = [
     { name: "Google", logo: "/assets/companies/google.svg" },
     { name: "Microsoft", logo: "/assets/companies/microsoft.svg" },
@@ -164,7 +185,7 @@ export const UniversityDetail = () => {
     { name: "Wipro", logo: "/assets/companies/wipro.svg" },
   ];
 
-  // ── Faculty Members from User Reference ──
+  // Faculty Members from User Reference
   const facultyMembers = [
     {
       id: "sunil-kumar",
@@ -240,28 +261,29 @@ export const UniversityDetail = () => {
         </div>
 
         {/* ───────────────────────────────────────────────────────────────── */}
-        {/* 2. UNIVERSITY FRONT IMAGE (Clearly Visible, Crisp, Unstretched)   */}
+        {/* 2. HD UNIVERSITY FRONT IMAGE (Clearly Visible, Crisp, Unstretched) */}
         {/* ───────────────────────────────────────────────────────────────── */}
         <div className="container-dg max-w-6xl pt-4 sm:pt-6">
-          <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden border border-border/80 shadow-md bg-slate-900 aspect-[16/7] sm:aspect-[21/8] max-h-[360px] sm:max-h-[420px]">
+          <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden border border-border/80 shadow-md bg-slate-900 aspect-[16/9] sm:aspect-[21/9] max-h-[340px] sm:max-h-[420px]">
             <img
               src={campusImage}
-              alt={`${uni.name} Campus Front Facade`}
-              className="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-101"
+              alt={`${uni.name} Campus Facade`}
+              className="w-full h-full object-cover object-[center_30%] transition-transform duration-500 hover:scale-101"
               loading="eager"
             />
           </div>
         </div>
 
         {/* ───────────────────────────────────────────────────────────────── */}
-        {/* 3. UNIVERSITY PROFILE CARD (Prominent DP, Badges, 4.3 Rating)     */}
+        {/* 3. UNIVERSITY PROFILE CARD                                        */}
+        {/*    Logo pushed left & above, single-line name, no authority pills */}
         {/* ───────────────────────────────────────────────────────────────── */}
-        <div className="relative -mt-8 sm:-mt-12 z-20 pb-6">
+        <div className="relative -mt-8 sm:-mt-12 z-10 pb-4 sm:pb-6">
           <div className="container-dg max-w-6xl">
-            <div className="p-6 sm:p-7 rounded-3xl bg-card border border-border/80 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-              <div className="flex items-start gap-4 sm:gap-6">
-                {/* University Logo DP */}
-                <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-2xl bg-white p-2.5 sm:p-3 border-2 border-border shadow-md flex items-center justify-center shrink-0">
+            <div className="p-4 sm:p-7 rounded-3xl bg-card border border-border/80 shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4 sm:gap-5 relative">
+              <div className="flex items-start gap-3 sm:gap-5 w-full md:w-auto">
+                {/* Logo DP pushed left and above */}
+                <div className="-mt-11 sm:-mt-16 -ml-2 sm:-ml-3 w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-2xl bg-white p-2 sm:p-2.5 border-2 border-border shadow-md flex items-center justify-center shrink-0 z-10">
                   <img
                     src={isAmity ? "/logos/amity.png" : "/logos/cu.png"}
                     alt={uni.name}
@@ -269,49 +291,27 @@ export const UniversityDetail = () => {
                   />
                 </div>
 
-                <div className="space-y-2">
-                  {/* Clean H1 Title (NO BADGES ABOVE H1 per user request) */}
-                  <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground tracking-tight">
+                <div className="space-y-1 sm:space-y-1.5 flex-1 min-w-0">
+                  {/* Clean H1 in one line with reduced font size */}
+                  <h1 className="text-lg sm:text-2xl md:text-3xl font-bold text-foreground tracking-tight whitespace-nowrap overflow-hidden text-ellipsis">
                     {uni.name}
                   </h1>
 
-                  {/* Core Badges, Rating & Meta */}
-                  <div className="flex flex-wrap items-center gap-2.5 text-xs sm:text-sm">
-                    {/* Authority Badges matching reference screenshot */}
-                    <div className="flex items-center gap-1.5">
-                      <span className="px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-700 dark:text-amber-400 font-bold text-[11px] border border-amber-500/20">
-                        AICTE
-                      </span>
-                      <span className="px-2 py-0.5 rounded-md bg-blue-500/10 text-blue-700 dark:text-blue-400 font-bold text-[11px] border border-blue-500/20">
-                        NIRF
-                      </span>
-                      <span className="px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-bold text-[11px] border border-emerald-500/20">
-                        WES
-                      </span>
-                      <span className="px-2 py-0.5 rounded-md bg-primary/10 text-primary font-bold text-[11px] border border-primary/20">
-                        UGC-DEB
-                      </span>
-                    </div>
-
-                    <span className="text-muted-foreground">•</span>
-
-                    {/* University Rating (4.3 per user request) */}
+                  {/* Rating & Location (NO AICTE/NIRF/WES/UGC-DEB badges here per user request) */}
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm text-muted-foreground">
                     <span className="flex items-center gap-1 text-foreground font-semibold">
-                      <Star size={14} className="fill-amber-400 text-amber-400" />
+                      <Star size={13} className="fill-amber-400 text-amber-400" />
                       4.3 / 5 ({uni.reviewsCount || "4,120"}+ reviews)
                     </span>
-
-                    <span className="text-muted-foreground hidden sm:inline">•</span>
-
-                    <span className="flex items-center gap-1 text-muted-foreground">
-                      <MapPin size={13} className="text-primary" /> {uni.location}
+                    <span>•</span>
+                    <span className="flex items-center gap-1">
+                      <MapPin size={12} className="text-primary" /> {uni.location}
                     </span>
-
                     {uni.established && (
                       <>
-                        <span className="text-muted-foreground hidden sm:inline">•</span>
-                        <span className="flex items-center gap-1 text-muted-foreground">
-                          <Calendar size={13} /> Est. {uni.established}
+                        <span className="hidden sm:inline">•</span>
+                        <span className="hidden sm:flex items-center gap-1">
+                          <Calendar size={12} /> Est. {uni.established}
                         </span>
                       </>
                     )}
@@ -319,17 +319,17 @@ export const UniversityDetail = () => {
                 </div>
               </div>
 
-              {/* Direct CTAs */}
-              <div className="flex flex-wrap sm:flex-col gap-2.5 w-full md:w-auto shrink-0">
+              {/* Action buttons */}
+              <div className="flex flex-row sm:flex-col gap-2.5 w-full md:w-auto shrink-0 pt-2 md:pt-0">
                 <a
                   href="#counseling-box"
-                  className="flex-1 sm:flex-none px-6 py-3 rounded-xl bg-primary text-primary-foreground font-semibold text-xs sm:text-sm text-center shadow-md shadow-primary/20 hover:bg-primary/90 transition-all"
+                  className="flex-1 sm:flex-none px-5 py-2.5 rounded-xl bg-primary text-primary-foreground font-semibold text-xs sm:text-sm text-center shadow-sm hover:bg-primary/90 transition-all"
                 >
                   Apply for Admission
                 </a>
                 <Link
                   to="/universities/compare"
-                  className="flex-1 sm:flex-none px-5 py-3 rounded-xl bg-muted/60 hover:bg-muted text-foreground font-medium text-xs text-center border border-border transition-colors"
+                  className="flex-1 sm:flex-none px-4 py-2.5 rounded-xl bg-muted/60 hover:bg-muted text-foreground font-medium text-xs text-center border border-border transition-colors"
                 >
                   Compare University
                 </Link>
@@ -339,14 +339,14 @@ export const UniversityDetail = () => {
         </div>
 
         {/* ───────────────────────────────────────────────────────────────── */}
-        {/* 4. STICKY SUBNAV TABS                                             */}
+        {/* 4. CLEAN STICKY SUBNAV TABS (Premium Underline, Solid Background)  */}
         {/* ───────────────────────────────────────────────────────────────── */}
-        <div className="sticky top-16 z-30 bg-background/95 backdrop-blur-md border-y border-border/60">
+        <div className="sticky top-[95px] md:top-[99px] z-30 bg-background border-b border-border shadow-xs">
           <div className="container-dg max-w-6xl">
-            <div className="flex items-center gap-2 overflow-x-auto py-2.5 no-scrollbar text-xs font-medium">
+            <div className="flex items-center gap-1 sm:gap-4 overflow-x-auto no-scrollbar py-0 text-xs sm:text-sm font-medium">
               {[
-                { id: "overview", label: "Overview" },
-                { id: "courses", label: isAmity ? "Courses & Fees (July 26)" : "Courses & Fees" },
+                { id: "overview", label: "About" },
+                { id: "courses", label: isAmity ? "Courses & Fees (2026)" : "Courses & Fees" },
                 { id: "placements", label: "Placements" },
                 { id: "faculty", label: "Meet your Faculty" },
                 { id: "admission", label: "Admission Process" },
@@ -354,10 +354,10 @@ export const UniversityDetail = () => {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`px-4 py-2 rounded-xl transition-all whitespace-nowrap ${
+                  className={`py-3 sm:py-3.5 px-3 sm:px-4 border-b-2 transition-all whitespace-nowrap text-xs sm:text-sm ${
                     activeTab === tab.id
-                      ? "bg-primary text-primary-foreground font-semibold shadow-sm"
-                      : "text-muted-foreground hover:text-foreground hover:bg-muted/40"
+                      ? "border-primary text-primary font-bold"
+                      : "border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground/30 font-medium"
                   }`}
                 >
                   {tab.label}
@@ -376,14 +376,16 @@ export const UniversityDetail = () => {
               {/* Left Column: Tabbed Content */}
               <div className="lg:col-span-8 space-y-8">
                 
-                {/* ── TAB 1: OVERVIEW ── */}
+                {/* ── TAB 1: OVERVIEW / ABOUT ── */}
                 {activeTab === "overview" && (
                   <section className="space-y-6">
                     {/* About Section */}
                     <div className="p-6 sm:p-7 rounded-3xl bg-card border border-border/80 shadow-sm space-y-4">
-                      <h2 className="text-lg sm:text-xl font-bold text-foreground">
-                        About {uni.shortName || uni.name}
-                      </h2>
+                      <div className="flex items-center gap-2">
+                        <h2 className="text-lg sm:text-xl font-bold text-foreground">
+                          About <span className="text-primary">{uni.shortName || uni.name}</span>
+                        </h2>
+                      </div>
 
                       <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                         {uni.description || `${uni.name} is India's first UGC-recognized online university, ranked among Asia's top digital higher education providers with global WES credential recognition.`}
@@ -425,28 +427,28 @@ export const UniversityDetail = () => {
                       </div>
                     </div>
 
-                    {/* ── STATUTORY RECOGNITION (Bigger easily visible logos, no typed text fillers) ── */}
+                    {/* ── STATUTORY RECOGNITION (Big, Clean HD Cards, Matching User Image 4) ── */}
                     <div className="p-6 sm:p-7 rounded-3xl bg-card border border-border/80 shadow-sm space-y-4">
-                      <div className="space-y-0.5">
-                        <h3 className="text-lg font-bold text-foreground">
-                          {uni.name} Approved By
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-lg sm:text-xl font-bold text-foreground">
+                          {uni.name} <span className="text-primary">Approved By</span>
                         </h3>
-                        <p className="text-xs text-muted-foreground">
-                          Official statutory approvals and global ranking accreditations.
-                        </p>
+                        <div className="w-5 h-5 rounded-full bg-red-600 text-white flex items-center justify-center text-[10px]">
+                          ▶
+                        </div>
                       </div>
 
-                      {/* 6 Big, Clean Authority Cards (No typed text names per request) */}
-                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3.5 pt-2">
+                      {/* 6 Big HD Authority Cards matching reference screenshot */}
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-2">
                         {authorityLogos.map((auth, i) => (
                           <div
                             key={i}
-                            className="group h-28 sm:h-32 rounded-2xl bg-white border border-border shadow-xs hover:shadow-md hover:border-primary/40 transition-all flex items-center justify-center p-2.5 overflow-hidden"
+                            className="group rounded-2xl bg-white border border-border shadow-xs hover:shadow-md hover:border-primary/40 transition-all overflow-hidden flex items-center justify-center p-0 aspect-[1.5/1]"
                           >
                             <img
                               src={auth.img}
                               alt={auth.name}
-                              className="w-full h-full object-contain transition-transform duration-200 group-hover:scale-105"
+                              className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-102"
                               loading="lazy"
                             />
                           </div>
@@ -454,7 +456,7 @@ export const UniversityDetail = () => {
                       </div>
                     </div>
 
-                    {/* ── SAMPLE DEGREE CERTIFICATE SECTION (Clear image with Clickable Zoom) ── */}
+                    {/* ── SAMPLE DEGREE CERTIFICATE SECTION (Clear Image with Clickable Zoom) ── */}
                     <div className="p-6 sm:p-7 rounded-3xl bg-card border border-border/80 shadow-sm space-y-5">
                       <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
                         {/* Left Column: Value propositions */}
@@ -471,7 +473,7 @@ export const UniversityDetail = () => {
                             </p>
                           </div>
 
-                          {/* 4 Checkmark bullets matching user screenshot */}
+                          {/* 4 Checkmark bullets matching reference */}
                           <div className="space-y-3 pt-1">
                             {[
                               "1st in India to get UGC approval for online programs",
@@ -543,30 +545,157 @@ export const UniversityDetail = () => {
                   </section>
                 )}
 
-                {/* ── TAB 2: COURSES & FEES (Exact Sheet July 26 Data) ── */}
+                {/* ── TAB 2: COURSES & FEES (Program Cards + Table matching Image 3) ── */}
                 {activeTab === "courses" && (
-                  <section className="space-y-6">
-                    {/* Header + Payment Plan Selector */}
-                    <div className="p-6 rounded-3xl bg-card border border-border/80 shadow-sm space-y-4">
+                  <section className="space-y-8">
+                    {/* 1. Program Cards Showcase (Matching Image 3) */}
+                    <div className="space-y-5">
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div>
-                          <div className="flex items-center gap-2">
-                            <h2 className="text-lg font-bold text-foreground">
-                              {isAmity ? "Amity July 26 Fee Structure" : "Programs & Fee Structure"}
-                            </h2>
-                            {isAmity && (
-                              <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[11px] font-semibold">
-                                Official 2026 Sheet
-                              </span>
-                            )}
-                          </div>
+                          <h2 className="text-xl sm:text-2xl font-bold text-foreground">
+                            {uni.name} <span className="text-primary">Courses</span>
+                          </h2>
                           <p className="text-xs text-muted-foreground mt-0.5">
-                            Real-time tuition fees with direct discount and zero-cost loan options.
+                            UGC-DEB accredited online degrees designed for working professionals.
                           </p>
                         </div>
 
-                        {/* Payment Mode Selector */}
-                        <div className="inline-flex p-1 rounded-xl bg-muted/60 border border-border/60 text-xs font-medium shrink-0">
+                        {/* Search Filter Input */}
+                        <div className="relative min-w-[200px]">
+                          <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                          <input
+                            type="text"
+                            placeholder="Search programs..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="w-full pl-8 pr-3 py-1.5 rounded-xl bg-card border border-border text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Clean Category Pills (UG, PG, Industry Collaborative, Integrated) */}
+                      <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+                        {[
+                          { id: "ug", label: "UG Courses" },
+                          { id: "pg", label: "PG Courses" },
+                          { id: "collaborative", label: "Industry Collaborative" },
+                          { id: "integrated", label: "Integrated Dual Degree" },
+                          { id: "all", label: "All Programs" },
+                        ].map((cat) => (
+                          <button
+                            key={cat.id}
+                            onClick={() => setCourseCategoryTab(cat.id as any)}
+                            className={`px-4 py-2 rounded-full text-xs font-semibold transition-all whitespace-nowrap ${
+                              courseCategoryTab === cat.id
+                                ? "bg-primary text-primary-foreground shadow-sm"
+                                : "bg-card border border-border/80 text-foreground/80 hover:bg-muted"
+                            }`}
+                          >
+                            {cat.label}
+                          </button>
+                        ))}
+                      </div>
+
+                      {/* PROGRAM CARDS GRID (Matching Image 3: Mobile scrollable cards, Desktop responsive grid) */}
+                      <div className="flex sm:grid sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-5 overflow-x-auto sm:overflow-visible pb-3 sm:pb-0 no-scrollbar snap-x">
+                        {filteredAmityPrograms.slice(0, 10).map((prog) => {
+                          const plan = paymentMode === "direct" ? prog.direct : prog.loan;
+                          const thumb = getCourseThumbnail(prog);
+
+                          return (
+                            <div
+                              key={prog.sNo}
+                              className="w-[280px] sm:w-auto shrink-0 snap-start group rounded-3xl bg-card border border-border/80 shadow-xs hover:border-primary/40 hover:shadow-md transition-all overflow-hidden flex flex-col justify-between"
+                            >
+                              <div>
+                                {/* Top Thumbnail with Amity Badge (Matching Image 3) */}
+                                <div className="relative h-44 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
+                                  <img
+                                    src={thumb}
+                                    alt={prog.name}
+                                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-103"
+                                    loading="lazy"
+                                  />
+                                  {/* White Amity Crest Badge Overlay */}
+                                  <div className="absolute top-3 left-3 px-2 py-1 rounded-lg bg-white/95 backdrop-blur-sm shadow-xs border border-slate-200/90 flex items-center">
+                                    <img src="/logos/amity.png" alt="Amity" className="h-5 w-auto object-contain" />
+                                  </div>
+
+                                  {prog.industryPartner && (
+                                    <div className="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-emerald-600 text-white text-[10px] font-bold shadow-xs">
+                                      {prog.industryPartner} Co-Created
+                                    </div>
+                                  )}
+                                </div>
+
+                                {/* Content Details */}
+                                <div className="p-5 space-y-2.5">
+                                  <span className="text-[10px] font-bold tracking-wider uppercase text-muted-foreground block">
+                                    AMITY UNIVERSITY ONLINE
+                                  </span>
+                                  <h3 className="text-base font-bold text-foreground group-hover:text-primary transition-colors leading-snug">
+                                    {prog.name}
+                                  </h3>
+                                  <p className="text-xs text-muted-foreground line-clamp-1">
+                                    {prog.eligibility}
+                                  </p>
+
+                                  <div className="pt-2 flex items-center justify-between text-xs border-t border-border/40">
+                                    <div className="space-y-0.5">
+                                      <span className="text-[10px] text-muted-foreground block">Tuition Fee</span>
+                                      <span className="text-sm font-bold text-foreground">
+                                        ₹{plan.oneTimeFee.toLocaleString("en-IN")}
+                                      </span>
+                                    </div>
+                                    <div className="text-right space-y-0.5">
+                                      <span className="text-[10px] text-muted-foreground block">Duration</span>
+                                      <span className="text-xs font-semibold text-foreground">
+                                        {prog.duration}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* Card Footer Link */}
+                              <div className="p-5 pt-0 flex items-center justify-between">
+                                <a
+                                  href="#counseling-box"
+                                  onClick={() => setSelectedCourse(prog.name)}
+                                  className="text-xs font-semibold text-primary group-hover:underline inline-flex items-center gap-1"
+                                >
+                                  <span>Read more</span>
+                                  <ChevronRight size={14} />
+                                </a>
+
+                                <a
+                                  href="#counseling-box"
+                                  onClick={() => setSelectedCourse(prog.name)}
+                                  className="px-3.5 py-1.5 rounded-xl bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 transition-colors shadow-xs"
+                                >
+                                  Apply Now
+                                </a>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* 2. Course Wise Updated Fees 2026 Table (Matching Image 3) */}
+                    <div className="space-y-4 pt-4">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div>
+                          <h3 className="text-xl font-bold text-foreground">
+                            Course Wise <span className="text-primary">Updated Fees 2026</span>
+                          </h3>
+                          <p className="text-xs text-muted-foreground">
+                            Complete official July 26 fee breakdown across all degrees.
+                          </p>
+                        </div>
+
+                        {/* Direct vs Loan Switcher */}
+                        <div className="inline-flex p-1 rounded-xl bg-muted/60 border border-border/60 text-xs font-medium self-start sm:self-auto">
                           <button
                             onClick={() => setPaymentMode("direct")}
                             className={`px-3 py-1.5 rounded-lg transition-all ${
@@ -575,7 +704,7 @@ export const UniversityDetail = () => {
                                 : "text-muted-foreground hover:text-foreground"
                             }`}
                           >
-                            Direct Payment (Save up to 12%)
+                            Direct Payment (Up to 12% off)
                           </button>
                           <button
                             onClick={() => setPaymentMode("loan")}
@@ -590,203 +719,67 @@ export const UniversityDetail = () => {
                         </div>
                       </div>
 
-                      {/* Category Filter Pills & Search */}
-                      <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 border-t border-border/40">
-                        {/* Filter Tabs */}
-                        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
-                          {[
-                            { id: "all", label: `All (${isAmity ? 37 : genericPrograms.length})` },
-                            { id: "pg", label: "Postgraduate (PG)" },
-                            { id: "ug", label: "Undergraduate (UG)" },
-                            { id: "integrated", label: "Integrated (UG-PG)" },
-                            { id: "collaborative", label: "Industry Collaborative" },
-                          ].map((tab) => (
-                            <button
-                              key={tab.id}
-                              onClick={() => setCourseFilter(tab.id as any)}
-                              className={`px-3 py-1.5 rounded-lg text-xs transition-colors whitespace-nowrap ${
-                                courseFilter === tab.id
-                                  ? "bg-foreground text-background font-semibold"
-                                  : "bg-muted/40 hover:bg-muted text-muted-foreground hover:text-foreground"
-                              }`}
-                            >
-                              {tab.label}
-                            </button>
-                          ))}
-                        </div>
+                      {/* Clean Table matching Image 3 */}
+                      <div className="rounded-3xl border border-border overflow-hidden bg-card shadow-sm">
+                        <div className="overflow-x-auto">
+                          <table className="w-full text-left text-xs sm:text-sm">
+                            <thead className="bg-[#002E5E] text-white text-xs font-semibold">
+                              <tr>
+                                <th className="py-3 px-4">Course</th>
+                                <th className="py-3 px-4">Full Fees</th>
+                                <th className="py-3 px-4">Semester Fee</th>
+                                <th className="py-3 px-4">Duration</th>
+                                <th className="py-3 px-4 text-right">Action</th>
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-border/60">
+                              {filteredAmityPrograms.map((prog) => {
+                                const plan = paymentMode === "direct" ? prog.direct : prog.loan;
+                                const isGreen = prog.name.includes("LENSKART");
 
-                        {/* Search Input */}
-                        <div className="relative min-w-[200px]">
-                          <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                          <input
-                            type="text"
-                            placeholder="Search course or partner..."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full pl-8 pr-3 py-1.5 rounded-xl bg-background border border-border text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none"
-                          />
+                                return (
+                                  <tr
+                                    key={prog.sNo}
+                                    className={`hover:bg-muted/40 transition-colors ${
+                                      isGreen ? "bg-emerald-500/[0.04]" : ""
+                                    }`}
+                                  >
+                                    <td className="py-3 px-4 font-semibold text-foreground">
+                                      <div className="flex items-center gap-2">
+                                        <span>{prog.name}</span>
+                                        {isGreen && (
+                                          <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-700 dark:text-emerald-400">
+                                            Lenskart
+                                          </span>
+                                        )}
+                                      </div>
+                                    </td>
+                                    <td className="py-3 px-4 font-bold text-foreground">
+                                      ₹{plan.oneTimeFee.toLocaleString("en-IN")}
+                                    </td>
+                                    <td className="py-3 px-4 text-muted-foreground">
+                                      {plan.semesterFee > 0 ? `₹${plan.semesterFee.toLocaleString("en-IN")}` : "Annual basis"}
+                                    </td>
+                                    <td className="py-3 px-4 text-muted-foreground">
+                                      {prog.duration}
+                                    </td>
+                                    <td className="py-3 px-4 text-right">
+                                      <a
+                                        href="#counseling-box"
+                                        onClick={() => setSelectedCourse(prog.name)}
+                                        className="text-primary hover:underline font-semibold text-xs inline-flex items-center gap-1"
+                                      >
+                                        Apply <ArrowRight size={11} />
+                                      </a>
+                                    </td>
+                                  </tr>
+                                );
+                              })}
+                            </tbody>
+                          </table>
                         </div>
                       </div>
                     </div>
-
-                    {/* Amity Program Fee Cards */}
-                    {isAmity ? (
-                      <div className="space-y-3.5">
-                        {filteredAmityPrograms.map((prog) => {
-                          const plan = paymentMode === "direct" ? prog.direct : prog.loan;
-                          const isGreenHighlight = prog.name.includes("LENSKART");
-
-                          return (
-                            <div
-                              key={prog.sNo}
-                              className={`p-5 rounded-3xl bg-card border transition-all ${
-                                isGreenHighlight
-                                  ? "border-emerald-500/60 bg-emerald-500/[0.02] shadow-sm hover:border-emerald-500"
-                                  : "border-border/80 shadow-xs hover:border-primary/40"
-                              }`}
-                            >
-                              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
-                                <div className="space-y-1.5">
-                                  <div className="flex flex-wrap items-center gap-2">
-                                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-muted text-muted-foreground">
-                                      #{prog.sNo}
-                                    </span>
-                                    <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-md bg-primary/10 text-primary">
-                                      {prog.type}
-                                    </span>
-                                    {isGreenHighlight && (
-                                      <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-md bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 flex items-center gap-1">
-                                        <Sparkles size={11} /> Industry Co-Created Degree
-                                      </span>
-                                    )}
-                                    {prog.industryPartner && !isGreenHighlight && (
-                                      <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-md bg-blue-500/10 text-blue-600 dark:text-blue-400">
-                                        Powered by {prog.industryPartner}
-                                      </span>
-                                    )}
-                                    <span className="text-xs text-muted-foreground flex items-center gap-1">
-                                      <Clock size={12} /> {prog.duration}
-                                    </span>
-                                  </div>
-
-                                  <h3 className="text-base sm:text-lg font-bold text-foreground">
-                                    {prog.name}
-                                  </h3>
-                                  <p className="text-xs text-muted-foreground">
-                                    <span className="font-medium text-foreground/80">Eligibility: </span>
-                                    {prog.eligibility}
-                                  </p>
-                                </div>
-
-                                {/* Right Side Fee Breakdown */}
-                                <div className="text-left sm:text-right shrink-0 space-y-1 pt-1 sm:pt-0">
-                                  {plan.semesterFee > 0 ? (
-                                    <div>
-                                      <span className="text-[10px] uppercase font-semibold text-muted-foreground block">
-                                        Semester Fee
-                                      </span>
-                                      <span className="text-base font-bold text-foreground">
-                                        ₹{plan.semesterFee.toLocaleString("en-IN")}
-                                      </span>
-                                    </div>
-                                  ) : (
-                                    <div>
-                                      <span className="text-[10px] uppercase font-semibold text-muted-foreground block">
-                                        Total Program Fee
-                                      </span>
-                                      <span className="text-base font-bold text-foreground">
-                                        ₹{plan.oneTimeFee.toLocaleString("en-IN")}
-                                      </span>
-                                    </div>
-                                  )}
-
-                                  {plan.annualFee > 0 && (
-                                    <div className="text-xs text-muted-foreground">
-                                      Annual: <span className="font-semibold text-foreground">₹{plan.annualFee.toLocaleString("en-IN")}</span>
-                                    </div>
-                                  )}
-
-                                  {plan.discountPercent > 0 && (
-                                    <span className="inline-block text-[10px] font-semibold px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
-                                      {plan.discountPercent}% One-Time Disc. (₹{plan.oneTimeFee.toLocaleString("en-IN")})
-                                    </span>
-                                  )}
-                                </div>
-                              </div>
-
-                              {/* Card Footer: Action & EMI info */}
-                              <div className="pt-3 mt-3 border-t border-border/50 flex flex-wrap items-center justify-between gap-2">
-                                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                                  <CheckCircle2 size={13} className="text-emerald-500 shrink-0" />
-                                  <span>100% Online Web Proctored Exams</span>
-                                  {plan.semesterFee > 0 && (
-                                    <>
-                                      <span>•</span>
-                                      <span className="text-emerald-600 dark:text-emerald-400 font-medium">
-                                        EMI from ₹{Math.round(plan.semesterFee / 6).toLocaleString("en-IN")}/mo
-                                      </span>
-                                    </>
-                                  )}
-                                </div>
-
-                                <div className="flex items-center gap-2">
-                                  <a
-                                    href="#counseling-box"
-                                    onClick={() => setSelectedCourse(prog.name)}
-                                    className="px-4 py-1.5 rounded-xl bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 transition-colors inline-flex items-center gap-1 shadow-sm"
-                                  >
-                                    Apply Now <ArrowRight size={12} />
-                                  </a>
-                                </div>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    ) : (
-                      /* Generic fallback for non-Amity */
-                      <div className="space-y-3.5">
-                        {genericPrograms.map((prog, idx) => (
-                          <div
-                            key={idx}
-                            className="p-5 rounded-3xl bg-card border border-border/80 shadow-xs hover:border-primary/40 transition-colors space-y-3"
-                          >
-                            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
-                              <div className="space-y-1">
-                                <div className="flex items-center gap-2">
-                                  <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-md bg-primary/10 text-primary">
-                                    {prog.level}
-                                  </span>
-                                  <span className="text-xs text-muted-foreground flex items-center gap-1">
-                                    <Clock size={12} /> {prog.duration}
-                                  </span>
-                                </div>
-                                <h3 className="text-base font-bold text-foreground">{prog.name}</h3>
-                                <p className="text-xs text-muted-foreground font-normal">{prog.eligibility}</p>
-                              </div>
-
-                              <div className="text-left sm:text-right shrink-0 pt-1 sm:pt-0">
-                                <span className="text-sm font-bold text-foreground block">{prog.fee}</span>
-                                <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400 block">
-                                  EMI {prog.emi}
-                                </span>
-                              </div>
-                            </div>
-
-                            <div className="pt-2 border-t border-border/40 flex items-center justify-between">
-                              <span className="text-[11px] text-muted-foreground font-medium">100% Online Weekend Exams</span>
-                              <a
-                                href="#counseling-box"
-                                onClick={() => setSelectedCourse(prog.name)}
-                                className="px-3.5 py-1.5 rounded-lg bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 transition-colors inline-flex items-center gap-1"
-                              >
-                                Apply Now <ArrowRight size={12} />
-                              </a>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
                   </section>
                 )}
 
