@@ -1,6 +1,6 @@
 import { useParams, Link, Navigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { BLOG_POSTS, YASH_AUTHOR } from "@/data/blogs";
+import { BLOG_POSTS, DEVANSHI_AUTHOR } from "@/data/blogs";
 import {
   Home,
   ChevronRight,
@@ -18,14 +18,20 @@ import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 export const AuthorDetail = () => {
   const { authorSlug } = useParams<{ authorSlug: string }>();
 
-  // For now, Yash is our verified author
-  const author = YASH_AUTHOR;
+  // Devanshi is our verified author
+  const author = DEVANSHI_AUTHOR;
 
-  if (authorSlug && authorSlug.toLowerCase() !== "yash") {
+  if (authorSlug && authorSlug.toLowerCase() === "yash") {
+    return <Navigate to="/author/devanshi" replace />;
+  }
+
+  if (authorSlug && authorSlug.toLowerCase() !== "devanshi") {
     return <Navigate to="/blog" replace />;
   }
 
-  const authorArticles = BLOG_POSTS.filter((post) => post.author.slug === "yash");
+  const authorArticles = BLOG_POSTS.filter(
+    (post) => post.author.slug === "devanshi" || post.author.slug === "yash"
+  );
 
   return (
     <>
@@ -35,7 +41,7 @@ export const AuthorDetail = () => {
           name="description"
           content={`Profile of ${author.name}, ${author.role} at Degree Guru. ${author.experience}. ${author.education}.`}
         />
-        <link rel="canonical" href="https://degreeguru.in/author/yash/" />
+        <link rel="canonical" href="https://degreeguru.in/author/devanshi/" />
       </Helmet>
 
       <div className="bg-background min-h-screen pb-20">

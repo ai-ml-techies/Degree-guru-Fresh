@@ -64,10 +64,6 @@ export const FloatingAiAdvisor = () => {
               action: () => handleSelect("Class 10 & 12", "hi"),
             },
             {
-              label: "जॉब्स और करियर सहायता",
-              action: () => handleSelect("Jobs & Career", "hi"),
-            },
-            {
               label: "फ्री ATS रिज्यूमे बनाएं",
               action: () => handleSelect("Resume Builder", "hi"),
             },
@@ -96,10 +92,6 @@ export const FloatingAiAdvisor = () => {
             {
               label: "Class 10 & 12 (Direct Online Exams)",
               action: () => handleSelect("Class 10 & 12", "en"),
-            },
-            {
-              label: "Find Jobs & Career Switch",
-              action: () => handleSelect("Jobs & Career", "en"),
             },
             {
               label: "Build ATS Resume (Free)",
@@ -163,16 +155,6 @@ export const FloatingAiAdvisor = () => {
             { label: "12वीं एडमिशन विवरण", action: () => {}, link: "/class-12" },
           ],
         };
-      } else if (choice === "Jobs & Career") {
-        botResponse = {
-          id: `b-${Date.now()}`,
-          sender: "bot",
-          text: "Degree Guru सीधे रिक्रूटर्स और एम्प्लॉयर्स से आपका संपर्क कराता है। साथ ही आप फ्री करियर मैचिंग टेस्ट भी दे सकते हैं।",
-          options: [
-            { label: "नौकरियां खोजें (Jobs)", action: () => {}, link: "/jobs/job-seeker" },
-            { label: "फ्री करियर टेस्ट दें", action: () => {}, link: "/career-finder" },
-          ],
-        };
       } else if (choice === "Resume Builder") {
         botResponse = {
           id: `b-${Date.now()}`,
@@ -226,16 +208,6 @@ export const FloatingAiAdvisor = () => {
           options: [
             { label: "Class 10 Details & Admission", action: () => {}, link: "/class-10" },
             { label: "Class 12 Details & Streams", action: () => {}, link: "/class-12" },
-          ],
-        };
-      } else if (choice === "Jobs & Career") {
-        botResponse = {
-          id: `b-${Date.now()}`,
-          sender: "bot",
-          text: "Degree Guru provides a 100% free employment marketplace connecting qualified learners directly to employers, plus a scenario-based Career Finder.",
-          options: [
-            { label: "Explore Job Openings", action: () => {}, link: "/jobs/job-seeker" },
-            { label: "Take Free Career Finder", action: () => {}, link: "/career-finder" },
           ],
         };
       } else if (choice === "Resume Builder") {

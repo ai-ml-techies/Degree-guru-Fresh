@@ -67,11 +67,11 @@ export const MobileBottomNav = () => {
               size={19} 
               className={`transition-all duration-300 ${activeIndex === 0 ? "stroke-[2.5] text-primary dark:text-[#a78bfa] scale-110 drop-shadow-[0_2px_8px_rgba(101,40,247,0.4)]" : "stroke-[1.8] scale-100"}`} 
             />
-            <span className="text-[11px] mt-0.5 tracking-tight leading-tight">Home</span>
+            <span className="text-[10px] sm:text-[11px] mt-0.5 tracking-tight leading-tight whitespace-nowrap">Home</span>
             <span className={`w-1.5 h-1.5 rounded-full bg-primary dark:bg-[#a78bfa] shadow-[0_0_6px_#6528f7] mt-0.5 transition-all duration-300 ${activeIndex === 0 ? "opacity-100 scale-100" : "opacity-0 scale-50"}`} />
           </Link>
 
-          {/* 2. Online Programs */}
+          {/* 2. Programs (No Truncation) */}
           <Link
             to="/courses"
             onClick={() => setCareerDrawerOpen(false)}
@@ -81,7 +81,7 @@ export const MobileBottomNav = () => {
               size={19} 
               className={`transition-all duration-300 ${activeIndex === 1 ? "stroke-[2.5] text-primary dark:text-[#a78bfa] scale-110 drop-shadow-[0_2px_8px_rgba(101,40,247,0.4)]" : "stroke-[1.8] scale-100"}`} 
             />
-            <span className="text-[10.5px] mt-0.5 tracking-tight text-center leading-tight truncate max-w-full">Online Programs</span>
+            <span className="text-[10px] sm:text-[11px] mt-0.5 tracking-tight text-center leading-tight whitespace-nowrap">Programs</span>
             <span className={`w-1.5 h-1.5 rounded-full bg-primary dark:bg-[#a78bfa] shadow-[0_0_6px_#6528f7] mt-0.5 transition-all duration-300 ${activeIndex === 1 ? "opacity-100 scale-100" : "opacity-0 scale-50"}`} />
           </Link>
 
@@ -95,7 +95,7 @@ export const MobileBottomNav = () => {
               size={19} 
               className={`transition-all duration-300 ${activeIndex === 2 ? "stroke-[2.5] text-primary dark:text-[#a78bfa] scale-110 drop-shadow-[0_2px_8px_rgba(101,40,247,0.4)]" : "stroke-[1.8] scale-100"}`} 
             />
-            <span className="text-[11px] mt-0.5 tracking-tight leading-tight">Universities</span>
+            <span className="text-[10px] sm:text-[11px] mt-0.5 tracking-tight leading-tight whitespace-nowrap">Universities</span>
             <span className={`w-1.5 h-1.5 rounded-full bg-primary dark:bg-[#a78bfa] shadow-[0_0_6px_#6528f7] mt-0.5 transition-all duration-300 ${activeIndex === 2 ? "opacity-100 scale-100" : "opacity-0 scale-50"}`} />
           </Link>
 
@@ -109,7 +109,7 @@ export const MobileBottomNav = () => {
               size={19} 
               className={`transition-all duration-300 ${activeIndex === 3 ? "stroke-[2.5] text-primary dark:text-[#a78bfa] scale-110 drop-shadow-[0_2px_8px_rgba(101,40,247,0.4)]" : "stroke-[1.8] scale-100"}`} 
             />
-            <span className="text-[11px] mt-0.5 tracking-tight leading-tight">Smart Tools</span>
+            <span className="text-[10px] sm:text-[11px] mt-0.5 tracking-tight leading-tight whitespace-nowrap">Smart Tools</span>
             <span className={`w-1.5 h-1.5 rounded-full bg-primary dark:bg-[#a78bfa] shadow-[0_0_6px_#6528f7] mt-0.5 transition-all duration-300 ${activeIndex === 3 ? "opacity-100 scale-100" : "opacity-0 scale-50"}`} />
           </button>
         </div>
@@ -129,8 +129,7 @@ export const MobileBottomNav = () => {
                   <Sparkles size={16} />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold tracking-tight">Career Discovery Suite</h3>
-                  <p className="text-[11px] text-muted-foreground">Free AI-powered tools & guidance</p>
+                  <h3 className="text-sm font-bold tracking-tight">Smart Tools</h3>
                 </div>
               </div>
               <button
@@ -212,23 +211,6 @@ export const MobileBottomNav = () => {
                       AI Resume Builder <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/15 text-purple-500 font-bold">ATS Ready</span>
                     </div>
                     <p className="text-[11px] text-muted-foreground">Job-ready resume with AI quantification</p>
-                  </div>
-                </div>
-                <ChevronRight size={16} className="text-muted-foreground" />
-              </Link>
-
-              <Link
-                to="/blog"
-                onClick={() => setCareerDrawerOpen(false)}
-                className="flex items-center justify-between p-3 rounded-2xl bg-card hover:bg-muted/40 border border-border/60 transition-colors"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center">
-                    <BookOpen size={20} />
-                  </div>
-                  <div>
-                    <div className="text-sm font-semibold text-foreground">Career Resources & Guides</div>
-                    <p className="text-[11px] text-muted-foreground">IGNOU vs Online, salary trends & tips</p>
                   </div>
                 </div>
                 <ChevronRight size={16} className="text-muted-foreground" />

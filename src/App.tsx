@@ -1,6 +1,6 @@
 import { lazy, Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -82,8 +82,8 @@ const App = () => (
                 <Route path="/emi-calculator" element={<EmiCalculatorPage />} />
                 <Route path="/resume-builder" element={<ResumeBuilder />} />
 
-                {/* Referral Program */}
-                <Route path="/referral" element={<Referral />} />
+                {/* Referral Program - disabled for now */}
+                <Route path="/referral" element={<Navigate to="/" replace />} />
 
                 {/* Knowledge Hub / Blog Platform */}
                 <Route path="/blog" element={<Blog />} />
@@ -92,12 +92,10 @@ const App = () => (
                 <Route path="/author/:authorSlug" element={<AuthorDetail />} />
                 <Route path="/authors/:authorSlug" element={<AuthorDetail />} />
 
-                {/* Employment / Job Platform */}
-                <Route path="/jobs" element={<JobSeeker />} />
-                <Route path="/jobs/job-seeker" element={<JobSeeker />} />
-                <Route path="/job-seeker" element={<JobSeeker />} />
-                <Route path="/jobs/employer" element={<Employer />} />
-                <Route path="/employer" element={<Employer />} />
+                {/* Employment / Job Platform - removed for now */}
+                <Route path="/jobs/*" element={<Navigate to="/" replace />} />
+                <Route path="/job-seeker" element={<Navigate to="/" replace />} />
+                <Route path="/employer" element={<Navigate to="/" replace />} />
 
                 {/* Sitemap */}
                 <Route path="/sitemap" element={<Sitemap />} />

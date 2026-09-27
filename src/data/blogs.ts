@@ -28,17 +28,20 @@ export type BlogPost = {
   relatedTools: { name: string; url: string }[];
 };
 
-export const YASH_AUTHOR: BlogAuthor = {
-  name: "Yash",
-  slug: "yash",
+export const DEVANSHI_AUTHOR: BlogAuthor = {
+  name: "Devanshi",
+  slug: "devanshi",
   role: "Senior Academic Researcher",
-  experience: "",
-  education: "Higher Education Research",
+  experience: "5+ Years in Higher Education & University Accreditation",
+  education: "M.A. & Higher Education Research Analyst",
   verified: true,
-  avatar: "/assets/yash-avatar.svg",
+  avatar: "/assets/devanshi-avatar.svg",
   bio: "Senior Academic Researcher and Analyst at Degree Guru. Specializes in university curriculum audits, statutory UGC-DEB accreditation benchmarking, and institutional fee transparency.",
-  linkedin: "https://www.linkedin.com/in/yashappy",
+  linkedin: "https://www.linkedin.com/",
 };
+
+export const YASH_AUTHOR = DEVANSHI_AUTHOR; // alias for backwards compatibility
+
 
 export const BLOG_POSTS: BlogPost[] = [
   {

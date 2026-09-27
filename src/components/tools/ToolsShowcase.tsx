@@ -81,15 +81,6 @@ const TOOLS_LIST: ToolItem[] = [
     link: "/universities/compare",
     category: "pre",
   },
-  {
-    id: "coupons",
-    title: "University Coupons & Grants",
-    description: "Check available institutional fee concessions & grants",
-    icon: <Percent size={22} className="text-[#6528f7]" />,
-    badge: "Up to ₹20k",
-    link: "/referral",
-    category: "pre",
-  },
 ];
 
 export const ToolsShowcase = () => {

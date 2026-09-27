@@ -139,15 +139,15 @@ export const Blog = () => {
               <div className="px-6 sm:px-7 py-4 bg-muted/30 border-t border-border/50 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Link
-                    to="/author/yash"
+                    to="/author/devanshi"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 group/author hover:text-primary transition-colors"
-                    title="View Yash's Profile & Articles"
+                    title={`View ${post.author.name}'s Profile & Articles`}
                   >
                     <div className="w-6 h-6 rounded-full overflow-hidden bg-muted border border-border group-hover/author:border-primary transition-colors">
                       <img
-                        src={post.author.avatar || "/assets/yash-avatar.svg"}
+                        src={post.author.avatar || "/assets/devanshi-avatar.svg"}
                         alt={post.author.name}
                         className="w-full h-full object-cover"
                       />

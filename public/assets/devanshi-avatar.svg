@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" fill="none">
+  <!-- Background Circle with Soft Lavender / Purple Gradient -->
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EEF2FF"/>
+      <stop offset="100%" stop-color="#E0E7FF"/>
+    </linearGradient>
+    <linearGradient id="hairGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2D1B4E"/>
+      <stop offset="100%" stop-color="#1E1B4B"/>
+    </linearGradient>
+    <linearGradient id="skinGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FCD34D"/>
+      <stop offset="100%" stop-color="#FBBF24"/>
+    </linearGradient>
+    <linearGradient id="suitGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6528F7"/>
+      <stop offset="100%" stop-color="#4F46E5"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Outer Rounded Circle -->
+  <circle cx="60" cy="60" r="58" fill="url(#bgGrad)" stroke="#C7D2FE" stroke-width="2"/>
+
+  <!-- Back Hair (Long, Flowing) -->
+  <path d="M38 52 C34 75 35 95 44 105 C46 102 46 95 45 80 Z" fill="url(#hairGrad)"/>
+  <path d="M82 52 C86 75 85 95 76 105 C74 102 74 95 75 80 Z" fill="url(#hairGrad)"/>
+
+  <!-- Shoulders & Blazer -->
+  <path d="M26 116 C28 94 44 86 60 86 C76 86 92 94 94 116 Z" fill="url(#suitGrad)"/>
+  <!-- White Inner Collar Shirt -->
+  <path d="M52 86 L60 98 L68 86 Z" fill="#FFFFFF"/>
+  <path d="M60 98 L60 116" stroke="#E2E8F0" stroke-width="2"/>
+
+  <!-- Neck -->
+  <path d="M52 70 L52 87 C54 89 66 89 68 87 L68 70 Z" fill="#FDE68A"/>
+
+  <!-- Head Base -->
+  <ellipse cx="60" cy="56" rx="20" ry="24" fill="#FDE68A"/>
+
+  <!-- Front Hair & Style -->
+  <path d="M38 50 C38 34 50 24 60 24 C70 24 82 34 82 50 C80 44 75 40 68 38 C56 36 46 44 38 50 Z" fill="url(#hairGrad)"/>
+  <!-- Side Bangs -->
+  <path d="M38 50 C41 62 44 70 45 74 C43 65 40 58 38 50 Z" fill="url(#hairGrad)"/>
+  <path d="M82 50 C79 62 76 70 75 74 C77 65 80 58 82 50 Z" fill="url(#hairGrad)"/>
+
+  <!-- Eyebrows -->
+  <path d="M48 48 Q53 46 56 48" stroke="#1E1B4B" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M64 48 Q67 46 72 48" stroke="#1E1B4B" stroke-width="1.8" stroke-linecap="round"/>
+
+  <!-- Eyes with Sparkle -->
+  <circle cx="52" cy="54" r="3" fill="#1E1B4B"/>
+  <circle cx="51" cy="53" r="1" fill="#FFFFFF"/>
+  <circle cx="68" cy="54" r="3" fill="#1E1B4B"/>
+  <circle cx="67" cy="53" r="1" fill="#FFFFFF"/>
+
+  <!-- Soft Blush -->
+  <circle cx="46" cy="62" r="3" fill="#FCA5A5" opacity="0.6"/>
+  <circle cx="74" cy="62" r="3" fill="#FCA5A5" opacity="0.6"/>
+
+  <!-- Nose -->
+  <path d="M60 56 Q61 60 59 62" stroke="#F59E0B" stroke-width="1.2" stroke-linecap="round"/>
+
+  <!-- Gentle Smile -->
+  <path d="M54 67 Q60 72 66 67" stroke="#DC2626" stroke-width="2" stroke-linecap="round" fill="none"/>
+
+  <!-- Cute Small Glasses / Stud Earring -->
+  <circle cx="39" cy="62" r="2" fill="#6528F7"/>
+  <circle cx="81" cy="62" r="2" fill="#6528F7"/>
+</svg>

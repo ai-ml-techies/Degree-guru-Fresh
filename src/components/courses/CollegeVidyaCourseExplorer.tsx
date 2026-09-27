@@ -493,7 +493,7 @@ export const CollegeVidyaCourseExplorer = () => {
     // Non-mandatory removable popup for programs
     requireContact(
       () => {
-        navigate(`/${slug}`);
+        navigate(`/${slug}#universities-offering`);
       },
       title,
       false // Removable popup!

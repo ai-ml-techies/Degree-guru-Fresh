@@ -57,10 +57,18 @@ export const UniversityDetail = () => {
     [...ACTIVE_ONLINE_UNIVERSITIES, ...EXECUTIVE_PARTNERS, ...INCLUDED_PARTNERS].find((u) => u.slug === uniSlug);
 
   const [activeTab, setActiveTab] = useState<"overview" | "courses" | "placements" | "faculty" | "admission">("overview");
-  const [courseCategoryTab, setCourseCategoryTab] = useState<"all" | "ug" | "pg" | "collaborative" | "integrated">("ug");
+  const [courseCategoryTab, setCourseCategoryTab] = useState<"ug" | "pg" | "collaborative" | "integrated">("ug");
   const [paymentMode, setPaymentMode] = useState<"direct" | "loan">("direct");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFaculty, setSelectedFaculty] = useState<any | null>(null);
+
+  // Always reset scroll to absolute top hero section on load / refresh
+  useEffect(() => {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [uniSlug]);
 
   // Quick Lead Form State
   const [name, setName] = useState("");
@@ -263,7 +271,7 @@ export const UniversityDetail = () => {
         {/* ───────────────────────────────────────────────────────────────── */}
         {/* 2. HD UNIVERSITY FRONT IMAGE (Clearly Visible, Crisp, Unstretched) */}
         {/* ───────────────────────────────────────────────────────────────── */}
-        <div className="container-dg max-w-6xl pt-4 sm:pt-6">
+        <div className="container-dg max-w-6xl pt-1 sm:pt-2">
           <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden border border-border/80 shadow-md bg-slate-900 aspect-[16/9] sm:aspect-[21/9] max-h-[340px] sm:max-h-[420px]">
             <img
               src={campusImage}
@@ -278,7 +286,7 @@ export const UniversityDetail = () => {
         {/* 3. UNIVERSITY PROFILE CARD                                        */}
         {/*    Logo pushed left & above, single-line name, no authority pills */}
         {/* ───────────────────────────────────────────────────────────────── */}
-        <div className="relative -mt-8 sm:-mt-12 z-10 pb-4 sm:pb-6">
+        <div className="relative -mt-7 sm:-mt-11 z-10 pb-3 sm:pb-5">
           <div className="container-dg max-w-6xl">
             <div className="p-4 sm:p-7 rounded-3xl bg-card border border-border/80 shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4 sm:gap-5 relative">
               <div className="flex items-start gap-3 sm:gap-5 w-full md:w-auto">
@@ -339,9 +347,9 @@ export const UniversityDetail = () => {
         </div>
 
         {/* ───────────────────────────────────────────────────────────────── */}
-        {/* 4. CLEAN STICKY SUBNAV TABS (Premium Underline, Solid Background)  */}
+        {/* 4. CLEAN STICKY SUBNAV TABS (Premium Underline, Fully Visible)      */}
         {/* ───────────────────────────────────────────────────────────────── */}
-        <div className="sticky top-[95px] md:top-[99px] z-30 bg-background border-b border-border shadow-xs">
+        <div className="sticky top-[96px] sm:top-[110px] md:top-[128px] z-30 bg-background border-b border-border shadow-xs">
           <div className="container-dg max-w-6xl">
             <div className="flex items-center gap-1 sm:gap-4 overflow-x-auto no-scrollbar py-0 text-xs sm:text-sm font-medium">
               {[
@@ -354,9 +362,9 @@ export const UniversityDetail = () => {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`py-3 sm:py-3.5 px-3 sm:px-4 border-b-2 transition-all whitespace-nowrap text-xs sm:text-sm ${
+                  className={`py-3 sm:py-3.5 px-3.5 sm:px-5 border-b-2 text-xs sm:text-sm font-semibold transition-all whitespace-nowrap outline-none focus:outline-none focus-visible:outline-none ${
                     activeTab === tab.id
-                      ? "border-primary text-primary font-bold"
+                      ? "border-primary text-primary font-bold bg-primary/5 rounded-t-lg"
                       : "border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground/30 font-medium"
                   }`}
                 >
@@ -429,26 +437,23 @@ export const UniversityDetail = () => {
 
                     {/* ── STATUTORY RECOGNITION (Big, Clean HD Cards, Matching User Image 4) ── */}
                     <div className="p-6 sm:p-7 rounded-3xl bg-card border border-border/80 shadow-sm space-y-4">
-                      <div className="flex items-center gap-2">
+                      <div>
                         <h3 className="text-lg sm:text-xl font-bold text-foreground">
                           {uni.name} <span className="text-primary">Approved By</span>
                         </h3>
-                        <div className="w-5 h-5 rounded-full bg-red-600 text-white flex items-center justify-center text-[10px]">
-                          ▶
-                        </div>
                       </div>
 
                       {/* 6 Big HD Authority Cards matching reference screenshot */}
-                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-2">
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6 pt-2">
                         {authorityLogos.map((auth, i) => (
                           <div
                             key={i}
-                            className="group rounded-2xl bg-white border border-border shadow-xs hover:shadow-md hover:border-primary/40 transition-all overflow-hidden flex items-center justify-center p-0 aspect-[1.5/1]"
+                            className="group rounded-2xl bg-white border border-border/80 shadow-xs hover:shadow-md hover:border-primary/50 transition-all overflow-hidden flex items-center justify-center p-2 sm:p-3 aspect-[1.35/1] sm:aspect-[1.4/1]"
                           >
                             <img
                               src={auth.img}
                               alt={auth.name}
-                              className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-102"
+                              className="w-full h-full object-contain transition-transform duration-200 group-hover:scale-103"
                               loading="lazy"
                             />
                           </div>
@@ -580,7 +585,6 @@ export const UniversityDetail = () => {
                           { id: "pg", label: "PG Courses" },
                           { id: "collaborative", label: "Industry Collaborative" },
                           { id: "integrated", label: "Integrated Dual Degree" },
-                          { id: "all", label: "All Programs" },
                         ].map((cat) => (
                           <button
                             key={cat.id}
@@ -826,7 +830,6 @@ export const UniversityDetail = () => {
                           <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                             Top Recruiting Companies
                           </h3>
-                          <span className="text-[11px] text-muted-foreground">Official Corporate Tie-ups</span>
                         </div>
 
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">

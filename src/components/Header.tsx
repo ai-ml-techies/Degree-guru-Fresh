@@ -28,9 +28,9 @@ import { CORE_COURSES } from "@/data/courses";
 const DEFAULT_ANNOUNCEMENTS = [
   "100% Free Career Counseling & Discovery — No Hidden Fees",
   "50+ UGC-DEB Approved Online Universities & Accredited Programs",
-  "Free AI ATS-Friendly Resume Builder & Job Applications",
+  "Free AI ATS-Friendly Resume Builder & Skill Recommendations",
   "No-Cost EMI Starting from ₹3,500/Month",
-  "Refer & Earn ₹5,000 Guaranteed Reward for Every Enrolled Friend",
+  "Direct Admission Guidance & Verified Fee Breakdown for 2026",
 ];
 
 const stripEmojis = (str: string) =>

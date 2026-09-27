@@ -1,9 +1,11 @@
-import { useState, useId } from "react";
+import { useState, useId, useEffect } from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 import { getCourseBySlug, CORE_COURSES } from "@/data/courses";
 import { ACTIVE_ONLINE_UNIVERSITIES } from "@/data/universities";
+import { UniversityLogo } from "@/components/UniversityLogo";
+import { getUniversityCampusImage } from "@/data/universityCampusImages";
 import { 
   GraduationCap, 
   CheckCircle2, 
@@ -23,7 +25,13 @@ import {
   ShieldCheck,
   Briefcase,
   Layers,
-  Award
+  Award,
+  Star,
+  Search,
+  Check,
+  Plus,
+  Heart,
+  X
 } from "lucide-react";
 import { submitLead } from "@/lib/api";
 
@@ -33,6 +41,34 @@ export const CourseDetail = () => {
 
   const [activeSemTab, setActiveSemTab] = useState<number>(0);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
+
+  // University comparison & filter state
+  const [selectedCompareUnis, setSelectedCompareUnis] = useState<string[]>([]);
+  const [uniSearch, setUniSearch] = useState("");
+  const [selectedSpecialOption, setSelectedSpecialOption] = useState<string>("all");
+
+  useEffect(() => {
+    if (window.location.hash === "#universities-offering") {
+      const el = document.getElementById("universities-offering");
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 150);
+      }
+    }
+  }, []);
+
+  const toggleCompare = (slug: string) => {
+    if (selectedCompareUnis.includes(slug)) {
+      setSelectedCompareUnis(selectedCompareUnis.filter((s) => s !== slug));
+    } else {
+      if (selectedCompareUnis.length >= 4) {
+        alert("You can compare up to 4 universities at a time.");
+        return;
+      }
+      setSelectedCompareUnis([...selectedCompareUnis, slug]);
+    }
+  };
 
   // Lead form state
   const [leadName, setLeadName] = useState("");
@@ -52,9 +88,44 @@ export const CourseDetail = () => {
   // Universities offering this course
   const offeringUnis = ACTIVE_ONLINE_UNIVERSITIES.filter((u) =>
     course.offeringUniversities.some(
-      (ou) => ou.toLowerCase().includes(u.shortName.toLowerCase()) || ou.toLowerCase().includes(u.name.toLowerCase())
+      (ou) =>
+        ou.toLowerCase().includes(u.shortName.toLowerCase()) ||
+        ou.toLowerCase().includes(u.name.toLowerCase()) ||
+        u.name.toLowerCase().includes(ou.toLowerCase())
     )
   );
+
+  const baseUnis = offeringUnis.length > 0 ? offeringUnis : ACTIVE_ONLINE_UNIVERSITIES.slice(0, 6);
+
+  const filteredUnis = baseUnis.filter((u) => {
+    const matchesSearch =
+      u.name.toLowerCase().includes(uniSearch.toLowerCase()) ||
+      u.shortName.toLowerCase().includes(uniSearch.toLowerCase()) ||
+      u.location.toLowerCase().includes(uniSearch.toLowerCase());
+
+    if (!matchesSearch) return false;
+
+    if (selectedSpecialOption === "budget") {
+      return (
+        u.feesRange.includes("₹4") ||
+        u.feesRange.includes("₹5") ||
+        u.feesRange.includes("₹6") ||
+        u.feesRange.includes("₹7") ||
+        u.feesRange.includes("₹8")
+      );
+    }
+    if (selectedSpecialOption === "naac") {
+      return u.accreditation.toLowerCase().includes("naac");
+    }
+    if (selectedSpecialOption === "aicte") {
+      return (
+        u.accreditation.toLowerCase().includes("aicte") ||
+        u.accreditation.toLowerCase().includes("ugc")
+      );
+    }
+
+    return true;
+  });
 
   // Related courses (all except current)
   const relatedCourses = CORE_COURSES.filter((c) => c.slug !== course.slug).slice(0, 4);
@@ -343,57 +414,252 @@ export const CourseDetail = () => {
         </div>
       </section>
 
-      {/* 9 & 10. UNIVERSITIES OFFERING THIS COURSE & COMPARISON */}
-      <section className="py-14 bg-muted/30 border-b border-border/50">
-        <div className="container-dg max-w-5xl">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-8">
-            <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-primary">Accredited Institutions</span>
-              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mt-1">
-                Top Universities Offering {course.shortName}
-              </h2>
+      {/* 9 & 10. BEST UNIVERSITIES FOR COURSE (MATCHING SCREENSHOT 5) */}
+      <section id="universities-offering" className="py-14 bg-muted/30 border-b border-border/50 scroll-mt-28">
+        <div className="container-dg max-w-7xl">
+          {/* Header matching Screenshot 5 */}
+          <div className="mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 text-xs font-bold mb-2">
+              <Sparkles size={14} /> Compare Accredited Degree Institutions
             </div>
-            <Link
-              to="/universities/compare"
-              className="px-4 py-2 rounded-xl bg-card border border-border text-xs font-bold text-foreground hover:bg-muted flex items-center gap-1.5 w-fit shadow-sm"
-            >
-              Side-by-Side Comparison <ArrowRight size={13} />
-            </Link>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground tracking-tight">
+              Best Universities For {course.fullName}{" "}
+              <span className="text-primary font-bold text-lg sm:text-2xl block sm:inline mt-1 sm:mt-0">
+                (EMI Starting from {course.emiFrom})
+              </span>
+            </h2>
+            <p className="text-xs sm:text-sm text-muted-foreground mt-1 max-w-2xl">
+              Compare accredited UGC-DEB and AICTE approved universities offering online {course.shortName} with transparent semester fees and 0% interest loan EMI options.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {offeringUnis.map((uni) => (
-              <div key={uni.id} className="p-5 rounded-2xl bg-card border border-border/80 shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-4">
-                <div>
-                  <div className="flex items-center justify-between">
-                    <span className="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold uppercase">
-                      {uni.mode}
-                    </span>
-                    <span className="text-[11px] text-muted-foreground font-semibold">
-                      {uni.accreditation}
-                    </span>
-                  </div>
-                  <h3 className="text-base font-bold text-foreground mt-2">{uni.name}</h3>
-                  <p className="text-[11px] text-muted-foreground mt-0.5">Location: {uni.location}</p>
+          <div className="flex flex-col lg:flex-row gap-6 items-start">
+            {/* Left Filter Sidebar ("Special options") */}
+            <div className="w-full lg:w-64 xl:w-72 shrink-0 space-y-4">
+              <div className="p-5 rounded-3xl bg-card border border-border/80 shadow-md space-y-4">
+                <h3 className="text-xs font-black uppercase tracking-wider text-foreground pb-2 border-b border-border/60">
+                  Special options
+                </h3>
+
+                {/* Search University */}
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={14} />
+                  <input
+                    type="text"
+                    placeholder="Search university..."
+                    value={uniSearch}
+                    onChange={(e) => setUniSearch(e.target.value)}
+                    className="w-full pl-8 pr-3 py-2 rounded-xl bg-background border border-border text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none"
+                  />
                 </div>
 
-                <div className="pt-2 border-t border-border/50 flex items-center justify-between">
-                  <div>
-                    <span className="text-[10px] text-muted-foreground">Semester Fees from</span>
-                    <div className="text-xs font-extrabold text-foreground">{uni.feesRange.split(" - ")[0]}</div>
-                  </div>
-                  <Link
-                    to={`/universities/${uni.slug}`}
-                    className="px-3 py-1.5 rounded-xl bg-primary/10 hover:bg-primary text-primary hover:text-primary-foreground text-xs font-bold transition-colors"
+                {/* Filter Options */}
+                <div className="space-y-1.5 pt-1">
+                  {[
+                    { id: "all", label: "All Universities" },
+                    { id: "budget", label: "Budget Friendly (EMI < ₹4,000)" },
+                    { id: "naac", label: "NAAC A++ / A+ Accredited" },
+                    { id: "aicte", label: "AICTE & UGC-DEB Approved" },
+                  ].map((opt) => (
+                    <button
+                      key={opt.id}
+                      type="button"
+                      onClick={() => setSelectedSpecialOption(opt.id)}
+                      className={`w-full text-left px-3 py-2 rounded-xl text-xs font-semibold flex items-center justify-between transition-all cursor-pointer ${
+                        selectedSpecialOption === opt.id
+                          ? "bg-primary text-primary-foreground font-bold shadow-xs"
+                          : "hover:bg-muted text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      <span>{opt.label}</span>
+                      {selectedSpecialOption === opt.id && <Check size={13} />}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Quick Free Counseling Card */}
+                <div className="p-4 rounded-2xl bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-primary/20 space-y-2 mt-4">
+                  <div className="text-xs font-bold text-foreground">Confused which university to pick?</div>
+                  <p className="text-[11px] text-muted-foreground leading-relaxed">
+                    Get an unbiased 1-on-1 counselor comparison based on your budget & career goals.
+                  </p>
+                  <a
+                    href="#counseling-lead"
+                    className="inline-flex items-center gap-1 text-xs font-bold text-primary hover:underline pt-1"
                   >
-                    View Details
-                  </Link>
+                    Request Free Counseling →
+                  </a>
                 </div>
               </div>
-            ))}
+            </div>
+
+            {/* Right University Cards Grid (Matching Screenshot 5) */}
+            <div className="flex-1 min-w-0 w-full space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+                {filteredUnis.map((uni) => {
+                  const isCompared = selectedCompareUnis.includes(uni.slug);
+                  return (
+                    <div
+                      key={uni.id}
+                      className="rounded-3xl bg-card border border-border/80 hover:border-primary/60 hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col justify-between group shadow-sm"
+                    >
+                      {/* Top Campus Picture Area */}
+                      <div>
+                        <div className="relative aspect-[16/10] w-full overflow-hidden bg-muted">
+                          <img
+                            src={getUniversityCampusImage(uni.slug)}
+                            alt={uni.name}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            loading="lazy"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+
+                          {/* Top Badges */}
+                          <div className="absolute top-3 left-3 px-2.5 py-0.5 rounded-full bg-primary/90 backdrop-blur-md text-white text-[10px] font-extrabold shadow-sm">
+                            Admissions 2026
+                          </div>
+
+                          <div className="absolute top-3 right-3 flex items-center gap-1.5">
+                            <span className="px-2 py-0.5 rounded-full bg-black/60 backdrop-blur-md text-emerald-400 text-[10px] font-bold">
+                              0% EMI
+                            </span>
+                          </div>
+
+                          {/* Bottom Badges on Image */}
+                          <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between gap-2">
+                            <span className="px-2.5 py-0.5 rounded-lg bg-emerald-600/90 backdrop-blur-md text-white text-[10px] font-bold shadow-xs truncate max-w-[170px] flex items-center gap-1">
+                              <ShieldCheck size={12} className="shrink-0" />
+                              {uni.accreditation.split(",")[0] || "UGC-DEB"}
+                            </span>
+
+                            <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/70 backdrop-blur-md text-amber-400 text-[11px] font-extrabold shrink-0">
+                              <Star size={12} className="fill-amber-400" /> 4.8
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Card Body */}
+                        <div className="p-4 sm:p-5 space-y-3.5">
+                          {/* University Header Row */}
+                          <div className="flex items-center gap-3">
+                            <div className="w-12 h-12 rounded-xl bg-card border border-border/80 p-1 flex items-center justify-center shrink-0 shadow-2xs">
+                              <UniversityLogo idOrSlug={uni.slug} size="sm" />
+                            </div>
+                            <div className="min-w-0">
+                              <h3 className="text-sm font-extrabold text-foreground group-hover:text-primary transition-colors line-clamp-1 leading-snug">
+                                {uni.name}
+                              </h3>
+                              <p className="text-[11px] text-muted-foreground truncate">{uni.location}</p>
+                            </div>
+                          </div>
+
+                          {/* Key Specs Pill Strip */}
+                          <div className="grid grid-cols-2 gap-2 pt-2 border-t border-border/50 text-[11px]">
+                            <div className="p-2 rounded-xl bg-muted/40">
+                              <span className="text-muted-foreground block text-[10px]">Tuition Fees</span>
+                              <span className="font-extrabold text-foreground">{uni.feesRange.split(" - ")[0]}</span>
+                            </div>
+                            <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                              <span className="text-muted-foreground block text-[10px]">No-Cost EMI</span>
+                              <span className="font-extrabold">{course.emiFrom || "₹3,599/m"}</span>
+                            </div>
+                            <div className="p-2 rounded-xl bg-muted/40">
+                              <span className="text-muted-foreground block text-[10px]">Duration</span>
+                              <span className="font-bold text-foreground">{course.duration}</span>
+                            </div>
+                            <div className="p-2 rounded-xl bg-muted/40">
+                              <span className="text-muted-foreground block text-[10px]">Exam Mode</span>
+                              <span className="font-bold text-foreground truncate block">100% Online</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Card Footer Actions */}
+                      <div className="p-4 sm:p-5 pt-0 space-y-2">
+                        <button
+                          type="button"
+                          onClick={() => toggleCompare(uni.slug)}
+                          className={`w-full py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-sm cursor-pointer ${
+                            isCompared
+                              ? "bg-emerald-600 hover:bg-emerald-700 text-white"
+                              : "bg-[#0b57d0] hover:bg-[#0842a0] text-white"
+                          }`}
+                        >
+                          {isCompared ? (
+                            <>
+                              <Check size={14} /> Added to Compare
+                            </>
+                          ) : (
+                            <>
+                              <Plus size={14} /> Add to Compare
+                            </>
+                          )}
+                        </button>
+
+                        <Link
+                          to={`/universities/${uni.slug}`}
+                          className="w-full text-center block text-xs font-bold text-primary hover:underline py-1"
+                        >
+                          View University Details →
+                        </Link>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Checklist Banner Matching Reference in Screenshot 5 */}
+              <div className="p-6 rounded-3xl bg-gradient-to-r from-blue-500/15 via-primary/10 to-indigo-500/15 border border-primary/20 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-5">
+                <div className="space-y-1 text-center sm:text-left">
+                  <div className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-primary">
+                    <CheckCircle2 size={15} /> Student Enrollment Guide
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-black text-foreground">
+                    Checklist I Wish I Had Before Enrolling
+                  </h3>
+                  <p className="text-xs text-muted-foreground max-w-xl">
+                    Know the 5 statutory verification points every online learner must inspect: UGC-DEB entitlement, live proctoring norms, credit transfer & fee transparency.
+                  </p>
+                </div>
+                <a
+                  href="#counseling-lead"
+                  className="px-5 py-2.5 rounded-xl bg-primary text-primary-foreground font-bold text-xs shrink-0 hover:bg-primary/90 transition-all shadow-md"
+                >
+                  Get Enrollment Checklist
+                </a>
+              </div>
+            </div>
           </div>
+
+          {/* Floating Compare Action Bar (Shown when universities selected) */}
+          {selectedCompareUnis.length > 0 && (
+            <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-[#0c0d1a] border border-primary/50 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-4 animate-in fade-in slide-in-from-bottom-4 max-w-[90vw]">
+              <div className="text-xs font-bold flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span>{selectedCompareUnis.length} Universities Selected</span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Link
+                  to={`/universities/compare?unis=${selectedCompareUnis.join(",")}`}
+                  className="px-4 py-2 rounded-xl bg-primary hover:bg-primary/90 text-white font-bold text-xs flex items-center gap-1.5 transition-all shadow-md"
+                >
+                  Compare Now (Side-by-Side) <ArrowRight size={13} />
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => setSelectedCompareUnis([])}
+                  className="text-xs text-white/60 hover:text-white px-2 py-1 cursor-pointer"
+                >
+                  Clear
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </section>
+
 
       {/* 11, 12, 13. CURRICULUM, LEARNING FORMAT & EXAM INFORMATION */}
       <section className="py-14 border-b border-border/50">

@@ -121,17 +121,17 @@ export const BlogPost = () => {
 
           {/* Author and Social Bar */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border/70 mb-8">
-            {/* Author Info: Clickable Yash opening /author/yash in a new page */}
+            {/* Author Info: Clickable Devanshi opening /author/devanshi in a new page */}
             <div className="flex items-center gap-3.5">
               <Link
-                to="/author/yash"
+                to="/author/devanshi"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-primary/30 bg-muted shrink-0 hover:scale-105 hover:border-primary transition-all shadow-sm group block"
-                title="View Yash's profile & articles (opens in new tab)"
+                title={`View ${post.author.name}'s profile & articles (opens in new tab)`}
               >
                 <img
-                  src={post.author.avatar || "/assets/yash-avatar.svg"}
+                  src={post.author.avatar || "/assets/devanshi-avatar.svg"}
                   alt={post.author.name}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform"
                 />
@@ -139,11 +139,11 @@ export const BlogPost = () => {
               <div>
                 <div className="flex items-center gap-2">
                   <Link
-                    to="/author/yash"
+                    to="/author/devanshi"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-sm font-black text-foreground hover:text-primary transition-colors flex items-center gap-1.5"
-                    title="View Yash's profile & articles (opens in new tab)"
+                    title={`View ${post.author.name}'s profile & articles (opens in new tab)`}
                   >
                     <span>{post.author.name}</span>
                     {post.author.verified && (
@@ -535,19 +535,19 @@ export const BlogPost = () => {
             </div>
           </div>
 
-          {/* Author Box — Yash Credentials & Link to his dedicated profile page */}
+          {/* Author Box — Devanshi Credentials & Link to dedicated profile page */}
           <div className="mt-12 p-6 sm:p-8 rounded-3xl bg-card border border-border/80 shadow-md">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
               <div className="flex items-start sm:items-center gap-4">
                 <Link
-                  to="/author/yash"
+                  to="/author/devanshi"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-16 h-16 rounded-2xl overflow-hidden border-2 border-primary/30 shrink-0 shadow-sm hover:scale-105 transition-transform block bg-muted"
-                  title="View Yash's Full Profile & Articles (opens in new tab)"
+                  title={`View ${post.author.name}'s Full Profile & Articles (opens in new tab)`}
                 >
                   <img
-                    src={post.author.avatar || "/assets/yash-avatar.svg"}
+                    src={post.author.avatar || "/assets/devanshi-avatar.svg"}
                     alt={post.author.name}
                     className="w-full h-full object-cover"
                   />
@@ -555,11 +555,11 @@ export const BlogPost = () => {
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
                     <Link
-                      to="/author/yash"
+                      to="/author/devanshi"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-lg font-black text-foreground hover:text-primary transition-colors"
-                      title="View Yash's Full Profile & Articles (opens in new tab)"
+                      title={`View ${post.author.name}'s Full Profile & Articles (opens in new tab)`}
                     >
                       {post.author.name}
                     </Link>

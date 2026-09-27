@@ -26,7 +26,6 @@ import {
 
 export const UniversitiesIndex = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterMode, setFilterMode] = useState<string>("Online");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const navigate = useNavigate();
   const { requireContact } = useLeadGate();
@@ -41,7 +40,6 @@ export const UniversitiesIndex = () => {
 
   const allUniversities: UniversityData[] = [
     ...ACTIVE_ONLINE_UNIVERSITIES,
-    ...EXECUTIVE_PARTNERS,
     ...INCLUDED_PARTNERS,
   ];
 
@@ -52,9 +50,7 @@ export const UniversitiesIndex = () => {
       u.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
       u.popularPrograms.some((p) => p.toLowerCase().includes(searchTerm.toLowerCase()));
 
-    if (filterMode === "Online") return matchesSearch && u.mode.toLowerCase().includes("online");
-    if (filterMode === "Executive") return matchesSearch && u.mode.toLowerCase().includes("executive");
-    return matchesSearch;
+    return matchesSearch && u.mode.toLowerCase().includes("online");
   });
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
@@ -112,30 +108,15 @@ export const UniversitiesIndex = () => {
             />
           </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
-              {["Online", "Executive"].map((tab) => (
-                <button
-                  key={tab}
-                  type="button"
-                  onClick={() => {
-                    setFilterMode(tab);
-                    setCurrentPage(1);
-                  }}
-                  className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                    filterMode === tab
-                      ? "bg-primary text-primary-foreground shadow-sm"
-                      : "bg-muted text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  {tab} Institutions
-                </button>
-              ))}
+          <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
+            <div className="text-xs font-bold text-muted-foreground flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Showing {filtered.length} UGC-DEB Approved Online Universities</span>
             </div>
 
             <Link
               to="/universities/compare"
-              className="px-3.5 py-1.5 rounded-lg bg-card border border-border text-xs font-bold text-foreground hover:bg-muted flex items-center gap-1.5 shadow-sm"
+              className="px-4 py-2 rounded-xl bg-primary/10 border border-primary/20 text-xs font-bold text-primary hover:bg-primary hover:text-primary-foreground transition-all flex items-center gap-1.5 shadow-sm"
             >
               <Layers size={14} /> Compare Universities
             </Link>
