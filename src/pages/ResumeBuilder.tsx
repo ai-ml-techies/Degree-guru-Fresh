@@ -114,7 +114,7 @@ export const ResumeBuilder = () => {
     { num: 10, label: "Target Job" },
     { num: 11, label: "ATS Optimization" },
     { num: 12, label: "Theme & Palette" },
-    { num: 13, label: "Download PDF" },
+    { num: 13, label: "Download Resume" },
   ];
 
   // Handle Onboarding Completion
@@ -1454,7 +1454,7 @@ export const ResumeBuilder = () => {
                     onClick={handleOpenDownloadModal}
                     className="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs sm:text-sm shadow-xl shadow-emerald-600/25 transition-all inline-flex items-center gap-2"
                   >
-                    <Download size={16} /> Download ATS PDF (A4)
+                    <Download size={16} /> Download Resume
                   </button>
                 </div>
               )}
@@ -1593,7 +1593,7 @@ export const ResumeBuilder = () => {
                   </>
                 ) : (
                   <>
-                    <Download size={16} /> Download Resume (PDF)
+                    <Download size={16} /> Download Resume
                   </>
                 )}
               </button>

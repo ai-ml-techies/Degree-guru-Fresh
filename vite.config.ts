@@ -6,6 +6,7 @@ import { componentTagger } from "lovable-tagger";
 const BACKEND = process.env.BACKEND_URL || 'http://127.0.0.1:8091';
 
 export default defineConfig(({ mode }) => ({
+  root: path.resolve(__dirname),
   server: {
     host: true,
     port: 8080,
@@ -32,7 +33,6 @@ export default defineConfig(({ mode }) => ({
           'vendor-react':  ['react', 'react-dom', 'react-router-dom'],
           'vendor-ui':     ['@radix-ui/react-dialog', '@radix-ui/react-accordion', '@radix-ui/react-select', '@radix-ui/react-tabs', '@radix-ui/react-tooltip'],
           'vendor-query':  ['@tanstack/react-query'],
-          'vendor-misc':   ['lucide-react', 'sonner', 'clsx', 'tailwind-merge'],
         },
       },
     },
