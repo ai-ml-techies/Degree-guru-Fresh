@@ -57,7 +57,7 @@ export const COURSES: Course[] = [
     duration: "2 Years (4 Semesters)",
     eligibility: "Bachelor's degree in any discipline from a recognized university with minimum 50% marks (45% for reserved categories). Work experience preferred but not mandatory.",
     feeRange: "₹65,000 – ₹2,10,000 (Total Course Fee)",
-    emiStarting: "₹3,950/month (No-Cost EMI available)",
+    emiStarting: "₹3,950/month",
     shortDesc: "Fast-track your management career with India's most flexible, UGC-entitled Online MBA. Study around your job with live weekend masterclasses and zero commute.",
     overview: "An Online MBA is a comprehensive two-year postgraduate degree in business management delivered entirely through state-of-the-art digital learning management systems. Designed specifically for ambitious working professionals, fresh graduates, and entrepreneurs, it offers identical academic credibility, syllabus rigor, and corporate recognition as a traditional on-campus MBA, backed by UGC-DEB and AICTE entitling regulations.",
     whoShouldChoose: [

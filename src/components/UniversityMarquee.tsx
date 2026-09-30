@@ -18,6 +18,7 @@ const ROW_1: UniversityTickerItem[] = [
   { id: "lpu", name: "Lovely Professional University", slug: "lpu-online", tagline: "NIRF Top 50 • NAAC A++" },
   { id: "cu", name: "Chandigarh University", slug: "chandigarh-university-online", tagline: "NAAC A+ • QS Ranked" },
   { id: "shoolini", name: "Shoolini University Online", slug: "universities", tagline: "THE World Ranked • NAAC A+" },
+  { id: "sgt", name: "SGT University Online", slug: "universities", tagline: "NAAC A+ • UGC Entitled • Smart LMS" },
   { id: "vit", name: "VIT Online", slug: "universities", tagline: "NAAC A++ • NIRF Top 10" },
 ];
 

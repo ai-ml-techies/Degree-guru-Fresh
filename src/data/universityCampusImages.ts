@@ -11,6 +11,7 @@ export const UNIVERSITY_CAMPUS_IMAGES: Record<string, string> = {
   "jain-university-online": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1600&q=80",
   "amrita-ahead-online": "https://images.unsplash.com/photo-1592280771190-3e2e4d571952?auto=format&fit=crop&w=1600&q=80",
   "uttaranchal-university-online": "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1600&q=80",
+  "sgt-university-online": "/assets/universities/sgt-campus.jpg",
 };
 
 export const getUniversityCampusImage = (slug: string): string => {

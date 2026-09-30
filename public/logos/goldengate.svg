@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" width="320" height="80">
+  <defs>
+    <linearGradient id="ggGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#990000" />
+      <stop offset="100%" stop-color="#c41212" />
+    </linearGradient>
+  </defs>
+  <!-- GGU Seal/Emblem -->
+  <g transform="translate(10, 10)">
+    <rect x="0" y="0" width="60" height="60" rx="12" fill="url(#ggGrad)" />
+    <!-- Gate suspension icon -->
+    <path d="M12 48 L12 20 L20 20 L20 48 M40 48 L40 20 L48 20 L48 48" fill="#ffffff" />
+    <path d="M12 24 Q30 38 48 24" stroke="#ffffff" stroke-width="3" fill="none" stroke-linecap="round" />
+    <line x1="8" y1="46" x2="52" y2="46" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" />
+    <circle cx="30" cy="18" r="3.5" fill="#facc15" />
+  </g>
+  <!-- Typography -->
+  <text x="82" y="34" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="17" fill="#990000" letter-spacing="0.5">
+    GOLDEN GATE
+  </text>
+  <text x="82" y="52" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="13" fill="#1e293b" letter-spacing="1.5">
+    UNIVERSITY
+  </text>
+  <text x="82" y="66" font-family="system-ui, -apple-system, sans-serif" font-weight="600" font-size="9" fill="#94a3b8" letter-spacing="1">
+    SAN FRANCISCO • EST. 1901
+  </text>
+</svg>

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" width="320" height="80">
+  <defs>
+    <linearGradient id="ljmuGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#11224d" />
+      <stop offset="100%" stop-color="#19376d" />
+    </linearGradient>
+  </defs>
+  <!-- LJMU Crest -->
+  <g transform="translate(10, 10)">
+    <rect x="0" y="0" width="60" height="60" rx="12" fill="url(#ljmuGrad)" />
+    <!-- Liver Bird silhouette / Shield -->
+    <path d="M30 14 C22 18 18 26 18 36 C18 46 30 52 30 52 C30 52 42 46 42 36 C42 26 38 18 30 14 Z" fill="none" stroke="#ffffff" stroke-width="2" />
+    <path d="M30 22 C26 26 26 32 30 36 C34 32 34 26 30 22 Z" fill="#ffffff" />
+    <line x1="24" y1="42" x2="36" y2="42" stroke="#ffffff" stroke-width="2" stroke-linecap="round" />
+  </g>
+  <!-- Typography -->
+  <text x="82" y="32" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="14" fill="#11224d" letter-spacing="1">
+    LIVERPOOL
+  </text>
+  <text x="82" y="48" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="13" fill="#11224d" letter-spacing="1">
+    JOHN MOORES
+  </text>
+  <text x="82" y="64" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="10" fill="#64748b" letter-spacing="2">
+    UNIVERSITY • UK
+  </text>
+</svg>

@@ -26,7 +26,7 @@ import {
 
 export const UniversitiesIndex = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [visibleCount, setVisibleCount] = useState(6);
   const navigate = useNavigate();
   const { requireContact } = useLeadGate();
 
@@ -53,19 +53,11 @@ export const UniversitiesIndex = () => {
     return matchesSearch && u.mode.toLowerCase().includes("online");
   });
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
-  const validCurrentPage = Math.min(currentPage, totalPages);
-  const startIndex = (validCurrentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, filtered.length);
-  const paginatedUniversities = filtered.slice(startIndex, endIndex);
+  const visibleUniversities = filtered.slice(0, visibleCount);
+  const hasMore = visibleCount < filtered.length;
 
-  const goToPage = (page: number) => {
-    const p = Math.max(1, Math.min(page, totalPages));
-    setCurrentPage(p);
-    const el = document.getElementById("universities-list");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+  const loadMore = () => {
+    setVisibleCount((prev) => Math.min(prev + ITEMS_PER_PAGE, filtered.length));
   };
 
   return (
@@ -102,18 +94,13 @@ export const UniversitiesIndex = () => {
               value={searchTerm}
               onChange={(e) => {
                 setSearchTerm(e.target.value);
-                setCurrentPage(1);
+                setVisibleCount(6);
               }}
               className="w-full pl-11 pr-4 py-3 rounded-xl bg-card border border-border text-sm focus:ring-2 focus:ring-primary/40 focus:outline-none shadow-sm"
             />
           </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
-            <div className="text-xs font-bold text-muted-foreground flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Showing {filtered.length} UGC-DEB Approved Online Universities</span>
-            </div>
-
+          <div className="flex flex-wrap items-center justify-end gap-3 pt-1">
             <Link
               to="/universities/compare"
               className="px-4 py-2 rounded-xl bg-primary/10 border border-primary/20 text-xs font-bold text-primary hover:bg-primary hover:text-primary-foreground transition-all flex items-center gap-1.5 shadow-sm"
@@ -133,7 +120,7 @@ export const UniversitiesIndex = () => {
         ) : (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-              {paginatedUniversities.map((uni) => (
+              {visibleUniversities.map((uni) => (
                 <div
                   key={uni.id}
                   className="p-4 sm:p-4.5 rounded-2xl bg-card border border-border/70 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between space-y-3 group"
@@ -148,8 +135,8 @@ export const UniversitiesIndex = () => {
                       </span>
                     </div>
 
-                    <div className="w-full flex items-center justify-center my-1.5">
-                      <UniversityLogo idOrSlug={uni.slug} size="sm" className="max-w-full w-full" />
+                    <div className="w-full flex items-center justify-center my-2">
+                      <UniversityLogo idOrSlug={uni.slug} size="md" className="max-w-full w-full" />
                     </div>
 
                     <p className="text-[11px] text-muted-foreground mt-2 line-clamp-2 leading-relaxed">
@@ -193,44 +180,16 @@ export const UniversitiesIndex = () => {
               ))}
             </div>
 
-            {/* Simple Clean Pagination Controls */}
-            {totalPages > 1 && (
-              <div className="mt-8 pt-6 border-t border-border/60 flex items-center justify-center">
-                {/* Page Buttons */}
-                <div className="flex items-center gap-1.5 sm:gap-2">
-                  <button
-                    type="button"
-                    disabled={validCurrentPage === 1}
-                    onClick={() => goToPage(validCurrentPage - 1)}
-                    className="px-3.5 py-1.5 rounded-lg text-xs font-bold border border-border bg-card hover:bg-muted text-foreground disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-                  >
-                    Previous
-                  </button>
-
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
-                    <button
-                      key={pageNum}
-                      type="button"
-                      onClick={() => goToPage(pageNum)}
-                      className={`min-w-8 h-8 px-2.5 rounded-lg text-xs font-bold transition-all ${
-                        validCurrentPage === pageNum
-                          ? "bg-primary text-primary-foreground shadow-sm"
-                          : "border border-border bg-card hover:bg-muted text-foreground"
-                      }`}
-                    >
-                      {pageNum}
-                    </button>
-                  ))}
-
-                  <button
-                    type="button"
-                    disabled={validCurrentPage === totalPages}
-                    onClick={() => goToPage(validCurrentPage + 1)}
-                    className="px-3.5 py-1.5 rounded-lg text-xs font-bold border border-border bg-card hover:bg-muted text-foreground disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-                  >
-                    Next
-                  </button>
-                </div>
+            {/* View More Universities Button */}
+            {hasMore && (
+              <div className="mt-8 flex items-center justify-center">
+                <button
+                  type="button"
+                  onClick={loadMore}
+                  className="px-6 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-bold hover:bg-primary/90 transition-all shadow-sm flex items-center gap-2 cursor-pointer"
+                >
+                  View More Universities <ArrowRight size={14} />
+                </button>
               </div>
             )}
           </>

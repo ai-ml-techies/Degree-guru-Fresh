@@ -41,6 +41,7 @@ const universitiesForProgram = (slug: string) => {
     { name: "Shoolini Online", note: "Research-led learning" },
     { name: "Galgotias University Online", note: "Industry-focused curriculum" },
     { name: "Parul University Online", note: "Wide industry partnerships" },
+    { name: "SGT University Online", note: "NAAC A+ UGC-entitled degrees with AI exposure & placement support" },
   ];
   let pool = all;
   if (slug === "online-bba") pool = all.filter(u => u.name !== "NMIMS Online");

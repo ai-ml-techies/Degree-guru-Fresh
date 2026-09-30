@@ -10,6 +10,7 @@ import {
 } from "@/data/universities";
 import { COURSES } from "@/data/courses";
 import { getUniversityCampusImage } from "@/data/universityCampusImages";
+import { UniversityLogo } from "@/components/UniversityLogo";
 import { 
   AMITY_JULY_26_FEE_STRUCTURE, 
   AmityProgramFee 
@@ -38,7 +39,14 @@ import {
   Sparkles,
   ExternalLink,
   ChevronRight,
-  ChevronDown
+  ChevronDown,
+  Laptop,
+  Smartphone,
+  Bot,
+  MousePointerClick,
+  Compass,
+  Headphones,
+  FileCheck
 } from "lucide-react";
 import { submitLead } from "@/lib/api";
 import { Button } from "@/components/ui/button";
@@ -506,18 +514,183 @@ const UNIQUE_AMITY_PROGRAMS: UniqueProgramItem[] = [
   },
 ];
 
+// ── WHY SAY YES TO AMITY ONLINE? (12 Official Pillars with Badges & Logos) ──
+const WHY_YES_AMITY_DATA = [
+  {
+    id: "wasc",
+    title: "WASC Accreditation (USA)",
+    badge: "USA Regional Accreditation",
+    description: "Amity Online is India's only university accredited by the Western Association of Schools and Colleges - a distinguished recognition of global academic excellence.",
+    logo: "/assets/approvals/wasc.svg",
+    category: "accreditation" as const,
+    highlight: "India's Only University",
+    themeBg: "bg-blue-900/10 text-blue-950 dark:text-blue-200 border-blue-900/20",
+  },
+  {
+    id: "wes",
+    title: "WES Recognition",
+    badge: "Canada & USA Equivalency",
+    description: "Degrees recognised by World Education Services (WES) Canada & USA, enabling smoother pathways for higher studies and global career mobility.",
+    logo: "/assets/approvals/wes.png",
+    category: "accreditation" as const,
+    highlight: "Global Higher Studies Pathway",
+    themeBg: "bg-sky-500/10 text-sky-900 dark:text-sky-200 border-sky-500/20",
+  },
+  {
+    id: "qs-mba",
+    title: "QS Ranked Online MBA",
+    badge: "Asia Pacific Top 10",
+    description: "Amity Online offers India's only Online MBA ranked by QS under Asia Pacific Top 10 - a global recognition for academic strength, learner outcomes, and digital innovation.",
+    logo: "/assets/approvals/qs.png",
+    category: "accreditation" as const,
+    highlight: "Asia Pacific Top 10 by QS",
+    themeBg: "bg-amber-500/10 text-amber-900 dark:text-amber-200 border-amber-500/20",
+  },
+  {
+    id: "qaa",
+    title: "QAA (UK) Accreditation",
+    badge: "UK Quality Benchmarked",
+    description: "Accredited by the UK's Quality Assurance Agency (QAA), assuring students of globally benchmarked academic quality.",
+    logo: "/assets/approvals/qaa.svg",
+    category: "accreditation" as const,
+    highlight: "UK Quality Assured",
+    themeBg: "bg-indigo-900/10 text-indigo-950 dark:text-indigo-200 border-indigo-900/20",
+  },
+  {
+    id: "the",
+    title: "Times Higher Education Employability Rankings",
+    badge: "Global Employability Ranking",
+    description: "Amity University is ranked among the best globally for graduate employability and employer reputation by Times Higher Education.",
+    logo: "/assets/approvals/the.svg",
+    category: "accreditation" as const,
+    highlight: "Global Employer Reputation",
+    themeBg: "bg-red-500/10 text-red-950 dark:text-red-200 border-red-500/20",
+  },
+  {
+    id: "pan-india",
+    title: "Pan-India Campus Access & Offline Events",
+    badge: "Hybrid Campus Life",
+    description: "Enjoy access to all Amity campuses for events like orientation, mid-year meetups, on-campus connect and convocation - blending digital convenience with real-world connection.",
+    category: "learning" as const,
+    highlight: "Pan-India Campus Access",
+    themeBg: "bg-purple-500/10 text-purple-950 dark:text-purple-200 border-purple-500/20",
+    icon: Building2,
+  },
+  {
+    id: "amigo",
+    title: "Amigo: Learning On-the-Go",
+    badge: "Official Mobile Learning App",
+    description: "The Amigo app makes learning seamless and mobile - attend live classes, track progress, access materials, and more on your schedule.",
+    category: "learning" as const,
+    highlight: "Live Classes & Mobile Sync",
+    themeBg: "bg-blue-600/10 text-blue-950 dark:text-blue-200 border-blue-600/20",
+    icon: Smartphone,
+  },
+  {
+    id: "prof-ami",
+    title: "Prof. Ami: Your AI-Powered Personal Tutor",
+    badge: "24/7 AI Mentor",
+    description: "Meet Prof. Ami - your always-on, AI mentor for instant doubt-solving, personalised learning tips, and smart academic support.",
+    category: "learning" as const,
+    highlight: "24/7 AI-Powered Tutor",
+    themeBg: "bg-fuchsia-600/10 text-fuchsia-950 dark:text-fuchsia-200 border-fuchsia-600/20",
+    icon: Bot,
+  },
+  {
+    id: "certifications",
+    title: "Industry Certifications for Better Employability",
+    badge: "Curriculum Integrated",
+    description: "Gain an edge with in-demand certifications from top industry bodies and partners - integrated within your program to boost your skills and CV.",
+    category: "career" as const,
+    highlight: "Skills & CV Booster",
+    themeBg: "bg-emerald-600/10 text-emerald-950 dark:text-emerald-200 border-emerald-600/20",
+    icon: Award,
+  },
+  {
+    id: "internships",
+    title: "Internship Opportunities",
+    badge: "Corporate Placements",
+    description: "Access curated internships with leading companies through our corporate network, helping you gain real-world experience and stand out in the job market.",
+    category: "career" as const,
+    highlight: "Top Corporate Network",
+    themeBg: "bg-orange-600/10 text-orange-950 dark:text-orange-200 border-orange-600/20",
+    icon: Briefcase,
+  },
+  {
+    id: "career-discovery",
+    title: "AI-Powered Career Discovery Platform",
+    badge: "Job & Interview Prep",
+    description: "From mock interviews and resume building to job search and easy-apply tools - our AI-powered platform ensures you’re career-ready from day one.",
+    category: "career" as const,
+    highlight: "Mock Interviews & Job Tools",
+    themeBg: "bg-teal-600/10 text-teal-950 dark:text-teal-200 border-teal-600/20",
+    icon: Compass,
+  },
+  {
+    id: "besocial",
+    title: "beSocial App for Campus Life",
+    badge: "Virtual Student Hub",
+    description: "Your virtual student hub — the beSocial app lets you network, join clubs, attend events, and be part of a vibrant, online-first community.",
+    category: "learning" as const,
+    highlight: "Student Clubs & Networking",
+    themeBg: "bg-pink-600/10 text-pink-950 dark:text-pink-200 border-pink-600/20",
+    icon: Users,
+  },
+];
+
+// ── 5-STEP AMITY ADMISSION PROCESS (Matching Reference Diagram) ──
+const AMITY_ADMISSION_STEPS = [
+  {
+    step: "01",
+    title: "01. Select Your Program",
+    subtitle: "Choose the program that suits your goals.",
+    bgLight: "bg-emerald-50 text-emerald-600 border-emerald-300 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-700",
+    icon: Laptop,
+  },
+  {
+    step: "02",
+    title: "02. Complete Your Application",
+    subtitle: "Fill out your application with all the necessary information",
+    bgLight: "bg-blue-50 text-blue-600 border-blue-300 dark:bg-blue-950/40 dark:text-blue-400 dark:border-blue-700",
+    icon: FileText,
+  },
+  {
+    step: "03",
+    title: "03. Pay Your Program Fees",
+    subtitle: "Make your program payment securely & easily",
+    bgLight: "bg-amber-50 text-amber-600 border-amber-300 dark:bg-amber-950/40 dark:text-amber-400 dark:border-amber-700",
+    icon: IndianRupee,
+  },
+  {
+    step: "04",
+    title: "04. Submit & Register",
+    subtitle: "Submit your application and complete your registration",
+    bgLight: "bg-rose-50 text-rose-600 border-rose-300 dark:bg-rose-950/40 dark:text-rose-400 dark:border-rose-700",
+    icon: MousePointerClick,
+  },
+  {
+    step: "05",
+    title: "05. Await Enrollment Details",
+    subtitle: "Wait for enrollment details & further guidance",
+    bgLight: "bg-emerald-50 text-emerald-600 border-emerald-300 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-700",
+    icon: Clock,
+  },
+];
+
 export const UniversityDetail = () => {
   const { uniSlug } = useParams<{ uniSlug: string }>();
 
-  // Find university from full list
-  const uni = UNIVERSITIES.find((u) => u.slug === uniSlug) ||
-    [...ACTIVE_ONLINE_UNIVERSITIES, ...EXECUTIVE_PARTNERS, ...INCLUDED_PARTNERS].find((u) => u.slug === uniSlug);
+  // Find university from full list with fallback matching
+  const allUnis = [...UNIVERSITIES, ...ACTIVE_ONLINE_UNIVERSITIES, ...EXECUTIVE_PARTNERS, ...INCLUDED_PARTNERS];
+  const uni = allUnis.find((u) => u.slug === uniSlug || u.id === uniSlug) ||
+    allUnis.find((u) => uniSlug && (u.slug.includes(uniSlug) || uniSlug.includes(u.slug) || (uniSlug === "amity" && u.slug.includes("amity"))));
 
   const [activeTab, setActiveTab] = useState<"overview" | "courses" | "placements" | "faculty" | "admission">("overview");
   const [courseCategoryTab, setCourseCategoryTab] = useState<"ug" | "pg" | "collaborative" | "integrated">("ug");
   const [paymentMode, setPaymentMode] = useState<"direct" | "loan">("direct");
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedProgramId, setExpandedProgramId] = useState<string | null>(null);
+  const [whyAmityFilter, setWhyAmityFilter] = useState<"all" | "accreditation" | "learning" | "career">("all");
   const [selectedFaculty, setSelectedFaculty] = useState<{
     name: string;
     designation: string;
@@ -565,6 +738,12 @@ export const UniversityDetail = () => {
       return true;
     });
   }, [courseCategoryTab, searchQuery]);
+
+  // Filtered "Why Say Yes to Amity" Items
+  const filteredWhyAmity = useMemo(() => {
+    if (whyAmityFilter === "all") return WHY_YES_AMITY_DATA;
+    return WHY_YES_AMITY_DATA.filter((item) => item.category === whyAmityFilter);
+  }, [whyAmityFilter]);
 
   if (!uni) {
     return <Navigate to="/universities" replace />;
@@ -674,6 +853,7 @@ export const UniversityDetail = () => {
         tuitionFee: 120000,
         semesterFee: 30000,
         specializations: p.specializations,
+        industryPartner: undefined as string | undefined,
         thumbnail: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80",
       }));
   }, [isAmity, courseCategoryTab, searchQuery, genericPrograms]);
@@ -686,6 +866,18 @@ export const UniversityDetail = () => {
     { name: "WES", img: "/assets/approvals/wes.png" },
     { name: "QS World University Rankings", img: "/assets/approvals/qs.png" },
     { name: "DEC", img: "/assets/approvals/dec.png" },
+  ];
+
+  // Official Amity Recognitions including WASC (USA), QAA (UK) & THE
+  const amityAuthorityLogos = [
+    { name: "UGC-DEB Approved", img: "/assets/approvals/ugc-deb.png" },
+    { name: "AICTE Approved", img: "/assets/approvals/aicte.png" },
+    { name: "WASC Accredited (USA)", img: "/assets/approvals/wasc.svg" },
+    { name: "QAA UK Quality Assured", img: "/assets/approvals/qaa.svg" },
+    { name: "WES Canada & USA Recognized", img: "/assets/approvals/wes.png" },
+    { name: "QS Ranked Online MBA (Top 10)", img: "/assets/approvals/qs.png" },
+    { name: "Times Higher Education Employability", img: "/assets/approvals/the.svg" },
+    { name: "NIRF Top Ranked", img: "/assets/approvals/nirf.png" },
   ];
 
   // Real Corporate Placement Logos
@@ -799,12 +991,8 @@ export const UniversityDetail = () => {
             <div className="p-5 sm:p-7 rounded-3xl bg-card border border-border/80 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-5 sm:gap-6">
               <div className="flex items-start gap-4 sm:gap-6">
                 {/* University Logo DP */}
-                <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-2xl sm:rounded-3xl bg-white p-2.5 sm:p-3.5 border-2 border-border shadow-md flex items-center justify-center shrink-0">
-                  <img
-                    src={isAmity ? "/logos/amity.png" : "/logos/cu.png"}
-                    alt={uni.name}
-                    className="w-full h-full object-contain"
-                  />
+                <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-2xl sm:rounded-3xl bg-white p-2.5 sm:p-3.5 border-2 border-border shadow-md flex items-center justify-center shrink-0 overflow-hidden">
+                  <UniversityLogo idOrSlug={uni.slug} size="lg" raw={true} className="max-h-full max-w-full object-contain" />
                 </div>
 
                 <div className="space-y-1.5">
@@ -817,7 +1005,7 @@ export const UniversityDetail = () => {
                   <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm text-muted-foreground font-normal">
                     <span className="flex items-center gap-1 text-foreground font-semibold">
                       <Star size={13} className="fill-amber-400 text-amber-400" />
-                      4.3 / 5 ({uni.reviewsCount || "4,120"}+ reviews)
+                      {(uni.rating ? Math.min(uni.rating, 4.6) : 4.4).toFixed(1)} / 5 ({uni.reviewsCount || "4,120"}+ reviews)
                     </span>
                     <span>•</span>
                     <span className="flex items-center gap-1">
@@ -857,9 +1045,9 @@ export const UniversityDetail = () => {
         {/* ───────────────────────────────────────────────────────────────── */}
         {/* 3. CLEAN STICKY SUBNAV TABS (Flush directly under header)         */}
         {/* ───────────────────────────────────────────────────────────────── */}
-        <div className="sticky top-[96px] md:top-[100px] z-30 bg-background/95 backdrop-blur-md border-b border-border shadow-xs">
+        <div className="sticky top-[96px] md:top-[100px] z-30 bg-background/95 backdrop-blur-md">
           <div className="container-dg max-w-6xl">
-            <div className="flex items-center gap-1 sm:gap-4 overflow-x-auto no-scrollbar py-0 text-xs sm:text-sm font-medium">
+            <div className="relative flex items-center gap-1 sm:gap-4 overflow-x-auto no-scrollbar py-0 text-xs sm:text-sm font-medium">
               {[
                 { id: "overview", label: "About" },
                 { id: "courses", label: isAmity ? "Courses & Fees (2026)" : "Courses & Fees" },
@@ -870,13 +1058,16 @@ export const UniversityDetail = () => {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as "overview" | "courses" | "placements" | "faculty" | "admission")}
-                  className={`py-3 sm:py-3.5 px-3.5 sm:px-5 border-b-2 text-xs sm:text-sm font-semibold transition-all whitespace-nowrap outline-none focus:outline-none focus-visible:outline-none ${
+                  className={`relative py-3 sm:py-3.5 px-3.5 sm:px-5 text-xs sm:text-sm transition-all whitespace-nowrap outline-none focus:outline-none focus-visible:outline-none ${
                     activeTab === tab.id
-                      ? "border-primary text-primary font-bold bg-primary/5 rounded-t-lg"
-                      : "border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground/30 font-medium"
+                      ? "text-primary font-bold"
+                      : "text-muted-foreground hover:text-foreground font-medium"
                   }`}
                 >
                   {tab.label}
+                  {activeTab === tab.id && (
+                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[calc(100%-16px)] h-[2.5px] bg-primary rounded-full" />
+                  )}
                 </button>
               ))}
             </div>
@@ -943,6 +1134,110 @@ export const UniversityDetail = () => {
                       </div>
                     </div>
 
+                    {/* ── WHY SAY YES TO AMITY ONLINE? (12 Official Pillars with Logos & Badges) ── */}
+                    {isAmity && (
+                      <div className="p-6 sm:p-8 rounded-3xl bg-card border border-border/80 shadow-sm space-y-6">
+                        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                          <div className="space-y-1.5">
+                            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-[11px] font-bold uppercase tracking-wider">
+                              <Sparkles size={12} />
+                              <span>Global Benchmarks & Innovation</span>
+                            </div>
+                            <h2 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">
+                              Why say Yes to <span className="text-primary">Amity Online?</span>
+                            </h2>
+                            <p className="text-xs sm:text-sm text-muted-foreground max-w-2xl leading-relaxed">
+                              India's highest globally accredited digital university — combining USA & UK institutional quality benchmarks, cutting-edge AI mentors, and top-tier career mobility.
+                            </p>
+                          </div>
+
+                          {/* Filter Tabs */}
+                          <div className="flex items-center gap-1.5 p-1 rounded-xl bg-muted/60 border border-border/60 overflow-x-auto no-scrollbar text-xs font-medium self-start md:self-auto">
+                            {[
+                              { id: "all", label: "All (12)" },
+                              { id: "accreditation", label: "Accreditations (5)" },
+                              { id: "learning", label: "Learning & AI (4)" },
+                              { id: "career", label: "Career & Placements (3)" },
+                            ].map((tab) => (
+                              <button
+                                key={tab.id}
+                                onClick={() => setWhyAmityFilter(tab.id as "all" | "accreditation" | "learning" | "career")}
+                                className={`px-3 py-1.5 rounded-lg whitespace-nowrap transition-all ${
+                                  whyAmityFilter === tab.id
+                                    ? "bg-primary text-primary-foreground font-semibold shadow-xs"
+                                    : "text-muted-foreground hover:text-foreground"
+                                }`}
+                              >
+                                {tab.label}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* 12 Cards Grid */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 pt-1">
+                          {filteredWhyAmity.map((item) => {
+                            const IconComponent = item.icon;
+                            return (
+                              <div
+                                key={item.id}
+                                className="p-5 sm:p-6 rounded-2xl bg-card border border-border/80 shadow-2xs hover:shadow-md hover:border-primary/40 transition-all duration-200 flex flex-col justify-between space-y-4 group"
+                              >
+                                <div className="space-y-3">
+                                  {/* Header: Logo / Icon & Badge */}
+                                  <div className="flex items-center justify-between gap-3">
+                                    {item.logo ? (
+                                      <div className="h-12 w-28 sm:w-32 rounded-xl bg-white border border-border/60 shadow-2xs p-1.5 flex items-center justify-center shrink-0">
+                                        <img
+                                          src={item.logo}
+                                          alt={item.title}
+                                          className="max-h-full max-w-full object-contain"
+                                          loading="lazy"
+                                        />
+                                      </div>
+                                    ) : (
+                                      <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 border ${item.themeBg || "bg-primary/10 text-primary border-primary/20"}`}>
+                                        {IconComponent && <IconComponent size={20} />}
+                                      </div>
+                                    )}
+
+                                    <span className="px-2.5 py-1 rounded-full text-[11px] font-bold bg-muted/80 text-foreground/80 border border-border/60 text-right">
+                                      {item.badge}
+                                    </span>
+                                  </div>
+
+                                  {/* Title & Description */}
+                                  <div className="space-y-1.5">
+                                    <h3 className="text-sm sm:text-base font-bold text-foreground leading-snug group-hover:text-primary transition-colors">
+                                      {item.title}
+                                    </h3>
+                                    <p className="text-xs text-muted-foreground leading-relaxed">
+                                      {item.description}
+                                    </p>
+                                  </div>
+                                </div>
+
+                                {/* Bottom Highlight strip */}
+                                <div className="pt-3 border-t border-border/40 flex items-center justify-between text-[11px]">
+                                  <span className="font-semibold text-primary inline-flex items-center gap-1">
+                                    <CheckCircle2 size={12} className="text-emerald-500" />
+                                    <span>{item.highlight}</span>
+                                  </span>
+                                  <a
+                                    href="#counseling-box"
+                                    className="text-muted-foreground hover:text-primary transition-colors font-medium inline-flex items-center gap-1"
+                                  >
+                                    <span>Learn more</span>
+                                    <ChevronRight size={12} />
+                                  </a>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+
                     {/* ── STATUTORY RECOGNITION (Big, Clean HD Cards, Matching User Image 4) ── */}
                     <div className="p-6 sm:p-7 rounded-3xl bg-card border border-border/80 shadow-sm space-y-4">
                       <div>
@@ -951,12 +1246,12 @@ export const UniversityDetail = () => {
                         </h3>
                       </div>
 
-                      {/* 6 Big HD Authority Cards matching reference screenshot */}
-                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6 pt-2">
-                        {authorityLogos.map((auth, i) => (
+                      {/* Big HD Authority Cards matching reference screenshot */}
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6 pt-2">
+                        {(isAmity ? amityAuthorityLogos : authorityLogos).map((auth, i) => (
                           <div
                             key={i}
-                            className="group rounded-2xl bg-white border border-border/80 shadow-xs hover:shadow-md hover:border-primary/50 transition-all overflow-hidden flex items-center justify-center p-2 sm:p-3 aspect-[1.35/1] sm:aspect-[1.4/1]"
+                            className="group rounded-2xl bg-white border border-border/80 shadow-xs hover:shadow-md hover:border-primary/50 transition-all overflow-hidden flex items-center justify-center p-2.5 sm:p-3 aspect-[1.35/1] sm:aspect-[1.4/1]"
                           >
                             <img
                               src={auth.img}
@@ -1127,7 +1422,7 @@ export const UniversityDetail = () => {
                                   />
                                   {/* White University Crest Badge Overlay */}
                                   <div className="absolute top-3 left-3 px-2 py-1 rounded-lg bg-white/95 backdrop-blur-sm shadow-xs border border-slate-200/90 flex items-center">
-                                    <img src={isAmity ? "/logos/amity.png" : "/logos/cu.png"} alt="University Logo" className="h-5 w-auto object-contain" />
+                                    <UniversityLogo idOrSlug={uni.slug} size="sm" raw={true} className="h-5 w-auto object-contain" />
                                   </div>
 
                                   {prog.industryPartner && (
@@ -1475,7 +1770,17 @@ export const UniversityDetail = () => {
                               <Dialog>
                                 <DialogTrigger asChild>
                                   <button
-                                    onClick={() => setSelectedFaculty(fac)}
+                                    onClick={() =>
+                                      setSelectedFaculty({
+                                        name: fac.name,
+                                        designation: fac.designation,
+                                        qualification: fac.qualification,
+                                        experience: "10+ Years",
+                                        specialization: fac.designation,
+                                        image: fac.avatar,
+                                        bio: fac.bio,
+                                      })
+                                    }
                                     className="text-xs font-semibold text-primary hover:text-primary/80 transition-colors inline-flex items-center gap-1 cursor-pointer"
                                   >
                                     <span>View Profile</span>
@@ -1522,76 +1827,263 @@ export const UniversityDetail = () => {
                 {/* ── TAB 5: ADMISSION PROCESS ── */}
                 {activeTab === "admission" && (
                   <section className="space-y-6">
-                    <div className="p-6 sm:p-7 rounded-3xl bg-card border border-border/80 shadow-sm space-y-5">
+                    {/* Visual 5-Step Process matching user reference screenshot */}
+                    <div className="p-6 sm:p-8 rounded-3xl bg-card border border-border/80 shadow-sm space-y-8">
+                      {/* Top Header Row matching screenshot */}
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-border/60">
+                        <div>
+                          <h2 className="text-xl sm:text-2xl font-bold text-[#0f172a] dark:text-white tracking-tight">
+                            Admission Process
+                          </h2>
+                          <p className="text-xs text-muted-foreground mt-0.5">
+                            Seamless 100% digital enrollment workflow for {uni.name}
+                          </p>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => {
+                            document.getElementById("counseling-box")?.scrollIntoView({ behavior: "smooth" });
+                            const nameInput = document.getElementById(nameInputId);
+                            if (nameInput) nameInput.focus();
+                          }}
+                          className="bg-[#0f172a] hover:bg-[#1e293b] text-white font-bold text-xs sm:text-sm px-5 py-2.5 rounded-lg shadow-sm transition-all cursor-pointer self-start sm:self-auto shrink-0"
+                        >
+                          Get Admission Support
+                        </button>
+                      </div>
+
+                      {/* Clean, Structured 5-Step Process (Mobile & Desktop Optimized) */}
+                      <div className="py-2">
+                        {/* Mobile View: Clean Vertical Timeline Cards */}
+                        <div className="flex flex-col md:hidden space-y-3">
+                          {[
+                            {
+                              step: "01",
+                              title: "Select Your Program",
+                              desc: "Choose the UGC-DEB approved degree matching your career goals.",
+                              icon: Laptop,
+                              color: "text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
+                            },
+                            {
+                              step: "02",
+                              title: "Complete Application",
+                              desc: "Fill in your personal details and upload required academic certificates.",
+                              icon: FileText,
+                              color: "text-blue-600 dark:text-blue-400 bg-blue-500/10 border-blue-500/20",
+                            },
+                            {
+                              step: "03",
+                              title: "Pay Program Fees",
+                              desc: "Pay securely via Net Banking, UPI, or select 0% No-Cost EMI financing.",
+                              icon: IndianRupee,
+                              color: "text-amber-600 dark:text-amber-400 bg-amber-500/10 border-amber-500/20",
+                            },
+                            {
+                              step: "04",
+                              title: "Document Verification",
+                              desc: "University admissions committee verifies your eligibility and documents.",
+                              icon: MousePointerClick,
+                              color: "text-rose-600 dark:text-rose-400 bg-rose-500/10 border-rose-500/20",
+                            },
+                            {
+                              step: "05",
+                              title: "Enrollment & LMS Access",
+                              desc: "Receive your official Student ID (PRN) and get access to the digital portal.",
+                              icon: CheckCircle2,
+                              color: "text-purple-600 dark:text-purple-400 bg-purple-500/10 border-purple-500/20",
+                            },
+                          ].map((item, idx) => {
+                            const IconComponent = item.icon;
+                            return (
+                              <div
+                                key={item.step}
+                                className="flex items-start gap-3.5 p-4 rounded-2xl bg-card border border-border/80 shadow-xs"
+                              >
+                                <div className={`w-11 h-11 rounded-2xl border flex items-center justify-center shrink-0 ${item.color}`}>
+                                  <IconComponent size={20} strokeWidth={2.2} />
+                                </div>
+                                <div className="space-y-0.5 min-w-0 flex-1">
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md bg-muted text-muted-foreground tracking-wider">
+                                      Step {item.step}
+                                    </span>
+                                  </div>
+                                  <h3 className="text-xs sm:text-sm font-bold text-foreground pt-0.5">
+                                    {item.title}
+                                  </h3>
+                                  <p className="text-[11px] text-muted-foreground leading-snug">
+                                    {item.desc}
+                                  </p>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+
+                        {/* Desktop & Tablet View: Structured 5-Step Grid */}
+                        <div className="hidden md:grid md:grid-cols-5 gap-3">
+                          {[
+                            {
+                              step: "01",
+                              title: "Select Program",
+                              desc: "Choose the approved degree for your goals.",
+                              icon: Laptop,
+                              color: "text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
+                            },
+                            {
+                              step: "02",
+                              title: "Complete Application",
+                              desc: "Submit details & upload academic certificates.",
+                              icon: FileText,
+                              color: "text-blue-600 dark:text-blue-400 bg-blue-500/10 border-blue-500/20",
+                            },
+                            {
+                              step: "03",
+                              title: "Pay Program Fees",
+                              desc: "Secure online payment or No-Cost EMI.",
+                              icon: IndianRupee,
+                              color: "text-amber-600 dark:text-amber-400 bg-amber-500/10 border-amber-500/20",
+                            },
+                            {
+                              step: "04",
+                              title: "Verification",
+                              desc: "Instant document check by university cell.",
+                              icon: MousePointerClick,
+                              color: "text-rose-600 dark:text-rose-400 bg-rose-500/10 border-rose-500/20",
+                            },
+                            {
+                              step: "05",
+                              title: "LMS Access",
+                              desc: "Get PRN enrollment & start learning.",
+                              icon: CheckCircle2,
+                              color: "text-purple-600 dark:text-purple-400 bg-purple-500/10 border-purple-500/20",
+                            },
+                          ].map((item) => {
+                            const IconComponent = item.icon;
+                            return (
+                              <div
+                                key={item.step}
+                                className="flex flex-col items-center text-center p-4 rounded-2xl bg-card border border-border/70 hover:border-primary/40 transition-all shadow-xs space-y-2.5"
+                              >
+                                <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
+                                  Step {item.step}
+                                </span>
+                                <div className={`w-12 h-12 rounded-2xl border flex items-center justify-center shrink-0 ${item.color}`}>
+                                  <IconComponent size={22} strokeWidth={2.2} />
+                                </div>
+                                <h3 className="text-xs font-bold text-foreground leading-snug">
+                                  {item.title}
+                                </h3>
+                                <p className="text-[11px] text-muted-foreground leading-snug">
+                                  {item.desc}
+                                </p>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Step-by-Step Breakdown & Eligibility Criteria */}
+                    <div className="p-6 sm:p-7 rounded-3xl bg-card border border-border/80 shadow-sm space-y-6">
                       <div className="space-y-1">
                         <span className="text-xs font-semibold text-primary uppercase tracking-wider">
-                          Digital & Hassle-Free
+                          Official Eligibility & Requirements
                         </span>
-                        <h2 className="text-xl font-bold text-foreground">
-                          3-Step Online Admission Process
-                        </h2>
+                        <h3 className="text-lg sm:text-xl font-bold text-foreground">
+                          Amity Online Admission Criteria
+                        </h3>
                         <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                          Admission to {uni.name} is conducted 100% online through Degree Guru with zero processing charges.
+                          Admissions are conducted strictly under UGC-DEB regulations. Check prerequisites for Undergraduate and Postgraduate programs.
                         </p>
                       </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="p-4 rounded-2xl bg-muted/20 border border-border/60 space-y-2">
-                          <div className="w-8 h-8 rounded-xl bg-primary text-primary-foreground font-bold text-xs flex items-center justify-center">
-                            01
+                          <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-wider">
+                            <GraduationCap size={15} />
+                            <span>Postgraduate (PG) Eligibility</span>
                           </div>
-                          <h3 className="text-sm font-semibold text-foreground">Select Program</h3>
-                          <p className="text-xs text-muted-foreground leading-relaxed">
-                            Choose your degree from the July 26 fee sheet and consult an academic advisor on specializations and discounts.
-                          </p>
+                          <ul className="text-xs text-muted-foreground space-y-1.5 list-disc list-inside">
+                            <li>Recognized Bachelor's degree (10+2+3 or 10+2+4 pattern) from a recognized university.</li>
+                            <li>Minimum 50% aggregate marks (45% for SC/ST/OBC category candidates).</li>
+                            <li>For Online MCA: BCA/B.Sc (CS/IT) or Bachelor's with Mathematics at 10+2 or Graduation.</li>
+                            <li>No entrance test required for online programs (direct merit-based admission).</li>
+                          </ul>
                         </div>
 
                         <div className="p-4 rounded-2xl bg-muted/20 border border-border/60 space-y-2">
-                          <div className="w-8 h-8 rounded-xl bg-primary text-primary-foreground font-bold text-xs flex items-center justify-center">
-                            02
+                          <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-wider">
+                            <GraduationCap size={15} />
+                            <span>Undergraduate (UG) Eligibility</span>
                           </div>
-                          <h3 className="text-sm font-semibold text-foreground">Submit Documents</h3>
-                          <p className="text-xs text-muted-foreground leading-relaxed">
-                            Upload your marksheets and government ID for immediate UGC-DEB eligibility verification.
+                          <ul className="text-xs text-muted-foreground space-y-1.5 list-disc list-inside">
+                            <li>10+2 (Higher Secondary) certificate from CBSE, ICSE, or any recognized State Board.</li>
+                            <li>Minimum 45% aggregate marks (40% for reserved categories).</li>
+                            <li>For Online BCA: Mathematics or Computer Science background preferred, or bridge module provided.</li>
+                            <li>Eligible for 3-Year degree program with flexible online examinations.</li>
+                          </ul>
+                        </div>
+                      </div>
+
+                      {/* Documents Required Checklist */}
+                      <div className="space-y-3 pt-2">
+                        <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                          Mandatory Documents Required (Self-Attested Digital Copies)
+                        </h4>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                          {[
+                            "10th & 12th Standard Mark Sheets & Passing Certificates",
+                            "Graduation Consolidated Marksheet & Degree / Provisional (for PG)",
+                            "Government Photo ID Proof (Aadhaar Card / Passport / Voter ID)",
+                            "Recent Passport Size Color Photograph (JPEG/PNG format)",
+                            "Scanned Signature on Plain White Paper",
+                            "Work Experience Certificate (for Executive or Collaborative cohorts)",
+                          ].map((doc, idx) => (
+                            <div key={idx} className="flex items-start gap-2 p-2.5 rounded-xl bg-muted/30 border border-border/50 text-xs">
+                              <CheckCircle2 size={14} className="text-emerald-500 shrink-0 mt-0.5" />
+                              <span className="text-foreground/90 font-medium">{doc}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Degree Guru Dedicated Admission Assistance Box */}
+                    <div className="p-6 sm:p-7 rounded-3xl bg-gradient-to-br from-primary/10 via-card to-card border border-primary/25 space-y-4">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div className="space-y-1">
+                          <div className="inline-flex items-center gap-1 text-primary text-xs font-bold uppercase tracking-wider">
+                            <ShieldCheck size={14} />
+                            <span>100% Free Official Support</span>
+                          </div>
+                          <h3 className="text-base sm:text-lg font-bold text-foreground">
+                            Need Help with Amity Online Admission & Fee Waivers?
+                          </h3>
+                          <p className="text-xs text-muted-foreground max-w-xl">
+                            Our academic counselors will guide you through instant document verification, semester fee payment, and 0% interest EMI options with zero processing charges.
                           </p>
                         </div>
 
-                        <div className="p-4 rounded-2xl bg-muted/20 border border-border/60 space-y-2">
-                          <div className="w-8 h-8 rounded-xl bg-primary text-primary-foreground font-bold text-xs flex items-center justify-center">
-                            03
-                          </div>
-                          <h3 className="text-sm font-semibold text-foreground">0% EMI & LMS Activation</h3>
-                          <p className="text-xs text-muted-foreground leading-relaxed">
-                            Complete fee payment or activate zero-cost monthly installments to receive immediate LMS student portal access.
-                          </p>
-                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            document.getElementById("counseling-box")?.scrollIntoView({ behavior: "smooth" });
+                            const nameInput = document.getElementById(nameInputId);
+                            if (nameInput) nameInput.focus();
+                          }}
+                          className="px-5 py-2.5 rounded-xl bg-primary text-primary-foreground font-semibold text-xs shadow-md hover:bg-primary/90 transition-all inline-flex items-center justify-center gap-1.5 shrink-0 cursor-pointer"
+                        >
+                          <span>Connect with Counselor</span>
+                          <ArrowRight size={13} />
+                        </button>
                       </div>
                     </div>
                   </section>
                 )}
 
-                {/* ── LOOKING FOR MORE OPTIONS BANNER ── */}
-                <section className="p-6 sm:p-7 rounded-3xl bg-gradient-to-br from-primary/10 via-card to-card border border-primary/25 space-y-4">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div className="space-y-1">
-                      <span className="text-xs font-semibold uppercase tracking-wider text-primary">Unbiased Comparison</span>
-                      <h2 className="text-lg sm:text-xl font-bold text-foreground">
-                        Looking for More Options?
-                      </h2>
-                      <p className="text-xs text-muted-foreground max-w-xl">
-                        Compare {uni.name} with other top UGC-DEB approved online universities on fees, faculty, and career outcomes.
-                      </p>
-                    </div>
 
-                    <Link
-                      to="/universities/compare"
-                      className="px-5 py-3 rounded-xl bg-primary text-primary-foreground font-semibold text-xs shadow-md hover:bg-primary/90 transition-all inline-flex items-center justify-center gap-1.5 shrink-0"
-                    >
-                      <span>Compare Universities</span>
-                      <ArrowRight size={14} />
-                    </Link>
-                  </div>
-                </section>
               </div>
 
               {/* Right Column: Sticky Quick Counseling Form */}
@@ -1601,7 +2093,6 @@ export const UniversityDetail = () => {
                     <ShieldCheck size={20} className="text-primary" />
                     <div>
                       <h3 className="text-sm font-semibold text-foreground">Free Admission Support</h3>
-                      <p className="text-[11px] text-muted-foreground">Official fee breakdown & eligibility</p>
                     </div>
                   </div>
 

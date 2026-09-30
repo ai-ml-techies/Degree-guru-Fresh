@@ -68,10 +68,13 @@ const App = () => (
                 <Route path="/programs" element={<CoursesIndex />} />
                 <Route path="/programs/:courseSlug" element={<CourseDetail />} />
 
-                {/* Universities & Comparison */}
+                {/* Universities & Comparison (Supporting both singular and plural paths) */}
                 <Route path="/universities" element={<UniversitiesIndex />} />
+                <Route path="/university" element={<Navigate to="/universities" replace />} />
                 <Route path="/universities/compare" element={<UniversityCompare />} />
+                <Route path="/university/compare" element={<Navigate to="/universities/compare" replace />} />
                 <Route path="/universities/:uniSlug" element={<UniversityDetail />} />
+                <Route path="/university/:uniSlug" element={<UniversityDetail />} />
                 <Route path="/offline-courses" element={<OfflineCourses />} />
 
                 {/* Career Discovery Tools */}

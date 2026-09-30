@@ -97,6 +97,13 @@ const TOP_UNIVERSITIES: UniversityShowcaseItem[] = [
     location: "Gangtok, Sikkim",
     slug: "universities",
   },
+  {
+    id: "sgt",
+    name: "SGT University Online",
+    coursesCount: 5,
+    location: "Gurugram, Haryana",
+    slug: "sgt-university-online",
+  },
 ];
 
 export const UniversitiesGridShowcase: React.FC = () => {
@@ -137,9 +144,9 @@ export const UniversitiesGridShowcase: React.FC = () => {
               onClick={(e) => handleCardClick(e, u)}
               className="group flex flex-col items-center justify-between text-center p-2.5 sm:p-3 rounded-xl bg-card border border-border/70 hover:border-primary/50 shadow-xs hover:shadow-md transition-all duration-200 cursor-pointer min-h-[135px] sm:min-h-[145px] relative hover:-translate-y-0.5"
             >
-              {/* Compact Logo Area */}
-              <div className="w-full h-10 sm:h-11 flex items-center justify-center p-0.5">
-                <UniversityLogo idOrSlug={u.id} size="sm" />
+              {/* Prominent Logo Area - Full Horizontal Logos without overlapping container */}
+              <div className="w-full h-12 sm:h-14 flex items-center justify-center p-0.5 overflow-hidden">
+                <UniversityLogo idOrSlug={u.id} size="sm" variant="full" raw={true} className="max-h-full max-w-[85%] object-contain" />
               </div>
 
               {/* Course Count & Name */}

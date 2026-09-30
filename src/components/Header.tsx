@@ -99,6 +99,8 @@ export const Header = () => {
         </div>
       </div>
 
+
+
       {/* 2. Main Header */}
       <header className="fixed top-8 inset-x-0 sm:inset-x-4 md:inset-x-8 z-[100]">
         <div className="glass-header mx-auto max-w-[1400px] sm:rounded-2xl px-4 sm:px-6 md:px-8 border-b sm:border border-border/50 shadow-md">
@@ -239,54 +241,30 @@ export const Header = () => {
                   Universities <ChevronDown size={14} className={`transition-transform duration-200 ${universitiesDropdown ? "rotate-180 text-primary" : ""}`} />
                 </button>
                 <div
-                  className={`absolute top-full left-0 pt-2 w-[440px] transition-all duration-200 ease-out ${
+                  className={`absolute top-full left-0 pt-2 w-[280px] transition-all duration-200 ease-out ${
                     universitiesDropdown ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-2 pointer-events-none"
                   }`}
                 >
-                  <div className="glass-dropdown p-5 rounded-2xl shadow-2xl border border-border/70 space-y-2.5">
-                    <div className="pb-2 border-b border-border/50 flex items-center justify-between">
-                      <span className="text-[11px] font-black uppercase tracking-wider text-primary">
-                        Accredited Universities
-                      </span>
-                      <Link to="/universities" className="text-xs font-bold text-muted-foreground hover:text-primary flex items-center gap-1">
-                        View All <ArrowRight size={12} />
-                      </Link>
-                    </div>
+                  <div className="glass-dropdown p-2.5 rounded-2xl shadow-2xl border border-border/70 space-y-1.5">
                     <Link
                       to="/universities"
-                      className="p-3 rounded-xl hover:bg-primary/10 transition-colors flex items-center gap-3.5 group"
+                      onClick={() => setUniversitiesDropdown(false)}
+                      className="p-2.5 rounded-xl hover:bg-primary/10 transition-colors flex items-center gap-3 group text-foreground hover:text-primary"
                     >
-                      <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                      <div className="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
                         <Building2 size={18} />
                       </div>
-                      <div>
-                        <div className="text-sm font-bold text-foreground group-hover:text-primary">Online Universities Directory</div>
-                        <div className="text-xs text-muted-foreground mt-0.5">Browse 50+ UGC-DEB approved institutions</div>
-                      </div>
+                      <div className="text-sm font-bold whitespace-nowrap">Top Universities</div>
                     </Link>
                     <Link
                       to="/universities/compare"
-                      className="p-3 rounded-xl hover:bg-emerald-500/10 transition-colors flex items-center gap-3.5 group"
+                      onClick={() => setUniversitiesDropdown(false)}
+                      className="p-2.5 rounded-xl hover:bg-primary/10 transition-colors flex items-center gap-3 group text-foreground hover:text-primary"
                     >
-                      <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0">
+                      <div className="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
                         <GraduationCap size={18} />
                       </div>
-                      <div>
-                        <div className="text-sm font-bold text-foreground group-hover:text-emerald-500">Compare Universities</div>
-                        <div className="text-xs text-muted-foreground mt-0.5">Side-by-side fees, EMI & LMS comparison</div>
-                      </div>
-                    </Link>
-                    <Link
-                      to="/offline-courses"
-                      className="p-3 rounded-xl hover:bg-amber-500/10 transition-colors flex items-center gap-3.5 group border-t border-border/40 pt-3"
-                    >
-                      <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center shrink-0">
-                        <Building2 size={18} />
-                      </div>
-                      <div>
-                        <div className="text-sm font-bold text-foreground group-hover:text-amber-500">Offline Education</div>
-                        <div className="text-xs text-muted-foreground mt-0.5">M.K. University, Patan — regular offline degrees</div>
-                      </div>
+                      <div className="text-sm font-bold whitespace-nowrap">Compare Top Universities</div>
                     </Link>
                   </div>
                 </div>

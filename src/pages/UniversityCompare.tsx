@@ -152,11 +152,6 @@ export const UniversityCompare = () => {
           )}
         </div>
 
-        {/* Mobile Swipe Hint */}
-        <div className="md:hidden flex items-center justify-center gap-1.5 text-[11px] font-bold text-muted-foreground py-2 px-3 mb-2 bg-primary/5 rounded-xl border border-primary/10">
-          <span>← Swipe horizontally to inspect universities →</span>
-        </div>
-
         {/* ========================================================================= */}
         {/* COMPARISON MATRIX (Sticky Left Criteria + Responsive Columns) */}
         {/* ========================================================================= */}
@@ -179,7 +174,6 @@ export const UniversityCompare = () => {
                 <tr className="bg-muted/60 border-b border-border">
                   <th className="p-3.5 sm:p-5 text-xs font-bold uppercase tracking-wider text-muted-foreground align-top sticky left-0 bg-card z-20 border-r border-border shadow-xs">
                     <span className="block text-xs sm:text-sm font-black text-foreground">Criteria</span>
-                    <span className="text-[10px] text-muted-foreground font-normal hidden sm:block mt-0.5">Parameters</span>
                   </th>
 
                   {comparedUnis.map((u, idx) => (
@@ -203,8 +197,8 @@ export const UniversityCompare = () => {
                         </span>
 
                         {/* Real University Logo with Uniform Dimensions */}
-                        <div className="w-full h-16 rounded-2xl bg-white dark:bg-card border border-border/80 flex items-center justify-center p-2.5 shadow-2xs">
-                          <UniversityLogo idOrSlug={u.slug} size="md" />
+                        <div className="w-full h-16 rounded-2xl bg-white dark:bg-card border border-border/80 flex items-center justify-center p-2.5 shadow-2xs overflow-hidden">
+                          <UniversityLogo idOrSlug={u.slug} size="md" raw={true} className="max-h-full max-w-[90%] object-contain" />
                         </div>
 
                         {/* Fixed Height Full University Name & Location for Symmetric Pattern */}
@@ -435,7 +429,7 @@ export const UniversityCompare = () => {
                     <td key={u.id} className="p-3 sm:p-4.5 text-center border-l border-border/40">
                       <div className="inline-flex items-center gap-1 text-amber-500 font-bold text-xs">
                         <Star size={13} className="fill-amber-500 text-amber-500" />
-                        <span>4.7 / 5.0</span>
+                        <span>{(u.rating ? Math.min(u.rating, 4.6) : 4.4).toFixed(1)} / 5.0</span>
                       </div>
                       <span className="block text-[10px] text-muted-foreground">Verified Alumni Feedback</span>
                     </td>

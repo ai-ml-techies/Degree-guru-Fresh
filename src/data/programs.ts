@@ -206,4 +206,5 @@ export const UNIVERSITIES = [
   "Chandigarh University",
   "Jain University",
   "UPES",
+  "SGT University Online",
 ];
