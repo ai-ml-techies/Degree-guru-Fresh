@@ -74,9 +74,9 @@ export const UniversityLogo: React.FC<UniversityLogoProps> = ({
     } else if (norm.includes("vit") || norm.includes("vellore")) {
       logo = { src: "/logos/vit.svg", alt: "VIT Online" };
     } else if (norm.includes("birchwood")) {
-      logo = { src: "/logos/birchwood.svg", alt: "Birchwood University Online" };
+      logo = { src: "/logos/birchwood.png", alt: "Birchwood University Online" };
     } else if (norm.includes("golden") || norm.includes("ggu")) {
-      logo = { src: "/logos/goldengate.svg", alt: "Golden Gate University Online" };
+      logo = { src: "/logos/goldengate.png", alt: "Golden Gate University Online" };
     } else if (norm.includes("liverpool") || norm.includes("ljmu") || norm.includes("moores")) {
       logo = { src: "/logos/ljmu.svg", alt: "Liverpool John Moores University Online" };
     } else if (norm.includes("amrita") || norm.includes("avv")) {
