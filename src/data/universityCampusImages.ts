@@ -2,6 +2,8 @@
 export const UNIVERSITY_CAMPUS_IMAGES: Record<string, string> = {
   "amity-university-online": "/assets/universities/amity-campus.jpg",
   "amity-online": "/assets/universities/amity-campus.jpg",
+  "sharda-university-online": "/assets/universities/sharda-campus.jpg",
+  "sharda-online": "/assets/universities/sharda-campus.jpg",
   "chandigarh-university-online": "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1600&q=80",
   "manipal-university-jaipur-online": "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1600&q=80",
   "nmims-online": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1600&q=80",

@@ -21,6 +21,7 @@ import {
   MapPin
 } from "lucide-react";
 import { submitLead } from "@/lib/api";
+import { validateIndianMobile, validateMeaningfulName } from "@/lib/validation";
 
 // Explicit student choice ranking: Amity 1st, Manipal Jaipur 2nd, then CUOL, Sharda, UU, LPU, etc.
 const UNIVERSITY_RANK_ORDER: Record<string, number> = {
@@ -88,6 +89,8 @@ export const CourseDetail = () => {
   const [counselingOpen, setCounselingOpen] = useState(false);
   const [leadName, setLeadName] = useState("");
   const [leadPhone, setLeadPhone] = useState("");
+  const [leadNameError, setLeadNameError] = useState("");
+  const [leadPhoneError, setLeadPhoneError] = useState("");
   const [targetUniName, setTargetUniName] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [leadSuccess, setLeadSuccess] = useState(false);
@@ -220,13 +223,23 @@ export const CourseDetail = () => {
 
   const handleLeadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!leadPhone || !leadName) return;
+    const nameCheck = validateMeaningfulName(leadName, false);
+    if (!nameCheck.valid) {
+      setLeadNameError(nameCheck.error || "Please enter a valid, meaningful name.");
+      return;
+    }
+    const phoneCheck = validateIndianMobile(leadPhone);
+    if (!phoneCheck.valid) {
+      setLeadPhoneError(phoneCheck.error || "Please enter a valid 10-digit Indian mobile number.");
+      return;
+    }
+    setLeadNameError("");
+    setLeadPhoneError("");
     setIsSubmitting(true);
     try {
       await submitLead({
-        name: leadName,
-        phone: leadPhone,
-        email: `${leadPhone}@degreeguru.in`,
+        name: nameCheck.normalized || leadName.trim(),
+        phone: phoneCheck.normalized || leadPhone.replace(/\D/g, "").slice(-10),
         program: `${course.fullName} Inquiry - ${targetUniName || "General"}`,
         source: `course-page-${course.slug}`,
       });
@@ -743,9 +756,15 @@ export const CourseDetail = () => {
                       required
                       placeholder="e.g. Rahul Sharma"
                       value={leadName}
-                      onChange={(e) => setLeadName(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs text-foreground focus:ring-2 focus:ring-primary/40 focus:outline-none"
+                      onChange={(e) => {
+                        setLeadName(e.target.value);
+                        if (leadNameError) setLeadNameError("");
+                      }}
+                      className={`w-full px-3.5 py-2.5 rounded-xl bg-background border ${leadNameError ? "border-red-500 ring-1 ring-red-500/20" : "border-border"} text-xs text-foreground focus:ring-2 focus:ring-primary/40 focus:outline-none`}
                     />
+                    {leadNameError && (
+                      <p className="text-[10px] text-red-500 font-semibold mt-1">{leadNameError}</p>
+                    )}
                   </div>
 
                   <div>
@@ -756,12 +775,23 @@ export const CourseDetail = () => {
                       id={formPhoneId}
                       type="tel"
                       required
-                      pattern="[0-9]{10}"
-                      placeholder="10-digit mobile number"
+                      maxLength={10}
+                      placeholder="10-digit mobile (starts with 6, 7, 8, 9)"
                       value={leadPhone}
-                      onChange={(e) => setLeadPhone(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs text-foreground focus:ring-2 focus:ring-primary/40 focus:outline-none"
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/\D/g, "");
+                        setLeadPhone(val);
+                        if (val.length > 0 && ["0", "1", "2", "3", "4", "5"].includes(val[0])) {
+                          setLeadPhoneError(`Indian mobile numbers start with 6, 7, 8, or 9 (numbers starting with ${val[0]} are not permitted).`);
+                        } else {
+                          if (leadPhoneError) setLeadPhoneError("");
+                        }
+                      }}
+                      className={`w-full px-3.5 py-2.5 rounded-xl bg-background border ${leadPhoneError ? "border-red-500 ring-1 ring-red-500/20" : "border-border"} text-xs text-foreground focus:ring-2 focus:ring-primary/40 focus:outline-none`}
                     />
+                    {leadPhoneError && (
+                      <p className="text-[10px] text-red-500 font-semibold mt-1">{leadPhoneError}</p>
+                    )}
                   </div>
 
                   <button

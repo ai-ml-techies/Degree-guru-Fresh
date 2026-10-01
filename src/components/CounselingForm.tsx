@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { ArrowRight, CheckCircle2, User, Phone, Mail, Calendar, MessageSquare, Sparkles, Loader2, MapPin, ChevronDown, ShieldCheck, KeyRound, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 import { submitCounselingLead, sendEmailOtp, verifyEmailOtp } from "@/lib/api";
+import { validateIndianMobile, validateMeaningfulName, validateMeaningfulEmail } from "@/lib/validation";
 
 interface CountryCode {
   name: string;
@@ -160,30 +161,12 @@ export const CounselingForm = ({
 
   // Trigger Send OTP
   const handleSendOtp = async () => {
-    const trimmedEmail = form.email.trim().toLowerCase();
-    if (!trimmedEmail) {
-      toast.error("Please enter your email address first.");
+    const emailCheck = validateMeaningfulEmail(form.email, false);
+    if (!emailCheck.valid) {
+      toast.error(emailCheck.error || "Please enter a valid email address.");
       return;
     }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(trimmedEmail)) {
-      toast.error("Please enter a valid email address.");
-      return;
-    }
-    const domain = trimmedEmail.split("@")[1] ?? "";
-    const blockedDomains = [
-      "mailinator.com",
-      "tempmail.com",
-      "10minutemail.com",
-      "guerrillamail.com",
-      "yopmail.com",
-      "temp-mail.org",
-      "dyleris.com",
-    ];
-    if (blockedDomains.includes(domain)) {
-      toast.error("Temporary/disposable email addresses are not permitted.");
-      return;
-    }
+    const trimmedEmail = emailCheck.normalized || form.email.trim().toLowerCase();
 
     setOtpSending(true);
     try {
@@ -231,52 +214,39 @@ export const CounselingForm = ({
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // 1. Validate Full Name (Mandatory)
-    const trimmedName = form.name.trim();
-    if (!trimmedName || trimmedName.length < 2) {
-      toast.error("Please enter your full name.");
+    // 1. Validate Full Name (Mandatory & Meaningful)
+    const nameCheck = validateMeaningfulName(form.name, false);
+    if (!nameCheck.valid) {
+      toast.error(nameCheck.error || "Please enter a valid, meaningful full name.");
       return;
     }
-    if (!/^[\p{L} .'-]{2,}$/u.test(trimmedName)) {
-      toast.error("Full name contains invalid characters.");
-      return;
-    }
+    const trimmedName = nameCheck.normalized || form.name.trim();
 
-    // 2. Validate Phone (Mandatory)
-    const phoneDigits = form.phone.replace(/\D/g, "");
-    if (!phoneDigits) {
-      toast.error("Please enter your phone number.");
-      return;
-    }
-
+    // 2. Validate Phone (Mandatory & Strict Indian mobile starts with 6-9)
+    let fullPhoneNumber = "";
     if (isIndia) {
-      if (phoneDigits.length < 10) {
-        toast.error("Please enter a valid 10-digit Indian mobile number.");
+      const phoneCheck = validateIndianMobile(form.phone);
+      if (!phoneCheck.valid) {
+        toast.error(phoneCheck.error || "Please enter a valid 10-digit Indian mobile number starting with 6, 7, 8, or 9.");
         return;
       }
-      const last10 = phoneDigits.slice(-10);
-      if (!/^[6-9]\d{9}$/.test(last10)) {
-        toast.error("Please enter a valid Indian mobile number starting with 6, 7, 8, or 9.");
-        return;
-      }
+      fullPhoneNumber = phoneCheck.normalized || form.phone.replace(/\D/g, "").slice(-10);
     } else {
+      const phoneDigits = form.phone.replace(/\D/g, "");
       if (phoneDigits.length < 7 || phoneDigits.length > 15) {
         toast.error("Please enter a valid phone number (7 to 15 digits).");
         return;
       }
+      fullPhoneNumber = `${selectedCountry.dialCode} ${phoneDigits}`;
     }
 
-    // 3. Validate Email & OTP Verification (Mandatory)
-    const trimmedEmail = form.email.trim().toLowerCase();
-    if (!trimmedEmail) {
-      toast.error("Please enter your email address.");
+    // 3. Validate Email & OTP Verification (Mandatory & Meaningful)
+    const emailCheck = validateMeaningfulEmail(form.email, false);
+    if (!emailCheck.valid) {
+      toast.error(emailCheck.error || "Please enter a valid, meaningful email address.");
       return;
     }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(trimmedEmail)) {
-      toast.error("Please enter a valid email address.");
-      return;
-    }
+    const trimmedEmail = emailCheck.normalized || form.email.trim().toLowerCase();
 
     if (!emailVerified) {
       toast.error("Please verify your email with the OTP code first.");
@@ -301,11 +271,6 @@ export const CounselingForm = ({
       );
       return;
     }
-
-    // Full formatted phone with dial code
-    const fullPhoneNumber = isIndia
-      ? phoneDigits.slice(-10)
-      : `${selectedCountry.dialCode} ${phoneDigits}`;
 
     const messagePayload = form.message.trim()
       ? `[${form.state}, ${selectedCountry.name}] ${form.message.trim()}`

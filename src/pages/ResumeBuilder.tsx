@@ -33,6 +33,7 @@ import {
   Type
 } from "lucide-react";
 import { submitLead } from "@/lib/api";
+import { validateIndianMobile, validateMeaningfulName, validateMeaningfulEmail } from "@/lib/validation";
 import { exportResumeToPdf } from "@/lib/pdfExport";
 import { toast } from "sonner";
 import {
@@ -48,7 +49,7 @@ export const ResumeBuilder = () => {
   const [hasOnboarded, setHasOnboarded] = useState<boolean>(true);
   const [userName, setUserName] = useState<string>("Aarav Sharma");
   const [userPhone, setUserPhone] = useState<string>("+91 98765 43210");
-  const [userEmail, setUserEmail] = useState<string>("aarav.sharma@example.com");
+  const [userEmail, setUserEmail] = useState<string>("aarav.sharma@degreeguru.in");
   const [uploadFileName, setUploadFileName] = useState<string>("");
   const [isUploading, setIsUploading] = useState<boolean>(false);
 
@@ -120,18 +121,31 @@ export const ResumeBuilder = () => {
   // Handle Onboarding Completion
   const handleCompleteOnboarding = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    if (!userName.trim() || !userPhone.trim()) {
-      alert("Please enter your name and phone number to continue.");
+    const nameCheck = validateMeaningfulName(userName, false);
+    if (!nameCheck.valid) {
+      alert(nameCheck.error || "Please enter a valid, meaningful full name.");
       return;
+    }
+    const phoneCheck = validateIndianMobile(userPhone);
+    if (!phoneCheck.valid) {
+      alert(phoneCheck.error || "Please enter a valid 10-digit Indian mobile number.");
+      return;
+    }
+    if (userEmail.trim()) {
+      const emailCheck = validateMeaningfulEmail(userEmail, true);
+      if (!emailCheck.valid) {
+        alert(emailCheck.error || "Please enter a valid email address.");
+        return;
+      }
     }
 
     // Submit lead for counselor / resume review
     try {
       await submitLead({
-        name: userName,
-        phone: userPhone,
-        email: userEmail || `${userName.toLowerCase().replace(/\s+/g, "")}@example.com`,
-        programOfInterest: "AI ATS Resume Builder",
+        name: nameCheck.normalized || userName,
+        phone: phoneCheck.normalized || userPhone,
+        email: userEmail.trim() || undefined,
+        program: "AI ATS Resume Builder",
       });
     } catch {
       // non-blocking
@@ -304,17 +318,19 @@ export const ResumeBuilder = () => {
   // Confirm download and generate real PDF
   const handleConfirmDownloadPdf = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    if (!leadName.trim()) {
-      setDownloadError("Please enter your full name.");
+    const nameCheck = validateMeaningfulName(leadName, false);
+    if (!nameCheck.valid) {
+      setDownloadError(nameCheck.error || "Please enter a valid, meaningful full name.");
       return;
     }
-    const cleanPhone = leadPhone.replace(/\D/g, "");
-    if (cleanPhone.length < 10) {
-      setDownloadError("Please enter a valid 10-digit mobile number.");
+    const phoneCheck = validateIndianMobile(leadPhone);
+    if (!phoneCheck.valid) {
+      setDownloadError(phoneCheck.error || "Please enter a valid 10-digit Indian mobile number.");
       return;
     }
-    if (!leadEmail.trim() || !/\S+@\S+\.\S+/.test(leadEmail)) {
-      setDownloadError("Please enter a valid email address.");
+    const emailCheck = validateMeaningfulEmail(leadEmail, false);
+    if (!emailCheck.valid) {
+      setDownloadError(emailCheck.error || "Please enter a valid email address.");
       return;
     }
 
@@ -468,14 +484,20 @@ export const ResumeBuilder = () => {
                   <label className="block text-xs font-bold text-foreground mb-1">
                     WhatsApp Mobile Number <span className="text-red-500">*</span>
                   </label>
-                  <input
-                    type="tel"
-                    required
-                    placeholder="e.g. +91 98765 43210"
-                    value={userPhone}
-                    onChange={(e) => setUserPhone(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm focus:ring-2 focus:ring-primary/40 focus:outline-none"
-                  />
+                  <div className="relative flex rounded-xl border border-border bg-background focus-within:ring-2 focus-within:ring-primary/40 overflow-hidden">
+                    <div className="px-3 bg-muted/60 text-xs font-bold text-muted-foreground flex items-center border-r border-border select-none">
+                      🇮🇳 +91
+                    </div>
+                    <input
+                      type="tel"
+                      required
+                      maxLength={10}
+                      placeholder="10-digit mobile (starts with 6-9)"
+                      value={userPhone}
+                      onChange={(e) => setUserPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
+                      className="w-full px-3.5 py-2.5 text-xs sm:text-sm font-semibold bg-transparent focus:outline-none placeholder:text-muted-foreground/60"
+                    />
+                  </div>
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-foreground mb-1">

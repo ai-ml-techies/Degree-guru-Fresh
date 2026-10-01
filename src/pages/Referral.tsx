@@ -13,12 +13,17 @@ import {
   IndianRupee
 } from "lucide-react";
 import { submitLead } from "@/lib/api";
+import { validateIndianMobile, validateMeaningfulName } from "@/lib/validation";
 
 export const Referral = () => {
   const [referrerName, setReferrerName] = useState("");
   const [referrerPhone, setReferrerPhone] = useState("");
   const [friendName, setFriendName] = useState("");
   const [friendPhone, setFriendPhone] = useState("");
+  const [refNameError, setRefNameError] = useState("");
+  const [refPhoneError, setRefPhoneError] = useState("");
+  const [friendNameError, setFriendNameError] = useState("");
+  const [friendPhoneError, setFriendPhoneError] = useState("");
   const [interestedCourse, setInterestedCourse] = useState("Online MBA");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -31,14 +36,39 @@ export const Referral = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!referrerPhone || !friendPhone) return;
+
+    const refNameCheck = validateMeaningfulName(referrerName, false);
+    if (!refNameCheck.valid) {
+      setRefNameError(refNameCheck.error || "Please enter a valid, meaningful name.");
+      return;
+    }
+    const refPhoneCheck = validateIndianMobile(referrerPhone);
+    if (!refPhoneCheck.valid) {
+      setRefPhoneError(refPhoneCheck.error || "Please enter a valid 10-digit Indian mobile number.");
+      return;
+    }
+    const friendNameCheck = validateMeaningfulName(friendName, false);
+    if (!friendNameCheck.valid) {
+      setFriendNameError(friendNameCheck.error || "Please enter a valid, meaningful friend's name.");
+      return;
+    }
+    const friendPhoneCheck = validateIndianMobile(friendPhone);
+    if (!friendPhoneCheck.valid) {
+      setFriendPhoneError(friendPhoneCheck.error || "Please enter a valid 10-digit Indian mobile number for your friend.");
+      return;
+    }
+
+    setRefNameError("");
+    setRefPhoneError("");
+    setFriendNameError("");
+    setFriendPhoneError("");
     setIsSubmitting(true);
+
     try {
       await submitLead({
-        name: `${referrerName} (Referred: ${friendName})`,
-        phone: referrerPhone,
-        email: `${referrerPhone}@degreeguru.in`,
-        program: `Referral for ${friendName} (${friendPhone}) - ${interestedCourse}`,
+        name: `${refNameCheck.normalized || referrerName} (Referred: ${friendNameCheck.normalized || friendName})`,
+        phone: refPhoneCheck.normalized || referrerPhone.replace(/\D/g, "").slice(-10),
+        program: `Referral for ${friendNameCheck.normalized || friendName} (${friendPhoneCheck.normalized || friendPhone}) - ${interestedCourse}`,
         source: "referral-program-5000",
       });
       setSubmitted(true);
@@ -161,52 +191,88 @@ export const Referral = () => {
             ) : (
               <form onSubmit={handleSubmit} className="space-y-3">
                 <div>
-                  <label htmlFor={referrerNameId} className="block text-[11px] font-semibold text-muted-foreground mb-1">Your Name</label>
+                  <label htmlFor={referrerNameId} className="block text-[11px] font-semibold text-muted-foreground mb-1">Your Name *</label>
                   <input
                     id={referrerNameId}
                     type="text"
                     required
-                    placeholder="Your Name"
+                    placeholder="Your Full Name (e.g. Rahul Sharma)"
                     value={referrerName}
-                    onChange={(e) => setReferrerName(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-background border border-border text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none"
+                    onChange={(e) => {
+                      setReferrerName(e.target.value);
+                      if (refNameError) setRefNameError("");
+                    }}
+                    className={`w-full px-3 py-2 rounded-xl bg-background border ${refNameError ? "border-red-500 ring-1 ring-red-500/20" : "border-border"} text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none`}
                   />
+                  {refNameError && (
+                    <p className="text-[10px] text-red-500 font-semibold mt-1">{refNameError}</p>
+                  )}
                 </div>
                 <div>
-                  <label htmlFor={referrerPhoneId} className="block text-[11px] font-semibold text-muted-foreground mb-1">Your Mobile / UPI Phone</label>
+                  <label htmlFor={referrerPhoneId} className="block text-[11px] font-semibold text-muted-foreground mb-1">Your Mobile / UPI Phone *</label>
                   <input
                     id={referrerPhoneId}
                     type="tel"
                     required
-                    placeholder="Where to send ₹5,000 reward"
+                    maxLength={10}
+                    placeholder="10 digits (starts with 6, 7, 8, 9)"
                     value={referrerPhone}
-                    onChange={(e) => setReferrerPhone(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-background border border-border text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none"
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/\D/g, "");
+                      setReferrerPhone(val);
+                      if (val.length > 0 && ["0", "1", "2", "3", "4", "5"].includes(val[0])) {
+                        setRefPhoneError(`Indian mobile numbers start with 6, 7, 8, or 9 (numbers starting with ${val[0]} are not permitted).`);
+                      } else {
+                        if (refPhoneError) setRefPhoneError("");
+                      }
+                    }}
+                    className={`w-full px-3 py-2 rounded-xl bg-background border ${refPhoneError ? "border-red-500 ring-1 ring-red-500/20" : "border-border"} text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none`}
                   />
+                  {refPhoneError && (
+                    <p className="text-[10px] text-red-500 font-semibold mt-1">{refPhoneError}</p>
+                  )}
                 </div>
                 <div className="pt-2 border-t border-border/40">
-                  <label htmlFor={friendNameId} className="block text-[11px] font-semibold text-muted-foreground mb-1">Friend's Full Name</label>
+                  <label htmlFor={friendNameId} className="block text-[11px] font-semibold text-muted-foreground mb-1">Friend's Full Name *</label>
                   <input
                     id={friendNameId}
                     type="text"
                     required
-                    placeholder="Friend's Name"
+                    placeholder="Friend's Full Name (e.g. Priya Patel)"
                     value={friendName}
-                    onChange={(e) => setFriendName(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-background border border-border text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none"
+                    onChange={(e) => {
+                      setFriendName(e.target.value);
+                      if (friendNameError) setFriendNameError("");
+                    }}
+                    className={`w-full px-3 py-2 rounded-xl bg-background border ${friendNameError ? "border-red-500 ring-1 ring-red-500/20" : "border-border"} text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none`}
                   />
+                  {friendNameError && (
+                    <p className="text-[10px] text-red-500 font-semibold mt-1">{friendNameError}</p>
+                  )}
                 </div>
                 <div>
-                  <label htmlFor={friendPhoneId} className="block text-[11px] font-semibold text-muted-foreground mb-1">Friend's WhatsApp Mobile</label>
+                  <label htmlFor={friendPhoneId} className="block text-[11px] font-semibold text-muted-foreground mb-1">Friend's WhatsApp Mobile *</label>
                   <input
                     id={friendPhoneId}
                     type="tel"
                     required
-                    placeholder="Friend's Phone"
+                    maxLength={10}
+                    placeholder="10 digits (starts with 6, 7, 8, 9)"
                     value={friendPhone}
-                    onChange={(e) => setFriendPhone(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-background border border-border text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none"
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/\D/g, "");
+                      setFriendPhone(val);
+                      if (val.length > 0 && ["0", "1", "2", "3", "4", "5"].includes(val[0])) {
+                        setFriendPhoneError(`Indian mobile numbers start with 6, 7, 8, or 9 (numbers starting with ${val[0]} are not permitted).`);
+                      } else {
+                        if (friendPhoneError) setFriendPhoneError("");
+                      }
+                    }}
+                    className={`w-full px-3 py-2 rounded-xl bg-background border ${friendPhoneError ? "border-red-500 ring-1 ring-red-500/20" : "border-border"} text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none`}
                   />
+                  {friendPhoneError && (
+                    <p className="text-[10px] text-red-500 font-semibold mt-1">{friendPhoneError}</p>
+                  )}
                 </div>
                 <div>
                   <label htmlFor={interestedCourseId} className="block text-[11px] font-semibold text-muted-foreground mb-1">Course They Want</label>

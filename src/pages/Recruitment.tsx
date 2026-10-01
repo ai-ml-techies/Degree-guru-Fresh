@@ -5,6 +5,7 @@ import { Blobs } from "@/components/Blobs";
 import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 import { Briefcase, FileText, Users, TrendingUp, ArrowRight, Upload, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { validateIndianMobile, validateMeaningfulName, validateMeaningfulEmail } from "@/lib/validation";
 import recruitmentHero from "@/assets/recruitment-hero.jpg";
 
 const API_BASE = import.meta.env.VITE_API_BASE as string;
@@ -83,7 +84,7 @@ const RecruitmentForm = () => {
     email: "",
     phone: "",
     dob: "",
-    country: "",
+    country: "IN",
     state: "",
     city: "",
     industry: "",
@@ -100,6 +101,12 @@ const RecruitmentForm = () => {
   const handle = (k: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     let val = e.target.value;
     if (k === 'name') val = val.replace(/[0-9]/g, '');
+    if (k === 'phone') {
+      val = val.replace(/\D/g, "");
+      if (form.country === "IN" || !form.country) {
+        val = val.slice(0, 10);
+      }
+    }
     setForm({ ...form, [k]: val });
   };
 
@@ -128,10 +135,33 @@ const RecruitmentForm = () => {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name || !form.phone) {
-      toast.error("Please share your name and phone number.");
+
+    const nameCheck = validateMeaningfulName(form.name, false);
+    if (!nameCheck.valid) {
+      toast.error(nameCheck.error || "Please enter a valid, meaningful full name.");
       return;
     }
+
+    if (form.country === "IN" || !form.country) {
+      const phoneCheck = validateIndianMobile(form.phone);
+      if (!phoneCheck.valid) {
+        toast.error(phoneCheck.error || "Please enter a valid 10-digit Indian mobile number.");
+        return;
+      }
+    } else {
+      const digits = form.phone.replace(/\D/g, "");
+      if (digits.length < 7 || digits.length > 15) {
+        toast.error("Please enter a valid phone number (7 to 15 digits).");
+        return;
+      }
+    }
+
+    const emailCheck = validateMeaningfulEmail(form.email, false);
+    if (!emailCheck.valid) {
+      toast.error(emailCheck.error || "Please enter a valid email address.");
+      return;
+    }
+
     if (!form.dob) {
       toast.error("Please add your date of birth.");
       return;
@@ -154,9 +184,9 @@ const RecruitmentForm = () => {
     }
 
     const data = new FormData();
-    data.append("name", form.name);
-    data.append("email", form.email);
-    data.append("phone", form.phone);
+    data.append("name", nameCheck.normalized || form.name.trim());
+    data.append("email", emailCheck.normalized || form.email.trim());
+    data.append("phone", form.phone.replace(/\D/g, ""));
     data.append("dob", form.dob);
     data.append("country", form.country);
     data.append("state", form.state);
@@ -205,7 +235,19 @@ const RecruitmentForm = () => {
         </div>
         <div>
           <label className="block text-xs font-semibold mb-2 uppercase tracking-wider">Phone Number</label>
-          <input className={inputCls} value={form.phone} onChange={handle("phone")} placeholder="9876543210" maxLength={15} />
+          <div className="relative flex rounded-xl border border-foreground/10 bg-background/60 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 overflow-hidden">
+            <div className="px-3.5 bg-muted/40 text-xs font-bold text-muted-foreground flex items-center border-r border-foreground/10 select-none">
+              {form.country === "IN" || !form.country ? "🇮🇳 +91" : form.country}
+            </div>
+            <input
+              type="tel"
+              className="w-full bg-transparent px-3.5 py-3.5 text-sm focus:outline-none"
+              value={form.phone}
+              onChange={handle("phone")}
+              placeholder={form.country === "IN" || !form.country ? "10-digit mobile" : "Phone number"}
+              maxLength={form.country === "IN" || !form.country ? 10 : 15}
+            />
+          </div>
         </div>
       </div>
       <div className="grid md:grid-cols-2 gap-4">

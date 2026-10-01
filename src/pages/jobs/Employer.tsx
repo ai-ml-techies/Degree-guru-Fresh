@@ -9,6 +9,7 @@ import { Blobs } from "@/components/Blobs";
 import { Reveal } from "@/components/Reveal";
 import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 import { submitEmployerJob } from "@/lib/api";
+import { validateIndianMobile, validateMeaningfulName, validateMeaningfulEmail } from "@/lib/validation";
 import { toast } from "sonner";
 
 const INDUSTRIES = [
@@ -116,28 +117,6 @@ const Employer = () => {
     if (!confirmed) { toast.error("Please confirm the information is valid."); return; }
     if (!document) { toast.error("Please upload a company verification document."); return; }
 
-    // Validate contact details and job description
-    const validateName = (n: string) => {
-      const v = n.trim();
-      if (v.length < 2) return { valid: false, message: "Please enter contact person's full name." };
-      if (!/^[\p{L} .'-]{2,}$/u.test(v)) return { valid: false, message: "Contact name contains invalid characters." };
-      return { valid: true } as any;
-    };
-
-    const isDisposableEmail = (email: string) => {
-      const black = ["mailinator.com","10minutemail.com","tempmail.com","yopmail.com","dispostable.com","guerrillamail.com","trashmail.com","maildrop.cc","getnada.com","mailnesia.com"];
-      const domain = email.split("@")[1]?.toLowerCase() ?? "";
-      return black.some(d => domain === d || domain.endsWith("." + d));
-    };
-
-    const validateIndianMobile = (input: string) => {
-      const digits = input.replace(/\D/g, "");
-      if (digits.length < 10) return { valid: false, message: "Enter a 10-digit mobile number" };
-      const last10 = digits.slice(-10);
-      if (!/^[6-9]\d{9}$/.test(last10)) return { valid: false, message: "Enter a valid Indian mobile number" };
-      return { valid: true, normalized: last10 } as any;
-    };
-
     const isGibberish = (text: string) => {
       const s = (text || "").replace(/[^A-Za-z\s]/g, " ").trim();
       if (s.length < 30) return false;
@@ -151,12 +130,12 @@ const Employer = () => {
       return false;
     };
 
-    const nameCheck = validateName(form.contactName || "");
-    if (!nameCheck.valid) { toast.error(nameCheck.message); return; }
+    const nameCheck = validateMeaningfulName(form.contactName || "", false);
+    if (!nameCheck.valid) { toast.error(nameCheck.error || "Please enter a valid contact person's name."); return; }
     const phoneCheck = validateIndianMobile(form.contactPhone || "");
-    if (!phoneCheck.valid) { toast.error(phoneCheck.message); return; }
-    if (!form.contactEmail || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.contactEmail)) { toast.error("Please enter a valid email address."); return; }
-    if (isDisposableEmail(form.contactEmail)) { toast.error("Disposable email addresses are not allowed."); return; }
+    if (!phoneCheck.valid) { toast.error(phoneCheck.error || "Please enter a valid 10-digit Indian mobile number."); return; }
+    const emailCheck = validateMeaningfulEmail(form.contactEmail || "", false);
+    if (!emailCheck.valid) { toast.error(emailCheck.error || "Please enter a valid business email address."); return; }
     if (!form.jobDescription || form.jobDescription.trim().length < 20) { toast.error("Please provide a detailed job description."); return; }
     if (isGibberish(form.jobDescription)) { toast.error("Job description looks like gibberish. Please provide a clear description."); return; }
 
@@ -368,27 +347,30 @@ const Employer = () => {
                     </div>
                     <div>
                       <label className={labelCls}>Mobile Number <span className="text-red-500">*</span></label>
-                      <div className="relative">
-                        <Phone size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-foreground/35" />
+                      <div className="relative flex rounded-xl border border-foreground/10 bg-background/60 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 overflow-hidden">
+                        <div className="px-3 bg-muted/40 text-xs font-bold text-muted-foreground flex items-center border-r border-foreground/10 select-none">
+                          🇮🇳 +91
+                        </div>
                         <input
                           type="tel"
-                          className={`${inputCls} pl-9`}
+                          className="w-full bg-transparent px-3 py-3 text-sm focus:outline-none"
                           value={form.contactPhone}
+                          maxLength={10}
                           onChange={e => {
-                            const v = e.target.value;
-                            set("contactPhone")(e);
+                            const v = e.target.value.replace(/\D/g, "").slice(0, 10);
+                            setForm(prev => ({ ...prev, contactPhone: v }));
                             const res = validateIndianMobile(v);
-                            setPhoneError(res.valid ? null : res.message);
+                            setPhoneError(res.valid ? null : (res.error || res.message || null));
                           }}
                           onBlur={e => {
                             const res = validateIndianMobile(e.target.value);
-                            setPhoneError(res.valid ? null : res.message);
+                            setPhoneError(res.valid ? null : (res.error || res.message || null));
                           }}
-                          placeholder="+91 98765 43210"
+                          placeholder="10-digit mobile (starts with 6-9)"
                           required
                         />
-                        {phoneError && <div className="text-xs text-red-500 mt-1">{phoneError}</div>}
                       </div>
+                      {phoneError && <div className="text-xs text-red-500 mt-1">{phoneError}</div>}
                     </div>
                     <div>
                       <label className={labelCls}>Email Address <span className="text-red-500">*</span></label>

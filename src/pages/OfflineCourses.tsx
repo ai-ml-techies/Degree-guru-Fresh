@@ -17,10 +17,13 @@ import {
   BookOpen
 } from "lucide-react";
 import { submitLead } from "@/lib/api";
+import { validateIndianMobile, validateMeaningfulName } from "@/lib/validation";
 
 export const OfflineCourses = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
   const [selectedCourse, setSelectedCourse] = useState("Offline Bachelor's / Master's");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -31,13 +34,23 @@ export const OfflineCourses = () => {
 
   const handleLeadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !phone) return;
+    const nameCheck = validateMeaningfulName(name, false);
+    if (!nameCheck.valid) {
+      setNameError(nameCheck.error || "Please enter a valid, meaningful name.");
+      return;
+    }
+    const phoneCheck = validateIndianMobile(phone);
+    if (!phoneCheck.valid) {
+      setPhoneError(phoneCheck.error || "Please enter a valid 10-digit Indian mobile number.");
+      return;
+    }
+    setNameError("");
+    setPhoneError("");
     setIsSubmitting(true);
     try {
       await submitLead({
-        name,
-        phone,
-        email: `${phone}@degreeguru.in`,
+        name: nameCheck.normalized || name.trim(),
+        phone: phoneCheck.normalized || phone.replace(/\D/g, "").slice(-10),
         program: `Offline M.K. University - ${selectedCourse}`,
         source: "offline-courses-page",
       });
@@ -158,28 +171,46 @@ export const OfflineCourses = () => {
             ) : (
               <form onSubmit={handleLeadSubmit} className="space-y-3">
                 <div>
-                  <label htmlFor={nameInputId} className="block text-xs font-semibold text-muted-foreground mb-1">Your Full Name</label>
+                  <label htmlFor={nameInputId} className="block text-xs font-semibold text-muted-foreground mb-1">Your Full Name *</label>
                   <input
                     id={nameInputId}
                     type="text"
                     required
-                    placeholder="e.g. Yash"
+                    placeholder="Your Real Name (e.g. Rahul Sharma)"
                     value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none"
+                    onChange={(e) => {
+                      setName(e.target.value);
+                      if (nameError) setNameError("");
+                    }}
+                    className={`w-full px-3.5 py-2.5 rounded-xl bg-background border ${nameError ? "border-red-500 ring-1 ring-red-500/20" : "border-border"} text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none`}
                   />
+                  {nameError && (
+                    <p className="text-[10px] text-red-500 font-semibold mt-1">{nameError}</p>
+                  )}
                 </div>
                 <div>
-                  <label htmlFor={phoneInputId} className="block text-xs font-semibold text-muted-foreground mb-1">Phone Number</label>
+                  <label htmlFor={phoneInputId} className="block text-xs font-semibold text-muted-foreground mb-1">Phone Number (10 digits) *</label>
                   <input
                     id={phoneInputId}
                     type="tel"
                     required
-                    placeholder="e.g. 9876543210"
+                    maxLength={10}
+                    placeholder="Starts with 6, 7, 8, 9"
                     value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none"
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/\D/g, "");
+                      setPhone(val);
+                      if (val.length > 0 && ["0", "1", "2", "3", "4", "5"].includes(val[0])) {
+                        setPhoneError(`Indian mobile numbers start with 6, 7, 8, or 9 (numbers starting with ${val[0]} are not permitted).`);
+                      } else {
+                        if (phoneError) setPhoneError("");
+                      }
+                    }}
+                    className={`w-full px-3.5 py-2.5 rounded-xl bg-background border ${phoneError ? "border-red-500 ring-1 ring-red-500/20" : "border-border"} text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none`}
                   />
+                  {phoneError && (
+                    <p className="text-[10px] text-red-500 font-semibold mt-1">{phoneError}</p>
+                  )}
                 </div>
                 <div>
                   <label htmlFor={courseInputId} className="block text-xs font-semibold text-muted-foreground mb-1">Target Program</label>

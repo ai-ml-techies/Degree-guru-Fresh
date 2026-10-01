@@ -17,6 +17,7 @@ import {
   ChevronDown
 } from "lucide-react";
 import { submitLead } from "@/lib/api";
+import { validateIndianMobile, validateMeaningfulName, validateMeaningfulEmail } from "@/lib/validation";
 
 type ScenarioQuestion = {
   id: number;
@@ -111,9 +112,22 @@ export const CareerFinder = () => {
 
   const handleStartAssessment = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !phone.trim()) {
-      alert("Please enter your name and phone number to begin.");
+    const nameCheck = validateMeaningfulName(name, false);
+    if (!nameCheck.valid) {
+      alert(nameCheck.error || "Please enter a valid, meaningful full name.");
       return;
+    }
+    const phoneCheck = validateIndianMobile(phone);
+    if (!phoneCheck.valid) {
+      alert(phoneCheck.error || "Please enter a valid 10-digit Indian mobile number.");
+      return;
+    }
+    if (email.trim()) {
+      const emailCheck = validateMeaningfulEmail(email, true);
+      if (!emailCheck.valid) {
+        alert(emailCheck.error || "Please enter a valid email address.");
+        return;
+      }
     }
     setHasStarted(true);
   };
@@ -219,13 +233,17 @@ export const CareerFinder = () => {
 
   const handleLeadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !phone) return;
+    const nameCheck = validateMeaningfulName(name, false);
+    if (!nameCheck.valid) return;
+    const phoneCheck = validateIndianMobile(phone);
+    if (!phoneCheck.valid) return;
+
     setIsSubmitting(true);
     try {
       await submitLead({
-        name,
-        phone,
-        email: `${phone}@degreeguru.in`,
+        name: nameCheck.normalized || name,
+        phone: phoneCheck.normalized || phone,
+        email: email.trim() || undefined,
         program: `Career Finder Result: ${profile?.title || "Career Assessment"}`,
         source: "career-finder",
       });
@@ -292,15 +310,21 @@ export const CareerFinder = () => {
                     <label htmlFor={phoneInputId} className="block text-xs font-bold text-foreground mb-1">
                       WhatsApp Mobile <span className="text-red-500">*</span>
                     </label>
-                    <input
-                      id={phoneInputId}
-                      type="tel"
-                      required
-                      placeholder="e.g. +91 98765 43210"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm focus:ring-2 focus:ring-primary/40 focus:outline-none"
-                    />
+                    <div className="relative flex rounded-xl border border-border bg-background focus-within:ring-2 focus-within:ring-primary/40 overflow-hidden">
+                      <div className="px-3 bg-muted/60 text-xs font-bold text-muted-foreground flex items-center border-r border-border select-none">
+                        🇮🇳 +91
+                      </div>
+                      <input
+                        id={phoneInputId}
+                        type="tel"
+                        required
+                        maxLength={10}
+                        placeholder="10-digit mobile (starts with 6-9)"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
+                        className="w-full px-3.5 py-2.5 text-xs sm:text-sm font-semibold bg-transparent focus:outline-none placeholder:text-muted-foreground/60"
+                      />
+                    </div>
                   </div>
                   <div>
                     <label htmlFor={emailInputId} className="block text-xs font-bold text-foreground mb-1">
@@ -522,15 +546,21 @@ export const CareerFinder = () => {
                         className="px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs focus:outline-none focus:ring-2 focus:ring-primary/40 flex-1"
                       />
                       <label htmlFor={phoneInputId} className="sr-only">WhatsApp Number</label>
-                      <input
-                        id={phoneInputId}
-                        type="tel"
-                        required
-                        placeholder="WhatsApp Number"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        className="px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs focus:outline-none focus:ring-2 focus:ring-primary/40 flex-1"
-                      />
+                      <div className="flex rounded-xl border border-border bg-background focus-within:ring-2 focus-within:ring-primary/40 overflow-hidden flex-1">
+                        <div className="px-2.5 bg-muted/60 text-xs font-bold text-muted-foreground flex items-center border-r border-border select-none">
+                          🇮🇳 +91
+                        </div>
+                        <input
+                          id={phoneInputId}
+                          type="tel"
+                          required
+                          maxLength={10}
+                          placeholder="10-digit mobile"
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
+                          className="px-3 py-2.5 bg-transparent text-xs focus:outline-none w-full"
+                        />
+                      </div>
                       <button
                         type="submit"
                         disabled={isSubmitting}

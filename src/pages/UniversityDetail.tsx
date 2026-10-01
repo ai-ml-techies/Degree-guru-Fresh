@@ -49,6 +49,7 @@ import {
   FileCheck
 } from "lucide-react";
 import { submitLead } from "@/lib/api";
+import { validateIndianMobile, validateMeaningfulName } from "@/lib/validation";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -712,9 +713,20 @@ export const UniversityDetail = () => {
   // Quick Lead Form State
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [countryCode, setCountryCode] = useState("+91");
+  const [nameError, setNameError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
   const [selectedCourse, setSelectedCourse] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [selectedAccreditation, setSelectedAccreditation] = useState<{
+    name: string;
+    fullName: string;
+    badge: string;
+    img: string;
+    shortDesc: string;
+    whyItMatters: string;
+  } | null>(null);
 
   const nameInputId = useId();
   const phoneInputId = useId();
@@ -750,17 +762,28 @@ export const UniversityDetail = () => {
   }
 
   const isAmity = uni.slug.includes("amity") || uni.id.includes("amity");
+  const isSharda = uni.slug.includes("sharda") || uni.id.includes("sharda");
   const campusImage = getUniversityCampusImage(uni.slug);
 
   const handleLeadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !phone) return;
+    const nameCheck = validateMeaningfulName(name, false);
+    if (!nameCheck.valid) {
+      setNameError(nameCheck.error || "Please enter a valid, meaningful name.");
+      return;
+    }
+    const phoneCheck = validateIndianMobile(phone);
+    if (!phoneCheck.valid) {
+      setPhoneError(phoneCheck.error || "Please enter a valid 10-digit Indian mobile number.");
+      return;
+    }
+    setNameError("");
+    setPhoneError("");
     setIsSubmitting(true);
     try {
       await submitLead({
-        name,
-        phone,
-        email: `${phone}@degreeguru.in`,
+        name: nameCheck.normalized || name.trim(),
+        phone: `${countryCode} ${phoneCheck.normalized || phone.replace(/\D/g, "").slice(-10)}`,
         program: `${uni.name} - ${selectedCourse || "General Inquiry"}`,
         source: `university-${uni.slug}`,
       });
@@ -858,26 +881,141 @@ export const UniversityDetail = () => {
       }));
   }, [isAmity, courseCategoryTab, searchQuery, genericPrograms]);
 
-  // 6 HD Authority Recognition Cards (From User Screenshot)
-  const authorityLogos = [
-    { name: "UGC-DEB", img: "/assets/approvals/ugc-deb.png" },
-    { name: "AICTE", img: "/assets/approvals/aicte.png" },
-    { name: "NIRF", img: "/assets/approvals/nirf.png" },
-    { name: "WES", img: "/assets/approvals/wes.png" },
-    { name: "QS World University Rankings", img: "/assets/approvals/qs.png" },
-    { name: "DEC", img: "/assets/approvals/dec.png" },
+  interface AuthorityLogoItem {
+    name: string;
+    fullName: string;
+    badge: string;
+    img: string;
+    shortDesc: string;
+    whyItMatters: string;
+  }
+
+  // Statutory & Premier Accreditations with Clear Simple Explanations
+  const authorityLogos: AuthorityLogoItem[] = [
+    {
+      name: "UGC-DEB",
+      fullName: "University Grants Commission – Distance Education Bureau",
+      badge: "Statutory Govt. Approval",
+      img: "/assets/approvals/ugc-deb.png",
+      shortDesc: "The premier statutory authority regulating university higher education and distance/online learning across India.",
+      whyItMatters: "Mandatory legal validation ensuring your degree is 100% genuine and fully accepted for UPSC, SSC, banking, all state/central government jobs, and global university admissions."
+    },
+    {
+      name: "AICTE",
+      fullName: "All India Council for Technical Education",
+      badge: "Technical Curriculum Standard",
+      img: "/assets/approvals/aicte.png",
+      shortDesc: "National statutory council governing professional technical and management curricula (MBA, MCA, BCA) in India.",
+      whyItMatters: "Confirms that curriculum, faculty rigor, and course outcomes match current industry technical benchmarks and high employability standards."
+    },
+    {
+      name: "NAAC A+",
+      fullName: "National Assessment & Accreditation Council (Grade A+)",
+      badge: "Premier Institutional Grade",
+      img: "/assets/approvals/nirf.png",
+      shortDesc: "Autonomous accreditation authority under UGC evaluating comprehensive academic quality, campus research, and student learning results.",
+      whyItMatters: "An 'A+' grade is reserved for India's elite institutions, proving top-quartile educational quality and high employer trust worldwide."
+    },
+    {
+      name: "WES",
+      fullName: "World Education Services (USA & Canada)",
+      badge: "North American Equivalency",
+      img: "/assets/approvals/wes.png",
+      shortDesc: "World's most trusted international credential evaluation service based in the United States and Canada.",
+      whyItMatters: "Validates that your online degree is officially recognized as equivalent to degrees granted in the USA and Canada for higher education, corporate hiring, and Permanent Residency (PR)."
+    },
+    {
+      name: "NIRF",
+      fullName: "National Institutional Ranking Framework (Ministry of Education)",
+      badge: "Govt. of India Ranking",
+      img: "/assets/approvals/nirf.png",
+      shortDesc: "The official national ranking methodology established by the Ministry of Education, Government of India.",
+      whyItMatters: "Ranks top universities on factual parameters: Teaching, Learning & Resources, Research, Graduation Outcomes, and Outreach."
+    },
+    {
+      name: "QS World Rankings",
+      fullName: "Quacquarelli Symonds (QS) University Rankings",
+      badge: "Global Institutional Benchmark",
+      img: "/assets/approvals/qs.png",
+      shortDesc: "Leading global higher education analyst producing premier annual university rankings worldwide.",
+      whyItMatters: "Provides international reputation and employer recognition, helping you stand out when applying for multinational careers or studying abroad."
+    },
+    {
+      name: "DEC",
+      fullName: "Distance Education Council",
+      badge: "Distance Learning Quality",
+      img: "/assets/approvals/dec.png",
+      shortDesc: "Apex historic council establishing quality protocols and standards for open and distance learning systems in India.",
+      whyItMatters: "Guarantees student-centric learning delivery, self-paced study material quality, and systematic evaluation methodology."
+    },
   ];
 
   // Official Amity Recognitions including WASC (USA), QAA (UK) & THE
-  const amityAuthorityLogos = [
-    { name: "UGC-DEB Approved", img: "/assets/approvals/ugc-deb.png" },
-    { name: "AICTE Approved", img: "/assets/approvals/aicte.png" },
-    { name: "WASC Accredited (USA)", img: "/assets/approvals/wasc.svg" },
-    { name: "QAA UK Quality Assured", img: "/assets/approvals/qaa.svg" },
-    { name: "WES Canada & USA Recognized", img: "/assets/approvals/wes.png" },
-    { name: "QS Ranked Online MBA (Top 10)", img: "/assets/approvals/qs.png" },
-    { name: "Times Higher Education Employability", img: "/assets/approvals/the.svg" },
-    { name: "NIRF Top Ranked", img: "/assets/approvals/nirf.png" },
+  const amityAuthorityLogos: AuthorityLogoItem[] = [
+    {
+      name: "UGC-DEB Approved",
+      fullName: "University Grants Commission – Distance Education Bureau",
+      badge: "Statutory Govt. Approval",
+      img: "/assets/approvals/ugc-deb.png",
+      shortDesc: "Statutory council established under the Ministry of Education regulating digital and distance higher education.",
+      whyItMatters: "Guarantees full statutory validity for all competitive examinations, central/state government employment, and global higher study."
+    },
+    {
+      name: "AICTE Approved",
+      fullName: "All India Council for Technical Education",
+      badge: "Professional Technical Standard",
+      img: "/assets/approvals/aicte.png",
+      shortDesc: "Statutory body planning and coordinated development of technical and management education across India.",
+      whyItMatters: "Endorses that MBA and MCA syllabi match current multinational corporate expectations and technical competence."
+    },
+    {
+      name: "WASC Accredited (USA)",
+      fullName: "WASC Senior College and University Commission (USA)",
+      badge: "Prestigious US Regional Accreditation",
+      img: "/assets/approvals/wasc.svg",
+      shortDesc: "Top-tier regional accreditation body recognized by the US Department of Education.",
+      whyItMatters: "Enables seamless credit transfer and academic recognition across universities and employers throughout the United States."
+    },
+    {
+      name: "QAA UK Quality Assured",
+      fullName: "Quality Assurance Agency for Higher Education (UK)",
+      badge: "British Quality Benchmark",
+      img: "/assets/approvals/qaa.svg",
+      shortDesc: "The independent body entrusted with safeguarding quality and standards in United Kingdom higher education.",
+      whyItMatters: "Ensures course delivery and evaluation methodology matches European and British university excellence standards."
+    },
+    {
+      name: "WES Recognized",
+      fullName: "World Education Services (USA & Canada)",
+      badge: "International Credential Equivalency",
+      img: "/assets/approvals/wes.png",
+      shortDesc: "The trusted authority for degree evaluations required for North American employment, visas, and university admissions.",
+      whyItMatters: "Ensures immediate acceptance in Canada and USA for Express Entry, PNP, higher degrees, and global MNC transfers."
+    },
+    {
+      name: "QS Ranked Online MBA",
+      fullName: "Quacquarelli Symonds (QS) Asia Pacific Top 10",
+      badge: "Asia Pacific Rank #10",
+      img: "/assets/approvals/qs.png",
+      shortDesc: "Ranked among the premier online MBA programs across the entire Asia Pacific region.",
+      whyItMatters: "Recognized as a premier management program on your CV when applying to multinational corporations worldwide."
+    },
+    {
+      name: "Times Higher Education",
+      fullName: "Times Higher Education (THE) Employability",
+      badge: "Global Employability Ranking",
+      img: "/assets/approvals/the.svg",
+      shortDesc: "World's most respected global university ranking publisher assessing graduate outcomes.",
+      whyItMatters: "Demonstrates consistent corporate recruitment and high placement demand across Fortune 500 enterprises."
+    },
+    {
+      name: "NIRF Top Ranked",
+      fullName: "National Institutional Ranking Framework",
+      badge: "MoE, Govt of India",
+      img: "/assets/approvals/nirf.png",
+      shortDesc: "Official Government of India ranking of leading institutions across academic and career parameters.",
+      whyItMatters: "Confirms top-tier national standing and robust institutional accountability backed by verified government audits."
+    },
   ];
 
   // Real Corporate Placement Logos
@@ -896,7 +1034,51 @@ export const UniversityDetail = () => {
     { name: "Wipro", logo: "/assets/companies/wipro.svg" },
   ];
 
-  // Faculty Members from User Reference
+  // Official Sharda Online Faculty (Verified from User Reference)
+  const shardaFacultyMembers = [
+    {
+      id: "avinash-bhowate",
+      name: "Dr. Avinash Bhowate",
+      designation: "Assistant Professor, MBA",
+      qualification: "MBA and PhD in Marketing",
+      avatar: "/assets/faculty/sharda-avinash-bhowate.png",
+      bio: "Dr. Avinash Bhowate brings rich academic and industry-aligned mentorship in Marketing Strategy, Consumer Behaviour, and Strategic Brand Building for postgraduate cohorts.",
+    },
+    {
+      id: "sandeep-kumar",
+      name: "Dr. Sandeep Kumar",
+      designation: "Assistant Professor, MBA",
+      qualification: "Ph.D. in Marketing",
+      avatar: "/assets/faculty/sharda-sandeep-kumar.png",
+      bio: "Dr. Sandeep Kumar is an esteemed educator and researcher specializing in Strategic Marketing, Retail Distribution Dynamics, and Customer Experience Engineering.",
+    },
+    {
+      id: "tanya-rastogi",
+      name: "Dr. Tanya Rastogi",
+      designation: "Assistant Professor, M.Com",
+      qualification: "Master of Commerce and Ph.D.",
+      avatar: "/assets/faculty/sharda-tanya-rastogi.png",
+      bio: "Dr. Tanya Rastogi specializes in Advanced Financial Accounting, Capital Markets, International Finance, and Quantitative Managerial Economics.",
+    },
+    {
+      id: "kirti-prashar",
+      name: "Dr. Kirti Prashar",
+      designation: "Assistant Professor, BBA",
+      qualification: "Master's in Commerce, UGC NET",
+      avatar: "/assets/faculty/sharda-kirti-prashar.png",
+      bio: "Dr. Kirti Prashar has qualified UGC NET and brings rich pedagogical expertise in Business Administration, Organizational Behavior, and HR Systems.",
+    },
+    {
+      id: "shubh-arora",
+      name: "Dr. Shubh Arora",
+      designation: "Associate Professor, MBA",
+      qualification: "Ph.D. in Marketing and an MBA",
+      avatar: "/assets/faculty/sharda-shubh-arora.png",
+      bio: "Dr. Shubh Arora is an Associate Professor with seasoned experience across Strategic Marketing, Consumer Psychology, and Brand Management.",
+    },
+  ];
+
+  // Faculty Members from User Reference (Amity / Generic)
   const facultyMembers = [
     {
       id: "sunil-kumar",
@@ -947,6 +1129,8 @@ export const UniversityDetail = () => {
       bio: "Hello, my name is Sachit Paliwal. I specialize in Investment Portfolio Analysis, FinTech Ecosystems, Corporate Valuation, and Advanced Capital Markets."
     },
   ];
+
+  const currentFacultyList = isSharda ? shardaFacultyMembers : facultyMembers;
 
   return (
     <>
@@ -1078,10 +1262,9 @@ export const UniversityDetail = () => {
         {/* 5. MAIN CONTENT & COUNSELING SIDEBAR                              */}
         {/* ───────────────────────────────────────────────────────────────── */}
         <div className="py-8">
-          <div className="container-dg max-w-6xl">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-              {/* Left Column: Tabbed Content */}
-              <div className="lg:col-span-8 space-y-8">
+          <div className="container-dg max-w-6xl space-y-12">
+            {/* Full Width Tabbed Content */}
+            <div className="w-full space-y-8">
                 
                 {/* ── TAB 1: OVERVIEW / ABOUT ── */}
                 {activeTab === "overview" && (
@@ -1238,30 +1421,57 @@ export const UniversityDetail = () => {
                       </div>
                     )}
 
-                    {/* ── STATUTORY RECOGNITION (Big, Clean HD Cards, Matching User Image 4) ── */}
+                    {/* ── STATUTORY ACCREDITATIONS (Bigger Logos, Swipable on Mobile, Click-to-Explain Modal) ── */}
                     <div className="p-6 sm:p-7 rounded-3xl bg-card border border-border/80 shadow-sm space-y-4">
-                      <div>
-                        <h3 className="text-lg sm:text-xl font-bold text-foreground">
-                          {uni.name} <span className="text-primary">Approved By</span>
-                        </h3>
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div>
+                          <h3 className="text-lg sm:text-xl font-bold text-foreground">
+                            {uni.name} <span className="text-primary">Accredited By</span>
+                          </h3>
+                          <p className="text-xs text-muted-foreground mt-0.5">
+                            Click on any accreditation badge to view what it means and how it benefits your career.
+                          </p>
+                        </div>
+                        <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-[11px] font-bold">
+                          <Sparkles size={12} />
+                          <span>Tap any badge to explain</span>
+                        </div>
                       </div>
 
-                      {/* Big HD Authority Cards matching reference screenshot */}
-                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6 pt-2">
+                      {/* Mobile Swipable Carousel & Desktop Grid */}
+                      <div className="flex sm:grid sm:grid-cols-3 md:grid-cols-4 overflow-x-auto snap-x scrollbar-none gap-3.5 sm:gap-5 py-2 px-1 -mx-1">
                         {(isAmity ? amityAuthorityLogos : authorityLogos).map((auth, i) => (
-                          <div
+                          <button
+                            type="button"
                             key={i}
-                            className="group rounded-2xl bg-white border border-border/80 shadow-xs hover:shadow-md hover:border-primary/50 transition-all overflow-hidden flex items-center justify-center p-2.5 sm:p-3 aspect-[1.35/1] sm:aspect-[1.4/1]"
+                            onClick={() => setSelectedAccreditation(auth)}
+                            className="group shrink-0 snap-center w-[165px] sm:w-auto h-32 sm:h-36 rounded-2xl bg-white border border-border/80 shadow-xs hover:shadow-xl hover:border-primary/50 transition-all p-3 sm:p-4 flex flex-col items-center justify-between text-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/40 active:scale-98"
                           >
-                            <img
-                              src={auth.img}
-                              alt={auth.name}
-                              className="w-full h-full object-contain transition-transform duration-200 group-hover:scale-103"
-                              loading="lazy"
-                            />
-                          </div>
+                            <div className="w-full flex-1 flex items-center justify-center p-1">
+                              <img
+                                src={auth.img}
+                                alt={auth.name}
+                                className="max-h-14 sm:max-h-18 max-w-full object-contain transition-transform duration-200 group-hover:scale-108"
+                                loading="lazy"
+                              />
+                            </div>
+                            <div className="w-full pt-1.5 border-t border-slate-100 flex flex-col items-center">
+                              <span className="text-xs font-bold text-slate-800 line-clamp-1 group-hover:text-primary transition-colors">
+                                {auth.name}
+                              </span>
+                              <span className="text-[10px] text-primary font-semibold mt-0.5 flex items-center gap-0.5">
+                                <span>Learn more</span>
+                                <ChevronRight size={10} />
+                              </span>
+                            </div>
+                          </button>
                         ))}
                       </div>
+
+                      {/* Mobile Swipe Hint */}
+                      <p className="text-[11px] text-muted-foreground text-center sm:hidden flex items-center justify-center gap-1">
+                        <span>Swipe horizontally to view all accreditations →</span>
+                      </p>
                     </div>
 
                     {/* ── SAMPLE DEGREE CERTIFICATE SECTION (Clear Image with Clickable Zoom) ── */}
@@ -1277,18 +1487,29 @@ export const UniversityDetail = () => {
                               Sample Certificate from {uni.name}
                             </h3>
                             <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                              Become an alumnus of Amity Online and get a UGC-approved online degree. The degree awarded by the university is also been accredited by WES, etc.
+                              {isSharda
+                                ? "Become an alumnus of Sharda University Online and earn a UGC-DEB approved online degree. Conferred with NAAC A+ accreditation, AICTE approval, and WES global equivalency."
+                                : "Become an alumnus of Amity Online and get a UGC-approved online degree. The degree awarded by the university is also been accredited by WES, etc."
+                              }
                             </p>
                           </div>
 
-                          {/* 4 Checkmark bullets matching reference */}
+                          {/* 4 Checkmark bullets */}
                           <div className="space-y-3 pt-1">
-                            {[
-                              "1st in India to get UGC approval for online programs",
-                              "India's only Online MBA accredited by QS and ranked among the top 10 in Asia Pacific.",
-                              "Degrees recognized by World Education Services (WES) across Canada & USA.",
-                              "Ranked 22nd by NIRF in 2025",
-                            ].map((item, idx) => (
+                            {(isSharda
+                              ? [
+                                  "NAAC A+ Accredited University with globally recognized credentials.",
+                                  "Approved by UGC-DEB for online Bachelor's and Master's degree programs.",
+                                  "AICTE approved for technical and professional management curriculum.",
+                                  "Degree recognized by World Education Services (WES) for US & Canada equivalency.",
+                                ]
+                              : [
+                                  "1st in India to get UGC approval for online programs",
+                                  "India's only Online MBA accredited by QS and ranked among the top 10 in Asia Pacific.",
+                                  "Degrees recognized by World Education Services (WES) across Canada & USA.",
+                                  "Ranked 22nd by NIRF in 2025",
+                                ]
+                            ).map((item, idx) => (
                               <div key={idx} className="flex items-start gap-2.5">
                                 <div className="w-5 h-5 rounded-md bg-sky-100 text-sky-600 dark:bg-sky-950 dark:text-sky-400 flex items-center justify-center shrink-0 mt-0.5">
                                   <Check size={13} strokeWidth={3} />
@@ -1317,8 +1538,8 @@ export const UniversityDetail = () => {
                             <DialogTrigger asChild>
                               <div className="cursor-pointer group relative rounded-2xl overflow-hidden border-2 border-border/80 shadow-xl hover:shadow-2xl hover:border-primary/50 transition-all max-w-[280px] sm:max-w-[320px] bg-white">
                                 <img
-                                  src="/assets/universities/amity-sample-degree.png"
-                                  alt="Amity University Sample Degree Certificate"
+                                  src={isSharda ? "/assets/universities/sharda-sample-degree.jpg" : "/assets/universities/amity-sample-degree.png"}
+                                  alt={`${uni.name} Sample Degree Certificate`}
                                   className="w-full h-auto object-contain transition-transform duration-300 group-hover:scale-102"
                                 />
                                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 text-white text-xs font-semibold backdrop-blur-[2px]">
@@ -1330,13 +1551,13 @@ export const UniversityDetail = () => {
                             <DialogContent className="max-w-4xl p-6 bg-card border-border overflow-hidden">
                               <DialogHeader>
                                 <DialogTitle className="text-base font-bold text-foreground">
-                                  Amity University Online — Official Degree Specimen
+                                  {uni.name} — Official Degree Specimen
                                 </DialogTitle>
                               </DialogHeader>
                               <div className="flex flex-col items-center justify-center p-2 max-h-[80vh] overflow-y-auto">
                                 <img
-                                  src="/assets/universities/amity-sample-degree.png"
-                                  alt="Amity University Online Degree Full Specimen"
+                                  src={isSharda ? "/assets/universities/sharda-sample-degree.jpg" : "/assets/universities/amity-sample-degree.png"}
+                                  alt={`${uni.name} Degree Full Specimen`}
                                   className="max-h-[75vh] w-auto object-contain rounded-xl border border-border shadow-2xl"
                                 />
                                 <div className="mt-3 text-center">
@@ -1643,7 +1864,10 @@ export const UniversityDetail = () => {
                           Placement Support & Corporate Connect
                         </h2>
                         <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                          Amity Online provides dedicated corporate drives, virtual career fairs, mock interviews, and career counseling to bridge the gap between academic learning and corporate leadership.
+                          {isSharda
+                            ? "Sharda University Online equips learners with hands-on, industry-relevant skills. Active placement cells conduct dedicated corporate recruitment drives and mock interview preparation."
+                            : "Amity Online provides dedicated corporate drives, virtual career fairs, mock interviews, and career counseling to bridge the gap between academic learning and corporate leadership."
+                          }
                         </p>
                       </div>
 
@@ -1651,20 +1875,20 @@ export const UniversityDetail = () => {
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                         <div className="p-4 rounded-2xl bg-muted/30 border border-border/60 text-center space-y-1">
                           <span className="text-[11px] text-muted-foreground font-medium block">Highest Package</span>
-                          <span className="text-xl font-bold text-foreground block">₹18 LPA</span>
+                          <span className="text-xl font-bold text-foreground block">{isSharda ? "₹10 LPA" : "₹18 LPA"}</span>
                           <span className="text-[10px] text-emerald-600 dark:text-emerald-400 block font-semibold">Tier-1 MNCs</span>
                         </div>
 
                         <div className="p-4 rounded-2xl bg-muted/30 border border-border/60 text-center space-y-1">
                           <span className="text-[11px] text-muted-foreground font-medium block">Average Package</span>
-                          <span className="text-xl font-bold text-foreground block">₹7.2 LPA</span>
-                          <span className="text-[10px] text-muted-foreground block font-medium">+55% Average Hike</span>
+                          <span className="text-xl font-bold text-foreground block">{isSharda ? "₹5.8 LPA" : "₹7.2 LPA"}</span>
+                          <span className="text-[10px] text-muted-foreground block font-medium">+48% Average Hike</span>
                         </div>
 
                         <div className="p-4 rounded-2xl bg-muted/30 border border-border/60 text-center space-y-1 col-span-2 sm:col-span-1">
                           <span className="text-[11px] text-muted-foreground font-medium block">Hiring Partners</span>
                           <span className="text-xl font-bold text-foreground block">350+</span>
-                          <span className="text-[10px] text-primary block font-medium">Virtual Campus Drives</span>
+                          <span className="text-[10px] text-primary block font-medium">Active Recruiting Networks</span>
                         </div>
                       </div>
 
@@ -1709,6 +1933,65 @@ export const UniversityDetail = () => {
                         </div>
                       </div>
                     </div>
+
+                    {/* Sharda Online BCA Job Roles & Average Salary Breakdown (Verified Reference) */}
+                    {isSharda && (
+                      <div className="p-6 sm:p-7 rounded-3xl bg-card border border-border/80 shadow-sm space-y-5">
+                        <div className="space-y-1">
+                          <span className="text-xs font-semibold text-primary uppercase tracking-wider">
+                            Program Career Insights
+                          </span>
+                          <h3 className="text-lg sm:text-xl font-bold text-foreground">
+                            Job Roles & Salary Prospects — <span className="text-primary">Sharda Online BCA</span>
+                          </h3>
+                          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                            Online BCA at Sharda University Online equips students with required industry-relevant engineering skills to build successful careers in the IT and software domains.
+                          </p>
+                        </div>
+
+                        {/* Major Active Hiring Partners for BCA */}
+                        <div className="space-y-2">
+                          <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                            Major Active Hiring Partners (Online BCA)
+                          </h4>
+                          <div className="flex flex-wrap gap-2">
+                            {["Pepsi", "Sleepwell", "Tech Mahindra", "Vodafone", "Adani Wilmar", "Amazon", "HCL", "Genpact"].map((partner, idx) => (
+                              <span key={idx} className="px-3 py-1.5 rounded-xl bg-muted/40 border border-border/60 text-xs font-semibold text-foreground flex items-center gap-1.5">
+                                <Check size={13} className="text-primary" />
+                                <span>{partner}</span>
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Salary Table */}
+                        <div className="overflow-x-auto rounded-2xl border border-border/80">
+                          <table className="w-full text-xs">
+                            <thead className="bg-muted/60 border-b border-border/80 text-foreground font-bold">
+                              <tr>
+                                <th className="py-3 px-4 text-left">Job Prospects</th>
+                                <th className="py-3 px-4 text-right">Average Salary (LPA)</th>
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-border/60">
+                              {[
+                                { role: "Associate", salary: "INR 7,50,000" },
+                                { role: "Data Analyst", salary: "INR 7,08,000" },
+                                { role: "Audit Assistant", salary: "INR 5,00,004" },
+                                { role: "Business Development Associate", salary: "INR 3,60,000" },
+                                { role: "Associate Consultant", salary: "INR 3,10,000" },
+                                { role: "Customer Service Professional", salary: "INR 2,55,000" },
+                              ].map((row, idx) => (
+                                <tr key={idx} className="hover:bg-muted/30 transition-colors">
+                                  <td className="py-3 px-4 font-semibold text-foreground">{row.role}</td>
+                                  <td className="py-3 px-4 text-right font-bold text-emerald-600 dark:text-emerald-400">{row.salary}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    )}
                   </section>
                 )}
 
@@ -1728,9 +2011,9 @@ export const UniversityDetail = () => {
                         </p>
                       </div>
 
-                      {/* 2-Column Spacious Grid (Resolves text clipping next to counseling sidebar) */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
-                        {facultyMembers.map((fac) => (
+                      {/* 3-Column Spacious Grid for full width layout */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+                        {currentFacultyList.map((fac) => (
                           <div
                             key={fac.id}
                             className="p-5 rounded-3xl bg-card border border-border/80 shadow-xs hover:border-primary/40 hover:shadow-md transition-all flex flex-col justify-between space-y-4"
@@ -2086,97 +2369,240 @@ export const UniversityDetail = () => {
 
               </div>
 
-              {/* Right Column: Sticky Quick Counseling Form */}
-              <div id="counseling-box" className="lg:col-span-4 sticky top-32 space-y-4">
-                <div className="p-6 rounded-3xl bg-card border border-border/80 shadow-lg space-y-4">
-                  <div className="flex items-center gap-2 pb-2 border-b border-border/50">
-                    <ShieldCheck size={20} className="text-primary" />
-                    <div>
-                      <h3 className="text-sm font-semibold text-foreground">Free Admission Support</h3>
+              {/* ───────────────────────────────────────────────────────────────── */}
+              {/* 6. FINAL CONTAINER: DEDICATED FULL-WIDTH COUNSELING SECTION      */}
+              {/* ───────────────────────────────────────────────────────────────── */}
+              <div id="counseling-box" className="scroll-mt-32 p-6 sm:p-10 rounded-3xl bg-card border border-border/80 shadow-xl">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                  {/* Left Info Column */}
+                  <div className="lg:col-span-6 space-y-4">
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider">
+                      <ShieldCheck size={14} />
+                      <span>100% Free Official Support</span>
+                    </div>
+                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground tracking-tight">
+                      Talk to our Senior Academic Advisor for <span className="text-primary">{uni.name}</span>
+                    </h2>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                      Get genuine semester-wise fee breakdown, document pre-verification, and 0% interest EMI assistance with zero processing charges.
+                    </p>
+
+                    <div className="space-y-3 pt-2">
+                      {[
+                        "Instant document pre-verification & eligibility check",
+                        "Transparent semester-wise fees with valid scholarship waivers",
+                        "Zero cost EMI plans starting from ₹2,900/month",
+                        "100% spam-free guarantee — direct official counselor connect"
+                      ].map((point, idx) => (
+                        <div key={idx} className="flex items-center gap-2.5 text-xs font-medium text-foreground/90">
+                          <CheckCircle2 size={16} className="text-emerald-500 shrink-0" />
+                          <span>{point}</span>
+                        </div>
+                      ))}
                     </div>
                   </div>
 
-                  {submitted ? (
-                    <div className="p-4 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-medium flex items-center gap-2">
-                      <CheckCircle2 size={18} className="shrink-0" />
-                      <span>Request received! Our academic counselor will connect with the fee breakdown shortly.</span>
+                  {/* Right Form Column */}
+                  <div className="lg:col-span-6">
+                    <div className="p-6 sm:p-7 rounded-2xl bg-muted/30 border border-border/70 space-y-4">
+                      <div className="flex items-center justify-between pb-3 border-b border-border/50">
+                        <div>
+                          <h3 className="text-sm font-bold text-foreground">Free Admission Support</h3>
+                          <p className="text-[11px] text-muted-foreground">Fill your details below to get instant guidance</p>
+                        </div>
+                        <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
+                          Free Guidance
+                        </span>
+                      </div>
+
+                      {submitted ? (
+                        <div className="p-5 rounded-2xl bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 text-xs font-medium flex items-start gap-3 border border-emerald-500/20">
+                          <CheckCircle2 size={20} className="shrink-0 text-emerald-500 mt-0.5" />
+                          <div className="space-y-1">
+                            <span className="font-bold block text-sm">Request Received Successfully!</span>
+                            <p>Our dedicated academic counselor for {uni.name} will connect with the complete fee breakdown and syllabus shortly.</p>
+                          </div>
+                        </div>
+                      ) : (
+                        <form onSubmit={handleLeadSubmit} className="space-y-3.5">
+                          <div>
+                            <label htmlFor={nameInputId} className="block text-[11px] font-semibold text-muted-foreground mb-1">
+                              Full Name *
+                            </label>
+                            <input
+                              id={nameInputId}
+                              type="text"
+                              required
+                              placeholder="Your Genuine Name (e.g. Rahul Sharma)"
+                              value={name}
+                              onChange={(e) => {
+                                setName(e.target.value);
+                                if (nameError) setNameError("");
+                              }}
+                              className={`w-full px-3.5 py-2.5 rounded-xl bg-background border ${nameError ? "border-red-500 ring-1 ring-red-500/20" : "border-border"} text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none`}
+                            />
+                            {nameError && (
+                              <p className="text-[10px] text-red-500 font-semibold mt-1">{nameError}</p>
+                            )}
+                          </div>
+
+                          <div>
+                            <label htmlFor={phoneInputId} className="block text-[11px] font-semibold text-muted-foreground mb-1">
+                              WhatsApp Mobile Number *
+                            </label>
+                            <div className={`relative flex rounded-xl border ${phoneError ? "border-red-500 ring-1 ring-red-500/20" : "border-border"} bg-background focus-within:ring-2 focus-within:ring-primary/40 overflow-hidden`}>
+                              {/* Country Code Dropdown (Default +91) */}
+                              <div className="relative border-r border-border bg-muted/40 shrink-0 flex items-center px-2 hover:bg-muted/70 transition-colors">
+                                <span className="text-xs font-bold text-foreground pr-3 select-none flex items-center gap-1">
+                                  <span>🇮🇳</span>
+                                  <span>{countryCode}</span>
+                                </span>
+                                <select
+                                  aria-label="Select Country Code"
+                                  value={countryCode}
+                                  onChange={(e) => setCountryCode(e.target.value)}
+                                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                >
+                                  <option value="+91">🇮🇳 +91 (India)</option>
+                                  <option value="+971">🇦🇪 +971 (UAE)</option>
+                                  <option value="+1">🇺🇸 +1 (USA)</option>
+                                  <option value="+44">🇬🇧 +44 (UK)</option>
+                                  <option value="+1">🇨🇦 +1 (Canada)</option>
+                                  <option value="+966">🇸🇦 +966 (Saudi Arabia)</option>
+                                  <option value="+65">🇸🇬 +65 (Singapore)</option>
+                                  <option value="+61">🇦🇺 +61 (Australia)</option>
+                                </select>
+                                <ChevronDown size={11} className="absolute right-1 text-foreground/50 pointer-events-none" />
+                              </div>
+
+                              <input
+                                id={phoneInputId}
+                                type="tel"
+                                required
+                                placeholder="10-digit mobile (starts with 6, 7, 8, 9)"
+                                maxLength={10}
+                                value={phone}
+                                onChange={(e) => {
+                                  const val = e.target.value.replace(/\D/g, "").slice(0, 10);
+                                  setPhone(val);
+                                  if (val.length > 0 && ["0", "1", "2", "3", "4", "5"].includes(val[0])) {
+                                    setPhoneError(`Indian mobile numbers start with 6, 7, 8, or 9 (numbers starting with ${val[0]} are not permitted).`);
+                                  } else {
+                                    if (phoneError) setPhoneError("");
+                                  }
+                                }}
+                                className="w-full px-3.5 py-2.5 text-xs bg-transparent focus:outline-none placeholder:text-muted-foreground/60"
+                              />
+                            </div>
+                            {phoneError && (
+                              <p className="text-[10px] text-red-500 font-semibold mt-1">{phoneError}</p>
+                            )}
+                          </div>
+
+                          <div>
+                            <label htmlFor={courseSelectId} className="block text-[11px] font-semibold text-muted-foreground mb-1">
+                              Select Program
+                            </label>
+                            <select
+                              id={courseSelectId}
+                              value={selectedCourse}
+                              onChange={(e) => setSelectedCourse(e.target.value)}
+                              className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none"
+                            >
+                              <option value="">Choose a Program...</option>
+                              {isAmity
+                                ? AMITY_JULY_26_FEE_STRUCTURE.map((p) => (
+                                    <option key={p.sNo} value={p.name}>
+                                      {p.name} ({p.type})
+                                    </option>
+                                  ))
+                                : genericPrograms.map((p, i) => (
+                                    <option key={i} value={p.name}>
+                                      {p.name} ({p.levelKey.toUpperCase()})
+                                    </option>
+                                  ))}
+                            </select>
+                          </div>
+
+                          <Button
+                            type="submit"
+                            disabled={isSubmitting}
+                            className="w-full py-5 rounded-xl bg-primary text-primary-foreground font-semibold text-xs shadow-md hover:bg-primary/90 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                          >
+                            <Send size={13} />
+                            <span>Get Free Shortlist & Fees</span>
+                          </Button>
+
+                          <p className="text-[10px] text-muted-foreground text-center">
+                            Zero spam • 100% Free counseling & zero hidden fees
+                          </p>
+                        </form>
+                      )}
                     </div>
-                  ) : (
-                    <form onSubmit={handleLeadSubmit} className="space-y-3">
-                      <div>
-                        <label htmlFor={nameInputId} className="block text-[11px] font-medium text-muted-foreground mb-1">
-                          Full Name
-                        </label>
-                        <input
-                          id={nameInputId}
-                          type="text"
-                          required
-                          placeholder="Your Name"
-                          value={name}
-                          onChange={(e) => setName(e.target.value)}
-                          className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none"
-                        />
-                      </div>
-
-                      <div>
-                        <label htmlFor={phoneInputId} className="block text-[11px] font-medium text-muted-foreground mb-1">
-                          WhatsApp Mobile Number
-                        </label>
-                        <input
-                          id={phoneInputId}
-                          type="tel"
-                          required
-                          placeholder="10-digit mobile number"
-                          value={phone}
-                          onChange={(e) => setPhone(e.target.value)}
-                          className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none"
-                        />
-                      </div>
-
-                      <div>
-                        <label htmlFor={courseSelectId} className="block text-[11px] font-medium text-muted-foreground mb-1">
-                          Select Program
-                        </label>
-                        <select
-                          id={courseSelectId}
-                          value={selectedCourse}
-                          onChange={(e) => setSelectedCourse(e.target.value)}
-                          className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none"
-                        >
-                          <option value="">Choose a Program...</option>
-                          {isAmity
-                            ? AMITY_JULY_26_FEE_STRUCTURE.map((p) => (
-                                <option key={p.sNo} value={p.name}>
-                                  {p.name} ({p.type})
-                                </option>
-                              ))
-                            : genericPrograms.map((p, i) => (
-                                <option key={i} value={p.name}>
-                                  {p.name} ({p.levelKey.toUpperCase()})
-                                </option>
-                              ))}
-                        </select>
-                      </div>
-
-                      <Button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className="w-full py-5 rounded-xl bg-primary text-primary-foreground font-semibold text-xs shadow-md hover:bg-primary/90 transition-all flex items-center justify-center gap-1.5"
-                      >
-                        <Send size={13} />
-                        <span>Get Free Shortlist & Fees</span>
-                      </Button>
-
-                      <p className="text-[10px] text-muted-foreground text-center">
-                        Zero spam • 100% Free counseling & zero hidden fees
-                      </p>
-                    </form>
-                  )}
+                  </div>
                 </div>
               </div>
-            </div>
           </div>
         </div>
+
+        {/* ── ACCREDITATION EXPLAIN MODAL (Simple, Easy, Short Explanations) ── */}
+        <Dialog open={!!selectedAccreditation} onOpenChange={(open) => !open && setSelectedAccreditation(null)}>
+          <DialogContent className="max-w-md p-6 bg-card border-border">
+            {selectedAccreditation && (
+              <div className="space-y-4">
+                <div className="flex items-center gap-4 pb-3 border-b border-border/60">
+                  <div className="w-20 h-16 rounded-xl bg-white border border-border/80 p-2 flex items-center justify-center shrink-0 shadow-xs">
+                    <img
+                      src={selectedAccreditation.img}
+                      alt={selectedAccreditation.name}
+                      className="max-h-full max-w-full object-contain"
+                    />
+                  </div>
+                  <div>
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-primary/10 text-primary border border-primary/20">
+                      {selectedAccreditation.badge}
+                    </span>
+                    <h3 className="text-base font-bold text-foreground mt-1">
+                      {selectedAccreditation.fullName || selectedAccreditation.name}
+                    </h3>
+                  </div>
+                </div>
+
+                <div className="space-y-3 text-xs leading-relaxed">
+                  <div>
+                    <h4 className="font-bold text-foreground text-xs uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                      <ShieldCheck size={14} className="text-primary" />
+                      <span>What is this accreditation?</span>
+                    </h4>
+                    <p className="text-muted-foreground pl-5">
+                      {selectedAccreditation.shortDesc}
+                    </p>
+                  </div>
+
+                  <div className="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/20">
+                    <h4 className="font-bold text-emerald-700 dark:text-emerald-400 text-xs uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                      <CheckCircle2 size={14} className="text-emerald-500" />
+                      <span>Why it matters for your degree</span>
+                    </h4>
+                    <p className="text-foreground/90 font-medium pl-5">
+                      {selectedAccreditation.whyItMatters}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="pt-2 flex justify-end">
+                  <button
+                    type="button"
+                    onClick={() => setSelectedAccreditation(null)}
+                    className="px-4 py-2 rounded-xl bg-primary text-primary-foreground font-semibold text-xs hover:bg-primary/90 transition-all cursor-pointer"
+                  >
+                    Got it
+                  </button>
+                </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </>
   );

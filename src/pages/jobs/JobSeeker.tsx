@@ -10,6 +10,7 @@ import { Blobs } from "@/components/Blobs";
 import { Reveal } from "@/components/Reveal";
 import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 import { fetchJobListings, registerJobSeeker, applyToJob, type JobPosting } from "@/lib/api";
+import { validateIndianMobile, validateMeaningfulName, validateMeaningfulEmail } from "@/lib/validation";
 import { toast } from "sonner";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -203,15 +204,6 @@ const ApplyModal = ({
     setForm(f => ({ ...f, [k]: val }));
   };
 
-  // Validate Indian mobile numbers: allow optional country code (+91, 91, 0) and require 10 digits starting with 6-9
-  const validateIndianMobile = (input: string) => {
-    const digits = input.replace(/\D/g, "");
-    if (digits.length < 10) return { valid: false, message: "Enter a 10-digit mobile number" };
-    const last10 = digits.slice(-10);
-    if (!/^[6-9]\d{9}$/.test(last10)) return { valid: false, message: "Enter a valid Indian mobile number" };
-    return { valid: true, normalized: last10 } as any;
-  };
-
   const onResume = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] ?? null;
     if (!file) return;
@@ -223,27 +215,15 @@ const ApplyModal = ({
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.fullName.trim() || !form.email.trim() || !form.phone.trim()) {
-      toast.error("Name, email and phone are required."); return;
-    }
-    const phoneCheck = validateIndianMobile(form.phone);
-    if (!phoneCheck.valid) { toast.error(phoneCheck.message); return; }
-    // Name validation
-    const validateName = (n: string) => {
-      const v = n.trim();
-      if (v.length < 2) return { valid: false, message: "Please enter your full name." };
-      if (!/^[\p{L} .'-]{2,}$/u.test(v)) return { valid: false, message: "Name contains invalid characters." };
-      return { valid: true } as any;
-    };
-    const isDisposableEmail = (email: string) => {
-      const black = ["mailinator.com","10minutemail.com","tempmail.com","yopmail.com","dispostable.com","guerrillamail.com","trashmail.com","maildrop.cc","getnada.com","mailnesia.com"];
-      const domain = email.split("@")[1]?.toLowerCase() ?? "";
-      return black.some(d => domain === d || domain.endsWith("." + d));
-    };
+    const nameCheck = validateMeaningfulName(form.fullName, false);
+    if (!nameCheck.valid) { toast.error(nameCheck.error || "Please enter a valid full name."); return; }
 
-    const nameCheck = validateName(form.fullName);
-    if (!nameCheck.valid) { toast.error(nameCheck.message); return; }
-    if (isDisposableEmail(form.email)) { toast.error("Disposable email addresses are not allowed."); return; }
+    const phoneCheck = validateIndianMobile(form.phone);
+    if (!phoneCheck.valid) { toast.error(phoneCheck.error || "Please enter a valid 10-digit Indian mobile number."); return; }
+
+    const emailCheck = validateMeaningfulEmail(form.email, false);
+    if (!emailCheck.valid) { toast.error(emailCheck.error || "Please enter a valid email address."); return; }
+
     const data = new FormData();
     (Object.keys(form) as (keyof SeekerForm)[]).forEach(k => { if (form[k]) data.append(k, form[k]); });
     if (resume) data.append("resume", resume);
@@ -339,23 +319,29 @@ const ApplyModal = ({
               </div>
               <div>
                 <label className={labelCls}>Phone Number <span className="text-red-500">*</span></label>
-                <input
-                  type="tel"
-                  className={inputCls}
-                  value={form.phone}
-                  onChange={e => {
-                    const v = e.target.value;
-                    set("phone")(e);
-                    const res = validateIndianMobile(v);
-                    setPhoneError(res.valid ? null : res.message);
-                  }}
-                  onBlur={e => {
-                    const res = validateIndianMobile(e.target.value);
-                    setPhoneError(res.valid ? null : res.message);
-                  }}
-                  placeholder="+91 98765 43210"
-                  required
-                />
+                <div className="relative flex rounded-xl border border-foreground/10 bg-background/60 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 overflow-hidden">
+                  <div className="px-3 bg-muted/40 text-xs font-bold text-muted-foreground flex items-center border-r border-foreground/10 select-none">
+                    🇮🇳 +91
+                  </div>
+                  <input
+                    type="tel"
+                    className="w-full bg-transparent px-3 py-3 text-sm focus:outline-none"
+                    value={form.phone}
+                    maxLength={10}
+                    onChange={e => {
+                      const v = e.target.value.replace(/\D/g, "").slice(0, 10);
+                      setForm(prev => ({ ...prev, phone: v }));
+                      const res = validateIndianMobile(v);
+                      setPhoneError(res.valid ? null : (res.error || res.message || null));
+                    }}
+                    onBlur={e => {
+                      const res = validateIndianMobile(e.target.value);
+                      setPhoneError(res.valid ? null : (res.error || res.message || null));
+                    }}
+                    placeholder="10-digit mobile (starts with 6-9)"
+                    required
+                  />
+                </div>
                 {phoneError && <div className="text-xs text-red-500 mt-1">{phoneError}</div>}
               </div>
               <div>

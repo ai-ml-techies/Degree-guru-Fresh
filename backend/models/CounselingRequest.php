@@ -45,7 +45,7 @@ class CounselingRequest extends ActiveRecord
     public function rules(): array
     {
         return [
-            [['name', 'phone','email', 'dob', 'message'], 'required'],
+            [['name', 'phone'], 'required'],
 
             [['name'], 'string', 'max' => 150],
             [['message'], 'string'],
@@ -70,7 +70,9 @@ class CounselingRequest extends ActiveRecord
 
     public function validateEmailField(string $attribute): void
     {
-        AppValidator::validateEmail($this, $attribute);
+        if (!empty($this->$attribute)) {
+            AppValidator::validateEmail($this, $attribute);
+        }
     }
 
     public function validatePhoneField(string $attribute): void
@@ -85,11 +87,13 @@ class CounselingRequest extends ActiveRecord
 
     public function validateUniqueEmailField(string $attribute): void
     {
-        AppValidator::validateUniqueEmail(
-            $this,
-            $attribute,
-            self::class
-        );
+        if (!empty($this->$attribute)) {
+            AppValidator::validateUniqueEmail(
+                $this,
+                $attribute,
+                self::class
+            );
+        }
     }
 
     public function validateDobField(string $attribute): void

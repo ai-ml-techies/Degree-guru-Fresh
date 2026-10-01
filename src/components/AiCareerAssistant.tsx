@@ -14,6 +14,7 @@ import {
   Briefcase
 } from "lucide-react";
 import { submitLead } from "@/lib/api";
+import { validateIndianMobile, validateMeaningfulName, validateMeaningfulEmail } from "@/lib/validation";
 
 type Step = "exploring" | "current_status" | "looking_for" | "preferred_field" | "recommendation" | "contact_success";
 
@@ -85,6 +86,9 @@ export const AiCareerAssistant = () => {
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [leadSuccess, setLeadSuccess] = useState(false);
 
@@ -200,13 +204,32 @@ export const AiCareerAssistant = () => {
 
   const handleLeadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!phone || !fullName) return;
+    const nameCheck = validateMeaningfulName(fullName, false);
+    if (!nameCheck.valid) {
+      setNameError(nameCheck.error || "Please enter a valid, meaningful full name.");
+      return;
+    }
+    const phoneCheck = validateIndianMobile(phone);
+    if (!phoneCheck.valid) {
+      setPhoneError(phoneCheck.error || "Please enter a valid 10-digit Indian mobile number.");
+      return;
+    }
+    if (email.trim()) {
+      const emailCheck = validateMeaningfulEmail(email, true);
+      if (!emailCheck.valid) {
+        setEmailError(emailCheck.error || "Please enter a valid email address.");
+        return;
+      }
+    }
+    setNameError("");
+    setPhoneError("");
+    setEmailError("");
     setIsSubmitting(true);
     try {
       await submitLead({
-        name: fullName,
-        phone,
-        email: email || `${phone}@degreeguru.in`,
+        name: nameCheck.normalized || fullName.trim(),
+        phone: phoneCheck.normalized || phone.replace(/\D/g, "").slice(-10),
+        email: email.trim() || undefined,
         program: `${exploring || "General Inquiry"} - via AI Career Assistant`,
         source: "ai-career-assistant",
       });
@@ -486,9 +509,15 @@ export const AiCareerAssistant = () => {
                       required
                       placeholder="e.g. Yash Sharma"
                       value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
+                      onChange={(e) => {
+                        setFullName(e.target.value);
+                        if (nameError) setNameError("");
+                      }}
+                      className={`w-full px-3.5 py-2.5 rounded-xl bg-background border ${nameError ? "border-red-500 ring-1 ring-red-500/20" : "border-border"} text-xs sm:text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40`}
                     />
+                    {nameError && (
+                      <p className="text-[10px] text-red-500 font-semibold mt-1">{nameError}</p>
+                    )}
                   </div>
                   <div>
                     <label htmlFor={phoneInputId} className="block text-xs font-bold text-foreground/80 mb-1">WhatsApp Mobile *</label>
@@ -496,11 +525,23 @@ export const AiCareerAssistant = () => {
                       id={phoneInputId}
                       type="tel"
                       required
-                      placeholder="e.g. 9876543210"
+                      maxLength={10}
+                      placeholder="10 digits (starts with 6-9)"
                       value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/\D/g, "");
+                        setPhone(val);
+                        if (val.length > 0 && ["0", "1", "2", "3", "4", "5"].includes(val[0])) {
+                          setPhoneError(`Indian mobile numbers start with 6, 7, 8, or 9 (numbers starting with ${val[0]} are not permitted).`);
+                        } else {
+                          if (phoneError) setPhoneError("");
+                        }
+                      }}
+                      className={`w-full px-3.5 py-2.5 rounded-xl bg-background border ${phoneError ? "border-red-500 ring-1 ring-red-500/20" : "border-border"} text-xs sm:text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40`}
                     />
+                    {phoneError && (
+                      <p className="text-[10px] text-red-500 font-semibold mt-1">{phoneError}</p>
+                    )}
                   </div>
                   <div>
                     <label htmlFor={emailInputId} className="block text-xs font-bold text-foreground/80 mb-1">Email (Optional)</label>
@@ -510,10 +551,16 @@ export const AiCareerAssistant = () => {
                         type="email"
                         placeholder="name@gmail.com"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
+                        onChange={(e) => {
+                          setEmail(e.target.value);
+                          if (emailError) setEmailError("");
+                        }}
+                        className={`w-full px-3.5 py-2.5 rounded-xl bg-background border ${emailError ? "border-red-500 ring-1 ring-red-500/20" : "border-border"} text-xs sm:text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40`}
                       />
                     </div>
+                    {emailError && (
+                      <p className="text-[10px] text-red-500 font-semibold mt-1">{emailError}</p>
+                    )}
                   </div>
                   <div className="sm:col-span-3 pt-1">
                     <button
