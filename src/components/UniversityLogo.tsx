@@ -62,7 +62,7 @@ export const UniversityLogo: React.FC<UniversityLogoProps> = ({
     } else if (norm.includes("chandigarh") || norm === "cu" || norm.includes("cuol") || norm.includes("cu-online")) {
       logo = { src: "/logos/cu.webp", alt: "Chandigarh University Online" };
     } else if (norm.includes("lpu") || norm.includes("lovely")) {
-      logo = { src: "/logos/lpu.svg", alt: "LPU Online" };
+      logo = { src: "/logos/lpu.png", alt: "LPU Online" };
     } else if (norm.includes("parul")) {
       logo = { src: "/logos/parul_full.png", alt: "Parul University Online Learning" };
     } else if (norm.includes("upes")) {

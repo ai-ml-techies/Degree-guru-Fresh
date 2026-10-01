@@ -772,10 +772,10 @@ export const UniversitiesIndex = () => {
               Offline Campus Education
             </span>
             <h3 className="text-xl sm:text-2xl font-black text-foreground">
-              M.K. University, Patan — Offline Campus Programs
+              M.K. University, Patan, Gujarat
             </h3>
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              Degree Guru maintains a dedicated offline university relationship for students seeking traditional classroom on-campus learning in Patan, Gujarat. This option is strictly separated from online degree programs.
+            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+              Explore traditional on-campus programs with classroom-based learning, direct faculty interaction, and a regular university campus experience.
             </p>
             <div className="pt-2">
               <Link

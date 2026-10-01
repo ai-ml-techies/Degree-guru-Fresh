@@ -65,8 +65,11 @@ export const Index = () => {
             {/* Left Copy */}
             <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
               <h1 className="text-3xl sm:text-5xl lg:text-5xl xl:text-6xl font-black text-foreground tracking-normal leading-[1.24] sm:leading-[1.26] md:leading-[1.32]">
-                Not Sure What’s Next? <span className="block text-gradient mt-1">Find Your Growth Roadmap</span>
+                Make Your Next Education Decision <span className="block text-gradient mt-1">With Confidence.</span>
               </h1>
+              <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                Discover the right university, program and career path with expert guidance.
+              </p>
 
               {/* Primary & Counselor CTAs */}
               <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-2">
