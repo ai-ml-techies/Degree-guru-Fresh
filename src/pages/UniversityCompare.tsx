@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { ACTIVE_ONLINE_UNIVERSITIES, UniversityData } from "@/data/universities";
+import { ACTIVE_ONLINE_UNIVERSITIES, INCLUDED_PARTNERS, UniversityData } from "@/data/universities";
 import { UniversityLogo } from "@/components/UniversityLogo";
 import { useLeadGate } from "@/context/LeadGateContext";
 import { AppBreadcrumb } from "@/components/AppBreadcrumb";
@@ -25,18 +25,57 @@ import {
 
 export const UniversityCompare = () => {
   const [searchParams] = useSearchParams();
-  const paramUnis = searchParams.get("unis")?.split(",").filter((s) => ACTIVE_ONLINE_UNIVERSITIES.some((u) => u.slug === s));
+
+  // Combine active online universities and international/partner universities
+  const allAvailableUnis: UniversityData[] = useMemo(() => {
+    const list: UniversityData[] = [...ACTIVE_ONLINE_UNIVERSITIES, ...INCLUDED_PARTNERS];
+    // De-duplicate by slug
+    return list.filter((u, index, self) => index === self.findIndex((t) => t.slug === u.slug));
+  }, []);
+
+  const getInitialSlugs = (): string[] => {
+    const raw = searchParams.get("unis");
+    if (raw) {
+      const parsed = raw
+        .split(",")
+        .map((s) => s.trim())
+        .filter((s) => allAvailableUnis.some((u) => u.slug === s || u.id === s));
+
+      if (parsed.length >= 2) {
+        return parsed.slice(0, 4);
+      }
+      if (parsed.length === 1) {
+        const fallback = allAvailableUnis.find((u) => u.slug !== parsed[0])?.slug || "amity-university-online";
+        return [parsed[0], fallback];
+      }
+    }
+    return [
+      "amity-university-online",
+      "sharda-university-online",
+      "chandigarh-university-online",
+    ];
+  };
 
   // Dynamic list of selected university slugs (allows 2 to 4 universities)
-  const [selectedSlugs, setSelectedSlugs] = useState<string[]>(
-    paramUnis && paramUnis.length >= 2
-      ? paramUnis.slice(0, 4)
-      : [
-          "amity-university-online",
-          "sharda-university-online",
-          "chandigarh-university-online",
-        ]
-  );
+  const [selectedSlugs, setSelectedSlugs] = useState<string[]>(getInitialSlugs);
+
+  // Sync selected slugs whenever searchParams change
+  useEffect(() => {
+    const raw = searchParams.get("unis");
+    if (raw) {
+      const parsed = raw
+        .split(",")
+        .map((s) => s.trim())
+        .filter((s) => allAvailableUnis.some((u) => u.slug === s || u.id === s));
+
+      if (parsed.length >= 2) {
+        setSelectedSlugs(parsed.slice(0, 4));
+      } else if (parsed.length === 1) {
+        const fallback = allAvailableUnis.find((u) => u.slug !== parsed[0])?.slug || "amity-university-online";
+        setSelectedSlugs([parsed[0], fallback]);
+      }
+    }
+  }, [searchParams.get("unis"), allAvailableUnis]);
 
   const navigate = useNavigate();
   const { requireContact } = useLeadGate();
@@ -49,7 +88,7 @@ export const UniversityCompare = () => {
 
   // Derived universities array matching selectedSlugs 1-to-1
   const comparedUnis: UniversityData[] = selectedSlugs
-    .map((slug) => ACTIVE_ONLINE_UNIVERSITIES.find((u) => u.slug === slug))
+    .map((slug) => allAvailableUnis.find((u) => u.slug === slug || u.id === slug))
     .filter((u): u is UniversityData => Boolean(u));
 
   // Change a university in a specific column index
@@ -81,7 +120,7 @@ export const UniversityCompare = () => {
       return;
     }
     // Find first available university not yet selected
-    const nextUni = ACTIVE_ONLINE_UNIVERSITIES.find((u) => !selectedSlugs.includes(u.slug));
+    const nextUni = allAvailableUnis.find((u) => !selectedSlugs.includes(u.slug));
     if (nextUni) {
       setSelectedSlugs([...selectedSlugs, nextUni.slug]);
     }
@@ -216,7 +255,7 @@ export const UniversityCompare = () => {
                             onChange={(e) => handleChangeUniversity(idx, e.target.value)}
                             className="w-full py-1.5 px-2 rounded-xl bg-background border border-border text-[11px] font-semibold text-foreground text-center focus:ring-2 focus:ring-primary/40 focus:outline-none shadow-2xs hover:border-primary/50 transition-colors cursor-pointer"
                           >
-                            {ACTIVE_ONLINE_UNIVERSITIES.map((opt) => (
+                            {allAvailableUnis.map((opt) => (
                               <option key={opt.slug} value={opt.slug}>
                                 {opt.shortName} ({opt.location})
                               </option>

@@ -108,7 +108,7 @@ export const UniversityLogo: React.FC<UniversityLogoProps> = ({
     } else if (norm.includes("galgotias")) {
       logo = { src: "/logos/galgotias_full.svg", alt: "Galgotias University Online" };
     } else if (norm.includes("christ")) {
-      logo = { src: "/logos/christ_full.svg", alt: "Christ University Online" };
+      logo = { src: "/logos/christ.png", alt: "Christ University Online" };
     } else if (norm.includes("ccs") || norm.includes("chaudhary")) {
       logo = { src: "/logos/ccsu.png", alt: "Chaudhary Charan Singh University" };
     } else if (norm.includes("ddu") || norm.includes("deen") || norm.includes("gorakhpur")) {

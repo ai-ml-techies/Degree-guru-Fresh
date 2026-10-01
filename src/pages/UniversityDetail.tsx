@@ -1,5 +1,5 @@
 import { useState, useId, useMemo, useEffect } from "react";
-import { useParams, Link, Navigate } from "react-router-dom";
+import { useParams, Link, Navigate, useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 import { 
@@ -15,6 +15,7 @@ import {
   AMITY_JULY_26_FEE_STRUCTURE, 
   AmityProgramFee 
 } from "@/data/amityFeeStructure";
+import { getCertificationsForUniversity } from "@/data/universityCertifications";
 import { 
   Building2, 
   ShieldCheck, 
@@ -686,10 +687,25 @@ export const UniversityDetail = () => {
   const uni = allUnis.find((u) => u.slug === uniSlug || u.id === uniSlug) ||
     allUnis.find((u) => uniSlug && (u.slug.includes(uniSlug) || uniSlug.includes(u.slug) || (uniSlug === "amity" && u.slug.includes("amity"))));
 
-  const [activeTab, setActiveTab] = useState<"overview" | "courses" | "placements" | "faculty" | "admission">("overview");
-  const [courseCategoryTab, setCourseCategoryTab] = useState<"ug" | "pg" | "collaborative" | "integrated" | "guaranteed">("ug");
+  const [searchParams] = useSearchParams();
+  const tabParam = searchParams.get("tab");
+  const searchParam = searchParams.get("search");
+
+  const [activeTab, setActiveTab] = useState<"overview" | "courses" | "placements" | "faculty" | "admission">(() => {
+    if (tabParam === "courses" || searchParam) return "courses";
+    return "overview";
+  });
+  const [courseCategoryTab, setCourseCategoryTab] = useState<"ug" | "pg" | "certifications" | "collaborative" | "integrated" | "guaranteed">(() => {
+    if (searchParam) {
+      const lower = searchParam.toLowerCase();
+      if (lower.includes("cert") || lower.includes("diploma")) return "certifications";
+      if (lower.includes("mba") || lower.includes("mca") || lower.includes("msc") || lower.includes("m.sc") || lower.includes("mcom") || lower.includes("ma") || lower.includes("master") || lower.includes("dba")) return "pg";
+      if (lower.includes("bba") || lower.includes("bca") || lower.includes("bcom") || lower.includes("ba") || lower.includes("b.sc")) return "ug";
+    }
+    return "ug";
+  });
   const [paymentMode, setPaymentMode] = useState<"direct" | "loan">("direct");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState(() => searchParam || "");
   const [expandedProgramId, setExpandedProgramId] = useState<string | null>(null);
   const [whyAmityFilter, setWhyAmityFilter] = useState<"all" | "accreditation" | "learning" | "career">("all");
   const [selectedFaculty, setSelectedFaculty] = useState<{
@@ -702,13 +718,34 @@ export const UniversityDetail = () => {
     bio?: string;
   } | null>(null);
 
-  // Always reset scroll to absolute top hero section on load / refresh
+  // Sync when searchParams change
   useEffect(() => {
-    if ("scrollRestoration" in window.history) {
-      window.history.scrollRestoration = "manual";
+    if (tabParam === "courses" || searchParam) {
+      setActiveTab("courses");
+      if (searchParam) {
+        setSearchQuery(searchParam);
+        const lower = searchParam.toLowerCase();
+        if (lower.includes("cert") || lower.includes("diploma")) {
+          setCourseCategoryTab("certifications");
+        } else if (lower.includes("mba") || lower.includes("mca") || lower.includes("msc") || lower.includes("m.sc") || lower.includes("mcom") || lower.includes("ma") || lower.includes("master") || lower.includes("dba")) {
+          setCourseCategoryTab("pg");
+        } else if (lower.includes("bba") || lower.includes("bca") || lower.includes("bcom") || lower.includes("ba") || lower.includes("b.sc")) {
+          setCourseCategoryTab("ug");
+        }
+      }
+      setTimeout(() => {
+        const el = document.getElementById("courses-tab-anchor");
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 150);
+    } else {
+      if ("scrollRestoration" in window.history) {
+        window.history.scrollRestoration = "manual";
+      }
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     }
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-  }, [uniSlug]);
+  }, [uniSlug, tabParam, searchParam]);
 
   // Quick Lead Form State
   const [name, setName] = useState("");
@@ -764,6 +801,11 @@ export const UniversityDetail = () => {
   const isAmity = uni.slug.includes("amity") || uni.id.includes("amity");
   const isSharda = uni.slug.includes("sharda") || uni.id.includes("sharda");
   const isSgt = uni.slug.includes("sgt") || uni.id.includes("sgt");
+  const isLiverpool = uni.slug.includes("liverpool") || uni.slug.includes("ljmu");
+  const isForeignDoctorate = uni.slug.includes("golden-gate") || uni.slug.includes("birchwood");
+  const uniCertifications = useMemo(() => {
+    return getCertificationsForUniversity(uni.slug);
+  }, [uni.slug]);
   const campusImage = getUniversityCampusImage(uni.slug);
 
   const handleLeadSubmit = async (e: React.FormEvent) => {
@@ -1593,6 +1635,7 @@ export const UniversityDetail = () => {
                           ? [
                               { id: "ug", label: "UG Courses" },
                               { id: "pg", label: "PG Courses" },
+                              { id: "certifications", label: "Certifications & Diplomas" },
                               { id: "collaborative", label: "Industry Collaborative" },
                               { id: "integrated", label: "Dual Degree / Integrated" },
                             ]
@@ -1600,11 +1643,17 @@ export const UniversityDetail = () => {
                           ? [
                               { id: "ug", label: "UG Courses" },
                               { id: "pg", label: "PG Courses" },
+                              { id: "certifications", label: "Certifications & Diplomas" },
                               { id: "guaranteed", label: "Certification Placement Guaranteed" },
+                            ]
+                          : isLiverpool || isForeignDoctorate
+                          ? [
+                              { id: "pg", label: "Master's & Doctorate Degrees" },
                             ]
                           : [
                               { id: "ug", label: "UG Courses" },
                               { id: "pg", label: "PG Courses" },
+                              { id: "certifications", label: "Certifications & Diplomas" },
                             ]
                         ).map((cat) => (
                           <button
@@ -1621,7 +1670,92 @@ export const UniversityDetail = () => {
                         ))}
                       </div>
 
-                      {courseCategoryTab === "guaranteed" ? (
+                      {courseCategoryTab === "certifications" ? (
+                        /* Certifications & Diplomas Showcase (from CSV Data) */
+                        <div className="space-y-4 animate-in fade-in-50 duration-200">
+                          <div className="p-4 sm:p-5 rounded-2xl bg-primary/5 border border-primary/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div>
+                              <h3 className="text-sm sm:text-base font-bold text-foreground">
+                                {uni.name} — Specialized Certifications & Diplomas
+                              </h3>
+                              <p className="text-xs text-muted-foreground mt-0.5">
+                                Industry-focused short-term credentials, executive skill tracks & university certifications with low starting fees.
+                              </p>
+                            </div>
+                            <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold shrink-0 self-start sm:self-auto">
+                              Low Entry Fees from {uniCertifications[0]?.feeFormatted || uni.feeRange.split(/[–-]/)[0]?.trim()}
+                            </span>
+                          </div>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {uniCertifications.length > 0 ? (
+                              uniCertifications.map((cert) => (
+                                <div
+                                  key={cert.id}
+                                  className="p-5 rounded-2xl bg-card border border-border/80 shadow-xs hover:border-primary/40 hover:shadow-md transition-all flex flex-col justify-between space-y-4"
+                                >
+                                  <div className="space-y-2.5">
+                                    <div className="flex items-center justify-between text-[11px]">
+                                      <span className="font-semibold px-2 py-0.5 rounded bg-muted text-foreground/80">
+                                        {cert.duration}
+                                      </span>
+                                      <span className="font-semibold text-emerald-600 dark:text-emerald-400">
+                                        {cert.mode}
+                                      </span>
+                                    </div>
+
+                                    <h4 className="text-sm font-bold text-foreground leading-snug">
+                                      {cert.name}
+                                    </h4>
+
+                                    <p className="text-[11px] text-muted-foreground line-clamp-2">
+                                      Eligibility: {cert.eligibility}
+                                    </p>
+
+                                    <div className="flex flex-wrap gap-1 pt-1">
+                                      {cert.skills.map((skill, sIdx) => (
+                                        <span
+                                          key={sIdx}
+                                          className="px-2 py-0.5 rounded bg-secondary/80 text-[10px] font-medium text-foreground/80"
+                                        >
+                                          {skill}
+                                        </span>
+                                      ))}
+                                    </div>
+                                  </div>
+
+                                  <div className="pt-3 border-t border-border/50 flex items-center justify-between gap-2">
+                                    <div>
+                                      <span className="text-[9px] text-muted-foreground block">Total Program Fee</span>
+                                      <span className="text-sm font-extrabold text-foreground">{cert.feeFormatted}</span>
+                                      {cert.emiFormatted && (
+                                        <span className="text-[10px] text-muted-foreground block">{cert.emiFormatted}</span>
+                                      )}
+                                    </div>
+
+                                    <a
+                                      href="#counseling-box"
+                                      onClick={() => setSelectedCourse(cert.name)}
+                                      className="px-3.5 py-1.5 rounded-xl bg-primary text-primary-foreground text-xs font-bold hover:bg-primary/90 transition-colors shadow-2xs cursor-pointer"
+                                    >
+                                      Inquire
+                                    </a>
+                                  </div>
+                                </div>
+                              ))
+                            ) : (
+                              <div className="col-span-full py-10 text-center space-y-2">
+                                <p className="text-xs sm:text-sm font-semibold text-foreground">
+                                  Certifications for {uni.name}
+                                </p>
+                                <p className="text-xs text-muted-foreground max-w-md mx-auto">
+                                  This institution primarily specializes in degree programs. Explore the full curriculum under the UG Courses and PG Courses tabs.
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ) : courseCategoryTab === "guaranteed" ? (
                         /* SGT University Online: 100% Guaranteed Placement Career Programme (ACWM with Bajaj Capital) */
                         <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-emerald-500/10 via-card to-card border border-emerald-500/30 shadow-sm space-y-6 animate-in fade-in-50 duration-200">
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-border/50">

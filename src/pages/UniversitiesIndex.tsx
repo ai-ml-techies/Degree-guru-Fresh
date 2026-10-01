@@ -33,28 +33,39 @@ type SortOption = "recommended" | "popular" | "fee-asc" | "fee-desc" | "name-asc
 // Helper to determine university type
 const getUniversityType = (uni: UniversityData): "Private" | "Government" | "Deemed" | "International" => {
   const norm = (uni.slug + " " + uni.name + " " + (uni.location || "")).toLowerCase();
+  
+  // 1. Government Universities (Check Indian State/Central Universities first so Kurukshetra is never foreign)
   if (
-    norm.includes("liverpool") || 
-    norm.includes("golden gate") || 
-    norm.includes("birchwood") || 
-    norm.includes("usa") || 
-    norm.includes("uk") || 
-    norm.includes("florida") || 
-    norm.includes("san francisco") ||
-    norm.includes("international")
-  ) {
-    return "International";
-  }
-  if (
+    norm.includes("kurukshetra") || 
+    norm.includes("kuk") || 
     norm.includes("chaudhary") || 
     norm.includes("deen dayal") || 
     norm.includes("gorakhpur") || 
-    norm.includes("kurukshetra") || 
+    norm.includes("ddu") ||
     norm.includes("andhra") || 
     norm.includes("state university")
   ) {
     return "Government";
   }
+
+  // 2. International / Foreign Universities
+  if (
+    norm.includes("liverpool") || 
+    norm.includes("golden gate") || 
+    norm.includes("birchwood") || 
+    norm.includes("rushford") || 
+    norm.includes("ssbm") || 
+    norm.includes("esgci") || 
+    norm.includes("eimt") || 
+    norm.includes("san francisco") || 
+    norm.includes("florida") || 
+    norm.includes("united kingdom") ||
+    /\b(uk|usa)\b/i.test(uni.location || "")
+  ) {
+    return "International";
+  }
+
+  // 3. Deemed to be Universities
   if (
     norm.includes("deemed") || 
     norm.includes("nmims") || 
@@ -63,10 +74,12 @@ const getUniversityType = (uni: UniversityData): "Private" | "Government" | "Dee
     norm.includes("vidyapeeth") || 
     norm.includes("amrita") || 
     norm.includes("manipal") || 
-    norm.includes("vit")
+    norm.includes("vit") ||
+    norm.includes("christ")
   ) {
     return "Deemed";
   }
+
   return "Private";
 };
 
@@ -418,30 +431,40 @@ export const UniversitiesIndex = () => {
               {visibleUniversities.map((uni) => {
                 const shortAccreditation = getShortAccreditation(uni);
                 const isSelected = selectedCompare.includes(uni.slug);
+                const isLiverpool = uni.slug.includes("liverpool") || uni.slug.includes("ljmu");
 
                 return (
                   <div
                     key={uni.id}
                     className={`p-4 rounded-2xl bg-card border transition-all duration-150 flex flex-col justify-between space-y-3 group hover:border-primary/40 hover:shadow-md ${
-                      isSelected ? "border-primary ring-1 ring-primary/30" : "border-border/80 shadow-2xs"
+                      isSelected ? "border-primary ring-2 ring-primary/30 shadow-md" : "border-border/80 shadow-2xs"
                     }`}
                   >
                     <div>
-                      {/* Top Row: Compare Checkbox + Single Crisp Accreditation Badge */}
+                      {/* Top Row: Prominent Compare Button + Single Crisp Accreditation Badge */}
                       <div className="flex items-center justify-between gap-2 pb-1">
                         <button
                           type="button"
-                          onClick={() => toggleCompare(uni.slug)}
-                          className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-muted-foreground hover:text-foreground cursor-pointer transition-colors"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            toggleCompare(uni.slug);
+                          }}
+                          aria-label={`Compare ${uni.name}`}
+                          className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer border ${
+                            isSelected
+                              ? "bg-primary text-primary-foreground border-primary shadow-xs ring-2 ring-primary/20"
+                              : "bg-muted/40 hover:bg-muted text-foreground/80 border-border hover:border-primary/50"
+                          }`}
                         >
                           <div
-                            className={`w-3.5 h-3.5 rounded border flex items-center justify-center transition-all ${
+                            className={`w-4 h-4 rounded flex items-center justify-center border transition-all ${
                               isSelected
-                                ? "bg-primary border-primary text-primary-foreground"
-                                : "border-border/90 bg-background hover:border-primary/60"
+                                ? "bg-white text-primary border-white"
+                                : "border-muted-foreground/50 bg-background"
                             }`}
                           >
-                            {isSelected && <Check size={10} strokeWidth={3} />}
+                            {isSelected ? <Check size={12} strokeWidth={3} /> : null}
                           </div>
                           <span>Compare</span>
                         </button>
@@ -452,32 +475,55 @@ export const UniversitiesIndex = () => {
                         </span>
                       </div>
 
-                      {/* University Logo (Clear PNG, centered) */}
+                      {/* University Logo (Clear PNG, centered, Liverpool enlarged) */}
                       <div
                         onClick={() => handleUniClick(uni.slug, uni.name)}
-                        className="w-full flex items-center justify-center py-3 px-2 cursor-pointer transition-transform group-hover:scale-101"
+                        className="w-full h-14 sm:h-16 flex items-center justify-center py-1 px-2 cursor-pointer transition-transform group-hover:scale-102"
                       >
-                        <UniversityLogo idOrSlug={uni.slug} size="md" className="max-w-full h-12 object-contain" />
+                        <div className={isLiverpool ? "scale-135 transition-transform" : ""}>
+                          <UniversityLogo idOrSlug={uni.slug} size="md" className="max-w-full h-12 object-contain" />
+                        </div>
                       </div>
 
-                      {/* Popular Courses (Max 3 concise tags for 2-sec scanning) */}
+                      {/* University Name (Clean text heading above popular programs) */}
+                      <div
+                        onClick={() => handleUniClick(uni.slug, uni.name)}
+                        className="pt-1 pb-1.5 text-center cursor-pointer"
+                      >
+                        <h3 className="text-xs sm:text-sm font-bold text-foreground line-clamp-1 group-hover:text-primary transition-colors" title={uni.name}>
+                          {uni.name}
+                        </h3>
+                      </div>
+
+                      {/* Popular Courses (Max 3 concise tags for 2-sec scanning, each program clickable) */}
                       <div className="pt-2 border-t border-border/50 space-y-1.5">
                         <span className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground block">
                           Popular Programs
                         </span>
-                        <div className="flex flex-wrap gap-1">
-                          {uni.popularPrograms.slice(0, 3).map((prog, idx) => (
-                            <span
-                              key={idx}
-                              className="px-2 py-0.5 rounded-md bg-muted/60 text-[10px] font-medium text-foreground/90"
-                            >
-                              {prog}
-                            </span>
-                          ))}
+                        <div className="flex flex-wrap gap-1.5">
+                          {uni.popularPrograms.slice(0, 3).map((prog, idx) => {
+                            const progClean = prog.replace(/^Online\s+/i, "").trim();
+                            return (
+                              <Link
+                                key={idx}
+                                to={`/universities/${uni.slug}?tab=courses&search=${encodeURIComponent(progClean)}`}
+                                onClick={(e) => e.stopPropagation()}
+                                className="px-2.5 py-1 rounded-md bg-secondary/80 hover:bg-primary hover:text-primary-foreground text-[11px] font-semibold text-foreground transition-all border border-border/60 hover:border-primary shadow-2xs cursor-pointer"
+                                title={`View ${prog} at ${uni.shortName}`}
+                              >
+                                {prog}
+                              </Link>
+                            );
+                          })}
                           {uni.popularPrograms.length > 3 && (
-                            <span className="px-1.5 py-0.5 rounded-md bg-muted/40 text-[9px] font-semibold text-muted-foreground">
+                            <Link
+                              to={`/universities/${uni.slug}?tab=courses`}
+                              onClick={(e) => e.stopPropagation()}
+                              className="px-2 py-1 rounded-md bg-muted text-[10px] font-bold text-muted-foreground hover:bg-muted/80 hover:text-foreground transition-all cursor-pointer"
+                              title="View all programs"
+                            >
                               +{uni.popularPrograms.length - 3} more
-                            </span>
+                            </Link>
                           )}
                         </div>
                       </div>
@@ -522,62 +568,62 @@ export const UniversitiesIndex = () => {
           </>
         )}
 
-        {/* 4. Floating Comparison Dock (Appears when >= 1 university is selected) */}
+        {/* 4. Floating Comparison Dock (Prominent & Clean, links directly to selected universities) */}
         {selectedCompare.length > 0 && (
-          <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-card/95 backdrop-blur-md border border-border shadow-2xl rounded-2xl px-5 py-3 flex items-center gap-4 animate-in slide-in-from-bottom-5 duration-200">
-            <div className="text-xs font-semibold text-foreground flex items-center gap-2">
-              <span className="w-5 h-5 rounded-full bg-primary text-primary-foreground text-[11px] font-bold flex items-center justify-center">
+          <div className="fixed bottom-6 inset-x-4 sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 z-50 max-w-xl w-auto bg-card/95 dark:bg-slate-900/95 backdrop-blur-md border-2 border-primary/40 shadow-2xl rounded-2xl px-6 py-4 flex items-center justify-between gap-5 animate-in slide-in-from-bottom-5 duration-200 ring-4 ring-black/5">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground font-black text-sm flex items-center justify-center shadow-xs">
                 {selectedCompare.length}
-              </span>
-              <span>{selectedCompare.length === 1 ? "1 university selected" : `${selectedCompare.length} universities selected`}</span>
+              </div>
+              <div>
+                <p className="text-sm font-bold text-foreground">
+                  {selectedCompare.length === 1 ? "1 University Selected" : `${selectedCompare.length} Universities Selected`}
+                </p>
+                <p className="text-[11px] text-muted-foreground hidden sm:block">
+                  Compare side-by-side fees, approvals & curriculum
+                </p>
+              </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3 shrink-0">
               <button
                 type="button"
                 onClick={() => setSelectedCompare([])}
-                className="text-xs text-muted-foreground hover:text-foreground px-2 py-1 cursor-pointer"
+                className="text-xs font-semibold text-muted-foreground hover:text-foreground px-2 py-1 cursor-pointer transition-colors"
               >
                 Clear
               </button>
               <Link
-                to="/universities/compare"
-                className="px-4 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-bold shadow-sm hover:bg-primary/90 flex items-center gap-1.5 transition-all"
+                to={`/universities/compare?unis=${selectedCompare.join(",")}`}
+                className="px-5 py-2.5 rounded-xl bg-primary text-primary-foreground text-xs sm:text-sm font-bold shadow-md hover:bg-primary/90 hover:scale-[1.02] active:scale-95 flex items-center gap-2 transition-all cursor-pointer"
               >
                 <span>Compare Now</span>
-                <ArrowRight size={13} />
+                <ArrowRight size={15} />
               </Link>
             </div>
           </div>
         )}
 
-        {/* 5. Bottom Counseling Form: "Not sure which university is right for you?" */}
-        <section className="mt-16 max-w-4xl mx-auto" id="counseling-box">
-          <div className="p-6 sm:p-8 rounded-3xl bg-card border border-border/90 shadow-lg space-y-6">
-            <div className="text-center max-w-2xl mx-auto space-y-1.5">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold">
-                <Sparkles size={13} />
-                <span>100% Free Expert Counseling</span>
-              </div>
-              <h2 className="text-xl sm:text-2xl font-black text-foreground tracking-tight">
+        {/* 5. Bottom Counseling Form: "Not sure which university is right for you?" (Clean & No Filler) */}
+        <section className="mt-12 max-w-xl mx-auto" id="counseling-box">
+          <div className="p-5 sm:p-6 rounded-2xl bg-card border border-border/80 shadow-md space-y-4">
+            <div className="text-center">
+              <h2 className="text-base sm:text-lg font-bold text-foreground">
                 Not sure which university is right for you?
               </h2>
-              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                Connect with our senior career advisors to get verified fee schedules, semester breakdowns, and UGC approvals tailored to your background.
-              </p>
             </div>
 
             {formSubmitted ? (
-              <div className="p-6 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-center space-y-2">
-                <CheckCircle2 className="mx-auto text-emerald-600 dark:text-emerald-400" size={32} />
-                <h3 className="font-bold text-base text-foreground">Inquiry Received Successfully!</h3>
+              <div className="p-5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-center space-y-2">
+                <CheckCircle2 className="mx-auto text-emerald-600 dark:text-emerald-400" size={28} />
+                <h3 className="font-bold text-sm text-foreground">Inquiry Received Successfully!</h3>
                 <p className="text-xs text-muted-foreground leading-relaxed max-w-md mx-auto">
-                  Thank you, <strong className="text-foreground">{formName}</strong>. Our senior education counselor will contact you shortly on {countryCode} {formPhone} with curated university recommendations.
+                  Thank you, <strong className="text-foreground">{formName}</strong>. Our senior counselor will connect with you on {countryCode} {formPhone}.
                 </p>
               </div>
             ) : (
-              <form onSubmit={handleBottomFormSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <form onSubmit={handleBottomFormSubmit} className="space-y-3.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {/* Full Name */}
                   <div className="space-y-1">
                     <label htmlFor={nameInputId} className="text-[11px] font-semibold text-muted-foreground">
@@ -593,7 +639,7 @@ export const UniversitiesIndex = () => {
                         if (formNameError) setFormNameError("");
                       }}
                       placeholder="e.g. Vikas Mehra"
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none"
+                      className="w-full px-3 py-2 rounded-xl bg-background border border-border text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none"
                     />
                     {formNameError && <p className="text-[11px] text-destructive font-medium">{formNameError}</p>}
                   </div>
@@ -608,7 +654,7 @@ export const UniversitiesIndex = () => {
                         value={countryCode}
                         onChange={(e) => setCountryCode(e.target.value)}
                         aria-label="Country Code"
-                        className="px-2.5 py-2.5 rounded-xl bg-background border border-border text-xs font-semibold shrink-0"
+                        className="px-2 py-2 rounded-xl bg-background border border-border text-xs font-semibold shrink-0"
                       >
                         <option value="+91">+91 (IN)</option>
                         <option value="+971">+971 (AE)</option>
@@ -627,7 +673,7 @@ export const UniversitiesIndex = () => {
                           if (formPhoneError) setFormPhoneError("");
                         }}
                         placeholder="Enter 10-digit number"
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none"
+                        className="w-full px-3 py-2 rounded-xl bg-background border border-border text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none"
                       />
                     </div>
                     {formPhoneError && <p className="text-[11px] text-destructive font-medium">{formPhoneError}</p>}
@@ -636,16 +682,16 @@ export const UniversitiesIndex = () => {
                   {/* Email with Verification OTP */}
                   <div className="space-y-1 sm:col-span-2">
                     <label htmlFor={emailInputId} className="text-[11px] font-semibold text-muted-foreground flex items-center justify-between">
-                      <span>Email Address (With Verification OTP) *</span>
+                      <span>Email Address *</span>
                       {emailVerified && (
                         <span className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
-                          <CheckCircle2 size={12} /> Email Verified
+                          <CheckCircle2 size={12} /> Verified
                         </span>
                       )}
                     </label>
                     <div className="flex gap-2">
                       <div className="relative flex-1">
-                        <Mail size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                        <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                         <input
                           id={emailInputId}
                           type="email"
@@ -657,7 +703,7 @@ export const UniversitiesIndex = () => {
                             if (formEmailError) setFormEmailError("");
                           }}
                           placeholder="vikas.mehra@gmail.com"
-                          className="w-full pl-9 pr-3.5 py-2.5 rounded-xl bg-background border border-border text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none disabled:bg-muted/40"
+                          className="w-full pl-8 pr-3 py-2 rounded-xl bg-background border border-border text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none disabled:bg-muted/40"
                         />
                       </div>
 
@@ -665,7 +711,7 @@ export const UniversitiesIndex = () => {
                         <button
                           type="button"
                           onClick={handleSendOtp}
-                          className="px-3.5 py-2.5 rounded-xl bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 transition-colors shrink-0 cursor-pointer shadow-2xs"
+                          className="px-3.5 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 transition-colors shrink-0 cursor-pointer shadow-2xs"
                         >
                           {otpSent ? "Resend OTP" : "Send OTP"}
                         </button>
@@ -675,10 +721,10 @@ export const UniversitiesIndex = () => {
 
                     {/* Interactive OTP Verification Input */}
                     {otpSent && !emailVerified && (
-                      <div className="mt-2 p-3 rounded-xl bg-muted/40 border border-border/80 space-y-2">
+                      <div className="mt-2 p-2.5 rounded-xl bg-muted/40 border border-border/80 space-y-2">
                         <div className="flex items-center justify-between text-[11px]">
                           <span className="text-muted-foreground">
-                            Enter the 4-digit OTP sent to your email:
+                            Enter the 4-digit code sent to your email:
                           </span>
                           <span className="font-bold text-primary px-2 py-0.5 rounded bg-primary/10">
                             Demo OTP: {generatedOtp}
@@ -691,7 +737,7 @@ export const UniversitiesIndex = () => {
                             value={otpValue}
                             onChange={(e) => setOtpValue(e.target.value)}
                             placeholder="Enter 4-digit OTP"
-                            className="w-36 px-3 py-1.5 rounded-lg bg-background border border-border text-xs font-bold text-center tracking-widest focus:ring-2 focus:ring-primary/40 focus:outline-none"
+                            className="w-32 px-3 py-1.5 rounded-lg bg-background border border-border text-xs font-bold text-center tracking-widest focus:ring-2 focus:ring-primary/40 focus:outline-none"
                           />
                           <button
                             type="button"
@@ -705,49 +751,22 @@ export const UniversitiesIndex = () => {
                       </div>
                     )}
                   </div>
-
-                  {/* Program Exploring */}
-                  <div className="space-y-1 sm:col-span-2">
-                    <label className="text-[11px] font-semibold text-muted-foreground">
-                      Which Degree Program Are You Exploring?
-                    </label>
-                    <select
-                      value={formProgram}
-                      onChange={(e) => setFormProgram(e.target.value)}
-                      aria-label="Program Exploring"
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs font-medium focus:ring-2 focus:ring-primary/40 focus:outline-none"
-                    >
-                      <option value="Online MBA">Online MBA (Master of Business Administration)</option>
-                      <option value="Online MCA">Online MCA (Master of Computer Applications)</option>
-                      <option value="Online BCA">Online BCA (Bachelor of Computer Applications)</option>
-                      <option value="Online BBA">Online BBA (Bachelor of Business Administration)</option>
-                      <option value="Online B.Com / M.Com">Online B.Com / M.Com (Commerce & Finance)</option>
-                      <option value="Online M.Sc Data Science & AI">Online M.Sc (Data Science, AI & Machine Learning)</option>
-                      <option value="Executive 1-Year MBA">Executive / 1-Year Fast Track MBA</option>
-                      <option value="100% Placement Guaranteed ACWM">100% Placement Guaranteed Career Programme (ACWM)</option>
-                      <option value="General Counseling">General Admission & University Selection</option>
-                    </select>
-                  </div>
                 </div>
 
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-3 rounded-xl bg-primary text-primary-foreground text-xs sm:text-sm font-bold hover:bg-primary/90 transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70 mt-2"
+                  className="w-full py-2.5 rounded-xl bg-primary text-primary-foreground text-xs sm:text-sm font-bold hover:bg-primary/90 transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70 mt-1"
                 >
                   {isSubmitting ? (
-                    <span>Submitting Inquiry...</span>
+                    <span>Submitting Request...</span>
                   ) : (
                     <>
-                      <span>Get Free University Recommendation</span>
+                      <span>Request For Counseling</span>
                       <ArrowRight size={14} />
                     </>
                   )}
                 </button>
-
-                <p className="text-[10px] text-center text-muted-foreground">
-                  🔒 No spam guaranteed. Your data is protected and used strictly for academic guidance.
-                </p>
               </form>
             )}
           </div>
