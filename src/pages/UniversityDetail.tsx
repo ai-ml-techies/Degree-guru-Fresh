@@ -761,6 +761,7 @@ export const UniversityDetail = () => {
     fullName: string;
     badge: string;
     img: string;
+    singlePara?: string;
     shortDesc: string;
     whyItMatters: string;
   } | null>(null);
@@ -799,6 +800,7 @@ export const UniversityDetail = () => {
   }
 
   const isAmity = uni.slug.includes("amity") || uni.id.includes("amity");
+  const isManipal = uni.slug.includes("manipal") || uni.id.includes("manipal") || uni.slug.includes("muj");
   const isSharda = uni.slug.includes("sharda") || uni.id.includes("sharda");
   const isSgt = uni.slug.includes("sgt") || uni.id.includes("sgt");
   const isLiverpool = uni.slug.includes("liverpool") || uni.slug.includes("ljmu");
@@ -929,6 +931,7 @@ export const UniversityDetail = () => {
     fullName: string;
     badge: string;
     img: string;
+    singlePara?: string;
     shortDesc: string;
     whyItMatters: string;
   }
@@ -940,6 +943,7 @@ export const UniversityDetail = () => {
       fullName: "University Grants Commission – Distance Education Bureau",
       badge: "Statutory Govt. Approval",
       img: "/assets/approvals/ugc-deb.png",
+      singlePara: "The University Grants Commission (UGC-DEB) is the premier statutory authority regulating university higher education in India. Its approval guarantees that your online degree has 100% legal validity, equivalent to an on-campus degree, and is fully recognized for UPSC, SSC, banking, state/central government jobs, corporate hiring, and global university admissions.",
       shortDesc: "The premier statutory authority regulating university higher education and distance/online learning across India.",
       whyItMatters: "Mandatory legal validation ensuring your degree is 100% genuine and fully accepted for UPSC, SSC, banking, all state/central government jobs, and global university admissions."
     },
@@ -948,6 +952,7 @@ export const UniversityDetail = () => {
       fullName: "All India Council for Technical Education",
       badge: "Technical Curriculum Standard",
       img: "/assets/approvals/aicte.png",
+      singlePara: "The All India Council for Technical Education (AICTE) approves technical and management curricula (MBA, MCA, BCA) in India, confirming that the syllabus, faculty rigor, and course outcomes match current industry technical benchmarks and high employability standards.",
       shortDesc: "National statutory council governing professional technical and management curricula (MBA, MCA, BCA) in India.",
       whyItMatters: "Confirms that curriculum, faculty rigor, and course outcomes match current industry technical benchmarks and high employability standards."
     },
@@ -955,7 +960,8 @@ export const UniversityDetail = () => {
       name: "NAAC A+",
       fullName: "National Assessment & Accreditation Council (Grade A+)",
       badge: "Premier Institutional Grade",
-      img: "/assets/approvals/nirf.png",
+      img: "/assets/approvals/naac_a_plus.png",
+      singlePara: "The National Assessment and Accreditation Council (NAAC) has awarded an elite 'A+' grade, reserved exclusively for top-tier institutions demonstrating superior academic quality, curriculum excellence, faculty credentials, and student learning results.",
       shortDesc: "Autonomous accreditation authority under UGC evaluating comprehensive academic quality, campus research, and student learning results.",
       whyItMatters: "An 'A+' grade is reserved for India's elite institutions, proving top-quartile educational quality and high employer trust worldwide."
     },
@@ -964,6 +970,7 @@ export const UniversityDetail = () => {
       fullName: "World Education Services (USA & Canada)",
       badge: "North American Equivalency",
       img: "/assets/approvals/wes.png",
+      singlePara: "World Education Services (WES) credential evaluation confirms that your degree is officially recognized as equivalent to degrees granted in the United States and Canada for higher education, multinational corporate hiring, and Permanent Residency (PR).",
       shortDesc: "World's most trusted international credential evaluation service based in the United States and Canada.",
       whyItMatters: "Validates that your online degree is officially recognized as equivalent to degrees granted in the USA and Canada for higher education, corporate hiring, and Permanent Residency (PR)."
     },
@@ -972,6 +979,7 @@ export const UniversityDetail = () => {
       fullName: "National Institutional Ranking Framework (Ministry of Education)",
       badge: "Govt. of India Ranking",
       img: "/assets/approvals/nirf.png",
+      singlePara: "Ranked under the Ministry of Education's National Institutional Ranking Framework (NIRF), highlighting top-quartile teaching quality, graduation outcomes, and educational excellence among India's leading institutions.",
       shortDesc: "The official national ranking methodology established by the Ministry of Education, Government of India.",
       whyItMatters: "Ranks top universities on factual parameters: Teaching, Learning & Resources, Research, Graduation Outcomes, and Outreach."
     },
@@ -980,6 +988,7 @@ export const UniversityDetail = () => {
       fullName: "Quacquarelli Symonds (QS) University Rankings",
       badge: "Global Institutional Benchmark",
       img: "/assets/approvals/qs.png",
+      singlePara: "Recognized by Quacquarelli Symonds (QS) global university rankings, confirming high international academic reputation, corporate employer recognition, and worldwide prestige.",
       shortDesc: "Leading global higher education analyst producing premier annual university rankings worldwide.",
       whyItMatters: "Provides international reputation and employer recognition, helping you stand out when applying for multinational careers or studying abroad."
     },
@@ -988,6 +997,7 @@ export const UniversityDetail = () => {
       fullName: "Distance Education Council",
       badge: "Distance Learning Quality",
       img: "/assets/approvals/dec.png",
+      singlePara: "Conferred under Distance Education Council standards, validating student-centric learning delivery, verified self-paced study coursework, and systematic evaluation methodology.",
       shortDesc: "Apex historic council establishing quality protocols and standards for open and distance learning systems in India.",
       whyItMatters: "Guarantees student-centric learning delivery, self-paced study material quality, and systematic evaluation methodology."
     },
@@ -1349,8 +1359,8 @@ export const UniversityDetail = () => {
                         </div>
 
                         <div className="p-3.5 rounded-2xl bg-muted/30 border border-border/60">
-                          <span className="text-[11px] text-muted-foreground font-normal block">Approvals</span>
-                          <span className="text-sm font-semibold text-foreground mt-0.5 block">UGC-DEB • AICTE • WES</span>
+                          <span className="text-[11px] text-muted-foreground font-normal block">Admission Session</span>
+                          <span className="text-sm font-semibold text-foreground mt-0.5 block">July 2026 Batch Open</span>
                         </div>
 
                         <div className="p-3.5 rounded-2xl bg-muted/30 border border-border/60">
@@ -1484,13 +1494,13 @@ export const UniversityDetail = () => {
                             type="button"
                             key={i}
                             onClick={() => setSelectedAccreditation(auth)}
-                            className="group shrink-0 snap-center w-[175px] sm:w-auto h-36 sm:h-44 rounded-2xl bg-white border border-border/80 shadow-xs hover:shadow-xl hover:border-primary/50 transition-all p-4 sm:p-5 flex flex-col items-center justify-between text-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/40 active:scale-98"
+                            className="group shrink-0 snap-center w-[185px] sm:w-auto h-40 sm:h-48 rounded-2xl bg-white border border-border/80 shadow-xs hover:shadow-xl hover:border-primary/50 transition-all p-4 sm:p-5 flex flex-col items-center justify-between text-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/40 active:scale-98"
                           >
                             <div className="w-full flex-1 flex items-center justify-center p-1">
                               <img
                                 src={auth.img}
                                 alt={auth.name}
-                                className="max-h-18 sm:max-h-24 max-w-full object-contain transition-transform duration-200 group-hover:scale-108"
+                                className="max-h-22 sm:max-h-28 max-w-full object-contain transition-transform duration-200 group-hover:scale-108"
                                 loading="lazy"
                               />
                             </div>
@@ -1514,7 +1524,9 @@ export const UniversityDetail = () => {
                               Sample Certificate from {uni.name}
                             </h3>
                             <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                              {isSharda
+                              {isManipal
+                                ? "Become an alumnus of Manipal University Jaipur (Directorate of Online Education) and earn a UGC-DEB approved, NAAC A+ accredited degree with global WES credential recognition."
+                                : isSharda
                                 ? "Become an alumnus of Sharda University Online and earn a UGC-DEB approved online degree. Conferred with NAAC A+ accreditation, AICTE approval, and WES global equivalency."
                                 : "Become an alumnus of Amity Online and get a UGC-approved online degree. The degree awarded by the university is also been accredited by WES, etc."
                               }
@@ -1523,7 +1535,14 @@ export const UniversityDetail = () => {
 
                           {/* 4 Checkmark bullets */}
                           <div className="space-y-3 pt-1">
-                            {(isSharda
+                            {(isManipal
+                              ? [
+                                  "Conferred by Manipal University Jaipur Directorate of Online Education.",
+                                  "Entitled by UGC-DEB under Section 2(f) of the UGC Act, 1956.",
+                                  "NAAC A+ Accredited with global WES credential evaluation equivalency.",
+                                  "100% equivalent to traditional on-campus degree for govt. & corporate jobs.",
+                                ]
+                              : isSharda
                               ? [
                                   "NAAC A+ Accredited University with globally recognized credentials.",
                                   "Approved by UGC-DEB for online Bachelor's and Master's degree programs.",
@@ -1565,7 +1584,7 @@ export const UniversityDetail = () => {
                             <DialogTrigger asChild>
                               <div className="cursor-pointer group relative rounded-2xl overflow-hidden border-2 border-border/80 shadow-xl hover:shadow-2xl hover:border-primary/50 transition-all max-w-[280px] sm:max-w-[320px] bg-white">
                                 <img
-                                  src={isSharda ? "/assets/universities/sharda-sample-degree.jpg" : "/assets/universities/amity-sample-degree.png"}
+                                  src={isManipal ? "/assets/universities/manipal-sample-degree.png" : isSharda ? "/assets/universities/sharda-sample-degree.jpg" : "/assets/universities/amity-sample-degree.png"}
                                   alt={`${uni.name} Sample Degree Certificate`}
                                   className="w-full h-auto object-contain transition-transform duration-300 group-hover:scale-102"
                                 />
@@ -1583,7 +1602,7 @@ export const UniversityDetail = () => {
                               </DialogHeader>
                               <div className="flex flex-col items-center justify-center p-2 max-h-[80vh] overflow-y-auto">
                                 <img
-                                  src={isSharda ? "/assets/universities/sharda-sample-degree.jpg" : "/assets/universities/amity-sample-degree.png"}
+                                  src={isManipal ? "/assets/universities/manipal-sample-degree.png" : isSharda ? "/assets/universities/sharda-sample-degree.jpg" : "/assets/universities/amity-sample-degree.png"}
                                   alt={`${uni.name} Degree Full Specimen`}
                                   className="max-h-[75vh] w-auto object-contain rounded-xl border border-border shadow-2xl"
                                 />
@@ -2729,13 +2748,13 @@ export const UniversityDetail = () => {
           </div>
         </div>
 
-        {/* ── ACCREDITATION EXPLAIN MODAL (Simple, Easy, Short Explanations) ── */}
+        {/* ── ACCREDITATION EXPLAIN MODAL (Single Clear Short Para, No Multiple Chips) ── */}
         <Dialog open={!!selectedAccreditation} onOpenChange={(open) => !open && setSelectedAccreditation(null)}>
-          <DialogContent className="max-w-md p-6 bg-card border-border">
+          <DialogContent className="max-w-md p-6 bg-card border-border rounded-2xl">
             {selectedAccreditation && (
               <div className="space-y-4">
                 <div className="flex items-center gap-4 pb-3 border-b border-border/60">
-                  <div className="w-20 h-16 rounded-xl bg-white border border-border/80 p-2 flex items-center justify-center shrink-0 shadow-xs">
+                  <div className="w-18 h-18 rounded-xl bg-white border border-border/80 p-2 flex items-center justify-center shrink-0 shadow-xs">
                     <img
                       src={selectedAccreditation.img}
                       alt={selectedAccreditation.name}
@@ -2743,36 +2762,15 @@ export const UniversityDetail = () => {
                     />
                   </div>
                   <div>
-                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-primary/10 text-primary border border-primary/20">
-                      {selectedAccreditation.badge}
-                    </span>
-                    <h3 className="text-base font-bold text-foreground mt-1">
+                    <h3 className="text-base sm:text-lg font-bold text-foreground leading-snug">
                       {selectedAccreditation.fullName || selectedAccreditation.name}
                     </h3>
                   </div>
                 </div>
 
-                <div className="space-y-3 text-xs leading-relaxed">
-                  <div>
-                    <h4 className="font-bold text-foreground text-xs uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                      <ShieldCheck size={14} className="text-primary" />
-                      <span>What is this accreditation?</span>
-                    </h4>
-                    <p className="text-muted-foreground pl-5">
-                      {selectedAccreditation.shortDesc}
-                    </p>
-                  </div>
-
-                  <div className="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/20">
-                    <h4 className="font-bold text-emerald-700 dark:text-emerald-400 text-xs uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                      <CheckCircle2 size={14} className="text-emerald-500" />
-                      <span>Why it matters for your degree</span>
-                    </h4>
-                    <p className="text-foreground/90 font-medium pl-5">
-                      {selectedAccreditation.whyItMatters}
-                    </p>
-                  </div>
-                </div>
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                  {selectedAccreditation.singlePara || `${selectedAccreditation.shortDesc} ${selectedAccreditation.whyItMatters}`}
+                </p>
 
                 <div className="pt-2 flex justify-end">
                   <button

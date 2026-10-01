@@ -59,8 +59,8 @@ export const Index = () => {
       </Helmet>
 
       {/* 1. HERO SECTION (Prompt Rule #7 & #2) */}
-      <section id="hero" className="relative pt-6 sm:pt-8 md:pt-10 pb-14 md:pb-20 overflow-hidden bg-gradient-to-b from-primary/8 via-background to-background border-b border-border/50 scroll-mt-28 md:scroll-mt-36">
-        <div className="container-dg">
+      <section id="hero" className="relative min-h-[calc(88vh-80px)] flex items-center pt-16 sm:pt-20 md:pt-24 lg:pt-28 pb-16 md:pb-24 overflow-hidden bg-gradient-to-b from-primary/8 via-background to-background border-b border-border/50 scroll-mt-28 md:scroll-mt-36">
+        <div className="container-dg w-full">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             {/* Left Copy */}
             <div className="lg:col-span-6 space-y-6 text-center lg:text-left">

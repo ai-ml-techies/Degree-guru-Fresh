@@ -128,8 +128,10 @@ export const UniversityLogo: React.FC<UniversityLogoProps> = ({
       logo = { src: "/logos/alliance.png", alt: "Alliance University Online" };
     } else if (norm.includes("amity")) {
       logo = { src: "/logos/amity.png", alt: "Amity University Online" };
-    } else if (norm.includes("smu") || norm.includes("sikkim-manipal") || norm.includes("manipal") || norm.includes("muj")) {
-      logo = { src: "/logos/manipal.png", alt: "Manipal University Jaipur / SMU Online" };
+    } else if (norm.includes("smu") || norm.includes("sikkim-manipal")) {
+      logo = { src: "/logos/smu.png", alt: "Sikkim Manipal University Online" };
+    } else if (norm.includes("manipal") || norm.includes("muj")) {
+      logo = { src: "/logos/manipal_crest.png", alt: "Manipal University Jaipur" };
     } else if (norm.includes("mumbai") || norm.includes("navi")) {
       logo = { src: "/logos/dypatil_mumbai.png", alt: "DY Patil University, Navi Mumbai Online" };
     } else if (norm.includes("dpu") || norm.includes("patil") || norm.includes("vidyapeeth")) {
