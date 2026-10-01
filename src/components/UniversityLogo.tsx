@@ -56,9 +56,9 @@ export const UniversityLogo: React.FC<UniversityLogoProps> = ({
     if (norm.includes("amity")) {
       logo = { src: "/logos/amity_full.png", alt: "Amity University Online" };
     } else if (norm.includes("smu") || norm.includes("sikkim-manipal")) {
-      logo = { src: "/logos/smu.svg", alt: "Sikkim Manipal University Online" };
+      logo = { src: "/logos/smu.png", alt: "Sikkim Manipal University Online" };
     } else if (norm.includes("manipal") || norm.includes("muj")) {
-      logo = { src: "/logos/manipal.svg", alt: "Online Manipal (MUJ)" };
+      logo = { src: "/logos/manipal.png", alt: "Online Manipal (MUJ)" };
     } else if (norm.includes("chandigarh") || norm === "cu" || norm.includes("cuol") || norm.includes("cu-online")) {
       logo = { src: "/logos/cu.webp", alt: "Chandigarh University Online" };
     } else if (norm.includes("lpu") || norm.includes("lovely")) {

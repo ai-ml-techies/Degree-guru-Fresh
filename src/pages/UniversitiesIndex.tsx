@@ -427,7 +427,7 @@ export const UniversitiesIndex = () => {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-7">
               {visibleUniversities.map((uni) => {
                 const shortAccreditation = getShortAccreditation(uni);
                 const isSelected = selectedCompare.includes(uni.slug);
@@ -436,7 +436,7 @@ export const UniversitiesIndex = () => {
                 return (
                   <div
                     key={uni.id}
-                    className={`p-4 rounded-2xl bg-card border transition-all duration-150 flex flex-col justify-between space-y-3 group hover:border-primary/40 hover:shadow-md ${
+                    className={`p-5 sm:p-5.5 rounded-2xl bg-card border transition-all duration-150 flex flex-col justify-between space-y-4 group hover:border-primary/40 hover:shadow-md ${
                       isSelected ? "border-primary ring-2 ring-primary/30 shadow-md" : "border-border/80 shadow-2xs"
                     }`}
                   >
@@ -478,19 +478,19 @@ export const UniversitiesIndex = () => {
                       {/* University Logo (Clear PNG, centered, Liverpool enlarged) */}
                       <div
                         onClick={() => handleUniClick(uni.slug, uni.name)}
-                        className="w-full h-14 sm:h-16 flex items-center justify-center py-1 px-2 cursor-pointer transition-transform group-hover:scale-102"
+                        className="w-full h-15 sm:h-16 flex items-center justify-center py-1 px-2 cursor-pointer transition-transform group-hover:scale-102"
                       >
                         <div className={isLiverpool ? "scale-135 transition-transform" : ""}>
                           <UniversityLogo idOrSlug={uni.slug} size="md" className="max-w-full h-12 object-contain" />
                         </div>
                       </div>
 
-                      {/* University Name (Clean text heading above popular programs) */}
+                      {/* University Name (Clean text heading wrapping naturally without ellipsis) */}
                       <div
                         onClick={() => handleUniClick(uni.slug, uni.name)}
-                        className="pt-1 pb-1.5 text-center cursor-pointer"
+                        className="pt-1.5 pb-2 text-center cursor-pointer min-h-[2.75rem] flex items-center justify-center"
                       >
-                        <h3 className="text-xs sm:text-sm font-bold text-foreground line-clamp-1 group-hover:text-primary transition-colors" title={uni.name}>
+                        <h3 className="text-xs sm:text-sm font-bold text-foreground leading-snug group-hover:text-primary transition-colors text-center" title={uni.name}>
                           {uni.name}
                         </h3>
                       </div>
@@ -622,11 +622,11 @@ export const UniversitiesIndex = () => {
                 </p>
               </div>
             ) : (
-              <form onSubmit={handleBottomFormSubmit} className="space-y-3.5">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <form onSubmit={handleBottomFormSubmit} className="space-y-4 max-w-md mx-auto">
+                <div className="flex flex-col gap-3.5">
                   {/* Full Name */}
                   <div className="space-y-1">
-                    <label htmlFor={nameInputId} className="text-[11px] font-semibold text-muted-foreground">
+                    <label htmlFor={nameInputId} className="text-xs font-semibold text-foreground">
                       Full Name *
                     </label>
                     <input
@@ -639,14 +639,14 @@ export const UniversitiesIndex = () => {
                         if (formNameError) setFormNameError("");
                       }}
                       placeholder="e.g. Vikas Mehra"
-                      className="w-full px-3 py-2 rounded-xl bg-background border border-border text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none"
                     />
                     {formNameError && <p className="text-[11px] text-destructive font-medium">{formNameError}</p>}
                   </div>
 
                   {/* Phone Number */}
                   <div className="space-y-1">
-                    <label htmlFor={phoneInputId} className="text-[11px] font-semibold text-muted-foreground">
+                    <label htmlFor={phoneInputId} className="text-xs font-semibold text-foreground">
                       Mobile Number (10 Digits) *
                     </label>
                     <div className="flex gap-2">
@@ -654,7 +654,7 @@ export const UniversitiesIndex = () => {
                         value={countryCode}
                         onChange={(e) => setCountryCode(e.target.value)}
                         aria-label="Country Code"
-                        className="px-2 py-2 rounded-xl bg-background border border-border text-xs font-semibold shrink-0"
+                        className="px-2.5 py-2.5 rounded-xl bg-background border border-border text-xs font-semibold shrink-0 cursor-pointer"
                       >
                         <option value="+91">+91 (IN)</option>
                         <option value="+971">+971 (AE)</option>
@@ -673,15 +673,15 @@ export const UniversitiesIndex = () => {
                           if (formPhoneError) setFormPhoneError("");
                         }}
                         placeholder="Enter 10-digit number"
-                        className="w-full px-3 py-2 rounded-xl bg-background border border-border text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none"
                       />
                     </div>
                     {formPhoneError && <p className="text-[11px] text-destructive font-medium">{formPhoneError}</p>}
                   </div>
 
                   {/* Email with Verification OTP */}
-                  <div className="space-y-1 sm:col-span-2">
-                    <label htmlFor={emailInputId} className="text-[11px] font-semibold text-muted-foreground flex items-center justify-between">
+                  <div className="space-y-1">
+                    <label htmlFor={emailInputId} className="text-xs font-semibold text-foreground flex items-center justify-between">
                       <span>Email Address *</span>
                       {emailVerified && (
                         <span className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
@@ -691,7 +691,7 @@ export const UniversitiesIndex = () => {
                     </label>
                     <div className="flex gap-2">
                       <div className="relative flex-1">
-                        <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                        <Mail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
                         <input
                           id={emailInputId}
                           type="email"
@@ -703,7 +703,7 @@ export const UniversitiesIndex = () => {
                             if (formEmailError) setFormEmailError("");
                           }}
                           placeholder="vikas.mehra@gmail.com"
-                          className="w-full pl-8 pr-3 py-2 rounded-xl bg-background border border-border text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none disabled:bg-muted/40"
+                          className="w-full pl-9 pr-3.5 py-2.5 rounded-xl bg-background border border-border text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none disabled:bg-muted/40"
                         />
                       </div>
 
@@ -711,7 +711,7 @@ export const UniversitiesIndex = () => {
                         <button
                           type="button"
                           onClick={handleSendOtp}
-                          className="px-3.5 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 transition-colors shrink-0 cursor-pointer shadow-2xs"
+                          className="px-4 py-2.5 rounded-xl bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 transition-colors shrink-0 cursor-pointer shadow-2xs"
                         >
                           {otpSent ? "Resend OTP" : "Send OTP"}
                         </button>
@@ -721,7 +721,7 @@ export const UniversitiesIndex = () => {
 
                     {/* Interactive OTP Verification Input */}
                     {otpSent && !emailVerified && (
-                      <div className="mt-2 p-2.5 rounded-xl bg-muted/40 border border-border/80 space-y-2">
+                      <div className="mt-2.5 p-3 rounded-xl bg-muted/40 border border-border/80 space-y-2">
                         <div className="flex items-center justify-between text-[11px]">
                           <span className="text-muted-foreground">
                             Enter the 4-digit code sent to your email:
@@ -737,12 +737,12 @@ export const UniversitiesIndex = () => {
                             value={otpValue}
                             onChange={(e) => setOtpValue(e.target.value)}
                             placeholder="Enter 4-digit OTP"
-                            className="w-32 px-3 py-1.5 rounded-lg bg-background border border-border text-xs font-bold text-center tracking-widest focus:ring-2 focus:ring-primary/40 focus:outline-none"
+                            className="w-32 px-3 py-2 rounded-lg bg-background border border-border text-xs font-bold text-center tracking-widest focus:ring-2 focus:ring-primary/40 focus:outline-none"
                           />
                           <button
                             type="button"
                             onClick={handleVerifyOtp}
-                            className="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-colors cursor-pointer"
+                            className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-colors cursor-pointer"
                           >
                             Verify OTP
                           </button>
@@ -756,7 +756,7 @@ export const UniversitiesIndex = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-2.5 rounded-xl bg-primary text-primary-foreground text-xs sm:text-sm font-bold hover:bg-primary/90 transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70 mt-1"
+                  className="w-full py-3 rounded-xl bg-primary text-primary-foreground text-xs sm:text-sm font-bold hover:bg-primary/90 transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70 mt-2"
                 >
                   {isSubmitting ? (
                     <span>Submitting Request...</span>
