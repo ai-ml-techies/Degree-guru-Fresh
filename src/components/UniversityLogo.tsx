@@ -68,7 +68,7 @@ export const UniversityLogo: React.FC<UniversityLogoProps> = ({
     } else if (norm.includes("upes")) {
       logo = { src: "/logos/upes_full.png", alt: "UPES Online – University of Tomorrow" };
     } else if (norm.includes("uttaranchal") || norm === "uu" || norm.includes("uu-online")) {
-      logo = { src: "/logos/uttaranchal.svg", alt: "Uttaranchal University Online" };
+      logo = { src: "/logos/uttaranchal.png", alt: "Uttaranchal University Online" };
     } else if (norm.includes("vgu") || norm.includes("vivekanand")) {
       logo = { src: "/logos/vgu.svg", alt: "Vivekananda Global University Online" };
     } else if (norm.includes("vit") || norm.includes("vellore")) {
@@ -213,7 +213,7 @@ export const UniversityLogo: React.FC<UniversityLogoProps> = ({
 
     return (
       <div
-        className={`inline-flex items-center justify-center rounded-xl bg-white shadow-2xs border border-slate-200/80 transition-all duration-200 group-hover:border-primary/40 ${containerHeight} w-full max-w-[260px] overflow-hidden ${className}`}
+        className={`inline-flex items-center justify-center rounded-xl bg-transparent transition-all duration-200 border-0 ${containerHeight} w-full max-w-[260px] overflow-hidden ${className}`}
       >
         <img
           src={logo.src}
@@ -235,7 +235,7 @@ export const UniversityLogo: React.FC<UniversityLogoProps> = ({
 
   return (
     <div
-      className={`inline-flex items-center justify-center rounded-xl bg-white text-slate-900 shadow-2xs border border-slate-200/80 ${containerHeight} w-full max-w-[200px] ${className}`}
+      className={`inline-flex items-center justify-center rounded-xl bg-muted/30 text-foreground transition-all duration-200 border-0 ${containerHeight} w-full max-w-[200px] ${className}`}
     >
       <span className="text-[11px] font-black tracking-tight truncate px-2">
         {cleanName}

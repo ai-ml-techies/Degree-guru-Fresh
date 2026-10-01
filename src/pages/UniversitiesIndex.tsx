@@ -197,23 +197,16 @@ export const UniversitiesIndex = () => {
       return true;
     });
 
-    // Sorting
-    list = [...list].sort((a, b) => {
-      if (sortBy === "popular") {
-        return (b.reviewsCount || 0) - (a.reviewsCount || 0);
-      }
-      if (sortBy === "fee-asc") {
-        return parseMinFee(a.feesRange) - parseMinFee(b.feesRange);
-      }
-      if (sortBy === "fee-desc") {
-        return parseMinFee(b.feesRange) - parseMinFee(a.feesRange);
-      }
-      if (sortBy === "name-asc") {
-        return a.name.localeCompare(b.name);
-      }
-      // "recommended" (Default rating & reputation)
-      return (b.rating || 4.2) - (a.rating || 4.2);
-    });
+    // Sorting (Apply when a specific sort is selected; "recommended" preserves the verified catalog order)
+    if (sortBy === "popular") {
+      list = [...list].sort((a, b) => (b.reviewsCount || 0) - (a.reviewsCount || 0));
+    } else if (sortBy === "fee-asc") {
+      list = [...list].sort((a, b) => parseMinFee(a.feesRange) - parseMinFee(b.feesRange));
+    } else if (sortBy === "fee-desc") {
+      list = [...list].sort((a, b) => parseMinFee(b.feesRange) - parseMinFee(a.feesRange));
+    } else if (sortBy === "name-asc") {
+      list = [...list].sort((a, b) => a.name.localeCompare(b.name));
+    }
 
     return list;
   }, [allUniversities, searchTerm, locationFilter, typeFilter, sortBy]);
