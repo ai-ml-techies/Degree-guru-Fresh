@@ -330,17 +330,17 @@ export const UniversitiesIndex = () => {
           <div className="flex flex-wrap items-center justify-between gap-2.5 pt-1">
             <div className="flex flex-wrap items-center gap-2 flex-1">
               {/* Filter 1: Location / Origin */}
-              <div className="relative min-w-[140px]">
+              <div className="relative min-w-[160px]">
                 <select
                   value={locationFilter}
                   onChange={(e) => {
                     setLocationFilter(e.target.value as LocationFilter);
                     setVisibleCount(9);
                   }}
-                  aria-label="Filter by Location"
+                  aria-label="Filter by University Location"
                   className="w-full appearance-none px-3 py-2 pr-8 rounded-xl bg-card border border-border text-xs font-semibold text-foreground focus:ring-2 focus:ring-primary/40 focus:outline-none cursor-pointer shadow-2xs"
                 >
-                  <option value="all">All Locations</option>
+                  <option value="all">University Location</option>
                   <option value="indian">Indian Universities</option>
                   <option value="international">Foreign Universities</option>
                 </select>
@@ -348,7 +348,7 @@ export const UniversitiesIndex = () => {
               </div>
 
               {/* Filter 2: University Type */}
-              <div className="relative min-w-[140px]">
+              <div className="relative min-w-[150px]">
                 <select
                   value={typeFilter}
                   onChange={(e) => {
@@ -358,7 +358,7 @@ export const UniversitiesIndex = () => {
                   aria-label="Filter by University Type"
                   className="w-full appearance-none px-3 py-2 pr-8 rounded-xl bg-card border border-border text-xs font-semibold text-foreground focus:ring-2 focus:ring-primary/40 focus:outline-none cursor-pointer shadow-2xs"
                 >
-                  <option value="all">All Types</option>
+                  <option value="all">University Type</option>
                   <option value="Private">Private</option>
                   <option value="Government">Government</option>
                   <option value="Deemed">Deemed</option>
