@@ -307,9 +307,6 @@ export const UniversitiesIndex = () => {
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground tracking-tight">
             Best Online Universities
           </h1>
-          <p className="text-xs sm:text-sm text-muted-foreground mt-1.5">
-            Discover verified UGC-DEB accredited online degrees with official fees, NAAC grades & direct admission assistance.
-          </p>
         </div>
 
         {/* 2. Search & Dynamic Filters Bar */}
