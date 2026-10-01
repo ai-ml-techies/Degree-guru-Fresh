@@ -96,15 +96,9 @@ export const EmiCalculator: React.FC<EmiCalculatorProps> = ({
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border/60">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 text-xs font-bold mb-2">
-            <Calculator size={13} /> 0% Interest Education EMI Planner
-          </div>
           <h3 className="text-xl sm:text-2xl font-black text-foreground tracking-tight">
             EMI Calculator
           </h3>
-          <p className="text-xs sm:text-sm text-foreground/75 font-medium mt-0.5">
-            Estimate affordable monthly installments for UGC-approved online degrees with zero hidden interest.
-          </p>
         </div>
 
         {/* 0% No-Cost Toggle */}
@@ -185,9 +179,8 @@ export const EmiCalculator: React.FC<EmiCalculatorProps> = ({
           {/* Initial Down Payment (Scales with Fee) with Manual Fill Up */}
           <div className="space-y-3">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-              <label className="text-xs sm:text-sm font-bold text-foreground flex items-center gap-1.5">
-                <span>Down Payment / Initial Deposit</span>
-                <span className="text-[10px] font-normal text-foreground/60">(Optional)</span>
+              <label className="text-xs sm:text-sm font-bold text-foreground">
+                Down Payment
               </label>
 
               {/* Manual Fill-up for Down Payment */}

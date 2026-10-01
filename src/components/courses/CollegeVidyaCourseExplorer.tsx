@@ -439,6 +439,45 @@ const CATEGORIES: CategoryGroup[] = [
       },
     ],
   },
+  {
+    id: "job-guaranteed",
+    title: "Job Guaranteed",
+    subtitle: "100% Placement / PPO",
+    courses: [
+      {
+        badge: "✦ 100% Placement PPO",
+        badgeStyle: "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300",
+        title: "ACWM Career Programme (Bajaj Capital)",
+        ctaText: "View 100% Placement",
+        slug: "placement-guaranteed",
+        icon: <Award size={26} className="text-emerald-600" />,
+      },
+      {
+        badge: "✦ Written Offer First",
+        badgeStyle: "bg-teal-50 text-teal-700 border-teal-200 dark:bg-teal-950/40 dark:text-teal-300",
+        title: "Wealth Management PPO Program",
+        ctaText: "View Program",
+        slug: "placement-guaranteed",
+        icon: <Briefcase size={26} className="text-primary" />,
+      },
+      {
+        badge: "✦ Stipend ₹60,000",
+        badgeStyle: "bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950/40 dark:text-purple-300",
+        title: "Banking & Financial Advisory",
+        ctaText: "Apply with PPO",
+        slug: "placement-guaranteed",
+        icon: <Sparkles size={26} className="text-[#6528f7]" />,
+      },
+      {
+        badge: "✦ Bonus ₹85,000",
+        badgeStyle: "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/40 dark:text-amber-300",
+        title: "SGT University Online 100% Placement",
+        ctaText: "Explore SGT Program",
+        slug: "universities/sgt-university-online",
+        icon: <GraduationCap size={26} className="text-amber-600" />,
+      },
+    ],
+  },
 ];
 
 export const CollegeVidyaCourseExplorer = () => {

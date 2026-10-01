@@ -687,7 +687,7 @@ export const UniversityDetail = () => {
     allUnis.find((u) => uniSlug && (u.slug.includes(uniSlug) || uniSlug.includes(u.slug) || (uniSlug === "amity" && u.slug.includes("amity"))));
 
   const [activeTab, setActiveTab] = useState<"overview" | "courses" | "placements" | "faculty" | "admission">("overview");
-  const [courseCategoryTab, setCourseCategoryTab] = useState<"ug" | "pg" | "collaborative" | "integrated">("ug");
+  const [courseCategoryTab, setCourseCategoryTab] = useState<"ug" | "pg" | "collaborative" | "integrated" | "guaranteed">("ug");
   const [paymentMode, setPaymentMode] = useState<"direct" | "loan">("direct");
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedProgramId, setExpandedProgramId] = useState<string | null>(null);
@@ -1587,16 +1587,30 @@ export const UniversityDetail = () => {
                         </div>
                       </div>
 
-                      {/* Clean Category Pills (UG, PG) */}
+                      {/* Clean Category Pills */}
                       <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
-                        {[
-                          { id: "ug", label: "UG Courses" },
-                          { id: "pg", label: "PG Courses" },
-                        ].map((cat) => (
+                        {(isAmity
+                          ? [
+                              { id: "ug", label: "UG Courses" },
+                              { id: "pg", label: "PG Courses" },
+                              { id: "collaborative", label: "Industry Collaborative" },
+                              { id: "integrated", label: "Dual Degree / Integrated" },
+                            ]
+                          : isSgt
+                          ? [
+                              { id: "ug", label: "UG Courses" },
+                              { id: "pg", label: "PG Courses" },
+                              { id: "guaranteed", label: "Certification Placement Guaranteed" },
+                            ]
+                          : [
+                              { id: "ug", label: "UG Courses" },
+                              { id: "pg", label: "PG Courses" },
+                            ]
+                        ).map((cat) => (
                           <button
                             key={cat.id}
-                            onClick={() => setCourseCategoryTab(cat.id as "ug" | "pg")}
-                            className={`px-4 py-2 rounded-full text-xs font-semibold transition-all whitespace-nowrap ${
+                            onClick={() => setCourseCategoryTab(cat.id as any)}
+                            className={`px-4 py-2 rounded-full text-xs font-semibold transition-all whitespace-nowrap cursor-pointer ${
                               courseCategoryTab === cat.id
                                 ? "bg-primary text-primary-foreground shadow-sm"
                                 : "bg-card border border-border/80 text-foreground/80 hover:bg-muted"
@@ -1607,8 +1621,125 @@ export const UniversityDetail = () => {
                         ))}
                       </div>
 
-                      {/* PROGRAM CARDS GRID (Unique Degrees with Specializations Dropdown & Links) */}
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                      {courseCategoryTab === "guaranteed" ? (
+                        /* SGT University Online: 100% Guaranteed Placement Career Programme (ACWM with Bajaj Capital) */
+                        <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-emerald-500/10 via-card to-card border border-emerald-500/30 shadow-sm space-y-6 animate-in fade-in-50 duration-200">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-border/50">
+                            <div className="space-y-1.5">
+                              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 text-xs font-bold uppercase tracking-wider">
+                                <CheckCircle2 size={14} />
+                                <span>100% Guaranteed Placement Career Programme</span>
+                              </div>
+                              <h3 className="text-xl sm:text-2xl font-bold text-foreground">
+                                Job First. Train Next. <span className="text-emerald-600 dark:text-emerald-400">Build Your Career.</span>
+                              </h3>
+                              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-2xl">
+                                Interview for a Wealth Officer role at Bajaj Capital and receive a written Pre-Placement Offer (PPO) before training begins.
+                              </p>
+                            </div>
+
+                            <div className="flex items-center gap-2 shrink-0">
+                              <span className="px-3 py-1.5 rounded-xl bg-card border border-border/70 text-xs font-bold text-foreground shadow-2xs">
+                                Bajaj Capital
+                              </span>
+                              <span className="text-xs text-muted-foreground">•</span>
+                              <span className="px-3 py-1.5 rounded-xl bg-card border border-border/70 text-xs font-bold text-foreground shadow-2xs">
+                                AIMA & ICOFP
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* 3 Key Career Numbers */}
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                            <div className="p-4 rounded-2xl bg-card border border-border/70 text-center space-y-1 shadow-2xs">
+                              <span className="text-[11px] text-muted-foreground font-medium block">Starting Package</span>
+                              <span className="text-2xl font-black text-foreground block">₹4.2 LPA</span>
+                              <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold block">Full-time Wealth Officer Role</span>
+                            </div>
+
+                            <div className="p-4 rounded-2xl bg-card border border-border/70 text-center space-y-1 shadow-2xs">
+                              <span className="text-[11px] text-muted-foreground font-medium block">Internship Stipend</span>
+                              <span className="text-2xl font-black text-foreground block">₹60,000</span>
+                              <span className="text-[11px] text-muted-foreground font-semibold block">₹15,000/mo while you train</span>
+                            </div>
+
+                            <div className="p-4 rounded-2xl bg-card border border-border/70 text-center space-y-1 shadow-2xs">
+                              <span className="text-[11px] text-muted-foreground font-medium block">Retention Bonus</span>
+                              <span className="text-2xl font-black text-emerald-600 dark:text-emerald-400 block">₹85,000</span>
+                              <span className="text-[11px] text-muted-foreground font-semibold block">After 12 months full-time</span>
+                            </div>
+                          </div>
+
+                          {/* 8-Month Career Pathway */}
+                          <div className="space-y-3 pt-1">
+                            <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                              8-Month Career Pathway (From Interview to Payroll)
+                            </h4>
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                              <div className="p-4 rounded-2xl bg-muted/30 border border-border/60 space-y-1.5">
+                                <div className="flex items-center gap-2">
+                                  <span className="w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-bold flex items-center justify-center">01</span>
+                                  <span className="text-xs font-bold text-foreground">Get Selected</span>
+                                </div>
+                                <p className="text-[11px] text-muted-foreground leading-relaxed">
+                                  Appear for the interview with Bajaj Capital and receive a written Pre-Placement Offer (PPO) starting from ₹4.2 LPA.
+                                </p>
+                              </div>
+
+                              <div className="p-4 rounded-2xl bg-muted/30 border border-border/60 space-y-1.5">
+                                <div className="flex items-center gap-2">
+                                  <span className="w-6 h-6 rounded-full bg-sky-500/10 text-sky-600 dark:text-sky-400 text-xs font-bold flex items-center justify-center">02</span>
+                                  <span className="text-xs font-bold text-foreground">Get Trained</span>
+                                </div>
+                                <p className="text-[11px] text-muted-foreground leading-relaxed">
+                                  240 hours of Advanced Certification in Wealth Management (ACWM) with ICOFP & AIMA, then paid internship at ₹15,000/mo.
+                                </p>
+                              </div>
+
+                              <div className="p-4 rounded-2xl bg-muted/30 border border-border/60 space-y-1.5">
+                                <div className="flex items-center gap-2">
+                                  <span className="w-6 h-6 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-bold flex items-center justify-center">03</span>
+                                  <span className="text-xs font-bold text-foreground">Get Hired</span>
+                                </div>
+                                <p className="text-[11px] text-muted-foreground leading-relaxed">
+                                  Join as a permanent Wealth Officer at Bajaj Capital with starting CTC ₹4.2 LPA and ₹85,000 completion bonus.
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Key Skills Covered */}
+                          <div className="pt-2 flex flex-wrap items-center gap-2 text-xs">
+                            <span className="text-xs font-bold text-foreground">Curriculum Focus:</span>
+                            {["Financial Planning", "Wealth Management", "Investment Advisory", "Mutual Funds", "Retirement, Tax & Risk Planning"].map((skill, idx) => (
+                              <span key={idx} className="px-2.5 py-1 rounded-lg bg-card border border-border/70 text-[11px] font-medium text-foreground/90">
+                                {skill}
+                              </span>
+                            ))}
+                          </div>
+
+                          {/* CTA Row */}
+                          <div className="pt-4 border-t border-border/50 flex flex-wrap items-center justify-between gap-3">
+                            <Link
+                              to="/placement-guaranteed"
+                              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground font-semibold text-xs sm:text-sm hover:bg-primary/90 transition-all shadow-sm"
+                            >
+                              <span>Explore Dedicated 100% Placement Guaranteed Page</span>
+                              <ChevronRight size={14} />
+                            </Link>
+
+                            <a
+                              href="#counseling-box"
+                              onClick={() => setSelectedCourse("Advanced Certification in Wealth Management (PPO Guaranteed)")}
+                              className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-card border border-primary text-primary font-semibold text-xs sm:text-sm hover:bg-primary/5 transition-colors"
+                            >
+                              <span>Apply for ACWM Interview</span>
+                            </a>
+                          </div>
+                        </div>
+                      ) : (
+                        /* PROGRAM CARDS GRID (Unique Degrees with Specializations Dropdown & Links) */
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                         {displayPrograms.map((prog) => {
                           return (
                             <div
@@ -1732,9 +1863,11 @@ export const UniversityDetail = () => {
                           );
                         })}
                       </div>
+                    )}
                     </div>
 
                     {/* 2. Course Wise Updated Fees 2026 Table (Matching Image 3) */}
+                    {courseCategoryTab !== "guaranteed" && (
                     <div className="space-y-4 pt-4">
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <div>
@@ -1832,6 +1965,7 @@ export const UniversityDetail = () => {
                         </div>
                       </div>
                     </div>
+                  )}
                   </section>
                 )}
 
@@ -1848,7 +1982,7 @@ export const UniversityDetail = () => {
                         </h2>
                         <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                           {isSgt
-                            ? "SGT University Online features a 100% Guaranteed Placement Career Programme with pre-placement offers (PPOs), paid internship stipends, and institutional corporate recruitment drives."
+                            ? "SGT University Online equips students with industry-relevant skills, comprehensive career guidance, and corporate recruitment drives across leading industry partners."
                             : isSharda
                             ? "Sharda University Online equips learners with hands-on, industry-relevant skills. Active placement cells conduct dedicated corporate recruitment drives and mock interview preparation."
                             : "Amity Online provides dedicated corporate drives, virtual career fairs, mock interviews, and career counseling to bridge the gap between academic learning and corporate leadership."
@@ -1918,105 +2052,6 @@ export const UniversityDetail = () => {
                         </div>
                       </div>
                     </div>
-
-                    {/* SGT University Online: 100% Guaranteed Placement Career Programme (ACWM with Bajaj Capital) */}
-                    {isSgt && (
-                      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-emerald-500/10 via-card to-card border border-emerald-500/30 shadow-sm space-y-6">
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-border/50">
-                          <div className="space-y-1.5">
-                            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 text-xs font-bold uppercase tracking-wider">
-                              <CheckCircle2 size={14} />
-                              <span>100% Guaranteed Placement Career Programme</span>
-                            </div>
-                            <h3 className="text-xl sm:text-2xl font-bold text-foreground">
-                              Job First. Train Next. <span className="text-emerald-600 dark:text-emerald-400">Build Your Career.</span>
-                            </h3>
-                            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-2xl">
-                              Interview for a Wealth Officer role at Bajaj Capital and receive a written Pre-Placement Offer (PPO) before training begins.
-                            </p>
-                          </div>
-
-                          <div className="flex items-center gap-2 shrink-0">
-                            <span className="px-3 py-1.5 rounded-xl bg-card border border-border/70 text-xs font-bold text-foreground shadow-2xs">
-                              Bajaj Capital
-                            </span>
-                            <span className="text-xs text-muted-foreground">•</span>
-                            <span className="px-3 py-1.5 rounded-xl bg-card border border-border/70 text-xs font-bold text-foreground shadow-2xs">
-                              AIMA & ICOFP
-                            </span>
-                          </div>
-                        </div>
-
-                        {/* 3 Key Career Numbers */}
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-                          <div className="p-4 rounded-2xl bg-card border border-border/70 text-center space-y-1 shadow-2xs">
-                            <span className="text-[11px] text-muted-foreground font-medium block">Starting Package</span>
-                            <span className="text-2xl font-black text-foreground block">₹4.2 LPA</span>
-                            <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold block">Full-time Wealth Officer Role</span>
-                          </div>
-
-                          <div className="p-4 rounded-2xl bg-card border border-border/70 text-center space-y-1 shadow-2xs">
-                            <span className="text-[11px] text-muted-foreground font-medium block">Internship Stipend</span>
-                            <span className="text-2xl font-black text-foreground block">₹60,000</span>
-                            <span className="text-[11px] text-muted-foreground font-semibold block">₹15,000/mo while you train</span>
-                          </div>
-
-                          <div className="p-4 rounded-2xl bg-card border border-border/70 text-center space-y-1 shadow-2xs">
-                            <span className="text-[11px] text-muted-foreground font-medium block">Retention Bonus</span>
-                            <span className="text-2xl font-black text-emerald-600 dark:text-emerald-400 block">₹85,000</span>
-                            <span className="text-[11px] text-muted-foreground font-semibold block">After 12 months full-time</span>
-                          </div>
-                        </div>
-
-                        {/* 3 Step Career Pathway */}
-                        <div className="space-y-3 pt-1">
-                          <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                            6-Month Career Pathway (From Interview to Payroll)
-                          </h4>
-                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                            <div className="p-4 rounded-2xl bg-muted/30 border border-border/60 space-y-1.5">
-                              <div className="flex items-center gap-2">
-                                <span className="w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-bold flex items-center justify-center">01</span>
-                                <span className="text-xs font-bold text-foreground">Get Selected</span>
-                              </div>
-                              <p className="text-[11px] text-muted-foreground leading-relaxed">
-                                Appear for the interview with Bajaj Capital and receive a written Pre-Placement Offer (PPO) starting from ₹4.2 LPA.
-                              </p>
-                            </div>
-
-                            <div className="p-4 rounded-2xl bg-muted/30 border border-border/60 space-y-1.5">
-                              <div className="flex items-center gap-2">
-                                <span className="w-6 h-6 rounded-full bg-sky-500/10 text-sky-600 dark:text-sky-400 text-xs font-bold flex items-center justify-center">02</span>
-                                <span className="text-xs font-bold text-foreground">Get Trained</span>
-                              </div>
-                              <p className="text-[11px] text-muted-foreground leading-relaxed">
-                                240 hours of Advanced Certification in Wealth Management (ACWM) with ICOFP & AIMA, then paid internship at ₹15,000/mo.
-                              </p>
-                            </div>
-
-                            <div className="p-4 rounded-2xl bg-muted/30 border border-border/60 space-y-1.5">
-                              <div className="flex items-center gap-2">
-                                <span className="w-6 h-6 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-bold flex items-center justify-center">03</span>
-                                <span className="text-xs font-bold text-foreground">Get Hired</span>
-                              </div>
-                              <p className="text-[11px] text-muted-foreground leading-relaxed">
-                                Join as a permanent Wealth Officer at Bajaj Capital with starting CTC ₹4.2 LPA and ₹85,000 completion bonus.
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Key Skills Covered */}
-                        <div className="pt-2 flex flex-wrap items-center gap-2 text-xs">
-                          <span className="text-xs font-bold text-foreground">Curriculum Focus:</span>
-                          {["Financial Planning", "Wealth Management", "Investment Advisory", "Mutual Funds", "Retirement, Tax & Risk Planning"].map((skill, idx) => (
-                            <span key={idx} className="px-2.5 py-1 rounded-lg bg-card border border-border/70 text-[11px] font-medium text-foreground/90">
-                              {skill}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
 
                     {/* Sharda Online BCA Job Roles & Average Salary Breakdown (Verified Reference) */}
                     {isSharda && (

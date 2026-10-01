@@ -145,7 +145,7 @@ export const MobileBottomNav = () => {
               <Link
                 to="/know-yourself"
                 onClick={() => setCareerDrawerOpen(false)}
-                className="flex items-center justify-between p-3 rounded-2xl bg-primary/10 hover:bg-primary/15 border border-primary/30 transition-colors"
+                className="flex items-center justify-between p-3 rounded-2xl bg-card hover:bg-muted/40 border border-border/60 transition-colors"
               >
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-primary text-primary-foreground flex items-center justify-center shadow-md shadow-primary/20">

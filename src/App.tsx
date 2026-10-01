@@ -35,8 +35,8 @@ const Blog              = lazy(() => import("./pages/Blog.tsx"));
 const BlogPost          = lazy(() => import("./pages/BlogPost.tsx"));
 const AuthorDetail      = lazy(() => import("./pages/AuthorDetail.tsx"));
 const Employer          = lazy(() => import("./pages/jobs/Employer.tsx"));
-const JobSeeker         = lazy(() => import("./pages/jobs/JobSeeker.tsx"));
 const Sitemap           = lazy(() => import("./pages/Sitemap.tsx"));
+const PlacementGuaranteed = lazy(() => import("./pages/PlacementGuaranteed.tsx"));
 const NotFound          = lazy(() => import("./pages/NotFound.tsx"));
 
 const queryClient = new QueryClient();
@@ -67,6 +67,11 @@ const App = () => (
                 <Route path="/courses" element={<CoursesIndex />} />
                 <Route path="/programs" element={<CoursesIndex />} />
                 <Route path="/programs/:courseSlug" element={<CourseDetail />} />
+
+                {/* 100% Placement Guaranteed Dedicated Program */}
+                <Route path="/placement-guaranteed" element={<PlacementGuaranteed />} />
+                <Route path="/100-placement-guaranteed" element={<PlacementGuaranteed />} />
+                <Route path="/acwm-career-programme" element={<PlacementGuaranteed />} />
 
                 {/* Universities & Comparison (Supporting both singular and plural paths) */}
                 <Route path="/universities" element={<UniversitiesIndex />} />

@@ -78,6 +78,7 @@ export const CourseDetail = () => {
   
   // Specific filters
   const [selectedSpecialisation, setSelectedSpecialisation] = useState<string>("all");
+  const [selectedProgramType, setSelectedProgramType] = useState<string>("all");
   const [selectedFeeBudget, setSelectedFeeBudget] = useState<string>("all");
   const [selectedDuration, setSelectedDuration] = useState<string>("all");
   const [selectedUniversity, setSelectedUniversity] = useState<string>("all");
@@ -196,7 +197,13 @@ export const CourseDetail = () => {
       if (selectedDuration === "2-year" && is1YearUni) return false;
     }
 
-    // 5. University filter
+    // 5. Job Guaranteed Program Filter
+    if (selectedProgramType === "job-guaranteed") {
+      const isJobGuaranteed = uni.slug.includes("sgt") || uni.id.includes("sgt") || (uni.placementSupport && uni.placementSupport.toLowerCase().includes("guaranteed"));
+      if (!isJobGuaranteed) return false;
+    }
+
+    // 6. University filter
     if (selectedUniversity !== "all") {
       if (uni.slug !== selectedUniversity) return false;
     }
@@ -415,12 +422,29 @@ export const CourseDetail = () => {
                   <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
                 </div>
 
-                {/* 5. Reset button */}
-                {(selectedSpecialisation !== "all" || selectedFeeBudget !== "all" || selectedDuration !== "all" || selectedUniversity !== "all" || appliedSearch) && (
+                {/* 5. Job Guaranteed Program Filter */}
+                <div className="relative flex-1 sm:flex-none min-w-[170px]">
+                  <select
+                    value={selectedProgramType}
+                    onChange={(e) => {
+                      setSelectedProgramType(e.target.value);
+                      setVisibleCount(6);
+                    }}
+                    className="w-full appearance-none px-3.5 py-2 pr-8 rounded-xl bg-card border border-border text-xs font-semibold text-foreground focus:ring-2 focus:ring-primary/40 focus:outline-none cursor-pointer shadow-2xs"
+                  >
+                    <option value="all">All Program Types</option>
+                    <option value="job-guaranteed">Job Guaranteed Program</option>
+                  </select>
+                  <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+                </div>
+
+                {/* 6. Reset button */}
+                {(selectedSpecialisation !== "all" || selectedProgramType !== "all" || selectedFeeBudget !== "all" || selectedDuration !== "all" || selectedUniversity !== "all" || appliedSearch) && (
                   <button
                     type="button"
                     onClick={() => {
                       setSelectedSpecialisation("all");
+                      setSelectedProgramType("all");
                       setSelectedFeeBudget("all");
                       setSelectedDuration("all");
                       setSelectedUniversity("all");

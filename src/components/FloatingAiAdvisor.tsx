@@ -294,10 +294,10 @@ export const FloatingAiAdvisor = () => {
   };
 
   return (
-    <div className="fixed right-4 sm:right-6 bottom-24 md:bottom-8 z-[99] flex flex-col items-end">
+    <div className="fixed right-4 sm:right-6 bottom-18 md:bottom-4 z-[99] flex flex-col items-end">
       {/* Bot Chat Window */}
       {isOpen && (
-        <div className="mb-3 w-[92vw] sm:w-[380px] max-w-[400px] h-[540px] max-h-[82vh] rounded-3xl bg-card border border-border shadow-2xl flex flex-col overflow-hidden animate-slide-up backdrop-blur-lg">
+        <div className="mb-2.5 w-[92vw] sm:w-[360px] max-w-[380px] h-[440px] max-h-[70vh] rounded-3xl bg-card border border-border shadow-2xl flex flex-col overflow-hidden animate-slide-up backdrop-blur-lg">
           {/* Header - Flat Purple (#6528f7) with Guru AI 3D Robot Mascot */}
           <div className="px-4 py-3.5 bg-[#6528f7] text-white flex items-center justify-between shadow-sm">
             <div className="flex items-center gap-2.5">
@@ -464,7 +464,7 @@ export const FloatingAiAdvisor = () => {
         <button
           onClick={() => setIsOpen((v) => !v)}
           aria-label={isOpen ? "Close Guru AI" : "Ask Guru AI"}
-          className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 shadow-xl shrink-0 ${
+          className={`relative w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 shadow-xl shrink-0 ${
             isOpen ? "bg-slate-800 text-white" : "bg-white border border-border/80"
           }`}
         >
@@ -477,7 +477,7 @@ export const FloatingAiAdvisor = () => {
           )}
 
           {isOpen ? (
-            <X size={24} />
+            <X size={18} />
           ) : (
             <div className="relative w-full h-full overflow-hidden rounded-full">
               <img

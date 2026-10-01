@@ -294,12 +294,12 @@ export const Header = () => {
                   <div className="glass-dropdown p-4 rounded-2xl shadow-2xl border border-border/70 space-y-1.5">
                     <div className="pb-1.5 border-b border-border/50 flex items-center justify-between">
                       <span className="text-[11px] font-black uppercase tracking-wider text-primary">
-                        Free Career & AI Tools
+                        Self Help Tools
                       </span>
                     </div>
                     <Link
                       to="/know-yourself"
-                      className="p-2.5 rounded-xl hover:bg-primary/10 transition-colors flex items-center gap-3 group bg-primary/5 border border-primary/20"
+                      className="p-2.5 rounded-xl hover:bg-primary/10 transition-colors flex items-center gap-3 group"
                     >
                       <div className="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
                         <Sparkles size={18} />

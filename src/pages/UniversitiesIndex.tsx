@@ -139,10 +139,6 @@ export const UniversitiesIndex = () => {
                       <UniversityLogo idOrSlug={uni.slug} size="md" className="max-w-full w-full" />
                     </div>
 
-                    <p className="text-[11px] text-muted-foreground mt-2 line-clamp-2 leading-relaxed">
-                      {uni.overview}
-                    </p>
-
                     {/* Popular courses */}
                     <div className="mt-2.5 pt-2 border-t border-border/40">
                       <span className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground block mb-1">
