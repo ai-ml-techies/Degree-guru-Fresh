@@ -78,13 +78,13 @@ export const UniversityLogo: React.FC<UniversityLogoProps> = ({
     } else if (norm.includes("golden") || norm.includes("ggu")) {
       logo = { src: "/logos/goldengate.png", alt: "Golden Gate University Online" };
     } else if (norm.includes("liverpool") || norm.includes("ljmu") || norm.includes("moores")) {
-      logo = { src: "/logos/ljmu.svg", alt: "Liverpool John Moores University Online" };
+      logo = { src: "/logos/ljmu.png", alt: "Liverpool John Moores University Online" };
     } else if (norm.includes("amrita") || norm.includes("avv")) {
       logo = { src: "/logos/amrita.svg", alt: "Amrita Ahead Online" };
     } else if (norm.includes("adtu") || norm.includes("assam")) {
       logo = { src: "/logos/adtu.svg", alt: "Assam Down Town University Online" };
     } else if (norm.includes("alliance")) {
-      logo = { src: "/logos/alliance.webp", alt: "Alliance University Online" };
+      logo = { src: "/logos/alliance.png", alt: "Alliance University Online" };
     } else if (norm.includes("nmims")) {
       logo = { src: "/logos/nmims_full.png", alt: "SVKM'S NMIMS Deemed to be University" };
     } else if (norm.includes("jain")) {
