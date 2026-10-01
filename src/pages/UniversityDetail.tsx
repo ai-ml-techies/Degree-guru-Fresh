@@ -763,6 +763,7 @@ export const UniversityDetail = () => {
 
   const isAmity = uni.slug.includes("amity") || uni.id.includes("amity");
   const isSharda = uni.slug.includes("sharda") || uni.id.includes("sharda");
+  const isSgt = uni.slug.includes("sgt") || uni.id.includes("sgt");
   const campusImage = getUniversityCampusImage(uni.slug);
 
   const handleLeadSubmit = async (e: React.FormEvent) => {
@@ -1312,7 +1313,9 @@ export const UniversityDetail = () => {
 
                         <div className="p-3.5 rounded-2xl bg-muted/30 border border-border/60">
                           <span className="text-[11px] text-muted-foreground font-normal block">Placement Support</span>
-                          <span className="text-sm font-semibold text-foreground mt-0.5 block">350+ Recruiting Partners</span>
+                          <span className="text-sm font-semibold text-foreground mt-0.5 block">
+                            {isSgt ? "100% Guaranteed Placement" : "350+ Recruiting Partners"}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -1844,7 +1847,9 @@ export const UniversityDetail = () => {
                           Placement Support & Corporate Connect
                         </h2>
                         <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                          {isSharda
+                          {isSgt
+                            ? "SGT University Online features a 100% Guaranteed Placement Career Programme with pre-placement offers (PPOs), paid internship stipends, and institutional corporate recruitment drives."
+                            : isSharda
                             ? "Sharda University Online equips learners with hands-on, industry-relevant skills. Active placement cells conduct dedicated corporate recruitment drives and mock interview preparation."
                             : "Amity Online provides dedicated corporate drives, virtual career fairs, mock interviews, and career counseling to bridge the gap between academic learning and corporate leadership."
                           }
@@ -1855,19 +1860,19 @@ export const UniversityDetail = () => {
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                         <div className="p-4 rounded-2xl bg-muted/30 border border-border/60 text-center space-y-1">
                           <span className="text-[11px] text-muted-foreground font-medium block">Highest Package</span>
-                          <span className="text-xl font-bold text-foreground block">{isSharda ? "₹10 LPA" : "₹18 LPA"}</span>
+                          <span className="text-xl font-bold text-foreground block">{isSgt ? "₹36 LPA" : isSharda ? "₹10 LPA" : "₹18 LPA"}</span>
                           <span className="text-[10px] text-emerald-600 dark:text-emerald-400 block font-semibold">Tier-1 MNCs</span>
                         </div>
 
                         <div className="p-4 rounded-2xl bg-muted/30 border border-border/60 text-center space-y-1">
                           <span className="text-[11px] text-muted-foreground font-medium block">Average Package</span>
-                          <span className="text-xl font-bold text-foreground block">{isSharda ? "₹5.8 LPA" : "₹7.2 LPA"}</span>
+                          <span className="text-xl font-bold text-foreground block">{isSgt ? "₹6.5 LPA" : isSharda ? "₹5.8 LPA" : "₹7.2 LPA"}</span>
                           <span className="text-[10px] text-muted-foreground block font-medium">+48% Average Hike</span>
                         </div>
 
                         <div className="p-4 rounded-2xl bg-muted/30 border border-border/60 text-center space-y-1 col-span-2 sm:col-span-1">
                           <span className="text-[11px] text-muted-foreground font-medium block">Hiring Partners</span>
-                          <span className="text-xl font-bold text-foreground block">350+</span>
+                          <span className="text-xl font-bold text-foreground block">{isSgt ? "275+" : "350+"}</span>
                           <span className="text-[10px] text-primary block font-medium">Active Recruiting Networks</span>
                         </div>
                       </div>
@@ -1913,6 +1918,105 @@ export const UniversityDetail = () => {
                         </div>
                       </div>
                     </div>
+
+                    {/* SGT University Online: 100% Guaranteed Placement Career Programme (ACWM with Bajaj Capital) */}
+                    {isSgt && (
+                      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-emerald-500/10 via-card to-card border border-emerald-500/30 shadow-sm space-y-6">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-border/50">
+                          <div className="space-y-1.5">
+                            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 text-xs font-bold uppercase tracking-wider">
+                              <CheckCircle2 size={14} />
+                              <span>100% Guaranteed Placement Career Programme</span>
+                            </div>
+                            <h3 className="text-xl sm:text-2xl font-bold text-foreground">
+                              Job First. Train Next. <span className="text-emerald-600 dark:text-emerald-400">Build Your Career.</span>
+                            </h3>
+                            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-2xl">
+                              Interview for a Wealth Officer role at Bajaj Capital and receive a written Pre-Placement Offer (PPO) before training begins.
+                            </p>
+                          </div>
+
+                          <div className="flex items-center gap-2 shrink-0">
+                            <span className="px-3 py-1.5 rounded-xl bg-card border border-border/70 text-xs font-bold text-foreground shadow-2xs">
+                              Bajaj Capital
+                            </span>
+                            <span className="text-xs text-muted-foreground">•</span>
+                            <span className="px-3 py-1.5 rounded-xl bg-card border border-border/70 text-xs font-bold text-foreground shadow-2xs">
+                              AIMA & ICOFP
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* 3 Key Career Numbers */}
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                          <div className="p-4 rounded-2xl bg-card border border-border/70 text-center space-y-1 shadow-2xs">
+                            <span className="text-[11px] text-muted-foreground font-medium block">Starting Package</span>
+                            <span className="text-2xl font-black text-foreground block">₹4.2 LPA</span>
+                            <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold block">Full-time Wealth Officer Role</span>
+                          </div>
+
+                          <div className="p-4 rounded-2xl bg-card border border-border/70 text-center space-y-1 shadow-2xs">
+                            <span className="text-[11px] text-muted-foreground font-medium block">Internship Stipend</span>
+                            <span className="text-2xl font-black text-foreground block">₹60,000</span>
+                            <span className="text-[11px] text-muted-foreground font-semibold block">₹15,000/mo while you train</span>
+                          </div>
+
+                          <div className="p-4 rounded-2xl bg-card border border-border/70 text-center space-y-1 shadow-2xs">
+                            <span className="text-[11px] text-muted-foreground font-medium block">Retention Bonus</span>
+                            <span className="text-2xl font-black text-emerald-600 dark:text-emerald-400 block">₹85,000</span>
+                            <span className="text-[11px] text-muted-foreground font-semibold block">After 12 months full-time</span>
+                          </div>
+                        </div>
+
+                        {/* 3 Step Career Pathway */}
+                        <div className="space-y-3 pt-1">
+                          <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                            6-Month Career Pathway (From Interview to Payroll)
+                          </h4>
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div className="p-4 rounded-2xl bg-muted/30 border border-border/60 space-y-1.5">
+                              <div className="flex items-center gap-2">
+                                <span className="w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-bold flex items-center justify-center">01</span>
+                                <span className="text-xs font-bold text-foreground">Get Selected</span>
+                              </div>
+                              <p className="text-[11px] text-muted-foreground leading-relaxed">
+                                Appear for the interview with Bajaj Capital and receive a written Pre-Placement Offer (PPO) starting from ₹4.2 LPA.
+                              </p>
+                            </div>
+
+                            <div className="p-4 rounded-2xl bg-muted/30 border border-border/60 space-y-1.5">
+                              <div className="flex items-center gap-2">
+                                <span className="w-6 h-6 rounded-full bg-sky-500/10 text-sky-600 dark:text-sky-400 text-xs font-bold flex items-center justify-center">02</span>
+                                <span className="text-xs font-bold text-foreground">Get Trained</span>
+                              </div>
+                              <p className="text-[11px] text-muted-foreground leading-relaxed">
+                                240 hours of Advanced Certification in Wealth Management (ACWM) with ICOFP & AIMA, then paid internship at ₹15,000/mo.
+                              </p>
+                            </div>
+
+                            <div className="p-4 rounded-2xl bg-muted/30 border border-border/60 space-y-1.5">
+                              <div className="flex items-center gap-2">
+                                <span className="w-6 h-6 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-bold flex items-center justify-center">03</span>
+                                <span className="text-xs font-bold text-foreground">Get Hired</span>
+                              </div>
+                              <p className="text-[11px] text-muted-foreground leading-relaxed">
+                                Join as a permanent Wealth Officer at Bajaj Capital with starting CTC ₹4.2 LPA and ₹85,000 completion bonus.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Key Skills Covered */}
+                        <div className="pt-2 flex flex-wrap items-center gap-2 text-xs">
+                          <span className="text-xs font-bold text-foreground">Curriculum Focus:</span>
+                          {["Financial Planning", "Wealth Management", "Investment Advisory", "Mutual Funds", "Retirement, Tax & Risk Planning"].map((skill, idx) => (
+                            <span key={idx} className="px-2.5 py-1 rounded-lg bg-card border border-border/70 text-[11px] font-medium text-foreground/90">
+                              {skill}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
 
                     {/* Sharda Online BCA Job Roles & Average Salary Breakdown (Verified Reference) */}
                     {isSharda && (

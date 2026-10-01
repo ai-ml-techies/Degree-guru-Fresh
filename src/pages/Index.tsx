@@ -99,23 +99,6 @@ export const Index = () => {
                   className="relative rounded-3xl w-full object-cover aspect-[4/3] sm:aspect-[1.15/1] lg:aspect-[1/1] xl:aspect-[1.05/1] max-h-[520px] shadow-2xl border border-border/80"
                   loading="eager"
                 />
-
-                {/* Floating Metric Card 1 */}
-                <div className="absolute -bottom-4 -left-3 sm:-bottom-5 sm:-left-5 bg-card/95 backdrop-blur-md p-3.5 sm:p-4 rounded-2xl border border-border shadow-xl flex items-center gap-3 z-10 transition-transform hover:scale-105">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
-                    <TrendingUp size={20} />
-                  </div>
-                  <div>
-                    <span className="text-[11px] text-muted-foreground font-semibold block">Average Career Jump</span>
-                    <span className="text-sm font-extrabold text-foreground">+55% Salary Hike</span>
-                  </div>
-                </div>
-
-                {/* Floating Metric Card 2 */}
-                <div className="absolute -top-3 -right-2 sm:-top-4 sm:-right-4 bg-card/95 backdrop-blur-md px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl border border-border shadow-lg flex items-center gap-2 text-xs sm:text-sm font-bold text-foreground z-10 transition-transform hover:scale-105">
-                  <ShieldCheck size={16} className="text-primary" />
-                  <span>100% Free Counseling</span>
-                </div>
               </div>
             </div>
           </div>
@@ -164,120 +147,7 @@ export const Index = () => {
         </div>
       </section>
 
-      {/* 8. ATS COMPLIANT RESUME BUILDER (Expanded Two-Column Showcase with Loud HIRED Mark) */}
-      <section className="py-12 md:py-20 bg-muted/20 border-b border-border/50 overflow-hidden">
-        <div className="container-dg max-w-6xl">
-          <div className="p-8 sm:p-12 md:p-16 rounded-3xl bg-card border border-border/80 shadow-2xl">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
-              
-              {/* Left Column: Clean Copy & Green Tag below heading */}
-              <div className="lg:col-span-7 space-y-4 text-center lg:text-left">
-                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black text-foreground tracking-tight">
-                  ATS Compliant Resume Builder
-                </h3>
 
-                <div className="flex items-center justify-center lg:justify-start">
-                  <span className="px-3.5 py-1.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 text-xs font-bold inline-flex items-center gap-1.5 shadow-xs">
-                    <Sparkles size={13} />
-                    <span>100% Free • No Forced Subscription</span>
-                  </span>
-                </div>
-
-                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-xl mx-auto lg:mx-0">
-                  Create a recruiter-ready resume optimized for ATS bots and high keyword match scores.
-                </p>
-
-                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 pt-2 text-xs font-semibold text-foreground/85">
-                  <span className="px-3.5 py-2 rounded-xl bg-muted/70 border border-border/70 flex items-center gap-2 shadow-xs">
-                    <CheckCircle2 size={14} className="text-emerald-500 shrink-0" /> AI Achievement Quantifier
-                  </span>
-                  <span className="px-3.5 py-2 rounded-xl bg-muted/70 border border-border/70 flex items-center gap-2 shadow-xs">
-                    <CheckCircle2 size={14} className="text-emerald-500 shrink-0" /> Real-time ATS Match Score
-                  </span>
-                  <span className="px-3.5 py-2 rounded-xl bg-muted/70 border border-border/70 flex items-center gap-2 shadow-xs">
-                    <CheckCircle2 size={14} className="text-emerald-500 shrink-0" /> Recruiter-Approved Format
-                  </span>
-                </div>
-
-                <div className="pt-3 flex items-center justify-center lg:justify-start">
-                  <Link
-                    to="/resume-builder"
-                    className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-[#6528f7] hover:bg-[#551ebd] text-white text-sm font-bold flex items-center justify-center gap-2.5 transition-all shadow-xl shadow-[#6528f7]/25 hover:scale-[1.02]"
-                  >
-                    <span>Build My ATS Resume Now</span>
-                    <ArrowRight size={16} />
-                  </Link>
-                </div>
-              </div>
-
-              {/* Right Column: Bigger Visual Resume Preview with Loud HIRED Mark */}
-              <div className="lg:col-span-5 relative">
-                <div className="relative mx-auto max-w-[360px] sm:max-w-[420px] w-full">
-                  {/* Subtle Background Glow */}
-                  <div className="absolute -inset-4 bg-gradient-to-tr from-emerald-500/25 via-primary/20 to-purple-500/25 rounded-3xl blur-2xl pointer-events-none" />
-
-                  {/* Resume Paper Container */}
-                  <div className="relative bg-white text-slate-900 rounded-2xl border-2 border-slate-200 shadow-2xl p-6 sm:p-7 overflow-hidden select-none transform hover:-translate-y-1 transition-transform duration-300">
-                    
-                    {/* LOUD BOLD "HIRED" STAMP BADGE */}
-                    <div className="absolute top-5 right-5 z-20 rotate-[-12deg] drop-shadow-xl animate-pulse">
-                      <div className="px-5 py-2 rounded-xl border-4 border-emerald-600 bg-emerald-600 text-white font-black text-base sm:text-xl uppercase tracking-widest shadow-2xl flex items-center gap-2 ring-4 ring-emerald-400/40">
-                        <CheckCircle2 size={20} className="stroke-[3]" />
-                        HIRED
-                      </div>
-                    </div>
-
-                    {/* Resume Header Area */}
-                    <div className="border-b border-slate-200 pb-3.5 pr-28">
-                      <div className="inline-block bg-slate-900 text-white text-xs font-black px-2.5 py-0.5 rounded tracking-wide">
-                        RAHUL SHARMA
-                      </div>
-                      <div className="text-xs font-bold text-purple-700 mt-1">
-                        Senior Product Manager · Online MBA
-                      </div>
-                      <div className="text-[10px] text-slate-500 flex gap-2 mt-0.5">
-                        <span>Mumbai, India</span> • <span>rahul.sharma@email.com</span>
-                      </div>
-                    </div>
-
-                    {/* Resume Education Section */}
-                    <div className="mt-3 space-y-1">
-                      <div className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Education</div>
-                      <div className="flex justify-between items-center text-[11px]">
-                        <span className="font-bold text-slate-900">Online MBA in Marketing & Analytics</span>
-                        <span className="text-[10px] text-slate-500">2024 - 2026</span>
-                      </div>
-                      <div className="text-[10px] text-slate-600">NAAC A++ Entitled University • CGPA: 9.4/10</div>
-                    </div>
-
-                    {/* Resume Experience Section */}
-                    <div className="mt-3 space-y-1">
-                      <div className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Experience</div>
-                      <div className="text-[11px] font-bold text-slate-900">Growth Lead — Fintech & EdTech</div>
-                      <div className="text-[10px] text-slate-600 space-y-1 pl-2.5 border-l-2 border-emerald-500">
-                        <p>• Scaled conversion funnels achieving <strong>₹4.2 Cr ARR (42% growth)</strong></p>
-                        <p>• Engineered ATS-optimized resume workflow for <strong>12,000+ candidates</strong></p>
-                      </div>
-                    </div>
-
-                    {/* Bottom ATS Pass Status Bar */}
-                    <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                      <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 font-black flex items-center gap-1.5">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-ping" />
-                        ATS Score: 98/100
-                      </span>
-                      <span className="text-[10px] font-bold text-slate-500">
-                        Shortlisted in 48 Hrs ✓
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* 10. WHY DEGREE GURU (Honest, Unbiased & Verified) */}
       <section className="py-16 md:py-20 border-b border-border/50">

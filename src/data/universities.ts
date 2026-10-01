@@ -908,11 +908,11 @@ export const UNIVERSITIES: University[] = [
     emiStarting: "₹3,450/mo",
     examMode: "Online Remote Proctored Exams",
     lmsFeatures: ["Smart LMS Experience", "24x7 Recorded Lectures & Podcasts", "Interactive Live Classes on Weekends", "Progress Dashboard"],
-    description: "SGT Online is the digital learning division of NAAC A+ accredited SGT University, offering UGC-entitled, industry-aligned online degrees with hands-on AI exposure, 100% placement assistance, and flexible EMI options.",
+    description: "SGT Online is the digital learning division of NAAC A+ accredited SGT University, offering UGC-entitled degrees with a 100% Guaranteed Placement Career Programme (Pre-Placement Offer at ₹4.2 LPA with Bajaj Capital).",
     highlights: [
       "NAAC A+ Accredited & UGC-Entitled Online Degrees",
-      "Industry-Aligned Curriculum with hands-on AI tool exposure",
-      "100% Placement Assistance with 275+ recruiters & 36 LPA highest package"
+      "100% Guaranteed Placement Career Programme with Pre-Placement Offer (PPO)",
+      "₹4.2 LPA Starting Package as Wealth Officer + ₹15,000/mo Paid Internship Stipend"
     ],
     established: 2013,
     studentSupport: "Dedicated placement cell, personalized mentorship, resume & LinkedIn workshops, and 24x7 student helpdesk",
