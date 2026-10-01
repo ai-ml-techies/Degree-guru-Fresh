@@ -1176,7 +1176,7 @@ export const UniversityDetail = () => {
               <div className="flex items-start gap-4 sm:gap-6">
                 {/* University Logo DP */}
                 <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-2xl sm:rounded-3xl bg-white p-2.5 sm:p-3.5 border-2 border-border shadow-md flex items-center justify-center shrink-0 overflow-hidden">
-                  <UniversityLogo idOrSlug={uni.slug} size="lg" raw={true} className="max-h-full max-w-full object-contain" />
+                  <UniversityLogo idOrSlug={uni.slug} size="lg" raw={true} variant="dp" className="max-h-full max-w-full object-contain" />
                 </div>
 
                 <div className="space-y-1.5">
@@ -1423,19 +1423,13 @@ export const UniversityDetail = () => {
 
                     {/* ── STATUTORY ACCREDITATIONS (Bigger Logos, Swipable on Mobile, Click-to-Explain Modal) ── */}
                     <div className="p-6 sm:p-7 rounded-3xl bg-card border border-border/80 shadow-sm space-y-4">
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                        <div>
-                          <h3 className="text-lg sm:text-xl font-bold text-foreground">
-                            {uni.name} <span className="text-primary">Accredited By</span>
-                          </h3>
-                          <p className="text-xs text-muted-foreground mt-0.5">
-                            Click on any accreditation badge to view what it means and how it benefits your career.
-                          </p>
-                        </div>
-                        <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-[11px] font-bold">
-                          <Sparkles size={12} />
-                          <span>Tap any badge to explain</span>
-                        </div>
+                      <div>
+                        <h3 className="text-lg sm:text-xl font-bold text-foreground">
+                          {uni.name} <span className="text-primary">Accredited By</span>
+                        </h3>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          Click on any accreditation badge to view what it means and how it benefits your career.
+                        </p>
                       </div>
 
                       {/* Mobile Swipable Carousel & Desktop Grid */}
@@ -1445,33 +1439,24 @@ export const UniversityDetail = () => {
                             type="button"
                             key={i}
                             onClick={() => setSelectedAccreditation(auth)}
-                            className="group shrink-0 snap-center w-[165px] sm:w-auto h-32 sm:h-36 rounded-2xl bg-white border border-border/80 shadow-xs hover:shadow-xl hover:border-primary/50 transition-all p-3 sm:p-4 flex flex-col items-center justify-between text-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/40 active:scale-98"
+                            className="group shrink-0 snap-center w-[175px] sm:w-auto h-36 sm:h-44 rounded-2xl bg-white border border-border/80 shadow-xs hover:shadow-xl hover:border-primary/50 transition-all p-4 sm:p-5 flex flex-col items-center justify-between text-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/40 active:scale-98"
                           >
                             <div className="w-full flex-1 flex items-center justify-center p-1">
                               <img
                                 src={auth.img}
                                 alt={auth.name}
-                                className="max-h-14 sm:max-h-18 max-w-full object-contain transition-transform duration-200 group-hover:scale-108"
+                                className="max-h-18 sm:max-h-24 max-w-full object-contain transition-transform duration-200 group-hover:scale-108"
                                 loading="lazy"
                               />
                             </div>
-                            <div className="w-full pt-1.5 border-t border-slate-100 flex flex-col items-center">
-                              <span className="text-xs font-bold text-slate-800 line-clamp-1 group-hover:text-primary transition-colors">
+                            <div className="w-full pt-2 border-t border-slate-100 flex flex-col items-center">
+                              <span className="text-xs sm:text-sm font-bold text-slate-800 line-clamp-1 group-hover:text-primary transition-colors">
                                 {auth.name}
-                              </span>
-                              <span className="text-[10px] text-primary font-semibold mt-0.5 flex items-center gap-0.5">
-                                <span>Learn more</span>
-                                <ChevronRight size={10} />
                               </span>
                             </div>
                           </button>
                         ))}
                       </div>
-
-                      {/* Mobile Swipe Hint */}
-                      <p className="text-[11px] text-muted-foreground text-center sm:hidden flex items-center justify-center gap-1">
-                        <span>Swipe horizontally to view all accreditations →</span>
-                      </p>
                     </div>
 
                     {/* ── SAMPLE DEGREE CERTIFICATE SECTION (Clear Image with Clickable Zoom) ── */}
@@ -1480,9 +1465,6 @@ export const UniversityDetail = () => {
                         {/* Left Column: Value propositions */}
                         <div className="md:col-span-7 space-y-4">
                           <div className="space-y-1.5">
-                            <span className="text-xs font-semibold uppercase tracking-wider text-primary">
-                              Official Degree Equivalence
-                            </span>
                             <h3 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">
                               Sample Certificate from {uni.name}
                             </h3>
@@ -1602,17 +1584,15 @@ export const UniversityDetail = () => {
                         </div>
                       </div>
 
-                      {/* Clean Category Pills (UG, PG, Industry Collaborative, Integrated) */}
+                      {/* Clean Category Pills (UG, PG) */}
                       <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
                         {[
                           { id: "ug", label: "UG Courses" },
                           { id: "pg", label: "PG Courses" },
-                          { id: "collaborative", label: "Industry Collaborative" },
-                          { id: "integrated", label: "Integrated Dual Degree" },
                         ].map((cat) => (
                           <button
                             key={cat.id}
-                            onClick={() => setCourseCategoryTab(cat.id as "ug" | "pg" | "collaborative" | "integrated")}
+                            onClick={() => setCourseCategoryTab(cat.id as "ug" | "pg")}
                             className={`px-4 py-2 rounded-full text-xs font-semibold transition-all whitespace-nowrap ${
                               courseCategoryTab === cat.id
                                 ? "bg-primary text-primary-foreground shadow-sm"
@@ -2370,177 +2350,108 @@ export const UniversityDetail = () => {
               </div>
 
               {/* ───────────────────────────────────────────────────────────────── */}
-              {/* 6. FINAL CONTAINER: DEDICATED FULL-WIDTH COUNSELING SECTION      */}
+              {/* 6. FINAL CONTAINER: DEDICATED COUNSELING SECTION                 */}
               {/* ───────────────────────────────────────────────────────────────── */}
-              <div id="counseling-box" className="scroll-mt-32 p-6 sm:p-10 rounded-3xl bg-card border border-border/80 shadow-xl">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                  {/* Left Info Column */}
-                  <div className="lg:col-span-6 space-y-4">
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider">
-                      <ShieldCheck size={14} />
-                      <span>100% Free Official Support</span>
-                    </div>
-                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground tracking-tight">
-                      Talk to our Senior Academic Advisor for <span className="text-primary">{uni.name}</span>
-                    </h2>
-                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                      Get genuine semester-wise fee breakdown, document pre-verification, and 0% interest EMI assistance with zero processing charges.
-                    </p>
+              <div id="counseling-box" className="scroll-mt-32 max-w-xl mx-auto p-6 sm:p-10 rounded-3xl bg-card border border-border/80 shadow-xl space-y-6">
+                <div className="text-center space-y-1.5">
+                  <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground tracking-tight">
+                    Talk to our Counselor for <span className="text-primary">{uni.name}</span>
+                  </h2>
+                </div>
 
-                    <div className="space-y-3 pt-2">
-                      {[
-                        "Instant document pre-verification & eligibility check",
-                        "Transparent semester-wise fees with valid scholarship waivers",
-                        "Zero cost EMI plans starting from ₹2,900/month",
-                        "100% spam-free guarantee — direct official counselor connect"
-                      ].map((point, idx) => (
-                        <div key={idx} className="flex items-center gap-2.5 text-xs font-medium text-foreground/90">
-                          <CheckCircle2 size={16} className="text-emerald-500 shrink-0" />
-                          <span>{point}</span>
-                        </div>
-                      ))}
+                {submitted ? (
+                  <div className="p-5 rounded-2xl bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 text-xs font-medium flex items-start gap-3 border border-emerald-500/20">
+                    <CheckCircle2 size={20} className="shrink-0 text-emerald-500 mt-0.5" />
+                    <div className="space-y-1">
+                      <span className="font-bold block text-sm">Request Received Successfully!</span>
+                      <p>Our dedicated academic counselor for {uni.name} will connect with you shortly on WhatsApp / Phone.</p>
                     </div>
                   </div>
-
-                  {/* Right Form Column */}
-                  <div className="lg:col-span-6">
-                    <div className="p-6 sm:p-7 rounded-2xl bg-muted/30 border border-border/70 space-y-4">
-                      <div className="flex items-center justify-between pb-3 border-b border-border/50">
-                        <div>
-                          <h3 className="text-sm font-bold text-foreground">Free Admission Support</h3>
-                          <p className="text-[11px] text-muted-foreground">Fill your details below to get instant guidance</p>
-                        </div>
-                        <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
-                          Free Guidance
-                        </span>
-                      </div>
-
-                      {submitted ? (
-                        <div className="p-5 rounded-2xl bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 text-xs font-medium flex items-start gap-3 border border-emerald-500/20">
-                          <CheckCircle2 size={20} className="shrink-0 text-emerald-500 mt-0.5" />
-                          <div className="space-y-1">
-                            <span className="font-bold block text-sm">Request Received Successfully!</span>
-                            <p>Our dedicated academic counselor for {uni.name} will connect with the complete fee breakdown and syllabus shortly.</p>
-                          </div>
-                        </div>
-                      ) : (
-                        <form onSubmit={handleLeadSubmit} className="space-y-3.5">
-                          <div>
-                            <label htmlFor={nameInputId} className="block text-[11px] font-semibold text-muted-foreground mb-1">
-                              Full Name *
-                            </label>
-                            <input
-                              id={nameInputId}
-                              type="text"
-                              required
-                              placeholder="Your Genuine Name (e.g. Rahul Sharma)"
-                              value={name}
-                              onChange={(e) => {
-                                setName(e.target.value);
-                                if (nameError) setNameError("");
-                              }}
-                              className={`w-full px-3.5 py-2.5 rounded-xl bg-background border ${nameError ? "border-red-500 ring-1 ring-red-500/20" : "border-border"} text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none`}
-                            />
-                            {nameError && (
-                              <p className="text-[10px] text-red-500 font-semibold mt-1">{nameError}</p>
-                            )}
-                          </div>
-
-                          <div>
-                            <label htmlFor={phoneInputId} className="block text-[11px] font-semibold text-muted-foreground mb-1">
-                              WhatsApp Mobile Number *
-                            </label>
-                            <div className={`relative flex rounded-xl border ${phoneError ? "border-red-500 ring-1 ring-red-500/20" : "border-border"} bg-background focus-within:ring-2 focus-within:ring-primary/40 overflow-hidden`}>
-                              {/* Country Code Dropdown (Default +91) */}
-                              <div className="relative border-r border-border bg-muted/40 shrink-0 flex items-center px-2 hover:bg-muted/70 transition-colors">
-                                <span className="text-xs font-bold text-foreground pr-3 select-none flex items-center gap-1">
-                                  <span>🇮🇳</span>
-                                  <span>{countryCode}</span>
-                                </span>
-                                <select
-                                  aria-label="Select Country Code"
-                                  value={countryCode}
-                                  onChange={(e) => setCountryCode(e.target.value)}
-                                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                                >
-                                  <option value="+91">🇮🇳 +91 (India)</option>
-                                  <option value="+971">🇦🇪 +971 (UAE)</option>
-                                  <option value="+1">🇺🇸 +1 (USA)</option>
-                                  <option value="+44">🇬🇧 +44 (UK)</option>
-                                  <option value="+1">🇨🇦 +1 (Canada)</option>
-                                  <option value="+966">🇸🇦 +966 (Saudi Arabia)</option>
-                                  <option value="+65">🇸🇬 +65 (Singapore)</option>
-                                  <option value="+61">🇦🇺 +61 (Australia)</option>
-                                </select>
-                                <ChevronDown size={11} className="absolute right-1 text-foreground/50 pointer-events-none" />
-                              </div>
-
-                              <input
-                                id={phoneInputId}
-                                type="tel"
-                                required
-                                placeholder="10-digit mobile (starts with 6, 7, 8, 9)"
-                                maxLength={10}
-                                value={phone}
-                                onChange={(e) => {
-                                  const val = e.target.value.replace(/\D/g, "").slice(0, 10);
-                                  setPhone(val);
-                                  if (val.length > 0 && ["0", "1", "2", "3", "4", "5"].includes(val[0])) {
-                                    setPhoneError(`Indian mobile numbers start with 6, 7, 8, or 9 (numbers starting with ${val[0]} are not permitted).`);
-                                  } else {
-                                    if (phoneError) setPhoneError("");
-                                  }
-                                }}
-                                className="w-full px-3.5 py-2.5 text-xs bg-transparent focus:outline-none placeholder:text-muted-foreground/60"
-                              />
-                            </div>
-                            {phoneError && (
-                              <p className="text-[10px] text-red-500 font-semibold mt-1">{phoneError}</p>
-                            )}
-                          </div>
-
-                          <div>
-                            <label htmlFor={courseSelectId} className="block text-[11px] font-semibold text-muted-foreground mb-1">
-                              Select Program
-                            </label>
-                            <select
-                              id={courseSelectId}
-                              value={selectedCourse}
-                              onChange={(e) => setSelectedCourse(e.target.value)}
-                              className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none"
-                            >
-                              <option value="">Choose a Program...</option>
-                              {isAmity
-                                ? AMITY_JULY_26_FEE_STRUCTURE.map((p) => (
-                                    <option key={p.sNo} value={p.name}>
-                                      {p.name} ({p.type})
-                                    </option>
-                                  ))
-                                : genericPrograms.map((p, i) => (
-                                    <option key={i} value={p.name}>
-                                      {p.name} ({p.levelKey.toUpperCase()})
-                                    </option>
-                                  ))}
-                            </select>
-                          </div>
-
-                          <Button
-                            type="submit"
-                            disabled={isSubmitting}
-                            className="w-full py-5 rounded-xl bg-primary text-primary-foreground font-semibold text-xs shadow-md hover:bg-primary/90 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
-                          >
-                            <Send size={13} />
-                            <span>Get Free Shortlist & Fees</span>
-                          </Button>
-
-                          <p className="text-[10px] text-muted-foreground text-center">
-                            Zero spam • 100% Free counseling & zero hidden fees
-                          </p>
-                        </form>
+                ) : (
+                  <form onSubmit={handleLeadSubmit} className="space-y-4">
+                    <div>
+                      <label htmlFor={nameInputId} className="block text-xs font-semibold text-foreground/80 mb-1.5">
+                        Full Name *
+                      </label>
+                      <input
+                        id={nameInputId}
+                        type="text"
+                        required
+                        placeholder="Your Full Name (e.g. Rahul Sharma)"
+                        value={name}
+                        onChange={(e) => {
+                          setName(e.target.value);
+                          if (nameError) setNameError("");
+                        }}
+                        className={`w-full px-4 py-3 rounded-xl bg-background border ${nameError ? "border-red-500 ring-1 ring-red-500/20" : "border-border"} text-xs sm:text-sm focus:ring-2 focus:ring-primary/40 focus:outline-none`}
+                      />
+                      {nameError && (
+                        <p className="text-[11px] text-red-500 font-semibold mt-1">{nameError}</p>
                       )}
                     </div>
-                  </div>
-                </div>
+
+                    <div>
+                      <label htmlFor={phoneInputId} className="block text-xs font-semibold text-foreground/80 mb-1.5">
+                        Phone *
+                      </label>
+                      <div className={`relative flex rounded-xl border ${phoneError ? "border-red-500 ring-1 ring-red-500/20" : "border-border"} bg-background focus-within:ring-2 focus-within:ring-primary/40 overflow-hidden`}>
+                        {/* Country Code Dropdown (Default +91) */}
+                        <div className="relative border-r border-border bg-muted/40 shrink-0 flex items-center px-2.5 hover:bg-muted/70 transition-colors">
+                          <span className="text-xs sm:text-sm font-bold text-foreground pr-3 select-none flex items-center gap-1.5">
+                            <span>🇮🇳</span>
+                            <span>{countryCode}</span>
+                          </span>
+                          <select
+                            aria-label="Select Country Code"
+                            value={countryCode}
+                            onChange={(e) => setCountryCode(e.target.value)}
+                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                          >
+                            <option value="+91">🇮🇳 +91 (India)</option>
+                            <option value="+971">🇦🇪 +971 (UAE)</option>
+                            <option value="+1">🇺🇸 +1 (USA)</option>
+                            <option value="+44">🇬🇧 +44 (UK)</option>
+                            <option value="+1">🇨🇦 +1 (Canada)</option>
+                            <option value="+966">🇸🇦 +966 (Saudi Arabia)</option>
+                            <option value="+65">🇸🇬 +65 (Singapore)</option>
+                            <option value="+61">🇦🇺 +61 (Australia)</option>
+                          </select>
+                          <ChevronDown size={12} className="absolute right-1.5 text-foreground/50 pointer-events-none" />
+                        </div>
+
+                        <input
+                          id={phoneInputId}
+                          type="tel"
+                          required
+                          placeholder="10-digit mobile number"
+                          maxLength={10}
+                          value={phone}
+                          onChange={(e) => {
+                            const val = e.target.value.replace(/\D/g, "").slice(0, 10);
+                            setPhone(val);
+                            if (val.length > 0 && ["0", "1", "2", "3", "4", "5"].includes(val[0])) {
+                              setPhoneError(`Indian mobile numbers start with 6, 7, 8, or 9 (numbers starting with ${val[0]} are not permitted).`);
+                            } else {
+                              if (phoneError) setPhoneError("");
+                            }
+                          }}
+                          className="w-full px-3.5 py-3 text-xs sm:text-sm bg-transparent focus:outline-none placeholder:text-muted-foreground/60"
+                        />
+                      </div>
+                      {phoneError && (
+                        <p className="text-[11px] text-red-500 font-semibold mt-1">{phoneError}</p>
+                      )}
+                    </div>
+
+                    <Button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full py-5 rounded-xl bg-primary text-primary-foreground font-bold text-sm shadow-md hover:bg-primary/90 transition-all flex items-center justify-center cursor-pointer"
+                    >
+                      {isSubmitting ? "Submitting..." : "Submit"}
+                    </Button>
+                  </form>
+                )}
               </div>
           </div>
         </div>

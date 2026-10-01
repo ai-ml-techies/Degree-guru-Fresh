@@ -155,7 +155,6 @@ export const MobileBottomNav = () => {
                     <div className="text-sm font-bold text-foreground flex items-center gap-1.5">
                       Know Yourself <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary text-primary-foreground font-black">Flagship</span>
                     </div>
-                    <p className="text-[11px] text-muted-foreground">Adaptive discovery & personalized roadmap</p>
                   </div>
                 </div>
                 <ChevronRight size={16} className="text-primary" />
@@ -174,7 +173,6 @@ export const MobileBottomNav = () => {
                     <div className="text-sm font-semibold text-foreground flex items-center gap-1.5">
                       Career Finder <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/15 text-primary font-bold">100% Free</span>
                     </div>
-                    <p className="text-[11px] text-muted-foreground">12-dimension strength & career match</p>
                   </div>
                 </div>
                 <ChevronRight size={16} className="text-muted-foreground" />
@@ -191,7 +189,6 @@ export const MobileBottomNav = () => {
                   </div>
                   <div>
                     <div className="text-sm font-semibold text-foreground">Degree ROI Calculator</div>
-                    <p className="text-[11px] text-muted-foreground">Estimate salary jump & payback period</p>
                   </div>
                 </div>
                 <ChevronRight size={16} className="text-muted-foreground" />
@@ -210,7 +207,6 @@ export const MobileBottomNav = () => {
                     <div className="text-sm font-semibold text-foreground flex items-center gap-1.5">
                       AI Resume Builder <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/15 text-purple-500 font-bold">ATS Ready</span>
                     </div>
-                    <p className="text-[11px] text-muted-foreground">Job-ready resume with AI quantification</p>
                   </div>
                 </div>
                 <ChevronRight size={16} className="text-muted-foreground" />

@@ -287,82 +287,67 @@ export const Header = () => {
                   Career Tools <ChevronDown size={14} className={`transition-transform duration-200 ${careerDropdown ? "rotate-180 text-primary" : ""}`} />
                 </button>
                 <div
-                  className={`absolute top-full left-0 pt-2 w-[420px] transition-all duration-200 ease-out ${
+                  className={`absolute top-full left-0 pt-2 w-[340px] transition-all duration-200 ease-out ${
                     careerDropdown ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-2 pointer-events-none"
                   }`}
                 >
-                  <div className="glass-dropdown p-5 rounded-2xl shadow-2xl border border-border/70 space-y-2">
-                    <div className="pb-2 border-b border-border/50 flex items-center justify-between">
+                  <div className="glass-dropdown p-4 rounded-2xl shadow-2xl border border-border/70 space-y-1.5">
+                    <div className="pb-1.5 border-b border-border/50 flex items-center justify-between">
                       <span className="text-[11px] font-black uppercase tracking-wider text-primary">
                         Free Career & AI Tools
                       </span>
                     </div>
                     <Link
                       to="/know-yourself"
-                      className="p-3 rounded-xl hover:bg-primary/10 transition-colors flex items-center gap-3.5 group bg-primary/5 border border-primary/20"
+                      className="p-2.5 rounded-xl hover:bg-primary/10 transition-colors flex items-center gap-3 group bg-primary/5 border border-primary/20"
                     >
-                      <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                      <div className="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
                         <Sparkles size={18} />
                       </div>
-                      <div>
-                        <div className="text-sm font-bold text-foreground group-hover:text-primary flex items-center gap-1.5">
-                          Know Yourself <span className="text-[9px] px-1.5 py-0.5 rounded-md bg-primary text-primary-foreground font-bold">New</span>
-                        </div>
-                        <div className="text-xs text-muted-foreground mt-0.5">Adaptive discovery & personalized roadmap</div>
+                      <div className="text-sm font-bold text-foreground group-hover:text-primary flex items-center gap-1.5">
+                        Know Yourself <span className="text-[9px] px-1.5 py-0.5 rounded-md bg-primary text-primary-foreground font-bold">New</span>
                       </div>
                     </Link>
                     <Link
                       to="/career-finder"
-                      className="p-3 rounded-xl hover:bg-primary/10 transition-colors flex items-center gap-3.5 group"
+                      className="p-2.5 rounded-xl hover:bg-primary/10 transition-colors flex items-center gap-3 group"
                     >
-                      <div className="w-10 h-10 rounded-xl bg-[#6528f7]/10 text-[#6528f7] flex items-center justify-center shrink-0">
+                      <div className="w-9 h-9 rounded-xl bg-[#6528f7]/10 text-[#6528f7] flex items-center justify-center shrink-0">
                         <Compass size={18} />
                       </div>
-                      <div>
-                        <div className="text-sm font-bold text-foreground group-hover:text-primary flex items-center gap-1.5">
-                          Career Finder <span className="text-[9px] px-1.5 py-0.5 rounded-md bg-primary/15 text-primary font-bold">100% Free</span>
-                        </div>
-                        <div className="text-xs text-muted-foreground mt-0.5">12-dimension strength & career match</div>
+                      <div className="text-sm font-bold text-foreground group-hover:text-primary flex items-center gap-1.5">
+                        Career Finder <span className="text-[9px] px-1.5 py-0.5 rounded-md bg-primary/15 text-primary font-bold">100% Free</span>
                       </div>
                     </Link>
                     <Link
                       to="/roi-calculator"
-                      className="p-3 rounded-xl hover:bg-emerald-500/10 transition-colors flex items-center gap-3.5 group"
+                      className="p-2.5 rounded-xl hover:bg-emerald-500/10 transition-colors flex items-center gap-3 group"
                     >
-                      <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0">
+                      <div className="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0">
                         <Calculator size={18} />
                       </div>
-                      <div>
-                        <div className="text-sm font-bold text-foreground group-hover:text-emerald-500">Degree ROI Calculator</div>
-                        <div className="text-xs text-muted-foreground mt-0.5">Salary jump, payback & investment ROI</div>
-                      </div>
+                      <div className="text-sm font-bold text-foreground group-hover:text-emerald-500">Degree ROI Calculator</div>
                     </Link>
                     <Link
                       to="/resume-builder"
-                      className="p-3 rounded-xl hover:bg-purple-500/10 transition-colors flex items-center gap-3.5 group"
+                      className="p-2.5 rounded-xl hover:bg-purple-500/10 transition-colors flex items-center gap-3 group"
                     >
-                      <div className="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-500 flex items-center justify-center shrink-0">
+                      <div className="w-9 h-9 rounded-xl bg-purple-500/10 text-purple-500 flex items-center justify-center shrink-0">
                         <FileText size={18} />
                       </div>
-                      <div>
-                        <div className="text-sm font-bold text-foreground group-hover:text-purple-500 flex items-center gap-1.5">
-                          AI Resume Builder <span className="text-[9px] px-1.5 py-0.5 rounded-md bg-purple-500/15 text-purple-500 font-bold">ATS Score</span>
-                        </div>
-                        <div className="text-xs text-muted-foreground mt-0.5">Job-ready resume with AI quantification</div>
+                      <div className="text-sm font-bold text-foreground group-hover:text-purple-500 flex items-center gap-1.5">
+                        AI Resume Builder <span className="text-[9px] px-1.5 py-0.5 rounded-md bg-purple-500/15 text-purple-500 font-bold">ATS Score</span>
                       </div>
                     </Link>
                     <Link
                       to="/emi-calculator"
-                      className="p-3 rounded-xl hover:bg-amber-500/10 transition-colors flex items-center gap-3.5 group"
+                      className="p-2.5 rounded-xl hover:bg-amber-500/10 transition-colors flex items-center gap-3 group"
                     >
-                      <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center shrink-0">
+                      <div className="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center shrink-0">
                         <Calculator size={18} />
                       </div>
-                      <div>
-                        <div className="text-sm font-bold text-foreground group-hover:text-amber-500 flex items-center gap-1.5">
-                          EMI Calculator <span className="text-[9px] px-1.5 py-0.5 rounded-md bg-amber-500/15 text-amber-600 dark:text-amber-400 font-bold">0% No-Cost</span>
-                        </div>
-                        <div className="text-xs text-muted-foreground mt-0.5">Monthly fee installments & approval check</div>
+                      <div className="text-sm font-bold text-foreground group-hover:text-amber-500 flex items-center gap-1.5">
+                        EMI Calculator <span className="text-[9px] px-1.5 py-0.5 rounded-md bg-amber-500/15 text-amber-600 dark:text-amber-400 font-bold">0% No-Cost</span>
                       </div>
                     </Link>
                   </div>
