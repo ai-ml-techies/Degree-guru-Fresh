@@ -47,7 +47,8 @@ import {
   MousePointerClick,
   Compass,
   Headphones,
-  FileCheck
+  FileCheck,
+  Calculator
 } from "lucide-react";
 import { submitLead } from "@/lib/api";
 import { validateIndianMobile, validateMeaningfulName } from "@/lib/validation";
@@ -801,6 +802,7 @@ export const UniversityDetail = () => {
 
   const isAmity = uni.slug.includes("amity") || uni.id.includes("amity");
   const isManipal = uni.slug.includes("manipal") || uni.id.includes("manipal") || uni.slug.includes("muj");
+  const isCu = uni.slug.includes("chandigarh") || uni.slug.includes("cu") || uni.id.includes("chandigarh");
   const isSharda = uni.slug.includes("sharda") || uni.id.includes("sharda");
   const isSgt = uni.slug.includes("sgt") || uni.id.includes("sgt");
   const isLiverpool = uni.slug.includes("liverpool") || uni.slug.includes("ljmu");
@@ -1183,7 +1185,66 @@ export const UniversityDetail = () => {
     },
   ];
 
-  const currentFacultyList = isSharda ? shardaFacultyMembers : facultyMembers;
+  // Official Chandigarh University Online Placement Partners (From User Image 4)
+  const cuPlacementCompanies = [
+    { name: "Capgemini", logo: "/assets/companies/cu/capgemini.png" },
+    { name: "Cognizant", logo: "/assets/companies/cu/cognizant.png" },
+    { name: "Flipkart", logo: "/assets/companies/cu/flipkart.png" },
+    { name: "Hitachi", logo: "/assets/companies/cu/hitachi.png" },
+    { name: "IndiGo", logo: "/assets/companies/cu/indigo.png" },
+    { name: "ISRO", logo: "/assets/companies/cu/isro.png" },
+    { name: "NTT DATA", logo: "/assets/companies/cu/nttdata.png" },
+    { name: "Practo", logo: "/assets/companies/cu/practo.png" },
+    { name: "Tata", logo: "/assets/companies/cu/tata.png" },
+    { name: "Vistara", logo: "/assets/companies/cu/vistara.png" },
+    { name: "Adidas", logo: "/assets/companies/cu/adidas.png" },
+  ];
+
+  // Official Chandigarh University Online Faculty (From User Image 2)
+  const cuFacultyMembers = [
+    {
+      id: "cu-kriti-khurana",
+      name: "Dr. Kriti Khurana",
+      designation: "Faculty in Management",
+      qualification: "BA (Hons.) English, Master's Degree, Ph.D.",
+      avatar: "/assets/faculty/cu-kriti-khurana.png",
+      bio: "Dr. Kriti Khurana specializes in managerial communications, organizational development, and executive business strategy."
+    },
+    {
+      id: "cu-shamim-mondal",
+      name: "Shamim Mondal",
+      designation: "Visiting Faculty",
+      qualification: "Ph.D., Economics",
+      avatar: "/assets/faculty/cu-shamim-mondal.png",
+      bio: "Prof. Shamim Mondal brings deep academic research expertise in Managerial Economics, Microeconomic Theory, and Applied Econometrics."
+    },
+    {
+      id: "cu-alka-sharma",
+      name: "Alka Sharma",
+      designation: "Visiting Faculty (Consultant)",
+      qualification: "Women Startup Program 2026 Mentor",
+      avatar: "/assets/faculty/cu-alka-sharma.png",
+      bio: "Alka Sharma is an experienced corporate consultant and mentor driving entrepreneurship, enterprise strategy, and startup acceleration."
+    },
+    {
+      id: "cu-david-poritzky",
+      name: "David F. Poritzky",
+      designation: "Visiting Faculty",
+      qualification: "MBA from The Wharton School, CEO Envista",
+      avatar: "/assets/faculty/cu-david-poritzky.png",
+      bio: "David F. Poritzky is a Wharton MBA alumnus and CEO advising leadership cohorts on global corporate scaling, finance, and investment banking."
+    },
+    {
+      id: "cu-mirza-baig",
+      name: "Mirza Rahim Baig",
+      designation: "Lead Business Analyst",
+      qualification: "Master's in Data Science & Analytics",
+      avatar: "/assets/faculty/cu-mirza-baig.png",
+      bio: "Mirza Rahim Baig is an industry-leading Data Science practitioner instructing students on Big Data architecture, Machine Learning, and Predictive Business Analytics."
+    },
+  ];
+
+  const currentFacultyList = isCu ? cuFacultyMembers : isSharda ? shardaFacultyMembers : facultyMembers;
 
   return (
     <>
@@ -1494,20 +1555,15 @@ export const UniversityDetail = () => {
                             type="button"
                             key={i}
                             onClick={() => setSelectedAccreditation(auth)}
-                            className="group shrink-0 snap-center w-[185px] sm:w-auto h-40 sm:h-48 rounded-2xl bg-white border border-border/80 shadow-xs hover:shadow-xl hover:border-primary/50 transition-all p-4 sm:p-5 flex flex-col items-center justify-between text-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/40 active:scale-98"
+                            className="group shrink-0 snap-center w-[185px] sm:w-auto h-36 sm:h-44 rounded-2xl bg-white border border-border/80 shadow-xs hover:shadow-xl hover:border-primary/50 transition-all p-3 sm:p-4 flex items-center justify-center text-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/40 active:scale-98"
                           >
-                            <div className="w-full flex-1 flex items-center justify-center p-1">
+                            <div className="w-full h-full flex items-center justify-center p-1">
                               <img
                                 src={auth.img}
                                 alt={auth.name}
-                                className="max-h-22 sm:max-h-28 max-w-full object-contain transition-transform duration-200 group-hover:scale-108"
+                                className="max-h-24 sm:max-h-28 max-w-full object-contain transition-transform duration-200 group-hover:scale-108"
                                 loading="lazy"
                               />
-                            </div>
-                            <div className="w-full pt-2 border-t border-slate-100 flex flex-col items-center">
-                              <span className="text-xs sm:text-sm font-bold text-slate-800 line-clamp-1 group-hover:text-primary transition-colors">
-                                {auth.name}
-                              </span>
                             </div>
                           </button>
                         ))}
@@ -1526,9 +1582,11 @@ export const UniversityDetail = () => {
                             <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                               {isManipal
                                 ? "Become an alumnus of Manipal University Jaipur (Directorate of Online Education) and earn a UGC-DEB approved, NAAC A+ accredited degree with global WES credential recognition."
+                                : isCu
+                                ? "Become an alumnus of Chandigarh University Online and earn a UGC-DEB entitled, NAAC A+ accredited online degree with global WES credential recognition."
                                 : isSharda
                                 ? "Become an alumnus of Sharda University Online and earn a UGC-DEB approved online degree. Conferred with NAAC A+ accreditation, AICTE approval, and WES global equivalency."
-                                : "Become an alumnus of Amity Online and get a UGC-approved online degree. The degree awarded by the university is also been accredited by WES, etc."
+                                : `Become an alumnus of ${uni.name} and get a UGC-approved online degree. Conferred with NAAC A+ accreditation, AICTE approval, and global recognition.`
                               }
                             </p>
                           </div>
@@ -1542,6 +1600,13 @@ export const UniversityDetail = () => {
                                   "NAAC A+ Accredited with global WES credential evaluation equivalency.",
                                   "100% equivalent to traditional on-campus degree for govt. & corporate jobs.",
                                 ]
+                              : isCu
+                              ? [
+                                  "Conferred by Chandigarh University (Centre for Distance and Online Learning).",
+                                  "Entitled by UGC-DEB and approved by AICTE for professional programs.",
+                                  "NAAC A+ Accredited institution ranked #1 among private universities in India.",
+                                  "Global WES recognized for international employment, higher studies & PR.",
+                                ]
                               : isSharda
                               ? [
                                   "NAAC A+ Accredited University with globally recognized credentials.",
@@ -1550,10 +1615,10 @@ export const UniversityDetail = () => {
                                   "Degree recognized by World Education Services (WES) for US & Canada equivalency.",
                                 ]
                               : [
-                                  "1st in India to get UGC approval for online programs",
-                                  "India's only Online MBA accredited by QS and ranked among the top 10 in Asia Pacific.",
-                                  "Degrees recognized by World Education Services (WES) across Canada & USA.",
-                                  "Ranked 22nd by NIRF in 2025",
+                                  `100% UGC-DEB entitled online degree conferred by ${uni.name}.`,
+                                  "Approved by AICTE for relevant professional & technical programs.",
+                                  "Recognized by World Education Services (WES) across Canada & USA.",
+                                  "Valid for UPSC, state/central government jobs, and corporate recruitment.",
                                 ]
                             ).map((item, idx) => (
                               <div key={idx} className="flex items-start gap-2.5">
@@ -1584,7 +1649,7 @@ export const UniversityDetail = () => {
                             <DialogTrigger asChild>
                               <div className="cursor-pointer group relative rounded-2xl overflow-hidden border-2 border-border/80 shadow-xl hover:shadow-2xl hover:border-primary/50 transition-all max-w-[280px] sm:max-w-[320px] bg-white">
                                 <img
-                                  src={isManipal ? "/assets/universities/manipal-sample-degree.png" : isSharda ? "/assets/universities/sharda-sample-degree.jpg" : "/assets/universities/amity-sample-degree.png"}
+                                  src={isManipal ? "/assets/universities/manipal-sample-degree.png" : isCu ? "/assets/universities/cu-sample-degree.jpg" : isSharda ? "/assets/universities/sharda-sample-degree.jpg" : "/assets/universities/amity-sample-degree.png"}
                                   alt={`${uni.name} Sample Degree Certificate`}
                                   className="w-full h-auto object-contain transition-transform duration-300 group-hover:scale-102"
                                 />
@@ -1602,7 +1667,7 @@ export const UniversityDetail = () => {
                               </DialogHeader>
                               <div className="flex flex-col items-center justify-center p-2 max-h-[80vh] overflow-y-auto">
                                 <img
-                                  src={isManipal ? "/assets/universities/manipal-sample-degree.png" : isSharda ? "/assets/universities/sharda-sample-degree.jpg" : "/assets/universities/amity-sample-degree.png"}
+                                  src={isManipal ? "/assets/universities/manipal-sample-degree.png" : isCu ? "/assets/universities/cu-sample-degree.jpg" : isSharda ? "/assets/universities/sharda-sample-degree.jpg" : "/assets/universities/amity-sample-degree.png"}
                                   alt={`${uni.name} Degree Full Specimen`}
                                   className="max-h-[75vh] w-auto object-contain rounded-xl border border-border shadow-2xl"
                                 />
@@ -2119,6 +2184,80 @@ export const UniversityDetail = () => {
                       </div>
                     </div>
                   )}
+                    {/* Chandigarh University Online Course Wise Updated Fees 2026 (Matching User Image 3) */}
+                    {isCu && (
+                      <div className="space-y-4 pt-4">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                          <div>
+                            <h3 className="text-lg sm:text-xl font-bold text-foreground">
+                              Chandigarh University Online Course Wise <span className="text-primary">Updated Fees 2026</span>
+                            </h3>
+                            <p className="text-xs text-muted-foreground mt-0.5">
+                              Official transparent semester-wise fee breakdown with direct admission assistance.
+                            </p>
+                          </div>
+                          <Link
+                            to="/tools/roi-calculator"
+                            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#0052cc] text-white text-xs font-bold hover:bg-[#0040aa] transition-colors shadow-xs self-start sm:self-auto"
+                          >
+                            <Calculator size={13} />
+                            <span>ROI Calculator</span>
+                          </Link>
+                        </div>
+
+                        <div className="rounded-2xl sm:rounded-3xl border border-border overflow-hidden bg-card shadow-sm">
+                          <div className="overflow-x-auto">
+                            <table className="w-full text-left text-xs sm:text-sm">
+                              <thead className="bg-[#002E5E] text-white text-xs font-semibold">
+                                <tr>
+                                  <th className="py-3 px-4">Course</th>
+                                  <th className="py-3 px-4">Fees</th>
+                                  <th className="py-3 px-4">Duration</th>
+                                  <th className="py-3 px-4 text-right">Action</th>
+                                </tr>
+                              </thead>
+                              <tbody className="divide-y divide-border/60">
+                                {[
+                                  { course: "Online BBA", fee: "₹ 23,334/Sem", duration: "3 Years" },
+                                  { course: "Online M.Com", fee: "₹ 22,750/Sem", duration: "2 Years" },
+                                  { course: "Online MBA", fee: "₹ 45,100/Sem", duration: "2 Years" },
+                                  { course: "Online BA Honours", fee: "₹ 15,750/Sem", duration: "3 Years" },
+                                  { course: "Online BCA", fee: "₹ 23,600/Sem", duration: "3 Years" },
+                                  { course: "Online M.Sc", fee: "₹ 27,500/Sem", duration: "2 Years" },
+                                  { course: "Online BA", fee: "₹ 21,875/Sem", duration: "3 Years" },
+                                  { course: "Online MA", fee: "₹ 27,188/Sem", duration: "2 Years" },
+                                  { course: "Online MBA (Dual)", fee: "₹ 45,100/Sem", duration: "2 Years" },
+                                  { course: "Online Dual BBA", fee: "₹ 23,334/Sem", duration: "3 Years" },
+                                  { course: "Online MCA", fee: "₹ 29,063/Sem", duration: "2 Years" },
+                                ].map((row, idx) => (
+                                  <tr key={idx} className="hover:bg-muted/30 transition-colors">
+                                    <td className="py-3.5 px-4 font-semibold text-foreground">
+                                      {row.course}
+                                    </td>
+                                    <td className="py-3.5 px-4 font-bold text-foreground">
+                                      {row.fee}
+                                    </td>
+                                    <td className="py-3.5 px-4 text-muted-foreground">
+                                      {row.duration}
+                                    </td>
+                                    <td className="py-3.5 px-4 text-right">
+                                      <a
+                                        href="#counseling-box"
+                                        onClick={() => setSelectedCourse(row.course)}
+                                        className="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-primary/10 hover:bg-primary text-primary hover:text-primary-foreground font-semibold text-xs transition-colors"
+                                      >
+                                        <span>Apply</span>
+                                        <ArrowRight size={11} />
+                                      </a>
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </section>
                 )}
 
@@ -2134,7 +2273,9 @@ export const UniversityDetail = () => {
                           Placement Support & Corporate Connect
                         </h2>
                         <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                          {isSgt
+                          {isCu
+                            ? "Chandigarh University Online provides comprehensive placement support with over 300+ hiring partners, high-value corporate drives, and career incubation."
+                            : isSgt
                             ? "SGT University Online equips students with industry-relevant skills, comprehensive career guidance, and corporate recruitment drives across leading industry partners."
                             : isSharda
                             ? "Sharda University Online equips learners with hands-on, industry-relevant skills. Active placement cells conduct dedicated corporate recruitment drives and mock interview preparation."
@@ -2147,24 +2288,36 @@ export const UniversityDetail = () => {
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                         <div className="p-4 rounded-2xl bg-muted/30 border border-border/60 text-center space-y-1">
                           <span className="text-[11px] text-muted-foreground font-medium block">Highest Package</span>
-                          <span className="text-xl font-bold text-foreground block">{isSgt ? "₹36 LPA" : isSharda ? "₹10 LPA" : "₹18 LPA"}</span>
-                          <span className="text-[10px] text-emerald-600 dark:text-emerald-400 block font-semibold">Tier-1 MNCs</span>
+                          <span className="text-xl font-bold text-foreground block">
+                            {isCu ? "₹1.7 Cr" : isSgt ? "₹36 LPA" : isSharda ? "₹10 LPA" : "₹18 LPA"}
+                          </span>
+                          <span className="text-[10px] text-emerald-600 dark:text-emerald-400 block font-semibold">
+                            {isCu ? "International (₹54 LPA National)" : "Tier-1 MNCs"}
+                          </span>
                         </div>
 
                         <div className="p-4 rounded-2xl bg-muted/30 border border-border/60 text-center space-y-1">
-                          <span className="text-[11px] text-muted-foreground font-medium block">Average Package</span>
-                          <span className="text-xl font-bold text-foreground block">{isSgt ? "₹6.5 LPA" : isSharda ? "₹5.8 LPA" : "₹7.2 LPA"}</span>
-                          <span className="text-[10px] text-muted-foreground block font-medium">+48% Average Hike</span>
+                          <span className="text-[11px] text-muted-foreground font-medium block">Average Package / Hike</span>
+                          <span className="text-xl font-bold text-foreground block">
+                            {isCu ? "+50% Hike" : isSgt ? "₹6.5 LPA" : isSharda ? "₹5.8 LPA" : "₹7.2 LPA"}
+                          </span>
+                          <span className="text-[10px] text-muted-foreground block font-medium">
+                            {isCu ? "3X Interview Opportunities" : "+48% Average Hike"}
+                          </span>
                         </div>
 
                         <div className="p-4 rounded-2xl bg-muted/30 border border-border/60 text-center space-y-1 col-span-2 sm:col-span-1">
                           <span className="text-[11px] text-muted-foreground font-medium block">Hiring Partners</span>
-                          <span className="text-xl font-bold text-foreground block">{isSgt ? "275+" : "350+"}</span>
-                          <span className="text-[10px] text-primary block font-medium">Active Recruiting Networks</span>
+                          <span className="text-xl font-bold text-foreground block">
+                            {isCu ? "300+" : isSgt ? "275+" : "350+"}
+                          </span>
+                          <span className="text-[10px] text-primary block font-medium">
+                            {isCu ? "Tier-1 Global & National Recruiters" : "Active Recruiting Networks"}
+                          </span>
                         </div>
                       </div>
 
-                      {/* 12 Real Recruiting Company Logos (No Text Fillers) */}
+                      {/* Real Recruiting Company Logos */}
                       <div className="space-y-3 pt-2">
                         <div className="flex items-center justify-between">
                           <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
@@ -2173,7 +2326,7 @@ export const UniversityDetail = () => {
                         </div>
 
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-                          {placementCompanies.map((comp, idx) => (
+                          {(isCu ? cuPlacementCompanies : placementCompanies).map((comp, idx) => (
                             <div
                               key={idx}
                               className="h-16 rounded-2xl bg-white border border-border/80 shadow-xs flex items-center justify-center p-3 hover:shadow-md transition-shadow"
