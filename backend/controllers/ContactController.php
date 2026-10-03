@@ -18,22 +18,42 @@ class ContactController extends Controller
 {
     public $enableCsrfValidation = false;
 
-
-
     public function behaviors(): array
     {
         $behaviors = parent::behaviors();
 
+        $allowed = Yii::$app->params['corsAllowedOrigins'] ?? [
+            'https://degreeguru.in',
+            'https://www.degreeguru.in',
+            'https://admin.degreeguru.in',
+            'https://api.degreeguru.in',
+            'http://localhost:5173',
+            'http://localhost:8080',
+        ];
+
         $behaviors['corsFilter'] = [
             'class' => Cors::class,
             'cors' => [
-                'Origin' => ['http://localhost:5173'],
-                'Access-Control-Request-Method' => ['POST', 'OPTIONS'],
+                'Origin' => $allowed,
+                'Access-Control-Request-Method' => ['POST', 'OPTIONS', 'GET'],
                 'Access-Control-Request-Headers' => ['*'],
+                'Access-Control-Allow-Credentials' => true,
             ],
         ];
 
         return $behaviors;
+    }
+
+    public function beforeAction($action): bool
+    {
+        $this->enableCsrfValidation = false;
+        if (Yii::$app->request->method === 'OPTIONS') {
+            Yii::$app->response->statusCode = 200;
+            Yii::$app->response->data = ['status' => 'ok'];
+            Yii::$app->response->send();
+            Yii::$app->end();
+        }
+        return parent::beforeAction($action);
     }
 
     /**
@@ -240,6 +260,7 @@ class ContactController extends Controller
 </body>
 </html>";
 
+        $mailSent = false;
         try {
             if (isset(Yii::$app->mailer)) {
                 $fromEmail = getenv('SMTP_FROM') ?: 'info@degreeguru.in';
@@ -253,10 +274,25 @@ class ContactController extends Controller
                     $mailer->setReplyTo($email);
                 }
 
-                $mailer->send();
+                $mailSent = (bool) $mailer->send();
             }
         } catch (\Throwable $e) {
-            Yii::error("Failed to send lead email to {$toEmail}: " . $e->getMessage(), __METHOD__);
+            Yii::error("Yii mailer failed to send lead email to {$toEmail}: " . $e->getMessage(), __METHOD__);
+        }
+
+        // Secondary fallback to native PHP mail() if Symfony Mailer failed or unconfigured
+        if (!$mailSent) {
+            try {
+                $headers = "MIME-Version: 1.0\r\n";
+                $headers .= "Content-type: text/html; charset=UTF-8\r\n";
+                $headers .= "From: Degree Guru Leads <info@degreeguru.in>\r\n";
+                if (!empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    $headers .= "Reply-To: {$email}\r\n";
+                }
+                @mail($toEmail, $subject, $html, $headers);
+            } catch (\Throwable $e) {
+                Yii::error("Native mail failed to send lead email to {$toEmail}: " . $e->getMessage(), __METHOD__);
+            }
         }
     }
 

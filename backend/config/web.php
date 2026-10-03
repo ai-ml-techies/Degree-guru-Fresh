@@ -79,6 +79,11 @@ $config = [
 
         'request' => [
             'cookieValidationKey' => 'M-aPK4DBVGF8umqFplk2T7ksXq38Rr3X',
+            'baseUrl' => (isset($_SERVER['REQUEST_URI']) && str_starts_with($_SERVER['REQUEST_URI'], '/web')) ? '/web' : '',
+            'scriptUrl' => (isset($_SERVER['REQUEST_URI']) && str_starts_with($_SERVER['REQUEST_URI'], '/web')) ? '/web/index.php' : '/index.php',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ],
         ],
 
         'cache' => [
