@@ -41,7 +41,7 @@ export const UNIVERSITIES: University[] = [
     naacGrade: "A+",
     rating: 4.6,
     reviewsCount: 3450,
-    popularCourses: ["Online MBA", "Online MCA", "Online BCA", "Online BBA", "Online M.Sc Data Science", "Online MA"],
+    popularCourses: ["Online MBA", "Online MCA", "Online BCA", "Online BBA", "Online M.Sc Data Science", "Online BA JMC", "Online BBA (Business Analytics)", "Online MBA (Business Analytics)", "Online MA English", "Online MA Economics", "Online M.Sc Mathematics", "Online BBA (Microsoft)", "Online BCA (Microsoft)"],
     feeRange: "₹75,000 – ₹1,80,000",
     registrationFee: "₹1,000",
     examFee: "₹0 (Included)",

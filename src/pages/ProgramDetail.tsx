@@ -12,6 +12,8 @@ import { fetchPrograms, type ApiProgram } from "@/lib/api";
 import type { ProgramContent } from "@/data/programs";
 import programHero from "@/assets/program-hero.jpg";
 
+import { COURSES } from "@/data/courses";
+
 type Program = ProgramContent;
 
 function apiToProgram(p: ApiProgram): Program {
@@ -34,6 +36,8 @@ function apiToProgram(p: ApiProgram): Program {
 const universitiesForProgram = (slug: string) => {
   const all = [
     { name: "Amity University Online", note: "Global presence, multiple campuses, strong alumni network" },
+    { name: "Chandigarh University Online", note: "NAAC A+ UGC-entitled degrees with global WES recognition" },
+    { name: "Manipal University Jaipur Online", note: "NAAC A+ premier university online degrees" },
     { name: "NMIMS Online", note: "Premium business school heritage" },
     { name: "OP Jindal Global University Online", note: "Top ranked private university" },
     { name: "Lovely Professional University (LPU) Online", note: "Diverse programs, large alumni network" },
@@ -49,7 +53,9 @@ const universitiesForProgram = (slug: string) => {
 };
 
 const ProgramDetail = () => {
-  const { slug } = useParams();
+  const { slug, courseSlug } = useParams<{ slug?: string; courseSlug?: string }>();
+  const rawSlug = (slug || courseSlug || "").trim();
+  const normalizedSlug = rawSlug.toLowerCase().startsWith("online-") ? rawSlug.toLowerCase() : `online-${rawSlug.toLowerCase()}`;
 
   const { data: apiPrograms } = useQuery({
     queryKey: ['programs'],
@@ -61,14 +67,36 @@ const ProgramDetail = () => {
     ? apiPrograms.map(apiToProgram)
     : PROGRAMS;
 
-  const program = programs.find(p => p.slug === slug);
-  const apiProgram = apiPrograms?.find(p => p.slug === slug) ?? null;
+  const matchedCourse = COURSES.find(c => c.slug === rawSlug || c.slug === normalizedSlug || c.slug.includes(rawSlug.replace("online-", "")));
+
+  const program: Program | null = programs.find(p => p.slug === rawSlug) ||
+    programs.find(p => p.slug === normalizedSlug) ||
+    programs.find(p => p.slug.includes(rawSlug.replace("online-", ""))) ||
+    (matchedCourse ? {
+      slug: matchedCourse.slug,
+      name: matchedCourse.title,
+      full: matchedCourse.fullName || matchedCourse.title,
+      level: (matchedCourse.level?.toLowerCase().includes("master") || matchedCourse.level?.toLowerCase().includes("postgraduate") ? "Masters" : "Bachelors") as "Bachelors" | "Masters" | "Doctoral" | "Skills",
+      desc: matchedCourse.description || `UGC-DEB entitled ${matchedCourse.title} degree for working professionals.`,
+      tagline: `Earn a globally recognized ${matchedCourse.title} degree and advance your career.`,
+      about: matchedCourse.description || `The ${matchedCourse.title} degree is designed to deliver industry-relevant skills, recognized credentials, and flexible online schedules.`,
+      enrollFor: [
+        "Working professionals seeking career advancement",
+        "Graduates aspiring for high-growth roles",
+        "Learners needing flexible online schedules",
+      ],
+      emiNote: matchedCourse.emiStarting ? `Flexible No-Cost EMI options starting from ${matchedCourse.emiStarting}.` : "Flexible No-Cost EMI options available.",
+      careerRoles: matchedCourse.specializations?.slice(0, 4) || ["Domain Specialist", "Team Lead", "Manager"],
+      careerSalary: "INR 4 to 15 LPA"
+    } : null);
+
+  const apiProgram = apiPrograms?.find(p => p.slug === rawSlug || p.slug === normalizedSlug) ?? null;
 
   useEffect(() => {
     if (program) window.scrollTo({ top: 0, behavior: "smooth" });
   }, [program]);
 
-  if (!program) return <Navigate to="/programs" replace />;
+  if (!program) return <Navigate to="/courses" replace />;
 
   const universities = universitiesForProgram(program.slug);
 

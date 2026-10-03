@@ -21,6 +21,7 @@ const Class12           = lazy(() => import("./pages/Class12.tsx"));
 const Recruitment       = lazy(() => import("./pages/Recruitment.tsx"));
 const CoursesIndex      = lazy(() => import("./pages/CoursesIndex.tsx"));
 const CourseDetail      = lazy(() => import("./pages/CourseDetail.tsx"));
+const ProgramDetail     = lazy(() => import("./pages/ProgramDetail.tsx"));
 const UniversitiesIndex = lazy(() => import("./pages/UniversitiesIndex.tsx"));
 const UniversityDetail  = lazy(() => import("./pages/UniversityDetail.tsx"));
 const UniversityCompare = lazy(() => import("./pages/UniversityCompare.tsx"));
@@ -66,7 +67,8 @@ const App = () => (
                 {/* Courses Discovery */}
                 <Route path="/courses" element={<CoursesIndex />} />
                 <Route path="/programs" element={<CoursesIndex />} />
-                <Route path="/programs/:courseSlug" element={<CourseDetail />} />
+                <Route path="/programs/:slug" element={<ProgramDetail />} />
+                <Route path="/programs/:courseSlug" element={<ProgramDetail />} />
 
                 {/* 100% Placement Guaranteed Dedicated Program */}
                 <Route path="/placement-guaranteed" element={<PlacementGuaranteed />} />

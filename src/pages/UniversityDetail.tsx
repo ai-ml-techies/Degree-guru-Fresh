@@ -517,6 +517,226 @@ const UNIQUE_AMITY_PROGRAMS: UniqueProgramItem[] = [
   },
 ];
 
+// ── CHANDIGARH UNIVERSITY ONLINE UNIQUE PROGRAMS (Strict UG / PG Separation) ──
+const UNIQUE_CU_PROGRAMS: UniqueProgramItem[] = [
+  // ── UG COURSES (Bachelors Only) ──
+  {
+    id: "cu-ug-bba",
+    name: "Online BBA",
+    fullName: "Online Bachelor of Business Administration",
+    levelKey: "ug",
+    degreeLevel: "Undergraduate (UG)",
+    slug: "online-bba",
+    duration: "3 Years (6 Sems)",
+    eligibility: "10+2 from recognized board",
+    tuitionFee: 131250,
+    semesterFee: 21875,
+    thumbnail: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80",
+    specializations: ["Marketing", "Human Resource", "Finance", "International Business"],
+  },
+  {
+    id: "cu-ug-bba-ba",
+    name: "Online BBA (Business Analytics)",
+    fullName: "Online BBA in Business Analytics",
+    levelKey: "ug",
+    degreeLevel: "Undergraduate (UG)",
+    slug: "online-bba",
+    duration: "3 Years (6 Sems)",
+    eligibility: "10+2 from recognized board",
+    tuitionFee: 165300,
+    semesterFee: 27550,
+    thumbnail: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80",
+    specializations: ["Predictive Analytics", "Data Mining", "Business Intelligence", "Decision Science"],
+  },
+  {
+    id: "cu-ug-bca",
+    name: "Online BCA",
+    fullName: "Online Bachelor of Computer Applications",
+    levelKey: "ug",
+    degreeLevel: "Undergraduate (UG)",
+    slug: "online-bca",
+    duration: "3 Years (6 Sems)",
+    eligibility: "10+2 with Mathematics / Computer or equivalent",
+    tuitionFee: 132750,
+    semesterFee: 22125,
+    thumbnail: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80",
+    specializations: ["Software Engineering", "Cloud Computing", "Web Technologies", "Database Systems"],
+  },
+  {
+    id: "cu-ug-ba-jmc",
+    name: "Online BA JMC",
+    fullName: "Online Bachelor of Arts in Journalism & Mass Communication",
+    levelKey: "ug",
+    degreeLevel: "Undergraduate (UG)",
+    slug: "online-ba",
+    duration: "3 Years (6 Sems)",
+    eligibility: "10+2 in any stream",
+    tuitionFee: 131250,
+    semesterFee: 21875,
+    thumbnail: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=600&q=80",
+    specializations: ["Digital Media & PR", "Electronic Journalism", "Advertising & Branding", "Media Production"],
+  },
+  {
+    id: "cu-ug-bba-ms",
+    name: "Online BBA (Microsoft)",
+    fullName: "Online BBA with Microsoft Cloud & Digital Productivity",
+    levelKey: "ug",
+    degreeLevel: "Undergraduate (UG)",
+    slug: "online-bba",
+    industryPartner: "Microsoft",
+    duration: "3 Years (6 Sems)",
+    eligibility: "10+2 from recognized board",
+    tuitionFee: 140000,
+    semesterFee: 23333,
+    thumbnail: "https://images.unsplash.com/photo-1556740738-b6a63e27c4df?auto=format&fit=crop&w=600&q=80",
+    specializations: ["Microsoft 365 Enterprise", "Power BI Analytics", "Digital Business Transformation", "Cloud Office Management"],
+  },
+  {
+    id: "cu-ug-bca-ms",
+    name: "Online BCA (Microsoft)",
+    fullName: "Online BCA with Microsoft Azure & Cloud Computing",
+    levelKey: "ug",
+    degreeLevel: "Undergraduate (UG)",
+    slug: "online-bca",
+    industryPartner: "Microsoft",
+    duration: "3 Years (6 Sems)",
+    eligibility: "10+2 with Mathematics / Computer or equivalent",
+    tuitionFee: 141600,
+    semesterFee: 23600,
+    thumbnail: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=600&q=80",
+    specializations: ["Microsoft Azure Architecture", "DevOps & Cloud Security", "Full Stack Development", "Applied AI Tools"],
+  },
+
+  // ── PG COURSES (Masters Only) ──
+  {
+    id: "cu-pg-mba",
+    name: "Online MBA",
+    fullName: "Online Master of Business Administration",
+    levelKey: "pg",
+    degreeLevel: "Postgraduate (PG)",
+    slug: "online-mba",
+    duration: "2 Years (4 Sems)",
+    eligibility: "Bachelor's degree with min 50% marks",
+    tuitionFee: 165000,
+    semesterFee: 41250,
+    thumbnail: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80",
+    specializations: ["Finance", "Marketing", "Human Resource", "International Business", "Operations", "Information Technology", "Entrepreneurship"],
+  },
+  {
+    id: "cu-pg-mba-ba",
+    name: "Online MBA (Business Analytics)",
+    fullName: "Online MBA in Business Analytics & Data Driven Management",
+    levelKey: "pg",
+    degreeLevel: "Postgraduate (PG)",
+    slug: "online-mba",
+    duration: "2 Years (4 Sems)",
+    eligibility: "Bachelor's degree with min 50% marks",
+    tuitionFee: 180000,
+    semesterFee: 45000,
+    thumbnail: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80",
+    specializations: ["Advanced Predictive Modeling", "Big Data for Managers", "Executive Dashboarding", "Machine Learning in Business"],
+  },
+  {
+    id: "cu-pg-mca",
+    name: "Online MCA",
+    fullName: "Online Master of Computer Applications",
+    levelKey: "pg",
+    degreeLevel: "Postgraduate (PG)",
+    slug: "online-mca",
+    duration: "2 Years (4 Sems)",
+    eligibility: "BCA/B.Sc (IT/CS) or Bachelor's with Mathematics",
+    tuitionFee: 116250,
+    semesterFee: 29063,
+    thumbnail: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80",
+    specializations: ["Artificial Intelligence & ML", "Cloud Architecture", "Full Stack Development", "Cyber Security Systems"],
+  },
+  {
+    id: "cu-pg-majmc",
+    name: "Online MAJMC",
+    fullName: "Online Master of Arts in Journalism & Mass Communication",
+    levelKey: "pg",
+    degreeLevel: "Postgraduate (PG)",
+    slug: "online-ma",
+    duration: "2 Years (4 Sems)",
+    eligibility: "Bachelor's degree in any discipline",
+    tuitionFee: 108750,
+    semesterFee: 27188,
+    thumbnail: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=600&q=80",
+    specializations: ["Broadcast Journalism", "Digital Media Strategy", "Corporate Communications", "Media Research & Ethics"],
+  },
+  {
+    id: "cu-pg-msc-ds",
+    name: "Online MSc Data Science",
+    fullName: "Online Master of Science in Data Science",
+    levelKey: "pg",
+    degreeLevel: "Postgraduate (PG)",
+    slug: "online-msc",
+    duration: "2 Years (4 Sems)",
+    eligibility: "Bachelor's in Science/BCA/B.Tech or Math background",
+    tuitionFee: 110001,
+    semesterFee: 27500,
+    thumbnail: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80",
+    specializations: ["Deep Learning & NLP", "Statistical Modeling & R", "Data Engineering & Pipeline", "Computer Vision"],
+  },
+  {
+    id: "cu-pg-ma-eng",
+    name: "Online MA English",
+    fullName: "Online Master of Arts in English Literature",
+    levelKey: "pg",
+    degreeLevel: "Postgraduate (PG)",
+    slug: "online-ma",
+    duration: "2 Years (4 Sems)",
+    eligibility: "Bachelor's degree in any stream",
+    tuitionFee: 75000,
+    semesterFee: 18750,
+    thumbnail: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=600&q=80",
+    specializations: ["British Literature", "Postcolonial Studies", "Literary Theory & Criticism", "American Literature"],
+  },
+  {
+    id: "cu-pg-ma-eco",
+    name: "Online MA Economics",
+    fullName: "Online Master of Arts in Economics",
+    levelKey: "pg",
+    degreeLevel: "Postgraduate (PG)",
+    slug: "online-ma",
+    duration: "2 Years (4 Sems)",
+    eligibility: "Bachelor's degree with Economics / Math / Stats or equivalent",
+    tuitionFee: 75000,
+    semesterFee: 18750,
+    thumbnail: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=600&q=80",
+    specializations: ["Macroeconomic Policy", "Econometrics & Quantitative Methods", "Development Economics", "International Trade & Finance"],
+  },
+  {
+    id: "cu-pg-msc-math",
+    name: "Online MSc Mathematics",
+    fullName: "Online Master of Science in Mathematics",
+    levelKey: "pg",
+    degreeLevel: "Postgraduate (PG)",
+    slug: "online-msc",
+    duration: "2 Years (4 Sems)",
+    eligibility: "B.Sc with Mathematics as a main subject",
+    tuitionFee: 75000,
+    semesterFee: 18750,
+    thumbnail: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=600&q=80",
+    specializations: ["Pure Mathematics", "Applied Statistics & Optimization", "Topology & Complex Analysis", "Computational Mathematics"],
+  },
+  {
+    id: "cu-pg-mba-capm",
+    name: "Online MBA (Project Management & Pwe)",
+    fullName: "Online MBA with Certificate Associates of Project Management & Pwe Certification",
+    levelKey: "pg",
+    degreeLevel: "Postgraduate (PG)",
+    slug: "online-mba",
+    industryPartner: "Project Management Institute (PMI)",
+    duration: "2 Years (4 Sems)",
+    eligibility: "Bachelor's degree with min 50% marks",
+    tuitionFee: 180400,
+    semesterFee: 45100,
+    thumbnail: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=600&q=80",
+    specializations: ["Agile & Scrum Frameworks", "CAPM Global Certification", "Enterprise Risk Management", "Strategic Execution"],
+  },
+];
+
 // ── WHY SAY YES TO AMITY ONLINE? (12 Official Pillars with Badges & Logos) ──
 const WHY_YES_AMITY_DATA = [
   {
@@ -696,7 +916,7 @@ export const UniversityDetail = () => {
     if (tabParam === "courses" || searchParam) return "courses";
     return "overview";
   });
-  const [courseCategoryTab, setCourseCategoryTab] = useState<"ug" | "pg" | "certifications" | "collaborative" | "integrated" | "guaranteed">(() => {
+  const [courseCategoryTab, setCourseCategoryTab] = useState<"ug" | "pg" | "certifications" | "collaborative" | "integrated">(() => {
     if (searchParam) {
       const lower = searchParam.toLowerCase();
       if (lower.includes("cert") || lower.includes("diploma")) return "certifications";
@@ -759,9 +979,12 @@ export const UniversityDetail = () => {
   const [submitted, setSubmitted] = useState(false);
   const [selectedAccreditation, setSelectedAccreditation] = useState<{
     name: string;
+    shortName?: string;
     fullName: string;
     badge: string;
     img: string;
+    icon?: string;
+    standsFor: string;
     singlePara?: string;
     shortDesc: string;
     whyItMatters: string;
@@ -867,7 +1090,22 @@ export const UniversityDetail = () => {
     const matched = COURSES.find((c) => c.title.toLowerCase() === courseName.toLowerCase()) ||
       COURSES.find((c) => courseName.toLowerCase().includes(c.slug.replace("online-", "")));
 
-    const isPg = courseName.includes("MBA") || courseName.includes("MCA") || courseName.includes("M.Sc") || courseName.includes("M.Com") || courseName.includes("Master");
+    const nameUpper = courseName.toUpperCase();
+    const isPg = (
+      nameUpper.includes("MBA") ||
+      nameUpper.includes("MCA") ||
+      nameUpper.includes("MSC") ||
+      nameUpper.includes("M.SC") ||
+      nameUpper.includes("M.COM") ||
+      nameUpper.includes("MCOM") ||
+      nameUpper.includes("MASTER") ||
+      nameUpper.includes("POSTGRADUATE") ||
+      nameUpper.includes("MAJMC") ||
+      /\bMA\b/.test(courseName) ||
+      courseName.startsWith("Online MA") ||
+      courseName.startsWith("MA ") ||
+      courseName.includes(" MA ")
+    );
 
     return {
       name: courseName,
@@ -886,6 +1124,21 @@ export const UniversityDetail = () => {
   const displayPrograms = useMemo(() => {
     if (isAmity) {
       return UNIQUE_AMITY_PROGRAMS.filter((prog) => {
+        if (courseCategoryTab !== prog.levelKey) return false;
+        if (searchQuery.trim()) {
+          const q = searchQuery.toLowerCase();
+          const matchName = prog.name.toLowerCase().includes(q);
+          const matchFull = prog.fullName.toLowerCase().includes(q);
+          const matchPartner = prog.industryPartner?.toLowerCase().includes(q);
+          const matchSpec = prog.specializations.some((s) => s.toLowerCase().includes(q));
+          return matchName || matchFull || matchPartner || matchSpec;
+        }
+        return true;
+      });
+    }
+
+    if (isCu) {
+      return UNIQUE_CU_PROGRAMS.filter((prog) => {
         if (courseCategoryTab !== prog.levelKey) return false;
         if (searchQuery.trim()) {
           const q = searchQuery.toLowerCase();
@@ -926,13 +1179,16 @@ export const UniversityDetail = () => {
         industryPartner: undefined as string | undefined,
         thumbnail: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80",
       }));
-  }, [isAmity, courseCategoryTab, searchQuery, genericPrograms]);
+  }, [isAmity, isCu, courseCategoryTab, searchQuery, genericPrograms]);
 
   interface AuthorityLogoItem {
     name: string;
+    shortName: string;
     fullName: string;
     badge: string;
     img: string;
+    icon?: string;
+    standsFor: string;
     singlePara?: string;
     shortDesc: string;
     whyItMatters: string;
@@ -942,63 +1198,84 @@ export const UniversityDetail = () => {
   const authorityLogos: AuthorityLogoItem[] = [
     {
       name: "UGC-DEB",
+      shortName: "UGC-DEB",
       fullName: "University Grants Commission – Distance Education Bureau",
       badge: "Statutory Govt. Approval",
       img: "/assets/approvals/ugc-deb.png",
+      icon: "/assets/approvals/ugc-deb-clean.png",
+      standsFor: "University Grants Commission – Distance Education Bureau",
       singlePara: "The University Grants Commission (UGC-DEB) is the premier statutory authority regulating university higher education in India. Its approval guarantees that your online degree has 100% legal validity, equivalent to an on-campus degree, and is fully recognized for UPSC, SSC, banking, state/central government jobs, corporate hiring, and global university admissions.",
       shortDesc: "The premier statutory authority regulating university higher education and distance/online learning across India.",
       whyItMatters: "Mandatory legal validation ensuring your degree is 100% genuine and fully accepted for UPSC, SSC, banking, all state/central government jobs, and global university admissions."
     },
     {
       name: "AICTE",
+      shortName: "AICTE",
       fullName: "All India Council for Technical Education",
       badge: "Technical Curriculum Standard",
       img: "/assets/approvals/aicte.png",
+      icon: "/assets/approvals/aicte-clean.png",
+      standsFor: "All India Council for Technical Education",
       singlePara: "The All India Council for Technical Education (AICTE) approves technical and management curricula (MBA, MCA, BCA) in India, confirming that the syllabus, faculty rigor, and course outcomes match current industry technical benchmarks and high employability standards.",
       shortDesc: "National statutory council governing professional technical and management curricula (MBA, MCA, BCA) in India.",
       whyItMatters: "Confirms that curriculum, faculty rigor, and course outcomes match current industry technical benchmarks and high employability standards."
     },
     {
       name: "NAAC A+",
+      shortName: "NAAC A+",
       fullName: "National Assessment & Accreditation Council (Grade A+)",
       badge: "Premier Institutional Grade",
       img: "/assets/approvals/naac_a_plus.png",
+      icon: "/assets/approvals/naac-clean.png",
+      standsFor: "National Assessment and Accreditation Council",
       singlePara: "The National Assessment and Accreditation Council (NAAC) has awarded an elite 'A+' grade, reserved exclusively for top-tier institutions demonstrating superior academic quality, curriculum excellence, faculty credentials, and student learning results.",
       shortDesc: "Autonomous accreditation authority under UGC evaluating comprehensive academic quality, campus research, and student learning results.",
       whyItMatters: "An 'A+' grade is reserved for India's elite institutions, proving top-quartile educational quality and high employer trust worldwide."
     },
     {
       name: "WES",
+      shortName: "WES",
       fullName: "World Education Services (USA & Canada)",
       badge: "North American Equivalency",
       img: "/assets/approvals/wes.png",
+      icon: "/assets/approvals/wes-clean.png",
+      standsFor: "World Education Services (USA & Canada Equivalency)",
       singlePara: "World Education Services (WES) credential evaluation confirms that your degree is officially recognized as equivalent to degrees granted in the United States and Canada for higher education, multinational corporate hiring, and Permanent Residency (PR).",
       shortDesc: "World's most trusted international credential evaluation service based in the United States and Canada.",
       whyItMatters: "Validates that your online degree is officially recognized as equivalent to degrees granted in the USA and Canada for higher education, corporate hiring, and Permanent Residency (PR)."
     },
     {
       name: "NIRF",
+      shortName: "NIRF",
       fullName: "National Institutional Ranking Framework (Ministry of Education)",
       badge: "Govt. of India Ranking",
       img: "/assets/approvals/nirf.png",
+      icon: "/assets/approvals/nirf-clean.png",
+      standsFor: "National Institutional Ranking Framework (MoE)",
       singlePara: "Ranked under the Ministry of Education's National Institutional Ranking Framework (NIRF), highlighting top-quartile teaching quality, graduation outcomes, and educational excellence among India's leading institutions.",
       shortDesc: "The official national ranking methodology established by the Ministry of Education, Government of India.",
       whyItMatters: "Ranks top universities on factual parameters: Teaching, Learning & Resources, Research, Graduation Outcomes, and Outreach."
     },
     {
       name: "QS World Rankings",
+      shortName: "QS",
       fullName: "Quacquarelli Symonds (QS) University Rankings",
       badge: "Global Institutional Benchmark",
       img: "/assets/approvals/qs.png",
+      icon: "/assets/approvals/qs-clean.png",
+      standsFor: "Quacquarelli Symonds Global University Rankings",
       singlePara: "Recognized by Quacquarelli Symonds (QS) global university rankings, confirming high international academic reputation, corporate employer recognition, and worldwide prestige.",
       shortDesc: "Leading global higher education analyst producing premier annual university rankings worldwide.",
       whyItMatters: "Provides international reputation and employer recognition, helping you stand out when applying for multinational careers or studying abroad."
     },
     {
       name: "DEC",
+      shortName: "DEC",
       fullName: "Distance Education Council",
       badge: "Distance Learning Quality",
       img: "/assets/approvals/dec.png",
+      icon: "/assets/approvals/dec-clean.png",
+      standsFor: "Distance Education Council",
       singlePara: "Conferred under Distance Education Council standards, validating student-centric learning delivery, verified self-paced study coursework, and systematic evaluation methodology.",
       shortDesc: "Apex historic council establishing quality protocols and standards for open and distance learning systems in India.",
       whyItMatters: "Guarantees student-centric learning delivery, self-paced study material quality, and systematic evaluation methodology."
@@ -1009,65 +1286,89 @@ export const UniversityDetail = () => {
   const amityAuthorityLogos: AuthorityLogoItem[] = [
     {
       name: "UGC-DEB Approved",
+      shortName: "UGC-DEB",
       fullName: "University Grants Commission – Distance Education Bureau",
       badge: "Statutory Govt. Approval",
       img: "/assets/approvals/ugc-deb.png",
+      icon: "/assets/approvals/ugc-deb-clean.png",
+      standsFor: "University Grants Commission – Distance Education Bureau",
       shortDesc: "Statutory council established under the Ministry of Education regulating digital and distance higher education.",
       whyItMatters: "Guarantees full statutory validity for all competitive examinations, central/state government employment, and global higher study."
     },
     {
       name: "AICTE Approved",
+      shortName: "AICTE",
       fullName: "All India Council for Technical Education",
       badge: "Professional Technical Standard",
       img: "/assets/approvals/aicte.png",
+      icon: "/assets/approvals/aicte-clean.png",
+      standsFor: "All India Council for Technical Education",
       shortDesc: "Statutory body planning and coordinated development of technical and management education across India.",
       whyItMatters: "Endorses that MBA and MCA syllabi match current multinational corporate expectations and technical competence."
     },
     {
       name: "WASC Accredited (USA)",
+      shortName: "WASC",
       fullName: "WASC Senior College and University Commission (USA)",
       badge: "Prestigious US Regional Accreditation",
       img: "/assets/approvals/wasc.svg",
+      icon: "/assets/approvals/wasc.svg",
+      standsFor: "Western Association of Schools & Colleges (USA)",
       shortDesc: "Top-tier regional accreditation body recognized by the US Department of Education.",
       whyItMatters: "Enables seamless credit transfer and academic recognition across universities and employers throughout the United States."
     },
     {
       name: "QAA UK Quality Assured",
+      shortName: "QAA",
       fullName: "Quality Assurance Agency for Higher Education (UK)",
       badge: "British Quality Benchmark",
       img: "/assets/approvals/qaa.svg",
+      icon: "/assets/approvals/qaa.svg",
+      standsFor: "Quality Assurance Agency for Higher Education (UK)",
       shortDesc: "The independent body entrusted with safeguarding quality and standards in United Kingdom higher education.",
       whyItMatters: "Ensures course delivery and evaluation methodology matches European and British university excellence standards."
     },
     {
       name: "WES Recognized",
+      shortName: "WES",
       fullName: "World Education Services (USA & Canada)",
       badge: "International Credential Equivalency",
       img: "/assets/approvals/wes.png",
+      icon: "/assets/approvals/wes-clean.png",
+      standsFor: "World Education Services (USA & Canada Equivalency)",
       shortDesc: "The trusted authority for degree evaluations required for North American employment, visas, and university admissions.",
       whyItMatters: "Ensures immediate acceptance in Canada and USA for Express Entry, PNP, higher degrees, and global MNC transfers."
     },
     {
       name: "QS Ranked Online MBA",
+      shortName: "QS",
       fullName: "Quacquarelli Symonds (QS) Asia Pacific Top 10",
       badge: "Asia Pacific Rank #10",
       img: "/assets/approvals/qs.png",
+      icon: "/assets/approvals/qs-clean.png",
+      standsFor: "Quacquarelli Symonds Asia Pacific Rankings",
       shortDesc: "Ranked among the premier online MBA programs across the entire Asia Pacific region.",
       whyItMatters: "Recognized as a premier management program on your CV when applying to multinational corporations worldwide."
     },
     {
       name: "Times Higher Education",
+      shortName: "THE",
       fullName: "Times Higher Education (THE) Employability",
       badge: "Global Employability Ranking",
       img: "/assets/approvals/the.svg",
+      icon: "/assets/approvals/the.svg",
+      standsFor: "Times Higher Education Employability Rankings",
       shortDesc: "World's most respected global university ranking publisher assessing graduate outcomes.",
       whyItMatters: "Demonstrates consistent corporate recruitment and high placement demand across Fortune 500 enterprises."
     },
     {
       name: "NIRF Top Ranked",
+      shortName: "NIRF",
       fullName: "National Institutional Ranking Framework",
       badge: "MoE, Govt of India",
       img: "/assets/approvals/nirf.png",
+      icon: "/assets/approvals/nirf-clean.png",
+      standsFor: "National Institutional Ranking Framework",
       shortDesc: "Official Government of India ranking of leading institutions across academic and career parameters.",
       whyItMatters: "Confirms top-tier national standing and robust institutional accountability backed by verified government audits."
     },
@@ -1427,7 +1728,7 @@ export const UniversityDetail = () => {
                         <div className="p-3.5 rounded-2xl bg-muted/30 border border-border/60">
                           <span className="text-[11px] text-muted-foreground font-normal block">Placement Support</span>
                           <span className="text-sm font-semibold text-foreground mt-0.5 block">
-                            {isSgt ? "100% Guaranteed Placement" : "350+ Recruiting Partners"}
+                            350+ Recruiting Partners
                           </span>
                         </div>
                       </div>
@@ -1541,7 +1842,7 @@ export const UniversityDetail = () => {
                     <div className="p-6 sm:p-7 rounded-3xl bg-card border border-border/80 shadow-sm space-y-4">
                       <div>
                         <h3 className="text-lg sm:text-xl font-bold text-foreground">
-                          {uni.name} <span className="text-primary">Accredited By</span>
+                          {uni.name} <span className="text-primary">Accreditations</span>
                         </h3>
                         <p className="text-xs text-muted-foreground mt-0.5">
                           Click on any accreditation badge to view what it means and how it benefits your career.
@@ -1555,15 +1856,18 @@ export const UniversityDetail = () => {
                             type="button"
                             key={i}
                             onClick={() => setSelectedAccreditation(auth)}
-                            className="group shrink-0 snap-center w-[185px] sm:w-auto h-36 sm:h-44 rounded-2xl bg-white border border-border/80 shadow-xs hover:shadow-xl hover:border-primary/50 transition-all p-3 sm:p-4 flex items-center justify-center text-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/40 active:scale-98"
+                            className="group shrink-0 snap-center w-[185px] sm:w-auto min-h-[160px] sm:min-h-[175px] rounded-2xl bg-white border border-border/80 shadow-xs hover:shadow-xl hover:border-primary/50 transition-all p-3 flex flex-col items-center justify-between text-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/40 active:scale-98 overflow-hidden"
                           >
-                            <div className="w-full h-full flex items-center justify-center p-1">
+                            <div className="w-full flex-1 flex items-center justify-center p-[15px] min-h-[96px] sm:min-h-[110px]">
                               <img
-                                src={auth.img}
+                                src={auth.icon || auth.img}
                                 alt={auth.name}
-                                className="max-h-24 sm:max-h-28 max-w-full object-contain transition-transform duration-200 group-hover:scale-108"
+                                className="max-h-20 sm:max-h-24 w-auto max-w-full object-contain transition-transform duration-200 group-hover:scale-105"
                                 loading="lazy"
                               />
+                            </div>
+                            <div className="w-full bg-[#EBF3FF] dark:bg-[#1E3A8A]/30 text-[#1E40AF] dark:text-[#93C5FD] font-bold text-xs py-1.5 px-2 rounded-xl text-center truncate">
+                              {auth.shortName || auth.name}
                             </div>
                           </button>
                         ))}
@@ -1695,9 +1999,6 @@ export const UniversityDetail = () => {
                           <h2 className="text-xl sm:text-2xl font-bold text-foreground">
                             {uni.name} <span className="text-primary">Courses</span>
                           </h2>
-                          <p className="text-xs text-muted-foreground mt-0.5">
-                            UGC-DEB accredited online degrees designed for working professionals.
-                          </p>
                         </div>
 
                         {/* Search Filter Input */}
@@ -1728,7 +2029,6 @@ export const UniversityDetail = () => {
                               { id: "ug", label: "UG Courses" },
                               { id: "pg", label: "PG Courses" },
                               { id: "certifications", label: "Certifications & Diplomas" },
-                              { id: "guaranteed", label: "Certification Placement Guaranteed" },
                             ]
                           : isLiverpool || isForeignDoctorate
                           ? [
@@ -1737,7 +2037,6 @@ export const UniversityDetail = () => {
                           : [
                               { id: "ug", label: "UG Courses" },
                               { id: "pg", label: "PG Courses" },
-                              { id: "certifications", label: "Certifications & Diplomas" },
                             ]
                         ).map((cat) => (
                           <button
@@ -1839,122 +2138,6 @@ export const UniversityDetail = () => {
                             )}
                           </div>
                         </div>
-                      ) : courseCategoryTab === "guaranteed" ? (
-                        /* SGT University Online: 100% Guaranteed Placement Career Programme (ACWM with Bajaj Capital) */
-                        <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-emerald-500/10 via-card to-card border border-emerald-500/30 shadow-sm space-y-6 animate-in fade-in-50 duration-200">
-                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-border/50">
-                            <div className="space-y-1.5">
-                              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 text-xs font-bold uppercase tracking-wider">
-                                <CheckCircle2 size={14} />
-                                <span>100% Guaranteed Placement Career Programme</span>
-                              </div>
-                              <h3 className="text-xl sm:text-2xl font-bold text-foreground">
-                                Job First. Train Next. <span className="text-emerald-600 dark:text-emerald-400">Build Your Career.</span>
-                              </h3>
-                              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-2xl">
-                                Interview for a Wealth Officer role at Bajaj Capital and receive a written Pre-Placement Offer (PPO) before training begins.
-                              </p>
-                            </div>
-
-                            <div className="flex items-center gap-2 shrink-0">
-                              <span className="px-3 py-1.5 rounded-xl bg-card border border-border/70 text-xs font-bold text-foreground shadow-2xs">
-                                Bajaj Capital
-                              </span>
-                              <span className="text-xs text-muted-foreground">•</span>
-                              <span className="px-3 py-1.5 rounded-xl bg-card border border-border/70 text-xs font-bold text-foreground shadow-2xs">
-                                AIMA & ICOFP
-                              </span>
-                            </div>
-                          </div>
-
-                          {/* 3 Key Career Numbers */}
-                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-                            <div className="p-4 rounded-2xl bg-card border border-border/70 text-center space-y-1 shadow-2xs">
-                              <span className="text-[11px] text-muted-foreground font-medium block">Starting Package</span>
-                              <span className="text-2xl font-black text-foreground block">₹4.2 LPA</span>
-                              <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold block">Full-time Wealth Officer Role</span>
-                            </div>
-
-                            <div className="p-4 rounded-2xl bg-card border border-border/70 text-center space-y-1 shadow-2xs">
-                              <span className="text-[11px] text-muted-foreground font-medium block">Internship Stipend</span>
-                              <span className="text-2xl font-black text-foreground block">₹60,000</span>
-                              <span className="text-[11px] text-muted-foreground font-semibold block">₹15,000/mo while you train</span>
-                            </div>
-
-                            <div className="p-4 rounded-2xl bg-card border border-border/70 text-center space-y-1 shadow-2xs">
-                              <span className="text-[11px] text-muted-foreground font-medium block">Retention Bonus</span>
-                              <span className="text-2xl font-black text-emerald-600 dark:text-emerald-400 block">₹85,000</span>
-                              <span className="text-[11px] text-muted-foreground font-semibold block">After 12 months full-time</span>
-                            </div>
-                          </div>
-
-                          {/* 8-Month Career Pathway */}
-                          <div className="space-y-3 pt-1">
-                            <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                              8-Month Career Pathway (From Interview to Payroll)
-                            </h4>
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                              <div className="p-4 rounded-2xl bg-muted/30 border border-border/60 space-y-1.5">
-                                <div className="flex items-center gap-2">
-                                  <span className="w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-bold flex items-center justify-center">01</span>
-                                  <span className="text-xs font-bold text-foreground">Get Selected</span>
-                                </div>
-                                <p className="text-[11px] text-muted-foreground leading-relaxed">
-                                  Appear for the interview with Bajaj Capital and receive a written Pre-Placement Offer (PPO) starting from ₹4.2 LPA.
-                                </p>
-                              </div>
-
-                              <div className="p-4 rounded-2xl bg-muted/30 border border-border/60 space-y-1.5">
-                                <div className="flex items-center gap-2">
-                                  <span className="w-6 h-6 rounded-full bg-sky-500/10 text-sky-600 dark:text-sky-400 text-xs font-bold flex items-center justify-center">02</span>
-                                  <span className="text-xs font-bold text-foreground">Get Trained</span>
-                                </div>
-                                <p className="text-[11px] text-muted-foreground leading-relaxed">
-                                  240 hours of Advanced Certification in Wealth Management (ACWM) with ICOFP & AIMA, then paid internship at ₹15,000/mo.
-                                </p>
-                              </div>
-
-                              <div className="p-4 rounded-2xl bg-muted/30 border border-border/60 space-y-1.5">
-                                <div className="flex items-center gap-2">
-                                  <span className="w-6 h-6 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-bold flex items-center justify-center">03</span>
-                                  <span className="text-xs font-bold text-foreground">Get Hired</span>
-                                </div>
-                                <p className="text-[11px] text-muted-foreground leading-relaxed">
-                                  Join as a permanent Wealth Officer at Bajaj Capital with starting CTC ₹4.2 LPA and ₹85,000 completion bonus.
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* Key Skills Covered */}
-                          <div className="pt-2 flex flex-wrap items-center gap-2 text-xs">
-                            <span className="text-xs font-bold text-foreground">Curriculum Focus:</span>
-                            {["Financial Planning", "Wealth Management", "Investment Advisory", "Mutual Funds", "Retirement, Tax & Risk Planning"].map((skill, idx) => (
-                              <span key={idx} className="px-2.5 py-1 rounded-lg bg-card border border-border/70 text-[11px] font-medium text-foreground/90">
-                                {skill}
-                              </span>
-                            ))}
-                          </div>
-
-                          {/* CTA Row */}
-                          <div className="pt-4 border-t border-border/50 flex flex-wrap items-center justify-between gap-3">
-                            <Link
-                              to="/placement-guaranteed"
-                              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground font-semibold text-xs sm:text-sm hover:bg-primary/90 transition-all shadow-sm"
-                            >
-                              <span>Explore Dedicated 100% Placement Guaranteed Page</span>
-                              <ChevronRight size={14} />
-                            </Link>
-
-                            <a
-                              href="#counseling-box"
-                              onClick={() => setSelectedCourse("Advanced Certification in Wealth Management (PPO Guaranteed)")}
-                              className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-card border border-primary text-primary font-semibold text-xs sm:text-sm hover:bg-primary/5 transition-colors"
-                            >
-                              <span>Apply for ACWM Interview</span>
-                            </a>
-                          </div>
-                        </div>
                       ) : (
                         /* PROGRAM CARDS GRID (Unique Degrees with Specializations Dropdown & Links) */
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
@@ -1966,27 +2149,27 @@ export const UniversityDetail = () => {
                             >
                               <div>
                                 {/* Top Thumbnail with University Badge & Partner Badge */}
-                                <div className="relative h-44 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
+                                <div className="relative h-36 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
                                   <img
                                     src={prog.thumbnail}
                                     alt={prog.name}
                                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-103"
                                     loading="lazy"
                                   />
-                                  {/* White University Crest Badge Overlay */}
-                                  <div className="absolute top-3 left-3 px-2 py-1 rounded-lg bg-white/95 backdrop-blur-sm shadow-xs border border-slate-200/90 flex items-center">
-                                    <UniversityLogo idOrSlug={uni.slug} size="sm" raw={true} className="h-5 w-auto object-contain" />
+                                  {/* Small Compact University Crest Badge Overlay */}
+                                  <div className="absolute top-2.5 left-2.5 w-8 h-8 rounded-xl bg-white/95 backdrop-blur-sm shadow-xs border border-slate-200/90 p-1 flex items-center justify-center overflow-hidden">
+                                    <UniversityLogo idOrSlug={uni.slug} size="sm" raw={true} variant="dp" className="max-h-full max-w-full object-contain" />
                                   </div>
 
                                   {prog.industryPartner && (
-                                    <div className="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-emerald-600 text-white text-[10px] font-bold shadow-xs">
+                                    <div className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full bg-emerald-600 text-white text-[10px] font-bold shadow-xs">
                                       {prog.industryPartner} Co-Created
                                     </div>
                                   )}
                                 </div>
 
                                 {/* Content Details */}
-                                <div className="p-5 space-y-3">
+                                <div className="p-4 space-y-2.5">
                                   <div className="flex items-center justify-between">
                                     <span className="text-[10px] font-bold tracking-wider uppercase text-muted-foreground">
                                       {uni.name}
@@ -1997,14 +2180,10 @@ export const UniversityDetail = () => {
                                   </div>
 
                                   <h3 className="text-base sm:text-lg font-bold text-foreground group-hover:text-primary transition-colors leading-snug">
-                                    <Link to={`/${prog.slug}`} className="hover:underline">
+                                    <Link to={`/programs/${prog.slug}`} className="hover:underline">
                                       {prog.name}
                                     </Link>
                                   </h3>
-
-                                  <p className="text-xs text-muted-foreground line-clamp-1">
-                                    {prog.eligibility}
-                                  </p>
 
                                   {/* Tuition Fee & Duration */}
                                   <div className="pt-2 flex items-center justify-between text-xs border-t border-border/40">
@@ -2023,49 +2202,51 @@ export const UniversityDetail = () => {
                                   </div>
 
                                   {/* Specializations Dropdown Button */}
-                                  <div className="pt-1">
-                                    <button
-                                      type="button"
-                                      onClick={() => setExpandedProgramId(expandedProgramId === prog.id ? null : prog.id)}
-                                      className="w-full flex items-center justify-between px-3.5 py-2 rounded-xl bg-muted/50 hover:bg-muted text-xs font-semibold text-foreground border border-border/60 transition-colors cursor-pointer"
-                                    >
-                                      <span className="flex items-center gap-1.5 text-primary font-bold">
-                                        <Layers size={13} />
-                                        <span>{prog.specializations.length} Specializations</span>
-                                      </span>
-                                      <ChevronDown
-                                        size={14}
-                                        className={`text-muted-foreground transition-transform duration-200 ${
-                                          expandedProgramId === prog.id ? "rotate-180" : ""
-                                        }`}
-                                      />
-                                    </button>
+                                  {prog.specializations && prog.specializations.length > 0 && (
+                                    <div className="pt-1">
+                                      <button
+                                        type="button"
+                                        onClick={() => setExpandedProgramId(expandedProgramId === prog.id ? null : prog.id)}
+                                        className="w-full flex items-center justify-between px-3.5 py-1.5 rounded-xl bg-muted/50 hover:bg-muted text-xs font-semibold text-foreground border border-border/60 transition-colors cursor-pointer"
+                                      >
+                                        <span className="flex items-center gap-1.5 text-primary font-bold">
+                                          <Layers size={13} />
+                                          <span>{prog.specializations.length} Specializations</span>
+                                        </span>
+                                        <ChevronDown
+                                          size={14}
+                                          className={`text-muted-foreground transition-transform duration-200 ${
+                                            expandedProgramId === prog.id ? "rotate-180" : ""
+                                          }`}
+                                        />
+                                      </button>
 
-                                    {/* Clean Specialization Badges (Directly on Card, No Redirection) */}
-                                    {expandedProgramId === prog.id && (
-                                      <div className="mt-2.5 p-2.5 rounded-2xl bg-muted/30 border border-border/70 flex flex-wrap gap-1.5 animate-in fade-in-50 duration-200">
-                                        {prog.specializations.map((spec, sIdx) => (
-                                          <div
-                                            key={sIdx}
-                                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-card border border-border/70 hover:border-primary/50 text-xs font-semibold text-foreground transition-all duration-150 shadow-2xs hover:bg-primary/5 cursor-default select-none"
-                                          >
-                                            <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
-                                            <span>{spec}</span>
-                                          </div>
-                                        ))}
-                                      </div>
-                                    )}
-                                  </div>
+                                      {/* Clean Specialization Badges */}
+                                      {expandedProgramId === prog.id && (
+                                        <div className="mt-2.5 p-2.5 rounded-2xl bg-muted/30 border border-border/70 flex flex-wrap gap-1.5 animate-in fade-in-50 duration-200">
+                                          {prog.specializations.map((spec, sIdx) => (
+                                            <div
+                                              key={sIdx}
+                                              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-card border border-border/70 hover:border-primary/50 text-xs font-semibold text-foreground transition-all duration-150 shadow-2xs hover:bg-primary/5 cursor-default select-none"
+                                            >
+                                              <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                                              <span>{spec}</span>
+                                            </div>
+                                          ))}
+                                        </div>
+                                      )}
+                                    </div>
+                                  )}
                                 </div>
                               </div>
 
                               {/* Card Footer Actions */}
-                              <div className="p-5 pt-0 flex items-center justify-between">
+                              <div className="p-4 pt-0 flex items-center justify-between">
                                 <Link
-                                  to={`/${prog.slug}`}
+                                  to={`/programs/${prog.slug}`}
                                   className="text-xs font-semibold text-primary group-hover:underline inline-flex items-center gap-1"
                                 >
-                                  <span>Read more</span>
+                                  <span>View Course</span>
                                   <ChevronRight size={14} />
                                 </Link>
 
@@ -2084,17 +2265,14 @@ export const UniversityDetail = () => {
                     )}
                     </div>
 
-                    {/* 2. Course Wise Updated Fees 2026 Table (Matching Image 3) */}
-                    {courseCategoryTab !== "guaranteed" && (
+                    {/* 2. AMITY ONLINE Course Wise Updated Fees 2026 Table (Only for Amity) */}
+                    {isAmity && courseCategoryTab !== "guaranteed" && (
                     <div className="space-y-4 pt-4">
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <div>
                           <h3 className="text-xl font-bold text-foreground">
                             Course Wise <span className="text-primary">Updated Fees 2026</span>
                           </h3>
-                          <p className="text-xs text-muted-foreground">
-                            Complete official July 26 fee breakdown across all degrees.
-                          </p>
                         </div>
 
                         {/* Direct vs Loan Switcher */}
@@ -2122,7 +2300,7 @@ export const UniversityDetail = () => {
                         </div>
                       </div>
 
-                      {/* Clean Table matching Image 3 */}
+                      {/* Clean Table */}
                       <div className="rounded-3xl border border-border overflow-hidden bg-card shadow-sm">
                         <div className="overflow-x-auto">
                           <table className="w-full text-left text-xs sm:text-sm">
@@ -2184,76 +2362,111 @@ export const UniversityDetail = () => {
                       </div>
                     </div>
                   )}
-                    {/* Chandigarh University Online Course Wise Updated Fees 2026 (Matching User Image 3) */}
+
+                    {/* 3. CHANDIGARH UNIVERSITY ONLINE Fee Structure (Clean & Simple) */}
                     {isCu && (
-                      <div className="space-y-4 pt-4">
+                      <div className="space-y-4 pt-6">
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                           <div>
+                            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-[11px] font-bold uppercase tracking-wider mb-1">
+                              Session – Jul 2026
+                            </div>
                             <h3 className="text-lg sm:text-xl font-bold text-foreground">
-                              Chandigarh University Online Course Wise <span className="text-primary">Updated Fees 2026</span>
+                              Fee Structure & <span className="text-primary">Installments</span>
                             </h3>
                             <p className="text-xs text-muted-foreground mt-0.5">
-                              Official transparent semester-wise fee breakdown with direct admission assistance.
+                              Transparent semester-wise and annual fee breakdown with Early Bird Discount (EBD).
                             </p>
                           </div>
                           <Link
                             to="/tools/roi-calculator"
-                            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#0052cc] text-white text-xs font-bold hover:bg-[#0040aa] transition-colors shadow-xs self-start sm:self-auto"
+                            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-primary/10 hover:bg-primary text-primary hover:text-primary-foreground text-xs font-bold transition-colors shadow-2xs self-start sm:self-auto"
                           >
                             <Calculator size={13} />
                             <span>ROI Calculator</span>
                           </Link>
                         </div>
 
-                        <div className="rounded-2xl sm:rounded-3xl border border-border overflow-hidden bg-card shadow-sm">
+                        <div className="rounded-2xl border border-border/80 overflow-hidden bg-card shadow-xs">
                           <div className="overflow-x-auto">
                             <table className="w-full text-left text-xs sm:text-sm">
-                              <thead className="bg-[#002E5E] text-white text-xs font-semibold">
+                              <thead className="bg-slate-900 text-white dark:bg-slate-800 text-xs font-semibold">
                                 <tr>
-                                  <th className="py-3 px-4">Course</th>
-                                  <th className="py-3 px-4">Fees</th>
-                                  <th className="py-3 px-4">Duration</th>
+                                  <th className="py-3 px-3 text-center w-12">#</th>
+                                  <th className="py-3 px-4">Program</th>
+                                  <th className="py-3 px-3 text-center">Level</th>
+                                  <th className="py-3 px-3 text-center">EBD Offer</th>
+                                  <th className="py-3 px-3 text-center">Semester Fee</th>
+                                  <th className="py-3 px-3 text-center">Annual Fee</th>
+                                  <th className="py-3 px-3 text-center font-bold">Total Fees</th>
                                   <th className="py-3 px-4 text-right">Action</th>
                                 </tr>
                               </thead>
-                              <tbody className="divide-y divide-border/60">
+                              <tbody className="divide-y divide-border/60 text-xs sm:text-sm">
                                 {[
-                                  { course: "Online BBA", fee: "₹ 23,334/Sem", duration: "3 Years" },
-                                  { course: "Online M.Com", fee: "₹ 22,750/Sem", duration: "2 Years" },
-                                  { course: "Online MBA", fee: "₹ 45,100/Sem", duration: "2 Years" },
-                                  { course: "Online BA Honours", fee: "₹ 15,750/Sem", duration: "3 Years" },
-                                  { course: "Online BCA", fee: "₹ 23,600/Sem", duration: "3 Years" },
-                                  { course: "Online M.Sc", fee: "₹ 27,500/Sem", duration: "2 Years" },
-                                  { course: "Online BA", fee: "₹ 21,875/Sem", duration: "3 Years" },
-                                  { course: "Online MA", fee: "₹ 27,188/Sem", duration: "2 Years" },
-                                  { course: "Online MBA (Dual)", fee: "₹ 45,100/Sem", duration: "2 Years" },
-                                  { course: "Online Dual BBA", fee: "₹ 23,334/Sem", duration: "3 Years" },
-                                  { course: "Online MCA", fee: "₹ 29,063/Sem", duration: "2 Years" },
-                                ].map((row, idx) => (
-                                  <tr key={idx} className="hover:bg-muted/30 transition-colors">
-                                    <td className="py-3.5 px-4 font-semibold text-foreground">
-                                      {row.course}
-                                    </td>
-                                    <td className="py-3.5 px-4 font-bold text-foreground">
-                                      {row.fee}
-                                    </td>
-                                    <td className="py-3.5 px-4 text-muted-foreground">
-                                      {row.duration}
-                                    </td>
-                                    <td className="py-3.5 px-4 text-right">
-                                      <a
-                                        href="#counseling-box"
-                                        onClick={() => setSelectedCourse(row.course)}
-                                        className="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-primary/10 hover:bg-primary text-primary hover:text-primary-foreground font-semibold text-xs transition-colors"
-                                      >
-                                        <span>Apply</span>
-                                        <ArrowRight size={11} />
-                                      </a>
-                                    </td>
-                                  </tr>
-                                ))}
+                                  { program: "Online BBA", level: "UG", ebd: "25% Off", semFee: "21,875", annualFee: "43,750", lumpSumFee: "1,31,250", slug: "online-bba" },
+                                  { program: "Online BBA (Business Analytics)", level: "UG", ebd: "13% Off", semFee: "27,550", annualFee: "55,100", lumpSumFee: "1,65,300", slug: "online-bba" },
+                                  { program: "Online BCA", level: "UG", ebd: "25% Off", semFee: "22,125", annualFee: "44,250", lumpSumFee: "1,32,750", slug: "online-bca" },
+                                  { program: "Online BA JMC", level: "UG", ebd: "25% Off", semFee: "21,875", annualFee: "43,750", lumpSumFee: "1,31,250", slug: "online-ba" },
+                                  { program: "Online BBA (Microsoft)", level: "UG", ebd: "20% Off", semFee: "23,333", annualFee: "46,667", lumpSumFee: "1,40,000", slug: "online-bba" },
+                                  { program: "Online BCA (Microsoft)", level: "UG", ebd: "20% Off", semFee: "23,600", annualFee: "47,200", lumpSumFee: "1,41,600", slug: "online-bca" },
+                                  { program: "Online MBA", level: "PG", ebd: "25% Off", semFee: "41,250", annualFee: "82,500", lumpSumFee: "1,65,000", slug: "online-mba" },
+                                  { program: "Online MBA (Business Analytics)", level: "PG", ebd: "10% Off", semFee: "45,000", annualFee: "90,000", lumpSumFee: "1,80,000", slug: "online-mba" },
+                                  { program: "Online MCA", level: "PG", ebd: "25% Off", semFee: "29,063", annualFee: "58,125", lumpSumFee: "1,16,250", slug: "online-mca" },
+                                  { program: "Online MAJMC", level: "PG", ebd: "25% Off", semFee: "27,188", annualFee: "54,375", lumpSumFee: "1,08,750", slug: "online-ma" },
+                                  { program: "Online MSc Data Science", level: "PG", ebd: "25% Off", semFee: "27,500", annualFee: "55,001", lumpSumFee: "1,10,001", slug: "online-msc" },
+                                  { program: "Online MA English", level: "PG", ebd: "25% Off", semFee: "18,750", annualFee: "37,500", lumpSumFee: "75,000", slug: "online-ma" },
+                                  { program: "Online MA Economics", level: "PG", ebd: "25% Off", semFee: "18,750", annualFee: "37,500", lumpSumFee: "75,000", slug: "online-ma" },
+                                  { program: "Online MSc Mathematics", level: "PG", ebd: "25% Off", semFee: "18,750", annualFee: "37,500", lumpSumFee: "75,000", slug: "online-msc" },
+                                  { program: "Online MBA (Project Management & Pwe)", level: "PG", ebd: "18% Off", semFee: "45,100", annualFee: "90,200", lumpSumFee: "1,80,400", slug: "online-mba" },
+                                ]
+                                  .filter((row) => {
+                                    if (courseCategoryTab === "ug" && row.level !== "UG") return false;
+                                    if (courseCategoryTab === "pg" && row.level !== "PG") return false;
+                                    if (searchQuery.trim()) {
+                                      return row.program.toLowerCase().includes(searchQuery.toLowerCase());
+                                    }
+                                    return true;
+                                  })
+                                  .map((row, idx) => (
+                                    <tr key={row.program} className="hover:bg-primary/5 transition-colors even:bg-muted/20">
+                                      <td className="py-2.5 px-3 text-center font-medium text-muted-foreground">{idx + 1}</td>
+                                      <td className="py-2.5 px-4 font-bold text-foreground">
+                                        <Link to={`/programs/${row.slug}`} className="hover:text-primary transition-colors">
+                                          {row.program}
+                                        </Link>
+                                      </td>
+                                      <td className="py-2.5 px-3 text-center">
+                                        <span className={`inline-block px-2 py-0.5 rounded text-[11px] font-semibold ${row.level === "UG" ? "bg-blue-500/10 text-blue-600 dark:text-blue-400" : "bg-purple-500/10 text-purple-600 dark:text-purple-400"}`}>
+                                          {row.level}
+                                        </span>
+                                      </td>
+                                      <td className="py-2.5 px-3 text-center">
+                                        <span className="inline-block px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-xs">
+                                          {row.ebd}
+                                        </span>
+                                      </td>
+                                      <td className="py-2.5 px-3 text-center font-semibold text-foreground">₹{row.semFee}</td>
+                                      <td className="py-2.5 px-3 text-center text-muted-foreground">₹{row.annualFee}</td>
+                                      <td className="py-2.5 px-3 text-center font-bold text-primary">₹{row.lumpSumFee}</td>
+                                      <td className="py-2.5 px-4 text-right">
+                                        <a
+                                          href="#counseling-box"
+                                          onClick={() => setSelectedCourse(`CU - ${row.program}`)}
+                                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-primary text-primary-foreground font-semibold text-xs hover:bg-primary/90 transition-colors shadow-2xs whitespace-nowrap"
+                                        >
+                                          <span>Apply Now</span>
+                                          <ArrowRight size={11} />
+                                        </a>
+                                      </td>
+                                    </tr>
+                                  ))}
                               </tbody>
                             </table>
+                          </div>
+                          <div className="py-2.5 px-4 bg-muted/40 border-t border-border/60 text-[11px] text-muted-foreground flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                            <span>* One-time Registration & Prospectus fee of ₹1,000 applies at the time of admission.</span>
+                            <span className="font-medium text-foreground/80">EMI options available starting from ₹3,500/month.</span>
                           </div>
                         </div>
                       </div>
@@ -2901,39 +3114,34 @@ export const UniversityDetail = () => {
           </div>
         </div>
 
-        {/* ── ACCREDITATION EXPLAIN MODAL (Single Clear Short Para, No Multiple Chips) ── */}
+        {/* ── ACCREDITATION EXPLAIN MODAL ── */}
         <Dialog open={!!selectedAccreditation} onOpenChange={(open) => !open && setSelectedAccreditation(null)}>
           <DialogContent className="max-w-md p-6 bg-card border-border rounded-2xl">
             {selectedAccreditation && (
               <div className="space-y-4">
                 <div className="flex items-center gap-4 pb-3 border-b border-border/60">
-                  <div className="w-18 h-18 rounded-xl bg-white border border-border/80 p-2 flex items-center justify-center shrink-0 shadow-xs">
+                  <div className="w-20 h-20 rounded-2xl bg-white border border-border/80 p-2.5 flex items-center justify-center shrink-0 shadow-xs">
                     <img
-                      src={selectedAccreditation.img}
+                      src={selectedAccreditation.icon || selectedAccreditation.img}
                       alt={selectedAccreditation.name}
                       className="max-h-full max-w-full object-contain"
                     />
                   </div>
-                  <div>
+                  <div className="min-w-0 flex-1">
                     <h3 className="text-base sm:text-lg font-bold text-foreground leading-snug">
                       {selectedAccreditation.fullName || selectedAccreditation.name}
                     </h3>
+                    {selectedAccreditation.badge && (
+                      <span className="inline-block mt-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-primary/10 text-primary border border-primary/20">
+                        {selectedAccreditation.badge}
+                      </span>
+                    )}
                   </div>
                 </div>
 
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                   {selectedAccreditation.singlePara || `${selectedAccreditation.shortDesc} ${selectedAccreditation.whyItMatters}`}
                 </p>
-
-                <div className="pt-2 flex justify-end">
-                  <button
-                    type="button"
-                    onClick={() => setSelectedAccreditation(null)}
-                    className="px-4 py-2 rounded-xl bg-primary text-primary-foreground font-semibold text-xs hover:bg-primary/90 transition-all cursor-pointer"
-                  >
-                    Got it
-                  </button>
-                </div>
               </div>
             )}
           </DialogContent>
