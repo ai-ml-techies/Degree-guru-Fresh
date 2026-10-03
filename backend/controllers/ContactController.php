@@ -164,6 +164,21 @@ class ContactController extends Controller
             'source'       => $source,
         ]);
 
+        // 4. Forward lead to Google Sheets (Degree Guru Guranteed Placement Leads)
+        $this->sendToGoogleSheet([
+            'id'           => $leadId,
+            'form_heading' => $formHeading,
+            'name'         => $name,
+            'phone'        => $phone,
+            'email'        => $email,
+            'city'         => $city,
+            'age'          => $age,
+            'status'       => $status,
+            'graduate'     => $graduate,
+            'program'      => $message,
+            'source'       => $source,
+        ]);
+
         return $this->asJson([
             'success' => true,
             'message' => 'Request received! Our counselor will call you within 2 hours.',
@@ -293,6 +308,50 @@ class ContactController extends Controller
             } catch (\Throwable $e) {
                 Yii::error("Native mail failed to send lead email to {$toEmail}: " . $e->getMessage(), __METHOD__);
             }
+        }
+    }
+
+    /**
+     * Forward lead to Google Sheets (Degree Guru Guranteed Placement Leads)
+     * Compatible with Google Apps Script Web App webhook
+     */
+    private function sendToGoogleSheet(array $leadData): void
+    {
+        $webhookUrl = getenv('GOOGLE_SHEET_WEBHOOK_URL')
+            ?: (Yii::$app->params['googleSheetWebhookUrl'] ?? null);
+
+        if (!$webhookUrl) {
+            return;
+        }
+
+        try {
+            $payload = json_encode([
+                'leadId'      => $leadData['id'] ?? '',
+                'dateTime'    => date('Y-m-d H:i:s'),
+                'formHeading' => $leadData['form_heading'] ?? '',
+                'name'        => $leadData['name'] ?? '',
+                'phone'       => $leadData['phone'] ?? '',
+                'email'       => $leadData['email'] ?? '',
+                'city'        => $leadData['city'] ?? '',
+                'age'         => $leadData['age'] ?? '',
+                'status'      => $leadData['status'] ?? '',
+                'graduate'    => $leadData['graduate'] ?? '',
+                'program'     => $leadData['program'] ?? '',
+                'source'      => $leadData['source'] ?? '',
+            ]);
+
+            $ch = curl_init($webhookUrl);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 6);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_exec($ch);
+            curl_close($ch);
+        } catch (\Throwable $e) {
+            Yii::error("Failed to forward lead to Google Sheet: " . $e->getMessage(), __METHOD__);
         }
     }
 

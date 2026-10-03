@@ -192,7 +192,38 @@ export type LeadPayload = {
   graduate?: string;
 };
 
+export async function sendLeadToGoogleSheet(payload: Record<string, any>): Promise<void> {
+  const webhookUrl = (import.meta.env.VITE_GOOGLE_SHEET_WEBHOOK_URL as string) || '';
+  if (!webhookUrl) return;
+
+  try {
+    await fetch(webhookUrl, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+  } catch {
+    // silent fallback
+  }
+}
+
 export async function submitLead(payload: LeadPayload): Promise<CounselingResult> {
+  sendLeadToGoogleSheet({
+    leadId: 'DG-' + new Date().toISOString().slice(0, 10).replace(/-/g, '') + '-' + Math.floor(1000 + Math.random() * 9000),
+    dateTime: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
+    formHeading: payload.formHeading || 'Check if you qualify (Bajaj Capital ACWM Programme)',
+    name: payload.name,
+    phone: payload.phone,
+    email: payload.email || '',
+    city: payload.city || '',
+    age: payload.age || '',
+    status: payload.status || '',
+    graduate: payload.graduate || '',
+    program: payload.program || payload.message || '',
+    source: payload.source || '/placement-guaranteed',
+  });
+
   return submitCounselingLead({
     name: payload.name,
     phone: payload.phone,

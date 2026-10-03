@@ -46,4 +46,7 @@ return array_merge([
     // Upload limits
     'maxResumeBytes' => 5 * 1024 * 1024, // 5 MB
 
+    // Google Sheets Integration (Google Apps Script Web App URL)
+    'googleSheetWebhookUrl' => getenv('GOOGLE_SHEET_WEBHOOK_URL') ?: '',
+
 ], $local);
