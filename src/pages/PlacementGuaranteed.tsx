@@ -672,28 +672,28 @@ export const PlacementGuaranteed = () => {
         </section>
 
         {/* ========================================================================= */}
-        {/* 2. DELIVERED WITH (PARTNERS SECTION) */}
+        {/* 2. DELIVERED WITH (PARTNERS SECTION - COMPACT & RESPONSIVE) */}
         {/* ========================================================================= */}
-        <section className="py-6 bg-white border-b border-slate-200">
+        <section className="py-5 bg-white border-b border-slate-200">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
             <div className="flex flex-col lg:flex-row items-center justify-between gap-4 lg:gap-6">
-              <div className="text-center lg:text-left shrink-0">
-                <span className="text-[11px] font-black uppercase tracking-widest text-slate-400 block">
+              <div className="text-center lg:text-left max-w-xs shrink-0">
+                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 block">
                   DELIVERED IN PARTNERSHIP WITH
                 </span>
-                <span className="text-xs text-slate-500 font-medium">
+                <span className="text-xs text-slate-500 font-medium leading-tight block mt-0.5">
                   Leading national finance institutions &amp; hiring consortium
                 </span>
               </div>
 
               {/* All 3 partners: AIMA, Bajaj Capital, ICOFP */}
-              <div className="flex items-center justify-center lg:justify-end gap-5 sm:gap-8 flex-wrap sm:flex-nowrap py-1">
+              <div className="flex items-center justify-center lg:justify-end gap-3.5 sm:gap-6 flex-wrap sm:flex-nowrap py-1">
                 {/* AIMA */}
-                <div className="flex items-center gap-2.5 shrink-0">
+                <div className="flex items-center gap-2 shrink-0">
                   <img
                     src={aimaLogo}
                     alt="All India Management Association (AIMA)"
-                    className="h-8 sm:h-9 w-auto object-contain"
+                    className="h-6 sm:h-7 w-auto object-contain"
                   />
                   <div className="text-left hidden md:block leading-tight">
                     <div className="text-[10px] font-black uppercase text-slate-800">AIMA</div>
@@ -701,14 +701,14 @@ export const PlacementGuaranteed = () => {
                   </div>
                 </div>
 
-                <div className="h-6 w-px bg-slate-200 shrink-0 hidden sm:block" />
+                <div className="h-5 w-px bg-slate-200 shrink-0 hidden sm:block" />
 
                 {/* Bajaj Capital */}
-                <div className="flex items-center gap-2.5 shrink-0">
+                <div className="flex items-center gap-2 shrink-0">
                   <img
                     src={bajajCapitalLogo}
                     alt="Bajaj Capital"
-                    className="h-8 sm:h-9 w-auto object-contain"
+                    className="h-6 sm:h-7 w-auto object-contain"
                   />
                   <div className="text-left hidden md:block leading-tight">
                     <div className="text-[10px] font-black uppercase text-slate-800">BAJAJ CAPITAL</div>
@@ -716,14 +716,14 @@ export const PlacementGuaranteed = () => {
                   </div>
                 </div>
 
-                <div className="h-6 w-px bg-slate-200 shrink-0 hidden sm:block" />
+                <div className="h-5 w-px bg-slate-200 shrink-0 hidden sm:block" />
 
                 {/* ICOFP */}
-                <div className="flex items-center gap-2.5 shrink-0">
+                <div className="flex items-center gap-2 shrink-0">
                   <img
                     src={icofpLogo}
                     alt="ICOFP"
-                    className="h-8 sm:h-9 w-auto object-contain"
+                    className="h-6 sm:h-7 w-auto object-contain"
                   />
                   <div className="text-left hidden md:block leading-tight">
                     <div className="text-[10px] font-black uppercase text-slate-800">ICOFP</div>
