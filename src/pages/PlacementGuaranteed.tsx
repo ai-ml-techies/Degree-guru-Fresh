@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef, useId } from "react";
 import { Helmet } from "react-helmet-async";
-import { 
-  Check, 
-  ChevronDown, 
-  CheckCircle2, 
-  Download, 
-  FileText, 
-  X, 
+import {
+  Check,
+  ChevronDown,
+  CheckCircle2,
+  Download,
+  FileText,
+  X,
   Briefcase,
   GraduationCap,
   TrendingUp,
@@ -343,7 +343,7 @@ export const PlacementGuaranteed = () => {
 
       {/* Standalone Landing Page Wrapper */}
       <div className="min-h-screen bg-[#F8F9FA] text-[#0B1527] font-sans antialiased selection:bg-[#2F73B2] selection:text-white">
-        
+
         {/* ========================================================================= */}
         {/* HEADER / NAVIGATION BAR */}
         {/* ========================================================================= */}
@@ -399,10 +399,10 @@ export const PlacementGuaranteed = () => {
         <section id="top" className="relative bg-[#061938] text-white pt-12 sm:pt-20 pb-20 sm:pb-24 border-b border-slate-800 overflow-hidden">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
-              
+
               {/* Left Column: Editorial Value Proposition */}
               <div className="lg:col-span-7 space-y-6">
-                
+
                 {/* Main Headline in Classical Serif */}
                 <h1 className="text-4xl sm:text-5xl lg:text-[56px] font-serif tracking-tight leading-[1.08] text-white">
                   Job First.<br />
@@ -452,7 +452,7 @@ export const PlacementGuaranteed = () => {
                     <span>DOWNLOAD INTERVIEW PREP PDF</span>
                   </button>
 
-                  <a 
+                  <a
                     href="#how"
                     className="text-xs sm:text-sm text-[#9fb3c8] hover:text-white transition-colors"
                   >
@@ -465,7 +465,7 @@ export const PlacementGuaranteed = () => {
               {/* Right Column: Clean White Application Form Card */}
               <div id="apply-section" className="lg:col-span-5">
                 <div className="bg-white text-slate-900 rounded-2xl p-6 sm:p-7 shadow-2xl border border-slate-100 max-w-md ml-auto">
-                  
+
                   {/* Clean Form Header */}
                   <div className="mb-4 space-y-1">
                     <h2 className="text-2xl font-serif font-bold text-[#0c2340] tracking-tight">
@@ -626,22 +626,20 @@ export const PlacementGuaranteed = () => {
                           <button
                             type="button"
                             onClick={() => setIsGraduate("yes")}
-                            className={`py-2 px-3 rounded-lg text-xs font-medium border text-center transition-colors cursor-pointer ${
-                              isGraduate === "yes" 
-                                ? "bg-slate-50 border-slate-400 text-slate-900 font-semibold shadow-2xs" 
+                            className={`py-2 px-3 rounded-lg text-xs font-medium border text-center transition-colors cursor-pointer ${isGraduate === "yes"
+                                ? "bg-slate-50 border-slate-400 text-slate-900 font-semibold shadow-2xs"
                                 : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
-                            }`}
+                              }`}
                           >
                             Yes
                           </button>
                           <button
                             type="button"
                             onClick={() => setIsGraduate("not-yet")}
-                            className={`py-2 px-3 rounded-lg text-xs font-medium border text-center transition-colors cursor-pointer ${
-                              isGraduate === "not-yet" 
-                                ? "bg-slate-50 border-slate-400 text-slate-900 font-semibold shadow-2xs" 
+                            className={`py-2 px-3 rounded-lg text-xs font-medium border text-center transition-colors cursor-pointer ${isGraduate === "not-yet"
+                                ? "bg-slate-50 border-slate-400 text-slate-900 font-semibold shadow-2xs"
                                 : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
-                            }`}
+                              }`}
                           >
                             Not yet
                           </button>
@@ -739,7 +737,7 @@ export const PlacementGuaranteed = () => {
         {/* ========================================================================= */}
         <section id="how" className="py-16 sm:py-24 bg-[#F8F9FA] border-b border-slate-200">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-12">
-            
+
             {/* Header */}
             <div className="text-center max-w-2xl mx-auto space-y-3">
               <span className="text-xs font-black tracking-widest uppercase text-[#2F73B2] bg-[#2F73B2]/10 px-3 py-1 rounded-full">
@@ -755,7 +753,7 @@ export const PlacementGuaranteed = () => {
 
             {/* 3 Key Phase Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              
+
               {/* Phase 01 */}
               <div className="bg-white rounded-2xl p-6 sm:p-7 border-t-4 border-t-[#2F73B2] shadow-sm border border-slate-200/80 space-y-3">
                 <div className="flex items-center justify-between">
@@ -806,7 +804,7 @@ export const PlacementGuaranteed = () => {
               </div>
 
               <div className="relative border-l-2 border-slate-200 ml-4 sm:ml-8 pl-6 sm:pl-10 space-y-8">
-                
+
                 {/* Week 0 */}
                 <div className="relative space-y-1">
                   <div className="absolute -left-[31px] sm:-left-[47px] top-0 w-6 h-6 rounded-full bg-[#2F73B2] border-4 border-white text-white flex items-center justify-center text-[10px] font-black shadow-sm" />
@@ -903,9 +901,9 @@ export const PlacementGuaranteed = () => {
         {/* ========================================================================= */}
         <section id="job" className="py-16 sm:py-24 bg-[#071B35] text-white border-b border-white/10">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-12">
-            
+
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              
+
               <div className="lg:col-span-7 space-y-4">
                 <span className="text-xs font-black tracking-widest uppercase text-[#25AAD3] bg-white/10 px-3 py-1 rounded-full">
                   THE JOB YOU ARE HIRED FOR
@@ -962,7 +960,7 @@ export const PlacementGuaranteed = () => {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                
+
                 {/* Rung 1 */}
                 <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-2">
                   <div className="w-2.5 h-2.5 rounded-full bg-[#4BBC7C]" />
@@ -1006,7 +1004,7 @@ export const PlacementGuaranteed = () => {
         {/* ========================================================================= */}
         <section id="money" className="py-16 sm:py-24 bg-white border-b border-slate-200">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-12">
-            
+
             <div className="text-center max-w-2xl mx-auto space-y-3">
               <span className="text-xs font-black tracking-widest uppercase text-[#2F73B2] bg-[#2F73B2]/10 px-3 py-1 rounded-full">
                 TRANSPARENT INVESTMENT
@@ -1020,12 +1018,11 @@ export const PlacementGuaranteed = () => {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-              
+
               {/* Card 1: What You Pay */}
               <div className="lg:col-span-6 bg-slate-50 rounded-3xl p-6 sm:p-8 border border-slate-200 flex flex-col justify-between space-y-6">
                 <div className="space-y-4">
-                  <span className="text-xs font-black uppercase tracking-wider text-slate-500">PROGRAMME FEES</span>
-                  <h3 className="text-2xl font-black text-[#071B35]">You Pay</h3>
+                  <h3 className="text-2xl font-black text-[#071B35]">PROGRAMME FEES</h3>
 
                   <div className="divide-y divide-slate-200 text-sm">
                     <div className="py-3 flex justify-between items-center">
@@ -1090,11 +1087,42 @@ export const PlacementGuaranteed = () => {
                 </div>
 
                 {/* Net Cost Box */}
-                <div className="p-5 rounded-2xl bg-white border border-emerald-300 shadow-md space-y-1">
-                  <span className="text-xs font-black text-emerald-800 uppercase tracking-wider">REAL COST IN YEAR ONE</span>
-                  <div className="text-3xl sm:text-4xl font-black text-emerald-700 tracking-tight">
-                    Only ₹32,000
+                <div className="p-5 rounded-2xl bg-white border border-emerald-300 shadow-md space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-black text-emerald-800 uppercase tracking-wider">WHAT YOU ACTUALLY PAY</span>
+                    <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                      Effective Cost
+                    </span>
                   </div>
+
+                  <div className="space-y-1.5 text-xs text-slate-700 bg-emerald-50/50 p-3.5 rounded-xl border border-emerald-100">
+                    <div className="flex justify-between items-center">
+                      <span>Course Fee incl. GST:</span>
+                      <strong className="text-slate-900">₹1,77,000</strong>
+                    </div>
+                    <div className="flex justify-between items-center text-emerald-800">
+                      <span>Stipend Earned:</span>
+                      <strong>₹60,000</strong>
+                    </div>
+                    <div className="flex justify-between items-center text-emerald-800">
+                      <span>Retention Bonus:</span>
+                      <strong>₹85,000</strong>
+                    </div>
+                    <div className="pt-2 mt-1 border-t border-emerald-200 flex justify-between items-center font-bold text-emerald-900">
+                      <span>Total Earnings:</span>
+                      <span className="text-sm font-extrabold text-emerald-700">₹1,45,000</span>
+                    </div>
+                  </div>
+
+                  <div className="pt-0.5">
+                    <div className="text-xs font-bold text-slate-600">
+                      So your effective cost is only:
+                    </div>
+                    <div className="text-3xl sm:text-4xl font-black text-emerald-700 tracking-tight">
+                      ₹32,000!
+                    </div>
+                  </div>
+
                   <p className="text-xs text-slate-600 leading-relaxed pt-1">
                     Total fee with GST (₹1,77,000), minus the stipend (₹60,000) and retention bonus (₹85,000) you earn before your ₹4.2 LPA salary even accumulates!
                   </p>
@@ -1111,9 +1139,9 @@ export const PlacementGuaranteed = () => {
         {/* ========================================================================= */}
         <section className="py-16 sm:py-24 bg-[#F8F9FA] border-b border-slate-200">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-12">
-            
+
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              
+
               <div className="lg:col-span-5 space-y-4">
                 <span className="text-xs font-black tracking-widest uppercase text-[#2F73B2] bg-[#2F73B2]/10 px-3 py-1 rounded-full">
                   YOUR CAREER IN WRITING
@@ -1125,15 +1153,7 @@ export const PlacementGuaranteed = () => {
                   Selected candidates receive a formal conditional Pre-Placement Offer (PPO) before beginning their training journey.
                 </p>
 
-                <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-2">
-                  <div className="flex items-center gap-2 text-xs font-black text-[#071B35]">
-                    <ShieldCheck size={16} className="text-emerald-600" />
-                    <span>A Documented, Legitimate Career Pathway</span>
-                  </div>
-                  <p className="text-xs text-slate-500">
-                    Offer letter specifies your designated role as Wealth Officer with starting CTC from ₹4.2 LPA, location, and stipend schedule.
-                  </p>
-                </div>
+               
               </div>
 
               {/* Certificate image */}
@@ -1143,9 +1163,7 @@ export const PlacementGuaranteed = () => {
                     <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
                       Joint ICOFP &amp; AIMA Certification
                     </span>
-                    <span className="text-xs font-extrabold text-[#2F73B2]">
-                      Verified Credential
-                    </span>
+                    
                   </div>
                   <img
                     src="/assets/acwm/acwm_certificate.jpg"
@@ -1165,32 +1183,27 @@ export const PlacementGuaranteed = () => {
         {/* ========================================================================= */}
         <section id="faq" className="py-16 sm:py-24 bg-white border-b border-slate-200">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            
+
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-              
+
               {/* Left Column: Who Can Apply Criteria */}
               <div className="lg:col-span-5 space-y-6">
                 <div className="space-y-2">
-                  <span className="text-xs font-black tracking-widest uppercase text-[#2F73B2] bg-[#2F73B2]/10 px-3 py-1 rounded-full">
-                    ELIGIBILITY CRITERIA
-                  </span>
+
                   <h2 className="text-3xl font-black text-[#071B35] tracking-tight">
                     Who can apply
                   </h2>
-                  <p className="text-xs sm:text-sm text-slate-500">
-                    Basic qualification standards for the ACWM cohort:
-                  </p>
+
                 </div>
 
                 <div className="space-y-4">
-                  
+
                   <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-start gap-3.5">
                     <div className="w-7 h-7 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 mt-0.5">
                       <Check size={16} />
                     </div>
                     <div>
-                      <h4 className="text-sm font-bold text-slate-900">You have completed your degree</h4>
-                      <p className="text-xs text-slate-600 mt-0.5">Any stream (Arts, Commerce, Science, Tech), any UGC-approved university. No finance background needed.</p>
+                      <h4 className="text-sm font-bold text-slate-900">Graduate in any stream</h4>
                     </div>
                   </div>
 
@@ -1200,7 +1213,7 @@ export const PlacementGuaranteed = () => {
                     </div>
                     <div>
                       <h4 className="text-sm font-bold text-slate-900">You are 28 years or under</h4>
-                      <p className="text-xs text-slate-600 mt-0.5">The pathway is custom built for young professionals launching their first serious finance career.</p>
+                      {/* <p className="text-xs text-slate-600 mt-0.5">The pathway is custom built for young professionals launching their first serious finance career.</p> */}
                     </div>
                   </div>
 
@@ -1210,7 +1223,7 @@ export const PlacementGuaranteed = () => {
                     </div>
                     <div>
                       <h4 className="text-sm font-bold text-slate-900">You clear the 3-step entrance selection</h4>
-                      <p className="text-xs text-slate-600 mt-0.5">Aptitude assessment, counsellor pre-screening, and the final Bajaj Capital panel interview.</p>
+                      {/* <p className="text-xs text-slate-600 mt-0.5">Aptitude assessment, counsellor pre-screening, and the final Bajaj Capital panel interview.</p> */}
                     </div>
                   </div>
 
@@ -1369,7 +1382,7 @@ export const PlacementGuaranteed = () => {
       {pdfModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in">
           <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-200 relative">
-            
+
             {/* Close Button */}
             <button
               type="button"
