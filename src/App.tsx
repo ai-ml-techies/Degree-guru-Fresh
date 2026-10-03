@@ -37,7 +37,7 @@ const BlogPost          = lazy(() => import("./pages/BlogPost.tsx"));
 const AuthorDetail      = lazy(() => import("./pages/AuthorDetail.tsx"));
 const Employer          = lazy(() => import("./pages/jobs/Employer.tsx"));
 const Sitemap           = lazy(() => import("./pages/Sitemap.tsx"));
-const PlacementGuaranteed = lazy(() => import("./pages/PlacementGuaranteed.tsx"));
+import PlacementGuaranteed from "./pages/PlacementGuaranteed.tsx";
 const NotFound          = lazy(() => import("./pages/NotFound.tsx"));
 
 const queryClient = new QueryClient();

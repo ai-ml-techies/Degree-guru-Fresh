@@ -7,9 +7,11 @@ import { useLocation } from "react-router-dom";
 
 export const Layout = ({ children }: { children: ReactNode }) => {
   const location = useLocation();
-  const path = (location.pathname || "").toLowerCase();
+  const rawPath = typeof window !== "undefined" ? (window.location.pathname || location.pathname) : location.pathname;
+  const path = (rawPath || "").toLowerCase();
   const isLandingPage = 
     path.includes("placement-guaranteed") ||
+    path.includes("100-placement-guaranteed") ||
     path.includes("acwm");
 
   if (isLandingPage) {
