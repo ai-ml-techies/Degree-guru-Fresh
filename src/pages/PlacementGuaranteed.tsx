@@ -376,13 +376,6 @@ export const PlacementGuaranteed = () => {
                 Eligibility &amp; FAQ
               </a>
 
-              <button
-                type="button"
-                onClick={scrollToApply}
-                className="px-3 sm:px-5 py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-[#2F73B2] hover:bg-[#255D91] text-white text-[11px] sm:text-sm font-extrabold tracking-tight transition-all shadow-md shadow-[#2F73B2]/20 cursor-pointer shrink-0 whitespace-nowrap"
-              >
-                Check eligibility
-              </button>
             </nav>
           </div>
           {/* Progress fill accent bar */}
@@ -448,7 +441,7 @@ export const PlacementGuaranteed = () => {
                     className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 rounded-lg bg-white/10 hover:bg-white/15 border border-white/20 text-xs sm:text-sm font-semibold text-white transition-all cursor-pointer shadow-xs whitespace-nowrap w-full sm:w-auto"
                   >
                     <Download size={15} className="text-[#2e9e5b] shrink-0" />
-                    <span>DOWNLOAD INTERVIEW PREP PDF</span>
+                    <span>INTERVIEW PREP MATERIAL</span>
                   </button>
 
                   <a
@@ -677,9 +670,6 @@ export const PlacementGuaranteed = () => {
                 <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-slate-400 block">
                   DELIVERED IN PARTNERSHIP WITH
                 </span>
-                <span className="text-[11px] sm:text-xs text-slate-500 font-medium leading-tight block mt-0.5">
-                  Leading national finance institutions &amp; hiring consortium
-                </span>
               </div>
 
               {/* All 3 partners: AIMA, Bajaj Capital, ICOFP - Guaranteed strictly in ONE clean line on all devices */}
@@ -739,10 +729,8 @@ export const PlacementGuaranteed = () => {
 
             {/* Header */}
             <div className="text-center max-w-2xl mx-auto space-y-3">
-              <span className="text-xs font-black tracking-widest uppercase text-[#2F73B2] bg-[#2F73B2]/10 px-3 py-1 rounded-full">
-                CAREER PATHWAY
-              </span>
-              <h2 className="text-3xl sm:text-4xl font-black text-[#071B35] tracking-tight">
+             
+              <h2 className="text-2xl sm:text-[2.25rem] font-black text-[#071B35] tracking-tight leading-tight">
                 Get the job offer first. Pay fees later.
               </h2>
               
@@ -790,7 +778,7 @@ export const PlacementGuaranteed = () => {
             <div className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-sm space-y-8">
               <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                 <h3 className="text-lg font-black text-[#071B35] tracking-tight">
-                  Detailed 6-Month Roadmap
+                  6-Month Roadmap
                 </h3>
                 <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full">
                   Pan-India Placement
@@ -891,64 +879,17 @@ export const PlacementGuaranteed = () => {
         </section>
 
         {/* ========================================================================= */}
-        {/* 4. THE JOB YOU ARE HIRED FOR & CAREER LADDER */}
+        {/* 4. CAREER PROGRESSION (WHERE YOUR CAREER CAN GO) */}
         {/* ========================================================================= */}
         <section id="job" className="py-16 sm:py-24 bg-[#071B35] text-white border-b border-white/10">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-12">
-
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-
-              <div className="lg:col-span-7 space-y-4">
-                <span className="text-xs font-black tracking-widest uppercase text-[#25AAD3] bg-white/10 px-3 py-1 rounded-full">
-                  THE JOB YOU ARE HIRED FOR
-                </span>
-                <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-white">
-                  Start as a Wealth Officer.<br />Build your future in Finance.
-                </h2>
-                <p className="text-sm sm:text-base text-slate-300 leading-relaxed max-w-xl">
-                  Build relationships, understand people's financial goals, and help them explore the right investment solutions. Start your journey with Bajaj Capital and develop the skills to grow in Wealth Management.
-                </p>
-
-                {/* Role snapshot card */}
-                <div className="p-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md space-y-3 mt-4 max-w-lg">
-                  <span className="text-[11px] font-black uppercase tracking-wider text-[#25AAD3]">ROLE SNAPSHOT</span>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                    <div>
-                      <span className="text-slate-400 block">Title</span>
-                      <strong className="text-white text-sm">Officer, Wealth</strong>
-                    </div>
-                    <div>
-                      <span className="text-slate-400 block">Starting Pay</span>
-                      <strong className="text-[#4BBC7C] text-sm">₹4.2 LPA to ₹4.8 LPA</strong>
-                    </div>
-                    <div>
-                      <span className="text-slate-400 block">Location</span>
-                      <strong className="text-white text-sm">Pan-India Branches</strong>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="lg:col-span-5">
-                <div className="rounded-3xl overflow-hidden border border-white/15 shadow-2xl bg-[#051427]">
-                  <img
-                    src="/assets/acwm/indian_wealth_officer.jpg"
-                    alt="Wealth Officer at Bajaj Capital"
-                    className="w-full h-[320px] sm:h-[380px] object-cover hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
-              </div>
-
-            </div>
-
+          <div className="max-w-6xl mx-auto px-4 sm:px-6">
             {/* Career Ladder */}
             <div className="bg-white/5 rounded-3xl p-6 sm:p-10 border border-white/10 backdrop-blur-md space-y-6">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-white/10 pb-4">
                 <div>
-                  <h3 className="text-xl font-black text-white">Where your career can go</h3>
-                  <p className="text-xs text-slate-400">A clear, performance-driven progression pathway inside Bajaj Capital</p>
+                  <h3 className="text-xl sm:text-2xl font-black text-white">Where your career can go</h3>
+                  <p className="text-xs sm:text-sm text-slate-400 mt-1">A clear, performance-driven progression pathway inside Bajaj Capital</p>
                 </div>
-               
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -1004,9 +945,7 @@ export const PlacementGuaranteed = () => {
               <h2 className="text-3xl sm:text-4xl font-black text-[#071B35] tracking-tight">
                 Invest in your career. Start earning along the way.
               </h2>
-              <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-                A structured pathway from professional training to a wealth management career with Bajaj Capital.
-              </p>
+             
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
