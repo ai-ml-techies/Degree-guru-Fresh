@@ -345,7 +345,7 @@ export const PlacementGuaranteed = () => {
       </Helmet>
 
       {/* Standalone Landing Page Wrapper */}
-      <div className="min-h-screen bg-[#F8F9FA] text-[#0B1527] font-sans antialiased selection:bg-[#2F73B2] selection:text-white">
+      <div className="min-h-screen bg-[#F8F9FA] text-[#0B1527] font-sans antialiased selection:bg-[#2F73B2] selection:text-white" style={{ fontFamily: "'Poppins', sans-serif" }}>
 
         {/* ========================================================================= */}
         {/* HEADER / NAVIGATION BAR */}
@@ -395,8 +395,8 @@ export const PlacementGuaranteed = () => {
               {/* Left Column: Editorial Value Proposition */}
               <div className="lg:col-span-7 space-y-5 sm:space-y-6">
 
-                {/* Main Headline in Classical Serif */}
-                <h1 className="text-3xl sm:text-5xl lg:text-[56px] font-serif tracking-tight leading-[1.12] sm:leading-[1.08] text-white">
+                {/* Main Headline */}
+                <h1 className="text-3xl sm:text-5xl lg:text-[56px] font-extrabold tracking-tight leading-[1.12] sm:leading-[1.08] text-white">
                   Job First.<br />
                   Train Next.<br />
                   <span className="text-[#2e9e5b]">
@@ -460,7 +460,7 @@ export const PlacementGuaranteed = () => {
 
                   {/* Clean Form Header */}
                   <div className="mb-4 space-y-1">
-                    <h2 className="text-2xl font-serif font-bold text-[#0c2340] tracking-tight">
+                    <h2 className="text-2xl font-bold text-[#0c2340] tracking-tight">
                       Check if you qualify
                     </h2>
                     <p className="text-xs text-slate-500 leading-relaxed">
