@@ -77,12 +77,17 @@ function leadInitials(string $name): string {
 
 <!-- Results card -->
 <div class="dg-card">
-    <div class="dg-card-header">
-        <h4 class="dg-card-title">
+    <div class="dg-card-header d-flex align-items-center justify-content-between">
+        <h4 class="dg-card-title mb-0">
             <i class="fas fa-headset"></i>
             Counseling Leads
         </h4>
-        <span class="dg-total-badge"><?= $total ?> total</span>
+        <div class="d-flex align-items-center gap-2">
+            <span class="dg-total-badge"><?= $total ?> total</span>
+            <a href="<?= Url::to(['/contact/export-excel']) ?>" class="btn btn-sm btn-success font-weight-bold" title="Download all leads as Excel-compatible CSV">
+                <i class="fas fa-file-excel mr-1"></i> Export to Excel
+            </a>
+        </div>
     </div>
 
     <?php if (empty($models)): ?>
