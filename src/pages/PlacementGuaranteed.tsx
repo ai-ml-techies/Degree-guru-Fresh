@@ -345,7 +345,7 @@ export const PlacementGuaranteed = () => {
       </Helmet>
 
       {/* Standalone Landing Page Wrapper */}
-      <div className="min-h-screen bg-[#F8F9FA] text-[#0B1527] font-sans antialiased selection:bg-[#2F73B2] selection:text-white" style={{ fontFamily: "'Poppins', sans-serif" }}>
+      <div className="min-h-screen bg-[#F8F9FA] text-[#0B1527] font-sans antialiased selection:bg-[#2F73B2] selection:text-white">
 
         {/* ========================================================================= */}
         {/* HEADER / NAVIGATION BAR */}
@@ -713,7 +713,7 @@ export const PlacementGuaranteed = () => {
             {/* Header */}
             <div className="text-center max-w-2xl mx-auto space-y-3">
              
-              <h2 className="text-2xl sm:text-[2.25rem] font-black text-[#071B35] tracking-tight leading-tight">
+              <h2 className="text-2xl sm:text-[2.25rem] font-bold text-[#071B35] tracking-tight leading-tight">
                 Get the job offer first. Pay fees later.
               </h2>
               
@@ -725,9 +725,9 @@ export const PlacementGuaranteed = () => {
               {/* Phase 01 */}
               <div className="bg-white rounded-2xl p-6 sm:p-7 border-t-4 border-t-[#2F73B2] shadow-sm border border-slate-200/80 space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-2xl font-black text-[#2F73B2]">01</span>
+                  <span className="text-2xl font-bold text-[#2F73B2]">01</span>
                 </div>
-                <h3 className="text-lg font-black text-[#071B35]">Get selected</h3>
+                <h3 className="text-lg font-bold text-[#071B35]">Get selected</h3>
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                   Interview with the Bajaj Capital panel and receive your written conditional pre-placement offer before classes start.
                 </p>
@@ -736,9 +736,9 @@ export const PlacementGuaranteed = () => {
               {/* Phase 02 */}
               <div className="bg-white rounded-2xl p-6 sm:p-7 border-t-4 border-t-[#25AAD3] shadow-sm border border-slate-200/80 space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-2xl font-black text-[#25AAD3]">02</span>
+                  <span className="text-2xl font-bold text-[#25AAD3]">02</span>
                 </div>
-                <h3 className="text-lg font-black text-[#071B35]">Get trained</h3>
+                <h3 className="text-lg font-bold text-[#071B35]">Get trained</h3>
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                   240 hours of rigorous learning with ICOFP &amp; AIMA, followed by a guaranteed paid internship at <strong>₹15,000/month</strong>.
                 </p>
@@ -747,9 +747,9 @@ export const PlacementGuaranteed = () => {
               {/* Phase 03 */}
               <div className="bg-white rounded-2xl p-6 sm:p-7 border-t-4 border-t-[#4BBC7C] shadow-sm border border-slate-200/80 space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-2xl font-black text-[#4BBC7C]">03</span>
+                  <span className="text-2xl font-bold text-[#4BBC7C]">03</span>
                 </div>
-                <h3 className="text-lg font-black text-[#071B35]">Get hired</h3>
+                <h3 className="text-lg font-bold text-[#071B35]">Get hired</h3>
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                   Join Bajaj Capital as a full-time Wealth Officer starting from ₹4.2 LPA, plus an additional <strong>₹85,000 retention bonus</strong>.
                 </p>
@@ -760,7 +760,7 @@ export const PlacementGuaranteed = () => {
             {/* Week-by-Week Step Rail */}
             <div className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-sm space-y-8">
               <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                <h3 className="text-lg font-black text-[#071B35] tracking-tight">
+                <h3 className="text-lg font-bold text-[#071B35] tracking-tight">
                   6-Month Roadmap
                 </h3>
                 <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full">
@@ -772,57 +772,57 @@ export const PlacementGuaranteed = () => {
 
                 {/* Week 0 */}
                 <div className="relative space-y-1">
-                  <div className="absolute -left-[31px] sm:-left-[47px] top-0 w-6 h-6 rounded-full bg-[#2F73B2] border-4 border-white text-white flex items-center justify-center text-[10px] font-black shadow-sm" />
+                  <div className="absolute -left-[31px] sm:-left-[47px] top-0 w-6 h-6 rounded-full bg-[#2F73B2] border-4 border-white text-white flex items-center justify-center text-[10px] font-bold shadow-sm" />
                   <span className="text-[11px] font-bold text-[#2F73B2] uppercase tracking-wider">Week 0</span>
-                  <h4 className="text-base font-black text-[#071B35]">Interview with Bajaj Capital</h4>
+                  <h4 className="text-base font-bold text-[#071B35]">Interview with Bajaj Capital</h4>
                   <p className="text-xs sm:text-sm text-slate-600">Appear for the entrance screening interview for the Wealth Officer role.</p>
                 </div>
 
                 {/* Week 1 */}
                 <div className="relative space-y-1">
-                  <div className="absolute -left-[31px] sm:-left-[47px] top-0 w-6 h-6 rounded-full bg-[#2F73B2] border-4 border-white text-white flex items-center justify-center text-[10px] font-black shadow-sm" />
+                  <div className="absolute -left-[31px] sm:-left-[47px] top-0 w-6 h-6 rounded-full bg-[#2F73B2] border-4 border-white text-white flex items-center justify-center text-[10px] font-bold shadow-sm" />
                   <span className="text-[11px] font-bold text-[#2F73B2] uppercase tracking-wider">Week 1</span>
-                  <h4 className="text-base font-black text-[#071B35]">Receive Written Pre-Placement Offer &amp; Begin Certification</h4>
+                  <h4 className="text-base font-bold text-[#071B35]">Receive Written Pre-Placement Offer &amp; Begin Certification</h4>
                   <p className="text-xs sm:text-sm text-slate-600">Receive your formal written PPO with starting package from ₹4.2 LPA before commencement.</p>
                 </div>
 
                 {/* Week 9 */}
                 <div className="relative space-y-1">
-                  <div className="absolute -left-[31px] sm:-left-[47px] top-0 w-6 h-6 rounded-full bg-[#25AAD3] border-4 border-white text-white flex items-center justify-center text-[10px] font-black shadow-sm" />
+                  <div className="absolute -left-[31px] sm:-left-[47px] top-0 w-6 h-6 rounded-full bg-[#25AAD3] border-4 border-white text-white flex items-center justify-center text-[10px] font-bold shadow-sm" />
                   <span className="text-[11px] font-bold text-[#25AAD3] uppercase tracking-wider">Week 9</span>
-                  <h4 className="text-base font-black text-[#071B35]">Executive Learning Module at AIMA</h4>
+                  <h4 className="text-base font-bold text-[#071B35]">Executive Learning Module at AIMA</h4>
                   <p className="text-xs sm:text-sm text-slate-600">Attend the specialized All India Management Association module as part of core certification.</p>
                 </div>
 
                 {/* Week 10 */}
                 <div className="relative space-y-1">
-                  <div className="absolute -left-[31px] sm:-left-[47px] top-0 w-6 h-6 rounded-full bg-[#25AAD3] border-4 border-white text-white flex items-center justify-center text-[10px] font-black shadow-sm" />
+                  <div className="absolute -left-[31px] sm:-left-[47px] top-0 w-6 h-6 rounded-full bg-[#25AAD3] border-4 border-white text-white flex items-center justify-center text-[10px] font-bold shadow-sm" />
                   <span className="text-[11px] font-bold text-[#25AAD3] uppercase tracking-wider">Week 10</span>
-                  <h4 className="text-base font-black text-[#071B35]">Complete Certification (ACWM)</h4>
+                  <h4 className="text-base font-bold text-[#071B35]">Complete Certification (ACWM)</h4>
                   <p className="text-xs sm:text-sm text-slate-600">Graduate with the Advanced Certification in Wealth Management credential.</p>
                 </div>
 
                 {/* Week 11 */}
                 <div className="relative space-y-1">
-                  <div className="absolute -left-[31px] sm:-left-[47px] top-0 w-6 h-6 rounded-full bg-[#4BBC7C] border-4 border-white text-white flex items-center justify-center text-[10px] font-black shadow-sm" />
+                  <div className="absolute -left-[31px] sm:-left-[47px] top-0 w-6 h-6 rounded-full bg-[#4BBC7C] border-4 border-white text-white flex items-center justify-center text-[10px] font-bold shadow-sm" />
                   <span className="text-[11px] font-bold text-[#4BBC7C] uppercase tracking-wider">Week 11</span>
-                  <h4 className="text-base font-black text-[#071B35]">Paid Internship Begins</h4>
-                  <p className="text-xs sm:text-sm text-emerald-800 font-bold">Commence your 4-month practical internship at Bajaj Capital with ₹15,000/month stipend.</p>
+                  <h4 className="text-base font-bold text-[#071B35]">Paid Internship Begins</h4>
+                  <p className="text-xs sm:text-sm text-emerald-800 font-semibold">Commence your 4-month practical internship at Bajaj Capital with ₹15,000/month stipend.</p>
                 </div>
 
                 {/* Week 28 */}
                 <div className="relative space-y-1">
-                  <div className="absolute -left-[31px] sm:-left-[47px] top-0 w-6 h-6 rounded-full bg-[#4BBC7C] border-4 border-white text-white flex items-center justify-center text-[10px] font-black shadow-sm" />
+                  <div className="absolute -left-[31px] sm:-left-[47px] top-0 w-6 h-6 rounded-full bg-[#4BBC7C] border-4 border-white text-white flex items-center justify-center text-[10px] font-bold shadow-sm" />
                   <span className="text-[11px] font-bold text-[#4BBC7C] uppercase tracking-wider">Week 28 (Month 7)</span>
-                  <h4 className="text-base font-black text-[#071B35]">Join Full-Time as a Wealth Officer</h4>
+                  <h4 className="text-base font-bold text-[#071B35]">Join Full-Time as a Wealth Officer</h4>
                   <p className="text-xs sm:text-sm text-slate-600">Full-time absorption at Bajaj Capital with package from ₹4.2 LPA to ₹4.8 LPA.</p>
                 </div>
 
                 {/* Milestone */}
                 <div className="relative space-y-1">
-                  <div className="absolute -left-[31px] sm:-left-[47px] top-0 w-6 h-6 rounded-full bg-amber-500 border-4 border-white text-white flex items-center justify-center text-[10px] font-black shadow-sm" />
+                  <div className="absolute -left-[31px] sm:-left-[47px] top-0 w-6 h-6 rounded-full bg-amber-500 border-4 border-white text-white flex items-center justify-center text-[10px] font-bold shadow-sm" />
                   <span className="text-[11px] font-bold text-amber-600 uppercase tracking-wider">Milestone (Month 12)</span>
-                  <h4 className="text-base font-black text-[#071B35]">Retention Bonus of ₹85,000</h4>
+                  <h4 className="text-base font-bold text-[#071B35]">Retention Bonus of ₹85,000</h4>
                   <p className="text-xs sm:text-sm text-slate-600">Awarded upon successful completion of 12 months full-time employment.</p>
                 </div>
 
@@ -832,19 +832,19 @@ export const PlacementGuaranteed = () => {
             {/* What you will learn grid */}
             <div className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-sm grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-3">
-                <span className="text-xs font-black uppercase tracking-wider text-slate-400">WHAT YOU WILL LEARN</span>
-                <h4 className="text-xl font-black text-[#071B35]">Practical Wealth Advisory Curriculum</h4>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-semibold">
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-400">WHAT YOU WILL LEARN</span>
+                <h4 className="text-xl font-bold text-[#071B35]">Practical Wealth Advisory Curriculum</h4>
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                   Financial Planning • Investments • Wealth Management • Mutual Funds • Retirement, Tax &amp; Risk Planning
                 </p>
                 <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600">
-                  <strong>240 hours of industry learning:</strong> 190 hours with ICOFP + 50 hours with AIMA faculty.
+                  <strong className="font-semibold text-slate-800">240 hours of industry learning:</strong> 190 hours with ICOFP + 50 hours with AIMA faculty.
                 </div>
               </div>
 
               <div className="space-y-3">
-                <span className="text-xs font-black uppercase tracking-wider text-slate-400">CERTIFICATION EXPOSURE</span>
-                <h4 className="text-xl font-black text-[#071B35]">Recognised Industry Credentials</h4>
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-400">CERTIFICATION EXPOSURE</span>
+                <h4 className="text-xl font-bold text-[#071B35]">Recognised Industry Credentials</h4>
                 <div className="flex flex-wrap gap-2 pt-1">
                   <span className="px-3 py-1 rounded-lg bg-slate-100 border border-slate-200 text-xs font-bold text-slate-700">CFP Level 1</span>
                   <span className="px-3 py-1 rounded-lg bg-slate-100 border border-slate-200 text-xs font-bold text-slate-700">CFP Level 2</span>
@@ -870,7 +870,7 @@ export const PlacementGuaranteed = () => {
             <div className="bg-white/5 rounded-3xl p-6 sm:p-10 border border-white/10 backdrop-blur-md space-y-6">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-white/10 pb-4">
                 <div>
-                  <h3 className="text-xl sm:text-2xl font-black text-white">Where your career can go</h3>
+                  <h3 className="text-xl sm:text-2xl font-bold text-white">Where your career can go</h3>
                   <p className="text-xs sm:text-sm text-slate-400 mt-1">A clear, performance-driven progression pathway inside Bajaj Capital</p>
                 </div>
               </div>
@@ -881,7 +881,7 @@ export const PlacementGuaranteed = () => {
                 <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-2">
                   <div className="w-2.5 h-2.5 rounded-full bg-[#4BBC7C]" />
                   <span className="text-[10px] font-bold uppercase text-slate-400">WHERE YOU START</span>
-                  <h4 className="text-base font-black text-white">Wealth Officer</h4>
+                  <h4 className="text-base font-bold text-white">Wealth Officer</h4>
                   <p className="text-xs text-slate-300">Your first client portfolio, live from month seven.</p>
                 </div>
 
@@ -889,7 +889,7 @@ export const PlacementGuaranteed = () => {
                 <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-2">
                   <div className="w-2.5 h-2.5 rounded-full bg-[#25AAD3]" />
                   <span className="text-[10px] font-bold uppercase text-slate-400">STAGE 2</span>
-                  <h4 className="text-base font-black text-white">Senior Executive</h4>
+                  <h4 className="text-base font-bold text-white">Senior Executive</h4>
                   <p className="text-xs text-slate-300">A larger investment book &amp; mentoring junior advisors.</p>
                 </div>
 
@@ -897,7 +897,7 @@ export const PlacementGuaranteed = () => {
                 <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-2">
                   <div className="w-2.5 h-2.5 rounded-full bg-[#2F73B2]" />
                   <span className="text-[10px] font-bold uppercase text-slate-400">STAGE 3</span>
-                  <h4 className="text-base font-black text-white">Assistant Manager</h4>
+                  <h4 className="text-base font-bold text-white">Assistant Manager</h4>
                   <p className="text-xs text-slate-300">Owning team performance &amp; branch advisory targets.</p>
                 </div>
 
@@ -905,7 +905,7 @@ export const PlacementGuaranteed = () => {
                 <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-2">
                   <div className="w-2.5 h-2.5 rounded-full bg-amber-400" />
                   <span className="text-[10px] font-bold uppercase text-slate-400">LONG-TERM</span>
-                  <h4 className="text-base font-black text-white">Cluster / Regional Head</h4>
+                  <h4 className="text-base font-bold text-white">Cluster / Regional Head</h4>
                   <p className="text-xs text-slate-300">Leading multi-branch wealth divisions across India.</p>
                 </div>
 
@@ -922,10 +922,10 @@ export const PlacementGuaranteed = () => {
           <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-12">
 
             <div className="text-center max-w-2xl mx-auto space-y-3">
-              <span className="text-xs font-black tracking-widest uppercase text-[#2F73B2] bg-[#2F73B2]/10 px-3 py-1 rounded-full">
+              <span className="text-xs font-bold tracking-widest uppercase text-[#2F73B2] bg-[#2F73B2]/10 px-3 py-1 rounded-full">
                 TRANSPARENT INVESTMENT
               </span>
-              <h2 className="text-3xl sm:text-4xl font-black text-[#071B35] tracking-tight">
+              <h2 className="text-3xl sm:text-4xl font-bold text-[#071B35] tracking-tight">
                 Invest in your career. Start earning along the way.
               </h2>
              
@@ -936,7 +936,7 @@ export const PlacementGuaranteed = () => {
               {/* Card 1: What You Pay */}
               <div className="lg:col-span-6 bg-slate-50 rounded-3xl p-6 sm:p-8 border border-slate-200 flex flex-col justify-between space-y-6">
                 <div className="space-y-4">
-                  <h3 className="text-2xl font-black text-[#071B35]">PROGRAMME FEES</h3>
+                  <h3 className="text-2xl font-bold text-[#071B35]">PROGRAMME FEES</h3>
 
                   <div className="divide-y divide-slate-200 text-sm">
                     <div className="py-3 flex justify-between items-center">
@@ -955,7 +955,7 @@ export const PlacementGuaranteed = () => {
 
                   {/* EMI Box */}
                   <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-1">
-                    <span className="text-xs font-black text-[#2F73B2] uppercase tracking-wider">OR PAY MONTHLY (0% EMI)</span>
+                    <span className="text-xs font-bold text-[#2F73B2] uppercase tracking-wider">OR PAY MONTHLY (0% EMI)</span>
                     <p className="text-xs text-slate-600 leading-relaxed">
                       Flexible no-cost EMI options available over <strong>10 months</strong>, subject to partner NBFC approval.
                     </p>
@@ -969,8 +969,8 @@ export const PlacementGuaranteed = () => {
               {/* Card 2: What You Earn & Net Cost */}
               <div className="lg:col-span-6 bg-emerald-50/60 rounded-3xl p-6 sm:p-8 border border-emerald-200 flex flex-col justify-between space-y-6">
                 <div className="space-y-4">
-                  <span className="text-xs font-black uppercase tracking-wider text-emerald-800">GUARANTEED RETURNS</span>
-                  <h3 className="text-2xl font-black text-emerald-950">Your Journey to Earning</h3>
+                  <span className="text-xs font-bold uppercase tracking-wider text-emerald-800">GUARANTEED RETURNS</span>
+                  <h3 className="text-2xl font-bold text-emerald-950">Your Journey to Earning</h3>
 
                   <div className="divide-y divide-emerald-200/80 text-sm">
                     <div className="py-3 flex justify-between items-center">
@@ -1002,7 +1002,7 @@ export const PlacementGuaranteed = () => {
                 {/* Net Cost Box */}
                 <div className="p-5 rounded-2xl bg-white border border-emerald-300 shadow-md space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-black text-emerald-800 uppercase tracking-wider">WHAT YOU ACTUALLY PAY</span>
+                    <span className="text-xs font-bold text-emerald-800 uppercase tracking-wider">WHAT YOU ACTUALLY PAY</span>
       
                   </div>
 
@@ -1021,7 +1021,7 @@ export const PlacementGuaranteed = () => {
                     </div>
                     <div className="pt-2 mt-1 border-t border-emerald-200 flex justify-between items-center font-bold text-emerald-900">
                       <span>Total Earnings:</span>
-                      <span className="text-sm font-extrabold text-emerald-700">₹1,45,000</span>
+                      <span className="text-sm font-bold text-emerald-700">₹1,45,000</span>
                     </div>
                   </div>
 
@@ -1029,7 +1029,7 @@ export const PlacementGuaranteed = () => {
                     <div className="text-xs font-bold text-slate-600">
                       So your effective cost is only:
                     </div>
-                    <div className="text-3xl sm:text-4xl font-black text-emerald-700 tracking-tight">
+                    <div className="text-3xl sm:text-4xl font-bold text-emerald-700 tracking-tight">
                       ₹32,000!
                     </div>
                   </div>
@@ -1051,10 +1051,10 @@ export const PlacementGuaranteed = () => {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
 
               <div className="lg:col-span-5 space-y-4">
-                <span className="text-xs font-black tracking-widest uppercase text-[#2F73B2] bg-[#2F73B2]/10 px-3 py-1 rounded-full">
+                <span className="text-xs font-bold tracking-widest uppercase text-[#2F73B2] bg-[#2F73B2]/10 px-3 py-1 rounded-full">
                   YOUR CAREER IN WRITING
                 </span>
-                <h2 className="text-3xl sm:text-4xl font-black text-[#071B35] tracking-tight">
+                <h2 className="text-3xl sm:text-4xl font-bold text-[#071B35] tracking-tight">
                   Backed by a written offer from Bajaj Capital.
                 </h2>
                 <p className="text-sm text-slate-600 leading-relaxed">
@@ -1098,7 +1098,7 @@ export const PlacementGuaranteed = () => {
               <div className="lg:col-span-5 space-y-6">
                 <div className="space-y-2">
 
-                  <h2 className="text-3xl font-black text-[#071B35] tracking-tight">
+                  <h2 className="text-3xl font-bold text-[#071B35] tracking-tight">
                     Who can apply
                   </h2>
 
@@ -1145,7 +1145,7 @@ export const PlacementGuaranteed = () => {
               {/* Right Column: Accordion FAQs */}
               <div className="lg:col-span-7 space-y-4">
                 <div className="space-y-1 mb-2">
-                  <h3 className="text-2xl font-black text-[#071B35] tracking-tight">
+                  <h3 className="text-2xl font-bold text-[#071B35] tracking-tight">
                     Frequently Asked Questions
                   </h3>
                   <p className="text-xs text-slate-500">
@@ -1164,7 +1164,7 @@ export const PlacementGuaranteed = () => {
                           className="w-full flex items-center justify-between text-left gap-4 font-bold text-sm sm:text-base text-[#071B35] hover:text-[#2F73B2] transition-colors cursor-pointer"
                         >
                           <span>{faq.q}</span>
-                          <span className={`w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-xs font-black shrink-0 transition-transform ${isOpen ? "rotate-180 bg-[#2F73B2] text-white" : ""}`}>
+                          <span className={`w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold shrink-0 transition-transform ${isOpen ? "rotate-180 bg-[#2F73B2] text-white" : ""}`}>
                             <ChevronDown size={14} />
                           </span>
                         </button>
@@ -1190,7 +1190,7 @@ export const PlacementGuaranteed = () => {
         {/* ========================================================================= */}
         <section className="py-16 sm:py-24 bg-[#071B35] text-white text-center">
           <div className="max-w-2xl mx-auto px-4 sm:px-8 space-y-5">
-            <h2 className="text-3xl sm:text-4xl font-black leading-tight tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-bold leading-tight tracking-tight">
               Ready to start your finance career?
             </h2>
             <p className="text-xs sm:text-sm text-slate-300 font-medium">
@@ -1200,7 +1200,7 @@ export const PlacementGuaranteed = () => {
               <button
                 type="button"
                 onClick={scrollToApply}
-                className="group w-full sm:w-auto px-8 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-[#071B35] font-black text-sm tracking-wide transition-all duration-200 shadow-lg hover:shadow-emerald-500/20 active:scale-95 cursor-pointer flex items-center justify-center gap-2"
+                className="group w-full sm:w-auto px-8 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-[#071B35] font-bold text-sm tracking-wide transition-all duration-200 shadow-lg hover:shadow-emerald-500/20 active:scale-95 cursor-pointer flex items-center justify-center gap-2"
               >
                 <span>CHECK MY ELIGIBILITY</span>
                 <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>
@@ -1217,16 +1217,6 @@ export const PlacementGuaranteed = () => {
                 <Download size={15} className="text-emerald-400" />
                 <span>INTERVIEW PREP PDF</span>
               </button>
-
-              <a
-                href="https://wa.me/919350199001?text=Hi%20Degree%20Guru%2C%20I%20want%20to%20apply%20for%20the%20Wealth%20Officer%20career%20programme"
-                target="_blank"
-                rel="noreferrer"
-                className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-[#25D366] hover:bg-[#20be5a] text-white font-black text-xs sm:text-sm tracking-wide transition-all shadow-md active:scale-95 flex items-center justify-center gap-2"
-              >
-                <MessageCircle size={16} className="fill-white stroke-none" />
-                <span>WHATSAPP US →</span>
-              </a>
             </div>
           </div>
         </section>
