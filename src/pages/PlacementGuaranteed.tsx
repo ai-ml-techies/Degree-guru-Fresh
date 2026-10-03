@@ -382,117 +382,98 @@ export const PlacementGuaranteed = () => {
         {/* ========================================================================= */}
         {/* 1. HERO SECTION (WITH EMBEDDED APPLICATION CARD) */}
         {/* ========================================================================= */}
-        <section id="top" className={`relative bg-gradient-to-b from-[#071B35] via-[#0C2444] to-[#0A1D36] text-white pt-10 sm:pt-16 pb-16 sm:pb-24 border-b border-white/10 overflow-hidden transition-opacity duration-700 ${heroMounted ? "opacity-100" : "opacity-0"}`}>
-          {/* Subtle background glow */}
-          <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#25AAD3]/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-[#4BBC7C]/10 rounded-full blur-3xl pointer-events-none" />
-
+        {/* ========================================================================= */}
+        {/* 1. HERO SECTION (VERY CLEAN & MINIMAL EDITORIAL DESIGN) */}
+        {/* ========================================================================= */}
+        <section id="top" className="relative bg-[#061938] text-white pt-12 sm:pt-20 pb-20 sm:pb-24 border-b border-slate-800 overflow-hidden">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
               
-              {/* Left Column: Core Value Proposition */}
+              {/* Left Column: Editorial Value Proposition */}
               <div className="lg:col-span-7 space-y-6">
                 
-                {/* Pill Badge */}
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-[#25AAD3] text-xs font-black tracking-wider uppercase backdrop-blur-md">
-                  <span className="w-2 h-2 rounded-full bg-[#4BBC7C] animate-pulse" />
-                  <span>PRE-PLACEMENT JOB OPPORTUNITY WITH BAJAJ CAPITAL</span>
-                </div>
-
-                {/* Main Headline */}
-                <h1 className="text-4xl sm:text-5xl lg:text-[58px] font-black tracking-tight leading-[1.08] text-white">
+                {/* Main Headline in Classical Serif */}
+                <h1 className="text-4xl sm:text-5xl lg:text-[56px] font-serif tracking-tight leading-[1.08] text-white">
                   Job First.<br />
                   Train Next.<br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#25AAD3] via-[#4BBC7C] to-[#60D394]">
+                  <span className="text-[#2e9e5b]">
                     Build Your Career.
                   </span>
                 </h1>
 
-                {/* Subheadline */}
-                <p className="text-base sm:text-lg text-slate-200 font-medium leading-relaxed max-w-xl">
-                  Interview for a <strong>Wealth Officer</strong> role at Bajaj Capital. Starting package <strong>₹4.2 LPA to ₹4.8 LPA</strong>. Receive a written pre-placement offer before training begins.
+                {/* Clean Subheadline */}
+                <p className="text-base sm:text-[17px] text-[#9fb3c8] font-normal leading-relaxed max-w-lg">
+                  Interview for a Wealth Officer role at Bajaj Capital. Starting package <strong className="text-white font-semibold">₹4.2 LPA</strong>. Receive a pre-placement offer before training begins.
                 </p>
 
-                {/* 3 Key Stats */}
-                <div className="grid grid-cols-3 gap-3 pt-2 max-w-lg">
-                  <div className="p-3 sm:p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md">
-                    <div className="text-xl sm:text-2xl font-black text-[#4BBC7C] tracking-tight">₹60,000</div>
-                    <div className="text-[11px] sm:text-xs text-slate-300 font-semibold mt-0.5 leading-tight">stipend earned while training</div>
+                {/* Subtle Divider */}
+                <div className="border-t border-slate-700/60 my-6 max-w-lg" />
+
+                {/* 3 Key Stats (Clean Typography, No Background Cards) */}
+                <div className="grid grid-cols-3 gap-4 sm:gap-6 max-w-lg">
+                  <div>
+                    <div className="text-2xl sm:text-3xl font-bold text-[#2e9e5b] tracking-tight">₹60,000</div>
+                    <div className="text-xs text-[#9fb3c8] mt-1 leading-snug">stipend earned while you train</div>
                   </div>
 
-                  <div className="p-3 sm:p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md">
-                    <div className="text-xl sm:text-2xl font-black text-[#25AAD3] tracking-tight">6 Months</div>
-                    <div className="text-[11px] sm:text-xs text-slate-300 font-semibold mt-0.5 leading-tight">interview to full-time payroll</div>
+                  <div>
+                    <div className="text-2xl sm:text-3xl font-bold text-[#2e9e5b] tracking-tight">6 months</div>
+                    <div className="text-xs text-[#9fb3c8] mt-1 leading-snug">from first interview to payroll</div>
                   </div>
 
-                  <div className="p-3 sm:p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md">
-                    <div className="text-xl sm:text-2xl font-black text-white tracking-tight">₹4.2 LPA</div>
-                    <div className="text-[11px] sm:text-xs text-slate-300 font-semibold mt-0.5 leading-tight">+ ₹85,000 retention bonus</div>
+                  <div>
+                    <div className="text-2xl sm:text-3xl font-bold text-[#2e9e5b] tracking-tight">₹4.2 LPA</div>
+                    <div className="text-xs text-[#9fb3c8] mt-1 leading-snug">starting package as a Wealth Officer</div>
                   </div>
                 </div>
 
-                {/* Pathway steps preview */}
-                <div className="pt-1 flex items-center gap-2 text-xs font-black text-[#4BBC7C] tracking-wider uppercase flex-wrap">
-                  <span className="px-2 py-1 bg-white/10 rounded-md">INTERVIEW</span>
-                  <span className="text-slate-500">→</span>
-                  <span className="px-2 py-1 bg-white/10 rounded-md">WRITTEN PPO</span>
-                  <span className="text-slate-500">→</span>
-                  <span className="px-2 py-1 bg-white/10 rounded-md">PAID INTERNSHIP</span>
-                  <span className="text-slate-500">→</span>
-                  <span className="px-2 py-1 bg-[#4BBC7C] text-[#071B35] rounded-md font-extrabold">FULL-TIME JOB</span>
-                </div>
-
-                {/* Download PDF Button kept intact */}
-                <div className="pt-2 flex items-center gap-4 flex-wrap">
+                {/* Interview Prep PDF Button Preserved Cleanly */}
+                <div className="pt-4 flex items-center gap-4 flex-wrap">
                   <button
                     type="button"
                     onClick={() => {
                       setPdfModalOpen(true);
                       setPdfDownloaded(false);
                     }}
-                    className="group inline-flex items-center gap-2.5 px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-xs sm:text-sm font-bold text-white transition-all cursor-pointer shadow-md"
+                    className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-lg bg-white/10 hover:bg-white/15 border border-white/20 text-xs sm:text-sm font-semibold text-white transition-all cursor-pointer shadow-xs"
                   >
-                    <Download size={16} className="text-[#4BBC7C] group-hover:-translate-y-0.5 transition-transform" />
+                    <Download size={15} className="text-[#2e9e5b]" />
                     <span>DOWNLOAD INTERVIEW PREP PDF</span>
-                    <span className="text-slate-400 group-hover:translate-x-1 transition-transform">→</span>
                   </button>
 
                   <a 
                     href="#how"
-                    className="text-xs sm:text-sm font-semibold text-slate-300 hover:text-white underline underline-offset-4"
+                    className="text-xs sm:text-sm text-[#9fb3c8] hover:text-white transition-colors"
                   >
-                    Learn how it works ↓
+                    How it works ↓
                   </a>
                 </div>
 
               </div>
 
-              {/* Right Column: Embedded Hero Application Form Card */}
+              {/* Right Column: Clean White Application Form Card */}
               <div id="apply-section" className="lg:col-span-5">
-                <div className="bg-white text-slate-900 rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-100 relative">
+                <div className="bg-white text-slate-900 rounded-2xl p-6 sm:p-7 shadow-2xl border border-slate-100 max-w-md ml-auto">
                   
-                  {/* Form Header */}
-                  <div className="mb-5 space-y-1">
-                    <span className="inline-block px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black uppercase tracking-wider">
-                      ADMISSIONS OPEN 2026
-                    </span>
-                    <h2 className="text-2xl font-black text-[#071B35] tracking-tight">
+                  {/* Clean Form Header */}
+                  <div className="mb-4 space-y-1">
+                    <h2 className="text-2xl font-serif font-bold text-[#0c2340] tracking-tight">
                       Check if you qualify
                     </h2>
                     <p className="text-xs text-slate-500 leading-relaxed">
-                      A senior career counsellor calls you within one working day. No payment at this stage.
+                      A counsellor calls you within one working day. No payment at this stage.
                     </p>
                   </div>
 
                   {submitted ? (
-                    <div className="p-6 rounded-2xl bg-emerald-50 border border-emerald-200 text-center space-y-4">
-                      <div className="w-14 h-14 rounded-full bg-emerald-600 text-white flex items-center justify-center mx-auto shadow-lg shadow-emerald-600/30">
-                        <CheckCircle2 size={30} />
+                    <div className="p-6 rounded-xl bg-emerald-50 border border-emerald-200 text-center space-y-4">
+                      <div className="w-12 h-12 rounded-full bg-emerald-600 text-white flex items-center justify-center mx-auto shadow-md shadow-emerald-600/30">
+                        <CheckCircle2 size={26} />
                       </div>
                       <div className="space-y-1">
-                        <h3 className="text-lg font-black text-emerald-950">Application Received!</h3>
-                        <p className="text-xs text-emerald-800 font-medium leading-relaxed">
-                          Your profile has been recorded in our admissions system. A dedicated Bajaj Capital career advisor will connect with your interview schedule shortly.
+                        <h3 className="text-base font-bold text-emerald-950">Application Received</h3>
+                        <p className="text-xs text-emerald-800 leading-relaxed">
+                          Your profile has been received. Our career counsellor will connect with you within 1 working day.
                         </p>
                       </div>
 
@@ -500,171 +481,157 @@ export const PlacementGuaranteed = () => {
                         <button
                           type="button"
                           onClick={handleExportLeadsToExcel}
-                          className="w-full py-2.5 px-3 rounded-xl bg-white border border-emerald-300 text-emerald-800 text-xs font-bold hover:bg-emerald-100 transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
+                          className="w-full py-2.5 px-3 rounded-lg bg-white border border-emerald-300 text-emerald-800 text-xs font-semibold hover:bg-emerald-100 transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
                         >
                           <FileSpreadsheet size={15} className="text-emerald-700" />
-                          <span>Download Application Record (Excel .CSV)</span>
+                          <span>Download Lead Record (Excel)</span>
                         </button>
 
                         <button
                           type="button"
                           onClick={() => setSubmitted(false)}
-                          className="text-xs text-slate-500 hover:text-slate-800 font-semibold py-1"
+                          className="text-xs text-slate-500 hover:text-slate-800 py-1"
                         >
                           Submit another profile
                         </button>
                       </div>
                     </div>
                   ) : (
-                    <form onSubmit={handleMainFormSubmit} className="space-y-3.5">
+                    <form onSubmit={handleMainFormSubmit} className="space-y-3">
                       {/* Full Name */}
-                      <div className="space-y-1">
-                        <label htmlFor={nameInputId} className="text-xs font-bold text-slate-800">
-                          Full Name <span className="text-red-500">*</span>
-                        </label>
+                      <div>
                         <input
                           id={nameInputId}
                           type="text"
-                          placeholder="e.g. Rahul Sharma"
+                          placeholder="Full name"
                           value={fullName}
                           onChange={(e) => {
                             setFullName(e.target.value);
                             if (nameError) setNameError("");
                           }}
                           required
-                          className={`w-full px-3.5 py-2.5 rounded-xl border ${nameError ? "border-red-500 ring-1 ring-red-500/20" : "border-slate-300"} text-sm font-semibold bg-slate-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#2F73B2]/40`}
+                          className={`w-full px-3.5 py-2.5 rounded-lg border ${nameError ? "border-red-500 ring-1 ring-red-500/20" : "border-slate-200"} text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-colors`}
                         />
-                        {nameError && <p className="text-[11px] text-red-500 font-semibold">{nameError}</p>}
+                        {nameError && <p className="text-[11px] text-red-500 mt-1">{nameError}</p>}
                       </div>
 
                       {/* Phone & Email Row */}
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div className="space-y-1">
-                          <label htmlFor={phoneInputId} className="text-xs font-bold text-slate-800">
-                            Mobile (WhatsApp) <span className="text-red-500">*</span>
-                          </label>
-                          <div className={`relative flex rounded-xl border ${phoneError ? "border-red-500" : "border-slate-300"} bg-slate-50/50 focus-within:bg-white focus-within:ring-2 focus-within:ring-[#2F73B2]/40 overflow-hidden`}>
-                            <span className="px-2.5 bg-slate-200/70 text-xs font-bold text-slate-700 flex items-center border-r border-slate-300 select-none">
-                              +91
-                            </span>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <div>
+                          <div className={`flex rounded-lg border ${phoneError ? "border-red-500" : "border-slate-200"} overflow-hidden focus-within:ring-1 focus-within:ring-blue-500 focus-within:border-blue-500`}>
+                            <div className="flex items-center gap-1 px-2.5 bg-slate-50 border-r border-slate-200 text-xs text-slate-700 select-none">
+                              <span>🇮🇳</span>
+                              <span className="text-[9px] text-slate-400">▾</span>
+                              <span className="font-medium text-slate-700">+91</span>
+                            </div>
                             <input
                               id={phoneInputId}
                               type="tel"
                               maxLength={10}
-                              placeholder="10-digit number"
+                              placeholder=""
                               value={phoneNumber}
                               onChange={(e) => {
                                 setPhoneNumber(e.target.value.replace(/\D/g, ""));
                                 if (phoneError) setPhoneError("");
                               }}
                               required
-                              className="w-full px-2.5 py-2.5 text-sm font-semibold bg-transparent focus:outline-none"
+                              className="w-full px-2.5 py-2 text-sm text-slate-800 focus:outline-none"
                             />
                           </div>
-                          {phoneError && <p className="text-[11px] text-red-500 font-semibold">{phoneError}</p>}
+                          {phoneError && <p className="text-[11px] text-red-500 mt-1">{phoneError}</p>}
                         </div>
 
-                        <div className="space-y-1">
-                          <label htmlFor={emailInputId} className="text-xs font-bold text-slate-800">
-                            Email <span className="text-red-500">*</span>
-                          </label>
+                        <div>
                           <input
                             id={emailInputId}
                             type="email"
-                            placeholder="name@email.com"
+                            placeholder="Email"
                             value={emailAddress}
                             onChange={(e) => {
                               setEmailAddress(e.target.value);
                               if (emailError) setEmailError("");
                             }}
                             required
-                            className={`w-full px-3 py-2.5 rounded-xl border ${emailError ? "border-red-500" : "border-slate-300"} text-sm font-semibold bg-slate-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#2F73B2]/40`}
+                            className={`w-full px-3.5 py-2.5 rounded-lg border ${emailError ? "border-red-500" : "border-slate-200"} text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-colors`}
                           />
-                          {emailError && <p className="text-[11px] text-red-500 font-semibold">{emailError}</p>}
+                          {emailError && <p className="text-[11px] text-red-500 mt-1">{emailError}</p>}
                         </div>
                       </div>
 
                       {/* City & Age Row */}
-                      <div className="grid grid-cols-2 gap-3">
-                        <div className="space-y-1">
-                          <label className="text-xs font-bold text-slate-800">
-                            City <span className="text-red-500">*</span>
-                          </label>
+                      <div className="grid grid-cols-2 gap-2.5">
+                        <div>
                           <input
                             type="text"
-                            placeholder="e.g. Mumbai, Delhi"
+                            placeholder="City"
                             value={city}
                             onChange={(e) => {
                               setCity(e.target.value);
                               if (cityError) setCityError("");
                             }}
                             required
-                            className={`w-full px-3 py-2 text-sm rounded-xl border ${cityError ? "border-red-500" : "border-slate-300"} bg-slate-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#2F73B2]/40`}
+                            className={`w-full px-3.5 py-2.5 rounded-lg border ${cityError ? "border-red-500" : "border-slate-200"} text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-colors`}
                           />
-                          {cityError && <p className="text-[11px] text-red-500 font-semibold">{cityError}</p>}
+                          {cityError && <p className="text-[11px] text-red-500 mt-1">{cityError}</p>}
                         </div>
 
-                        <div className="space-y-1">
-                          <label className="text-xs font-bold text-slate-800">
-                            Age <span className="text-slate-400 font-normal">(28 or under)</span>
-                          </label>
+                        <div>
                           <input
                             type="number"
-                            placeholder="e.g. 23"
+                            placeholder="Age"
                             value={age}
                             onChange={(e) => {
                               setAge(e.target.value);
                               if (ageError) setAgeError("");
                             }}
-                            className={`w-full px-3 py-2 text-sm rounded-xl border ${ageError ? "border-red-500" : "border-slate-300"} bg-slate-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#2F73B2]/40`}
+                            className={`w-full px-3.5 py-2.5 rounded-lg border ${ageError ? "border-red-500" : "border-slate-200"} text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-colors`}
                           />
-                          {ageError && <p className="text-[11px] text-red-500 font-semibold">{ageError}</p>}
+                          {ageError && <p className="text-[11px] text-red-500 mt-1">{ageError}</p>}
                         </div>
                       </div>
 
                       {/* Current Status Dropdown */}
-                      <div className="space-y-1">
-                        <label className="text-xs font-bold text-slate-800">
-                          Current Status
-                        </label>
+                      <div className="relative">
                         <select
                           value={currentStatus}
                           onChange={(e) => setCurrentStatus(e.target.value)}
-                          className="w-full px-3 py-2 text-sm rounded-xl border border-slate-300 bg-slate-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#2F73B2]/40"
+                          className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 text-sm text-slate-700 bg-white appearance-none focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 pr-8 cursor-pointer"
                         >
-                          <option value="job-seeking">Job-seeking (Immediate Joiner)</option>
-                          <option value="studying">Studying (Final Year Student)</option>
-                          <option value="working">Working Professional (Career Switcher)</option>
+                          <option value="Final year student">Final year student</option>
+                          <option value="Recent graduate">Recent graduate</option>
+                          <option value="Working professional">Working professional</option>
+                          <option value="Looking for a job switch">Looking for a job switch</option>
                         </select>
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+                          <ChevronDown size={16} />
+                        </div>
                       </div>
 
-                      {/* Graduate Question Pills */}
-                      <div className="space-y-1 pt-1">
-                        <span className="text-xs font-bold text-slate-800 block">
-                          Have you completed your degree / graduation?
-                        </span>
-                        <div className="flex gap-2">
+                      {/* Graduate Question Selector */}
+                      <div className="flex items-center justify-between gap-3 pt-1">
+                        <span className="text-xs text-slate-600 font-medium">Graduate?</span>
+                        <div className="grid grid-cols-2 gap-2 flex-1 max-w-[210px]">
                           <button
                             type="button"
                             onClick={() => setIsGraduate("yes")}
-                            className={`flex-1 py-1.5 px-3 rounded-lg text-xs font-bold transition-all border ${
+                            className={`py-2 px-3 rounded-lg text-xs font-medium border text-center transition-colors cursor-pointer ${
                               isGraduate === "yes" 
-                                ? "bg-[#2F73B2] text-white border-[#2F73B2] shadow-xs" 
-                                : "bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200"
+                                ? "bg-slate-50 border-slate-400 text-slate-900 font-semibold shadow-2xs" 
+                                : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
                             }`}
                           >
-                            Yes, Completed
+                            Yes
                           </button>
                           <button
                             type="button"
                             onClick={() => setIsGraduate("not-yet")}
-                            className={`flex-1 py-1.5 px-3 rounded-lg text-xs font-bold transition-all border ${
+                            className={`py-2 px-3 rounded-lg text-xs font-medium border text-center transition-colors cursor-pointer ${
                               isGraduate === "not-yet" 
-                                ? "bg-[#2F73B2] text-white border-[#2F73B2] shadow-xs" 
-                                : "bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200"
+                                ? "bg-slate-50 border-slate-400 text-slate-900 font-semibold shadow-2xs" 
+                                : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
                             }`}
                           >
-                            In Final Year / Not yet
+                            Not yet
                           </button>
                         </div>
                       </div>
@@ -673,28 +640,15 @@ export const PlacementGuaranteed = () => {
                       <button
                         type="submit"
                         disabled={isSubmitting}
-                        className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-[#2F73B2] to-[#1E4D7A] hover:from-[#255D91] hover:to-[#173D62] text-white font-black text-sm tracking-wide shadow-lg shadow-[#2F73B2]/30 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer mt-2"
+                        className="w-full py-3 px-4 rounded-lg bg-[#7ea5cb] hover:bg-[#6c93be] text-white font-medium text-sm tracking-wide shadow-xs active:scale-[0.99] transition-colors cursor-pointer mt-1"
                       >
-                        {isSubmitting ? (
-                          <span>Verifying profile...</span>
-                        ) : (
-                          <>
-                            <span>CHECK MY ELIGIBILITY</span>
-                            <span>→</span>
-                          </>
-                        )}
+                        {isSubmitting ? "Checking eligibility..." : "Check my eligibility"}
                       </button>
 
-                      {/* Micro guarantee badge */}
-                      <div className="flex items-center justify-center gap-4 text-[10px] text-slate-500 pt-1">
-                        <span className="inline-flex items-center gap-1">
-                          <ShieldCheck size={12} className="text-emerald-600" /> 100% Free Consultation
-                        </span>
-                        <span>•</span>
-                        <span>Zero Obligation</span>
-                        <span>•</span>
-                        <span>Verified Job Pathway</span>
-                      </div>
+                      {/* Terms Disclaimer */}
+                      <p className="text-[11px] text-slate-400 text-center pt-1 leading-tight">
+                        By submitting you agree to our <a href="/privacy" className="text-slate-500 hover:underline">Terms &amp; Privacy Policy</a>
+                      </p>
                     </form>
                   )}
                 </div>
@@ -703,6 +657,22 @@ export const PlacementGuaranteed = () => {
             </div>
           </div>
         </section>
+
+        {/* ========================================================================= */}
+        {/* TRUST BANNER (EXACT MATCH TO REFERENCE IMAGE 2) */}
+        {/* ========================================================================= */}
+        <div className="max-w-4xl mx-auto px-4 -mt-6 sm:-mt-7 relative z-20">
+          <div className="bg-white rounded-2xl sm:rounded-full py-3.5 px-6 sm:px-10 shadow-lg border border-slate-100 flex items-center justify-center flex-wrap gap-4 sm:gap-10 text-xs sm:text-sm text-slate-600 font-medium">
+            <div className="flex items-center gap-2 text-slate-700">
+              <ShieldCheck size={18} className="text-[#2e9e5b]" />
+              <span>100% Free Consultation</span>
+            </div>
+            <span className="text-slate-300 hidden sm:inline">•</span>
+            <span>Zero Obligation</span>
+            <span className="text-slate-300 hidden sm:inline">•</span>
+            <span>Verified Job Pathway</span>
+          </div>
+        </div>
 
         {/* ========================================================================= */}
         {/* 2. DELIVERED WITH (PARTNERS SECTION) */}
@@ -1257,7 +1227,7 @@ export const PlacementGuaranteed = () => {
                     Frequently Asked Questions
                   </h3>
                   <p className="text-xs text-slate-500">
-                    Transparent answers regarding admissions, offers, stipend and curriculum
+                    Transparent answers regarding eligibility, offers, stipend and curriculum
                   </p>
                 </div>
 
