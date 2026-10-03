@@ -7,14 +7,18 @@ import { useLocation } from "react-router-dom";
 
 export const Layout = ({ children }: { children: ReactNode }) => {
   const location = useLocation();
+  const normalizedPath = location.pathname.toLowerCase().replace(/\/+$/, "") || "/";
   const isAcwmPage = 
-    location.pathname === "/placement-guaranteed" ||
-    location.pathname === "/100-placement-guaranteed" ||
-    location.pathname === "/acwm-career-programme";
+    normalizedPath === "/placement-guaranteed" ||
+    normalizedPath === "/100-placement-guaranteed" ||
+    normalizedPath === "/acwm-career-programme" ||
+    normalizedPath.startsWith("/placement-guaranteed/") ||
+    normalizedPath.startsWith("/100-placement-guaranteed/") ||
+    normalizedPath.startsWith("/acwm-career-programme/");
 
   if (isAcwmPage) {
     return (
-      <div className="min-h-screen flex flex-col relative bg-[#FAF8F5]">
+      <div className="min-h-screen flex flex-col relative bg-[#F7F5F0]">
         <main className="flex-1">{children}</main>
       </div>
     );

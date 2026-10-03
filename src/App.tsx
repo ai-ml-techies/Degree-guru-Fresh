@@ -72,8 +72,11 @@ const App = () => (
 
                 {/* 100% Placement Guaranteed Dedicated Program */}
                 <Route path="/placement-guaranteed" element={<PlacementGuaranteed />} />
+                <Route path="/placement-guaranteed/*" element={<PlacementGuaranteed />} />
                 <Route path="/100-placement-guaranteed" element={<PlacementGuaranteed />} />
+                <Route path="/100-placement-guaranteed/*" element={<PlacementGuaranteed />} />
                 <Route path="/acwm-career-programme" element={<PlacementGuaranteed />} />
+                <Route path="/acwm-career-programme/*" element={<PlacementGuaranteed />} />
 
                 {/* Universities & Comparison (Supporting both singular and plural paths) */}
                 <Route path="/universities" element={<UniversitiesIndex />} />
