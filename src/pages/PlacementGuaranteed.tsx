@@ -210,7 +210,7 @@ export const PlacementGuaranteed = () => {
     // 1. Save to Excel local cache
     saveLeadToExcelStorage(leadInfo);
 
-    // 2. Submit to backend API (which automatically appends to server Excel CSV)
+    // 2. Submit to backend API (which automatically appends to server Excel CSV and emails agestartup@gmail.com)
     try {
       await submitLead({
         name: leadInfo.name,
@@ -218,6 +218,11 @@ export const PlacementGuaranteed = () => {
         email: leadInfo.email,
         program: leadInfo.program,
         source: leadInfo.source,
+        formHeading: "Check if you qualify (Bajaj Capital ACWM Programme)",
+        city: city.trim(),
+        age: age.trim() || "Unspecified",
+        status: currentStatus,
+        graduate: isGraduate === "yes" ? "Yes, Completed" : "In Final Year / Not yet",
       });
       setSubmitted(true);
     } catch {
@@ -272,6 +277,11 @@ export const PlacementGuaranteed = () => {
         email: pdfLeadInfo.email,
         program: pdfLeadInfo.program,
         source: pdfLeadInfo.source,
+        formHeading: "Download Interview Prep PDF Kit",
+        city: "Interview Prep Kit",
+        age: "N/A",
+        status: "Downloaded PDF",
+        graduate: "Yes",
       });
     } catch {
       // Continue download even if network logger catches glitch

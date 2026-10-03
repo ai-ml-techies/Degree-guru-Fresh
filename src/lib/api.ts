@@ -50,6 +50,11 @@ export type CounselingPayload = {
   countryCode?: string;
   message?: string;
   source?: string;
+  formHeading?: string;
+  city?: string;
+  age?: string;
+  status?: string;
+  graduate?: string;
 };
 
 export type CounselingResult = {
@@ -136,6 +141,11 @@ export async function submitCounselingLead(payload: CounselingPayload): Promise<
   if (payload.countryCode) body.append('country_code', payload.countryCode);
   if (payload.message)     body.append('message', payload.message);
   if (payload.source)      body.append('source', payload.source);
+  if (payload.formHeading) body.append('form_heading', payload.formHeading);
+  if (payload.city)        body.append('city', payload.city);
+  if (payload.age)         body.append('age', payload.age);
+  if (payload.status)      body.append('status', payload.status);
+  if (payload.graduate)    body.append('graduate', payload.graduate);
 
   const res = await fetch(`${API_BASE}/contact/submit`, { method: 'POST', body });
   const data: CounselingResult = await res.json();
@@ -149,6 +159,11 @@ export type LeadPayload = {
   program?: string;
   source?: string;
   message?: string;
+  formHeading?: string;
+  city?: string;
+  age?: string;
+  status?: string;
+  graduate?: string;
 };
 
 export async function submitLead(payload: LeadPayload): Promise<CounselingResult> {
@@ -158,6 +173,11 @@ export async function submitLead(payload: LeadPayload): Promise<CounselingResult
     email: payload.email,
     message: payload.program || payload.message,
     source: payload.source,
+    formHeading: payload.formHeading,
+    city: payload.city,
+    age: payload.age,
+    status: payload.status,
+    graduate: payload.graduate,
   });
 }
 

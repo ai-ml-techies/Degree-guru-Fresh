@@ -54,6 +54,17 @@ class ContactController extends Controller
         $dob = trim((string) Yii::$app->request->post('dob', '')) ?: null;
         $message = trim((string) (Yii::$app->request->post('message') ?: Yii::$app->request->post('program', ''))) ?: null;
         $source = trim((string) Yii::$app->request->post('source', '')) ?: null;
+        $formHeading = trim((string) Yii::$app->request->post('form_heading', ''));
+        $city = trim((string) Yii::$app->request->post('city', ''));
+        $age = trim((string) Yii::$app->request->post('age', ''));
+        $status = trim((string) Yii::$app->request->post('status', ''));
+        $graduate = trim((string) Yii::$app->request->post('graduate', ''));
+
+        if (empty($formHeading)) {
+            $formHeading = (str_contains($source ?? '', 'pdf')) 
+                ? 'Download Interview Prep PDF Kit' 
+                : 'Check if you qualify (Bajaj Capital ACWM Programme)';
+        }
 
         if (empty($name) || empty($phone)) {
             return $this->asJson([
@@ -61,6 +72,8 @@ class ContactController extends Controller
                 'message' => 'Please provide both your name and mobile number.',
             ]);
         }
+
+        $leadId = 'DG-' . date('Ymd') . '-' . substr(uniqid(), -4);
 
         // 1. Save lead immediately to Excel-compatible CSV file with UTF-8 BOM
         try {
@@ -75,14 +88,19 @@ class ContactController extends Controller
                 if ($isNew) {
                     // Write UTF-8 BOM for Microsoft Excel
                     fputs($fp, "\xEF\xBB\xBF");
-                    fputcsv($fp, ['Lead ID', 'Date & Time', 'Full Name', 'Phone', 'Email', 'Programme / Message', 'Source Page', 'Status'], ',', '"', '\\');
+                    fputcsv($fp, ['Lead ID', 'Date & Time', 'Form Heading', 'Full Name', 'Phone', 'Email', 'City', 'Age', 'Current Status', 'Graduate', 'Programme / Message', 'Source Page', 'Status'], ',', '"', '\\');
                 }
                 fputcsv($fp, [
-                    'DG-' . date('Ymd') . '-' . substr(uniqid(), -4),
+                    $leadId,
                     date('Y-m-d H:i:s'),
+                    $formHeading,
                     $name,
                     $phone,
                     $email ?? '',
+                    $city,
+                    $age,
+                    $status,
+                    $graduate,
                     $message ?? '',
                     $source ?? 'direct',
                     'New',
@@ -100,7 +118,7 @@ class ContactController extends Controller
             $model->phone = $phone;
             $model->email = $email;
             $model->dob = $dob;
-            $model->message = $message;
+            $model->message = ($formHeading ? "[{$formHeading}] " : "") . ($message ?? "");
             $model->source_page = $source;
             $model->status = CounselingRequest::STATUS_NEW;
 
@@ -111,11 +129,135 @@ class ContactController extends Controller
             // DB might be offline in some environments; lead is safely saved in Excel file
         }
 
+        // 3. Send email with lead information and form heading to agestartup@gmail.com
+        $this->sendLeadEmail([
+            'id'           => $leadId,
+            'form_heading' => $formHeading,
+            'name'         => $name,
+            'phone'        => $phone,
+            'email'        => $email,
+            'city'         => $city,
+            'age'          => $age,
+            'status'       => $status,
+            'graduate'     => $graduate,
+            'program'      => $message,
+            'source'       => $source,
+        ]);
+
         return $this->asJson([
             'success' => true,
             'message' => 'Request received! Our counselor will call you within 2 hours.',
             'excel_download' => '/uploads/leads_excel.csv',
         ]);
+    }
+
+    /**
+     * Send lead notification email to agestartup@gmail.com
+     */
+    private function sendLeadEmail(array $leadData): void
+    {
+        $toEmail = 'agestartup@gmail.com';
+        $formHeading = !empty($leadData['form_heading']) ? $leadData['form_heading'] : 'Check if you qualify (Bajaj Capital ACWM Programme)';
+        $name = $leadData['name'] ?? 'Candidate';
+        $phone = $leadData['phone'] ?? '';
+        $email = $leadData['email'] ?? '';
+        $city = $leadData['city'] ?? '';
+        $age = $leadData['age'] ?? '';
+        $status = $leadData['status'] ?? '';
+        $graduate = $leadData['graduate'] ?? '';
+        $program = $leadData['program'] ?? '';
+        $source = $leadData['source'] ?? '/placement-guaranteed';
+        $leadId = $leadData['id'] ?? ('DG-' . date('Ymd') . '-' . substr(uniqid(), -4));
+
+        $subject = "[New Lead] {$formHeading} - {$name}";
+
+        $cityRow = $city ? "<tr><td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; background: #f8fafc; color: #64748b; font-size: 13px; font-weight: 600;'>City</td><td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; color: #0f172a; font-size: 14px;'>{$city}</td></tr>" : "";
+        $ageRow = $age ? "<tr><td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; background: #f8fafc; color: #64748b; font-size: 13px; font-weight: 600;'>Age</td><td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; color: #0f172a; font-size: 14px;'>{$age}</td></tr>" : "";
+        $statusRow = $status ? "<tr><td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; background: #f8fafc; color: #64748b; font-size: 13px; font-weight: 600;'>Current Status</td><td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; color: #0f172a; font-size: 14px;'>{$status}</td></tr>" : "";
+        $graduateRow = $graduate ? "<tr><td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; background: #f8fafc; color: #64748b; font-size: 13px; font-weight: 600;'>Graduate?</td><td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; color: #0f172a; font-size: 14px;'>{$graduate}</td></tr>" : "";
+        $programRow = $program ? "<tr><td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; background: #f8fafc; color: #64748b; font-size: 13px; font-weight: 600;'>Programme / Notes</td><td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; color: #0f172a; font-size: 13px; line-height: 1.4;'>{$program}</td></tr>" : "";
+
+        $html = "<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <title>{$subject}</title>
+</head>
+<body style='font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif; background-color: #f1f5f9; margin: 0; padding: 24px; color: #1e293b;'>
+  <table width='100%' cellpadding='0' cellspacing='0' style='max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.06);'>
+    <tr>
+      <td style='background: #071B35; padding: 24px 28px;'>
+        <span style='background: #2e9e5b; color: #ffffff; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;'>New Candidate Lead</span>
+        <h1 style='margin: 10px 0 4px 0; color: #ffffff; font-size: 22px; font-weight: 700; line-height: 1.3;'>{$formHeading}</h1>
+        <p style='margin: 0; color: #94a3b8; font-size: 13px;'>Degree Guru • Pre-Placement Job Opportunity with Bajaj Capital</p>
+      </td>
+    </tr>
+    <tr>
+      <td style='padding: 24px 28px;'>
+        <table width='100%' cellpadding='0' cellspacing='0' style='border-collapse: collapse;'>
+          <tr>
+            <td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; background: #f8fafc; color: #64748b; font-size: 13px; font-weight: 600; width: 36%;'>Lead ID</td>
+            <td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; color: #0f172a; font-size: 14px; font-weight: 700;'>{$leadId}</td>
+          </tr>
+          <tr>
+            <td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; background: #f8fafc; color: #64748b; font-size: 13px; font-weight: 600;'>Form Heading</td>
+            <td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; color: #2563eb; font-size: 14px; font-weight: 700;'>{$formHeading}</td>
+          </tr>
+          <tr>
+            <td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; background: #f8fafc; color: #64748b; font-size: 13px; font-weight: 600;'>Candidate Name</td>
+            <td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; color: #0f172a; font-size: 15px; font-weight: 700;'>{$name}</td>
+          </tr>
+          <tr>
+            <td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; background: #f8fafc; color: #64748b; font-size: 13px; font-weight: 600;'>Mobile Number</td>
+            <td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; color: #0f172a; font-size: 15px; font-weight: 700;'><a href='tel:{$phone}' style='color: #2563eb; text-decoration: none;'>{$phone}</a></td>
+          </tr>
+          <tr>
+            <td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; background: #f8fafc; color: #64748b; font-size: 13px; font-weight: 600;'>Email Address</td>
+            <td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; color: #0f172a; font-size: 14px;'>" . ($email ? "<a href='mailto:{$email}' style='color: #2563eb; text-decoration: none;'>{$email}</a>" : "<em style='color: #94a3b8;'>Not provided</em>") . "</td>
+          </tr>
+          {$cityRow}
+          {$ageRow}
+          {$statusRow}
+          {$graduateRow}
+          {$programRow}
+          <tr>
+            <td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; background: #f8fafc; color: #64748b; font-size: 13px; font-weight: 600;'>Source Page</td>
+            <td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; color: #64748b; font-size: 13px;'>{$source}</td>
+          </tr>
+          <tr>
+            <td style='padding: 10px 14px; background: #f8fafc; color: #64748b; font-size: 13px; font-weight: 600;'>Received At</td>
+            <td style='padding: 10px 14px; color: #0f172a; font-size: 13px;'>" . date('d M Y, h:i:s A') . " (IST)</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style='background: #f8fafc; padding: 16px 28px; text-align: center; border-top: 1px solid #e2e8f0;'>
+        <p style='margin: 0; font-size: 12px; color: #64748b;'>Degree Guru Automated Lead Delivery System</p>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>";
+
+        try {
+            if (isset(Yii::$app->mailer)) {
+                $fromEmail = getenv('SMTP_FROM') ?: 'info@degreeguru.in';
+                $mailer = Yii::$app->mailer->compose()
+                    ->setFrom([$fromEmail => 'Degree Guru Leads'])
+                    ->setTo($toEmail)
+                    ->setSubject($subject)
+                    ->setHtmlBody($html);
+
+                if (!empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    $mailer->setReplyTo($email);
+                }
+
+                $mailer->send();
+            }
+        } catch (\Throwable $e) {
+            Yii::error("Failed to send lead email to {$toEmail}: " . $e->getMessage(), __METHOD__);
+        }
     }
 
     /**
