@@ -19,6 +19,9 @@ import {
 } from "lucide-react";
 import { submitLead } from "@/lib/api";
 import { validateIndianMobile, validateMeaningfulName, validateMeaningfulEmail } from "@/lib/validation";
+import aimaLogo from "@/assets/acwm/aima.png";
+import bajajCapitalLogo from "@/assets/acwm/bajaj-capital.png";
+import icofpLogo from "@/assets/acwm/icofp.png";
 
 export const PlacementGuaranteed = () => {
   // Page Mount / Hero Animation
@@ -352,7 +355,7 @@ export const PlacementGuaranteed = () => {
             <div className="flex items-center gap-3">
               <a href="#top" className="flex items-center gap-2">
                 <img
-                  src="/assets/acwm/bajaj-capital.png"
+                  src={bajajCapitalLogo}
                   alt="Bajaj Capital"
                   className="h-8 sm:h-9 w-auto object-contain"
                 />
@@ -669,7 +672,7 @@ export const PlacementGuaranteed = () => {
         </section>
 
         {/* ========================================================================= */}
-        {/* 2. DELIVERED WITH (PARTNERS SECTION - ONE LINE MANAGED) */}
+        {/* 2. DELIVERED WITH (PARTNERS SECTION) */}
         {/* ========================================================================= */}
         <section className="py-6 bg-white border-b border-slate-200">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -683,48 +686,48 @@ export const PlacementGuaranteed = () => {
                 </span>
               </div>
 
-              {/* All 3 partners strictly in ONE line with flex-nowrap */}
-              <div className="flex items-center justify-center lg:justify-end gap-4 sm:gap-6 md:gap-8 flex-nowrap overflow-x-auto max-w-full py-1">
+              {/* All 3 partners: AIMA, Bajaj Capital, ICOFP */}
+              <div className="flex items-center justify-center lg:justify-end gap-5 sm:gap-8 flex-wrap sm:flex-nowrap py-1">
                 {/* AIMA */}
-                <div className="flex items-center gap-2 shrink-0">
+                <div className="flex items-center gap-2.5 shrink-0">
                   <img
-                    src="/assets/acwm/aima.png"
+                    src={aimaLogo}
                     alt="All India Management Association (AIMA)"
-                    className="h-7 sm:h-8 w-auto object-contain shrink-0"
+                    className="h-8 sm:h-9 w-auto object-contain"
                   />
-                  <div className="text-left hidden sm:block leading-tight">
+                  <div className="text-left hidden md:block leading-tight">
                     <div className="text-[10px] font-black uppercase text-slate-800">AIMA</div>
-                    <div className="text-[9px] text-slate-500">Academic Partner</div>
+                    <div className="text-[9px] text-slate-500 font-medium">Academic Partner</div>
                   </div>
                 </div>
 
-                <div className="h-6 w-px bg-slate-200 shrink-0" />
+                <div className="h-6 w-px bg-slate-200 shrink-0 hidden sm:block" />
 
                 {/* Bajaj Capital */}
-                <div className="flex items-center gap-2 shrink-0">
+                <div className="flex items-center gap-2.5 shrink-0">
                   <img
-                    src="/assets/acwm/bajaj-capital.png"
+                    src={bajajCapitalLogo}
                     alt="Bajaj Capital"
-                    className="h-7 sm:h-9 w-auto object-contain shrink-0"
+                    className="h-8 sm:h-9 w-auto object-contain"
                   />
-                  <div className="text-left hidden sm:block leading-tight">
+                  <div className="text-left hidden md:block leading-tight">
                     <div className="text-[10px] font-black uppercase text-slate-800">BAJAJ CAPITAL</div>
                     <div className="text-[9px] text-[#2e9e5b] font-bold">Hiring Partner (BCIBL)</div>
                   </div>
                 </div>
 
-                <div className="h-6 w-px bg-slate-200 shrink-0" />
+                <div className="h-6 w-px bg-slate-200 shrink-0 hidden sm:block" />
 
                 {/* ICOFP */}
-                <div className="flex items-center gap-2 shrink-0">
+                <div className="flex items-center gap-2.5 shrink-0">
                   <img
-                    src="/assets/acwm/icofp.png"
+                    src={icofpLogo}
                     alt="ICOFP"
-                    className="h-7 sm:h-8 w-auto object-contain shrink-0"
+                    className="h-8 sm:h-9 w-auto object-contain"
                   />
-                  <div className="text-left hidden sm:block leading-tight">
+                  <div className="text-left hidden md:block leading-tight">
                     <div className="text-[10px] font-black uppercase text-slate-800">ICOFP</div>
-                    <div className="text-[9px] text-slate-500">Training Delivery</div>
+                    <div className="text-[9px] text-slate-500 font-medium">Training Delivery</div>
                   </div>
                 </div>
               </div>
@@ -746,9 +749,7 @@ export const PlacementGuaranteed = () => {
               <h2 className="text-3xl sm:text-4xl font-black text-[#071B35] tracking-tight">
                 Get the job offer first. Pay fees later.
               </h2>
-              <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-                Six months, week by week, from your first interview to full-time absorption and retention bonus.
-              </p>
+              
             </div>
 
             {/* 3 Key Phase Cards */}
@@ -758,7 +759,6 @@ export const PlacementGuaranteed = () => {
               <div className="bg-white rounded-2xl p-6 sm:p-7 border-t-4 border-t-[#2F73B2] shadow-sm border border-slate-200/80 space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-2xl font-black text-[#2F73B2]">01</span>
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Step 1</span>
                 </div>
                 <h3 className="text-lg font-black text-[#071B35]">Get selected</h3>
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
@@ -770,7 +770,6 @@ export const PlacementGuaranteed = () => {
               <div className="bg-white rounded-2xl p-6 sm:p-7 border-t-4 border-t-[#25AAD3] shadow-sm border border-slate-200/80 space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-2xl font-black text-[#25AAD3]">02</span>
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Step 2</span>
                 </div>
                 <h3 className="text-lg font-black text-[#071B35]">Get trained</h3>
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
@@ -782,7 +781,6 @@ export const PlacementGuaranteed = () => {
               <div className="bg-white rounded-2xl p-6 sm:p-7 border-t-4 border-t-[#4BBC7C] shadow-sm border border-slate-200/80 space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-2xl font-black text-[#4BBC7C]">03</span>
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Step 3</span>
                 </div>
                 <h3 className="text-lg font-black text-[#071B35]">Get hired</h3>
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
@@ -954,9 +952,7 @@ export const PlacementGuaranteed = () => {
                   <h3 className="text-xl font-black text-white">Where your career can go</h3>
                   <p className="text-xs text-slate-400">A clear, performance-driven progression pathway inside Bajaj Capital</p>
                 </div>
-                <span className="text-xs text-emerald-400 font-bold bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
-                  Rapid Leadership Growth
-                </span>
+               
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -1047,7 +1043,6 @@ export const PlacementGuaranteed = () => {
                     </p>
                   </div>
                 </div>
-
                 <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-200/80 text-xs text-amber-900 leading-relaxed font-medium">
                   <strong>Zero Risk:</strong> Nothing is payable until our counsellor confirms your eligibility. The programme fee applies only <em>after</em> you clear the Bajaj Capital interview and get your written PPO.
                 </div>
@@ -1090,9 +1085,7 @@ export const PlacementGuaranteed = () => {
                 <div className="p-5 rounded-2xl bg-white border border-emerald-300 shadow-md space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-black text-emerald-800 uppercase tracking-wider">WHAT YOU ACTUALLY PAY</span>
-                    <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
-                      Effective Cost
-                    </span>
+      
                   </div>
 
                   <div className="space-y-1.5 text-xs text-slate-700 bg-emerald-50/50 p-3.5 rounded-xl border border-emerald-100">
@@ -1123,9 +1116,6 @@ export const PlacementGuaranteed = () => {
                     </div>
                   </div>
 
-                  <p className="text-xs text-slate-600 leading-relaxed pt-1">
-                    Total fee with GST (₹1,77,000), minus the stipend (₹60,000) and retention bonus (₹85,000) you earn before your ₹4.2 LPA salary even accumulates!
-                  </p>
                 </div>
               </div>
 
@@ -1345,7 +1335,7 @@ export const PlacementGuaranteed = () => {
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-white/10 pb-4">
               <div className="flex items-center gap-2 text-white font-bold text-sm">
                 <img
-                  src="/assets/acwm/bajaj-capital.png"
+                  src={bajajCapitalLogo}
                   alt="Bajaj Capital"
                   className="h-6 w-auto object-contain brightness-0 invert opacity-80"
                 />
