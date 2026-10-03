@@ -360,10 +360,6 @@ export const PlacementGuaranteed = () => {
                   className="h-8 sm:h-9 w-auto object-contain"
                 />
               </a>
-              <span className="text-slate-300 hidden sm:inline">|</span>
-              <span className="text-xs sm:text-sm font-bold text-slate-700 tracking-tight">
-                ACWM Career Programme
-              </span>
             </div>
 
             <nav className="flex items-center gap-3 sm:gap-6">
