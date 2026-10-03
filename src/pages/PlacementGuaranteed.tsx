@@ -351,18 +351,18 @@ export const PlacementGuaranteed = () => {
         {/* HEADER / NAVIGATION BAR */}
         {/* ========================================================================= */}
         <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <a href="#top" className="flex items-center gap-2">
+          <div className="max-w-6xl mx-auto px-3.5 sm:px-6 h-14 sm:h-16 flex items-center justify-between gap-3">
+            <div className="flex items-center min-w-0 shrink">
+              <a href="#top" className="flex items-center">
                 <img
                   src={bajajCapitalLogo}
                   alt="Bajaj Capital"
-                  className="h-8 sm:h-9 w-auto object-contain"
+                  className="h-5 xs:h-6 sm:h-8 w-auto max-w-[145px] xs:max-w-[175px] sm:max-w-none object-contain shrink-0"
                 />
               </a>
             </div>
 
-            <nav className="flex items-center gap-3 sm:gap-6">
+            <nav className="flex items-center gap-3 sm:gap-6 shrink-0">
               <a href="#how" className="text-xs sm:text-sm font-semibold text-slate-600 hover:text-[#2F73B2] transition-colors hidden md:inline">
                 How it works
               </a>
@@ -379,7 +379,7 @@ export const PlacementGuaranteed = () => {
               <button
                 type="button"
                 onClick={scrollToApply}
-                className="px-4 sm:px-5 py-2 rounded-xl bg-[#2F73B2] hover:bg-[#255D91] text-white text-xs sm:text-sm font-extrabold tracking-wide transition-all shadow-md shadow-[#2F73B2]/20 cursor-pointer"
+                className="px-3 sm:px-5 py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-[#2F73B2] hover:bg-[#255D91] text-white text-[11px] sm:text-sm font-extrabold tracking-tight transition-all shadow-md shadow-[#2F73B2]/20 cursor-pointer shrink-0 whitespace-nowrap"
               >
                 Check eligibility
               </button>
@@ -670,26 +670,26 @@ export const PlacementGuaranteed = () => {
         {/* ========================================================================= */}
         {/* 2. DELIVERED WITH (PARTNERS SECTION - COMPACT & RESPONSIVE) */}
         {/* ========================================================================= */}
-        <section className="py-5 bg-white border-b border-slate-200">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            <div className="flex flex-col lg:flex-row items-center justify-between gap-4 lg:gap-6">
-              <div className="text-center lg:text-left max-w-xs shrink-0">
-                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 block">
+        <section className="py-4 sm:py-5 bg-white border-b border-slate-200">
+          <div className="max-w-6xl mx-auto px-3.5 sm:px-6">
+            <div className="flex flex-col lg:flex-row items-center justify-between gap-3 lg:gap-6">
+              <div className="text-center lg:text-left shrink-0">
+                <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-slate-400 block">
                   DELIVERED IN PARTNERSHIP WITH
                 </span>
-                <span className="text-xs text-slate-500 font-medium leading-tight block mt-0.5">
+                <span className="text-[11px] sm:text-xs text-slate-500 font-medium leading-tight block mt-0.5">
                   Leading national finance institutions &amp; hiring consortium
                 </span>
               </div>
 
-              {/* All 3 partners: AIMA, Bajaj Capital, ICOFP */}
-              <div className="flex items-center justify-center lg:justify-end gap-3.5 sm:gap-6 flex-wrap sm:flex-nowrap py-1">
+              {/* All 3 partners: AIMA, Bajaj Capital, ICOFP - Guaranteed in ONE clean line on mobile & desktop */}
+              <div className="flex items-center justify-center lg:justify-end gap-2 xs:gap-3 sm:gap-6 flex-nowrap w-full lg:w-auto max-w-full py-1">
                 {/* AIMA */}
-                <div className="flex items-center gap-2 shrink-0">
+                <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
                   <img
                     src={aimaLogo}
                     alt="All India Management Association (AIMA)"
-                    className="h-6 sm:h-7 w-auto object-contain"
+                    className="h-4.5 xs:h-5 sm:h-7 w-auto object-contain"
                   />
                   <div className="text-left hidden md:block leading-tight">
                     <div className="text-[10px] font-black uppercase text-slate-800">AIMA</div>
@@ -697,14 +697,14 @@ export const PlacementGuaranteed = () => {
                   </div>
                 </div>
 
-                <div className="h-5 w-px bg-slate-200 shrink-0 hidden sm:block" />
+                <div className="h-3.5 sm:h-5 w-px bg-slate-200 shrink-0 block" />
 
                 {/* Bajaj Capital */}
-                <div className="flex items-center gap-2 shrink-0">
+                <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
                   <img
                     src={bajajCapitalLogo}
                     alt="Bajaj Capital"
-                    className="h-6 sm:h-7 w-auto object-contain"
+                    className="h-3.5 xs:h-4 sm:h-6 w-auto object-contain"
                   />
                   <div className="text-left hidden md:block leading-tight">
                     <div className="text-[10px] font-black uppercase text-slate-800">BAJAJ CAPITAL</div>
@@ -712,14 +712,14 @@ export const PlacementGuaranteed = () => {
                   </div>
                 </div>
 
-                <div className="h-5 w-px bg-slate-200 shrink-0 hidden sm:block" />
+                <div className="h-3.5 sm:h-5 w-px bg-slate-200 shrink-0 block" />
 
                 {/* ICOFP */}
-                <div className="flex items-center gap-2 shrink-0">
+                <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
                   <img
                     src={icofpLogo}
                     alt="ICOFP"
-                    className="h-6 sm:h-7 w-auto object-contain"
+                    className="h-4 xs:h-4.5 sm:h-6.5 w-auto object-contain"
                   />
                   <div className="text-left hidden md:block leading-tight">
                     <div className="text-[10px] font-black uppercase text-slate-800">ICOFP</div>
