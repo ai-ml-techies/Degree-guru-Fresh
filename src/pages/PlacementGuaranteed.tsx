@@ -351,13 +351,13 @@ export const PlacementGuaranteed = () => {
         {/* HEADER / NAVIGATION BAR */}
         {/* ========================================================================= */}
         <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs">
-          <div className="max-w-6xl mx-auto px-3.5 sm:px-6 h-14 sm:h-16 flex items-center justify-between gap-3">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between gap-3">
             <div className="flex items-center min-w-0 shrink">
               <a href="#top" className="flex items-center">
                 <img
                   src={bajajCapitalLogo}
                   alt="Bajaj Capital"
-                  className="h-5 xs:h-6 sm:h-8 w-auto max-w-[145px] xs:max-w-[175px] sm:max-w-none object-contain shrink-0"
+                  className="h-5 sm:h-8 max-h-5 sm:max-h-8 w-auto max-w-[150px] sm:max-w-none object-contain shrink-0"
                 />
               </a>
             </div>
@@ -395,15 +395,15 @@ export const PlacementGuaranteed = () => {
         {/* ========================================================================= */}
         {/* 1. HERO SECTION (VERY CLEAN & MINIMAL EDITORIAL DESIGN) */}
         {/* ========================================================================= */}
-        <section id="top" className="relative bg-[#061938] text-white pt-12 sm:pt-20 pb-20 sm:pb-24 border-b border-slate-800 overflow-hidden">
+        <section id="top" className="relative bg-[#061938] text-white pt-10 sm:pt-20 pb-16 sm:pb-24 border-b border-slate-800 overflow-hidden">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
 
               {/* Left Column: Editorial Value Proposition */}
-              <div className="lg:col-span-7 space-y-6">
+              <div className="lg:col-span-7 space-y-5 sm:space-y-6">
 
                 {/* Main Headline in Classical Serif */}
-                <h1 className="text-4xl sm:text-5xl lg:text-[56px] font-serif tracking-tight leading-[1.08] text-white">
+                <h1 className="text-3xl sm:text-5xl lg:text-[56px] font-serif tracking-tight leading-[1.12] sm:leading-[1.08] text-white">
                   Job First.<br />
                   Train Next.<br />
                   <span className="text-[#2e9e5b]">
@@ -412,48 +412,48 @@ export const PlacementGuaranteed = () => {
                 </h1>
 
                 {/* Clean Subheadline */}
-                <p className="text-base sm:text-[17px] text-[#9fb3c8] font-normal leading-relaxed max-w-lg">
+                <p className="text-sm sm:text-[17px] text-[#9fb3c8] font-normal leading-relaxed max-w-lg">
                   Interview for a Wealth Officer role at Bajaj Capital. Starting package <strong className="text-white font-semibold">₹4.2 LPA</strong>. Receive a pre-placement offer before training begins.
                 </p>
 
                 {/* Subtle Divider */}
-                <div className="border-t border-slate-700/60 my-6 max-w-lg" />
+                <div className="border-t border-slate-700/60 my-5 sm:my-6 max-w-lg" />
 
                 {/* 3 Key Stats (Clean Typography, No Background Cards) */}
-                <div className="grid grid-cols-3 gap-4 sm:gap-6 max-w-lg">
+                <div className="grid grid-cols-3 gap-2.5 sm:gap-6 max-w-lg">
                   <div>
-                    <div className="text-2xl sm:text-3xl font-bold text-[#2e9e5b] tracking-tight">₹60,000</div>
-                    <div className="text-xs text-[#9fb3c8] mt-1 leading-snug">stipend earned while you train</div>
+                    <div className="text-lg sm:text-3xl font-bold text-[#2e9e5b] tracking-tight">₹60,000</div>
+                    <div className="text-[11px] sm:text-xs text-[#9fb3c8] mt-1 leading-snug">stipend earned while you train</div>
                   </div>
 
                   <div>
-                    <div className="text-2xl sm:text-3xl font-bold text-[#2e9e5b] tracking-tight">6 months</div>
-                    <div className="text-xs text-[#9fb3c8] mt-1 leading-snug">from first interview to payroll</div>
+                    <div className="text-lg sm:text-3xl font-bold text-[#2e9e5b] tracking-tight">6 months</div>
+                    <div className="text-[11px] sm:text-xs text-[#9fb3c8] mt-1 leading-snug">from first interview to payroll</div>
                   </div>
 
                   <div>
-                    <div className="text-2xl sm:text-3xl font-bold text-[#2e9e5b] tracking-tight">₹4.2 LPA</div>
-                    <div className="text-xs text-[#9fb3c8] mt-1 leading-snug">starting package as a Wealth Officer</div>
+                    <div className="text-lg sm:text-3xl font-bold text-[#2e9e5b] tracking-tight">₹4.2 LPA</div>
+                    <div className="text-[11px] sm:text-xs text-[#9fb3c8] mt-1 leading-snug">starting package as a Wealth Officer</div>
                   </div>
                 </div>
 
                 {/* Interview Prep PDF Button Preserved Cleanly */}
-                <div className="pt-4 flex items-center gap-4 flex-wrap">
+                <div className="pt-3 sm:pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 max-w-md">
                   <button
                     type="button"
                     onClick={() => {
                       setPdfModalOpen(true);
                       setPdfDownloaded(false);
                     }}
-                    className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-lg bg-white/10 hover:bg-white/15 border border-white/20 text-xs sm:text-sm font-semibold text-white transition-all cursor-pointer shadow-xs"
+                    className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 rounded-lg bg-white/10 hover:bg-white/15 border border-white/20 text-xs sm:text-sm font-semibold text-white transition-all cursor-pointer shadow-xs whitespace-nowrap w-full sm:w-auto"
                   >
-                    <Download size={15} className="text-[#2e9e5b]" />
+                    <Download size={15} className="text-[#2e9e5b] shrink-0" />
                     <span>DOWNLOAD INTERVIEW PREP PDF</span>
                   </button>
 
                   <a
                     href="#how"
-                    className="text-xs sm:text-sm text-[#9fb3c8] hover:text-white transition-colors"
+                    className="text-xs sm:text-sm text-[#9fb3c8] hover:text-white transition-colors py-1 inline-flex items-center justify-center sm:justify-start gap-1"
                   >
                     How it works ↓
                   </a>
@@ -463,7 +463,7 @@ export const PlacementGuaranteed = () => {
 
               {/* Right Column: Clean White Application Form Card */}
               <div id="apply-section" className="lg:col-span-5">
-                <div className="bg-white text-slate-900 rounded-2xl p-6 sm:p-7 shadow-2xl border border-slate-100 max-w-md ml-auto">
+                <div className="bg-white text-slate-900 rounded-2xl p-4 sm:p-7 shadow-2xl border border-slate-100 max-w-md mx-auto lg:ml-auto">
 
                   {/* Clean Form Header */}
                   <div className="mb-4 space-y-1">
@@ -671,7 +671,7 @@ export const PlacementGuaranteed = () => {
         {/* 2. DELIVERED WITH (PARTNERS SECTION - COMPACT & RESPONSIVE) */}
         {/* ========================================================================= */}
         <section className="py-4 sm:py-5 bg-white border-b border-slate-200">
-          <div className="max-w-6xl mx-auto px-3.5 sm:px-6">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6">
             <div className="flex flex-col lg:flex-row items-center justify-between gap-3 lg:gap-6">
               <div className="text-center lg:text-left shrink-0">
                 <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-slate-400 block">
@@ -682,14 +682,14 @@ export const PlacementGuaranteed = () => {
                 </span>
               </div>
 
-              {/* All 3 partners: AIMA, Bajaj Capital, ICOFP - Guaranteed in ONE clean line on mobile & desktop */}
-              <div className="flex items-center justify-center lg:justify-end gap-2 xs:gap-3 sm:gap-6 flex-nowrap w-full lg:w-auto max-w-full py-1">
+              {/* All 3 partners: AIMA, Bajaj Capital, ICOFP - Guaranteed strictly in ONE clean line on all devices */}
+              <div className="flex items-center justify-center lg:justify-end gap-2.5 sm:gap-6 flex-nowrap w-full lg:w-auto max-w-full py-1">
                 {/* AIMA */}
                 <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
                   <img
                     src={aimaLogo}
                     alt="All India Management Association (AIMA)"
-                    className="h-4.5 xs:h-5 sm:h-7 w-auto object-contain"
+                    className="h-4 sm:h-6 max-h-[18px] sm:max-h-[26px] w-auto max-w-[70px] sm:max-w-[110px] object-contain shrink-0"
                   />
                   <div className="text-left hidden md:block leading-tight">
                     <div className="text-[10px] font-black uppercase text-slate-800">AIMA</div>
@@ -697,14 +697,14 @@ export const PlacementGuaranteed = () => {
                   </div>
                 </div>
 
-                <div className="h-3.5 sm:h-5 w-px bg-slate-200 shrink-0 block" />
+                <div className="h-4 sm:h-5 w-px bg-slate-200 shrink-0 block" />
 
                 {/* Bajaj Capital */}
                 <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
                   <img
                     src={bajajCapitalLogo}
                     alt="Bajaj Capital"
-                    className="h-3.5 xs:h-4 sm:h-6 w-auto object-contain"
+                    className="h-[14px] sm:h-5 max-h-[16px] sm:max-h-[22px] w-auto max-w-[115px] sm:max-w-[160px] object-contain shrink-0"
                   />
                   <div className="text-left hidden md:block leading-tight">
                     <div className="text-[10px] font-black uppercase text-slate-800">BAJAJ CAPITAL</div>
@@ -712,14 +712,14 @@ export const PlacementGuaranteed = () => {
                   </div>
                 </div>
 
-                <div className="h-3.5 sm:h-5 w-px bg-slate-200 shrink-0 block" />
+                <div className="h-4 sm:h-5 w-px bg-slate-200 shrink-0 block" />
 
                 {/* ICOFP */}
                 <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
                   <img
                     src={icofpLogo}
                     alt="ICOFP"
-                    className="h-4 xs:h-4.5 sm:h-6.5 w-auto object-contain"
+                    className="h-[14px] sm:h-5 max-h-[16px] sm:max-h-[22px] w-auto max-w-[75px] sm:max-w-[110px] object-contain shrink-0"
                   />
                   <div className="text-left hidden md:block leading-tight">
                     <div className="text-[10px] font-black uppercase text-slate-800">ICOFP</div>
