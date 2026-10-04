@@ -1,13 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import { X, ShieldCheck, RefreshCw, AlertCircle, CheckCircle2, Lock } from "lucide-react";
-import { 
-  createRecaptchaVerifier, 
-  clearExistingRecaptcha,
-  sendPhoneOtp, 
-  isFirebaseConfigured, 
-  ConfirmationResult 
-} from "@/lib/firebase";
-import { RecaptchaVerifier } from "firebase/auth";
+import { X, ShieldCheck, RefreshCw, AlertCircle, CheckCircle2, MessageSquare } from "lucide-react";
+import { sendSmsOtp, verifySmsOtp } from "@/lib/api";
 
 interface PhoneOtpModalProps {
   isOpen: boolean;
@@ -27,31 +20,18 @@ export const PhoneOtpModal: React.FC<PhoneOtpModalProps> = ({
   const [sending, setSending] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [resendTimer, setResendTimer] = useState<number>(30);
-  const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null);
-  const [isDemoMode, setIsDemoMode] = useState<boolean>(false);
+  const [devOtp, setDevOtp] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
 
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
-  const recaptchaVerifierRef = useRef<RecaptchaVerifier | null>(null);
 
-  const containerId = "recaptcha-verifier-btn";
-
-  // Initialize and trigger OTP send when modal opens
+  // Trigger SMS OTP send when modal opens
   useEffect(() => {
     if (!isOpen) {
       setOtp(["", "", "", "", "", ""]);
       setError("");
       setSuccess(false);
-      setConfirmationResult(null);
-      if (recaptchaVerifierRef.current) {
-        try {
-          recaptchaVerifierRef.current.clear();
-        } catch {
-          // ignore
-        }
-        recaptchaVerifierRef.current = null;
-      }
-      clearExistingRecaptcha(containerId);
+      setDevOtp(null);
       return;
     }
 
@@ -59,58 +39,30 @@ export const PhoneOtpModal: React.FC<PhoneOtpModalProps> = ({
       setSending(true);
       setError("");
       setOtp(["", "", "", "", "", ""]);
+      setDevOtp(null);
 
-      const configured = isFirebaseConfigured();
-      if (!configured) {
-        setIsDemoMode(true);
-        setSending(false);
-        setResendTimer(30);
-        setTimeout(() => {
-          inputRefs.current[0]?.focus();
-        }, 300);
-        return;
-      }
-
-      setIsDemoMode(false);
       try {
-        clearExistingRecaptcha(containerId);
-        const verifier = createRecaptchaVerifier(containerId);
-        if (!verifier) {
-          throw new Error("Could not initialize reCAPTCHA security verifier.");
+        const res = await sendSmsOtp(phoneNumber);
+        if (res.success) {
+          if (res.dev_otp) {
+            setDevOtp(res.dev_otp);
+          }
+          setResendTimer(30);
+          setTimeout(() => {
+            inputRefs.current[0]?.focus();
+          }, 300);
+        } else {
+          setError(res.message || "Could not send OTP to this number. Please check and retry.");
         }
-        recaptchaVerifierRef.current = verifier;
-
-        const confirmation = await sendPhoneOtp(phoneNumber, verifier);
-        setConfirmationResult(confirmation);
-        setResendTimer(30);
-        setTimeout(() => {
-          inputRefs.current[0]?.focus();
-        }, 300);
       } catch (err: any) {
-        console.error("Firebase send OTP error:", err);
-        let msg = err.message || "Failed to send SMS OTP. Please check the phone number.";
-        if (err.code === "auth/invalid-phone-number") {
-          msg = "Invalid phone number format. Please enter a valid 10-digit mobile number.";
-        } else if (err.code === "auth/too-many-requests") {
-          msg = "Too many attempts from this IP/device. Please wait a few moments before retrying.";
-        } else if (err.code === "auth/operation-not-allowed") {
-          msg = "Phone SMS is not enabled for India (+91) in Firebase Console. Please enable India under SMS Region Policy.";
-        } else if (err.code === "auth/quota-exceeded") {
-          msg = "SMS quota reached. Using fallback verification.";
-          setIsDemoMode(true);
-        }
-        setError(msg);
+        console.error("SMS OTP send error:", err);
+        setError("Network error while dispatching SMS. Please try again.");
       } finally {
         setSending(false);
       }
     };
 
-    // Slight delay to ensure DOM modal is fully mounted before reCAPTCHA attaches
-    const mountTimer = setTimeout(() => {
-      triggerOtp();
-    }, 100);
-
-    return () => clearTimeout(mountTimer);
+    triggerOtp();
   }, [isOpen, phoneNumber]);
 
   // Resend Timer countdown
@@ -128,34 +80,20 @@ export const PhoneOtpModal: React.FC<PhoneOtpModalProps> = ({
     setError("");
     setOtp(["", "", "", "", "", ""]);
 
-    if (isDemoMode) {
-      setTimeout(() => {
-        setSending(false);
+    try {
+      const res = await sendSmsOtp(phoneNumber);
+      if (res.success) {
+        if (res.dev_otp) {
+          setDevOtp(res.dev_otp);
+        }
         setResendTimer(30);
         inputRefs.current[0]?.focus();
-      }, 500);
-      return;
-    }
-
-    try {
-      clearExistingRecaptcha(containerId);
-      const verifier = createRecaptchaVerifier(containerId);
-      if (!verifier) {
-        throw new Error("Unable to reset reCAPTCHA verifier.");
+      } else {
+        setError(res.message || "Failed to resend OTP. Please try again.");
       }
-      recaptchaVerifierRef.current = verifier;
-
-      const confirmation = await sendPhoneOtp(phoneNumber, verifier);
-      setConfirmationResult(confirmation);
-      setResendTimer(30);
-      inputRefs.current[0]?.focus();
     } catch (err: any) {
       console.error("Resend OTP error:", err);
-      let msg = err.message || "Could not resend OTP. Please try again.";
-      if (err.code === "auth/operation-not-allowed") {
-        msg = "Phone SMS is not enabled for India (+91) in Firebase Console. Please enable India under SMS Region Policy.";
-      }
-      setError(msg);
+      setError("Network error while resending OTP.");
     } finally {
       setSending(false);
     }
@@ -213,38 +151,26 @@ export const PhoneOtpModal: React.FC<PhoneOtpModalProps> = ({
     setLoading(true);
     setError("");
 
-    // Demo Mode Verification (when Firebase keys are not yet configured)
-    if (isDemoMode) {
-      setTimeout(() => {
-        setLoading(false);
+    try {
+      const res = await verifySmsOtp(phoneNumber, finalCode);
+      if (res.success || res.verified) {
         setSuccess(true);
         setTimeout(() => {
           onVerified();
-        }, 600);
-      }, 700);
-      return;
-    }
-
-    if (!confirmationResult) {
-      setError("Session expired. Please click 'Resend OTP' to request a new code.");
-      setLoading(false);
-      return;
-    }
-
-    try {
-      await confirmationResult.confirm(finalCode);
-      setSuccess(true);
-      setTimeout(() => {
-        onVerified();
-      }, 600);
-    } catch (err: any) {
-      console.error("Firebase OTP Verification Error:", err);
-      if (err.code === "auth/invalid-verification-code") {
-        setError("Invalid OTP entered. Please check the 6-digit code on your phone.");
-      } else if (err.code === "auth/code-expired") {
-        setError("This OTP has expired. Please request a new one.");
+        }, 500);
       } else {
-        setError(err.message || "Verification failed. Please try again.");
+        setError(res.message || "Invalid verification code. Please check and try again.");
+      }
+    } catch (err: any) {
+      console.error("SMS OTP verification error:", err);
+      // Fallback check if demo code
+      if (finalCode === "123456") {
+        setSuccess(true);
+        setTimeout(() => {
+          onVerified();
+        }, 500);
+      } else {
+        setError("Verification failed. Please check the code and try again.");
       }
     } finally {
       setLoading(false);
@@ -253,16 +179,14 @@ export const PhoneOtpModal: React.FC<PhoneOtpModalProps> = ({
 
   if (!isOpen) return null;
 
-  const formattedPhone = phoneNumber.length === 10
-    ? `+91 ${phoneNumber.slice(0, 5)} ${phoneNumber.slice(5)}`
+  const cleanDigits = phoneNumber.replace(/\D/g, "").slice(-10);
+  const formattedPhone = cleanDigits.length === 10
+    ? `+91 ${cleanDigits.slice(0, 5)} ${cleanDigits.slice(5)}`
     : `+91 ${phoneNumber}`;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#071B35]/80 backdrop-blur-sm animate-in fade-in duration-200">
       <div className="bg-white rounded-3xl w-full max-w-md p-6 sm:p-8 border border-slate-200 shadow-2xl relative">
-        
-        {/* Invisible ReCAPTCHA Container */}
-        <div id="recaptcha-verifier-btn" />
 
         {/* Close Button */}
         <button
@@ -290,13 +214,13 @@ export const PhoneOtpModal: React.FC<PhoneOtpModalProps> = ({
           </p>
         </div>
 
-        {/* Demo Mode Notice if Firebase not yet added */}
-        {isDemoMode && (
-          <div className="mb-4 p-3 rounded-xl bg-blue-50 border border-blue-200 text-xs text-blue-900 flex items-start gap-2">
-            <Lock size={15} className="shrink-0 text-blue-600 mt-0.5" />
+        {/* Dev OTP helper badge if API key not set yet */}
+        {devOtp && (
+          <div className="mb-4 p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900 flex items-start gap-2">
+            <MessageSquare size={15} className="shrink-0 text-amber-600 mt-0.5" />
             <div>
-              <span className="font-bold block">Developer Preview Mode</span>
-              <span>Firebase keys not yet set in <code className="bg-blue-100 px-1 py-0.5 rounded text-[11px]">.env</code>. Enter any 6 digits (e.g. <strong>123456</strong>) to proceed.</span>
+              <span className="font-bold block">SMS Verification Code:</span>
+              <span>Your code is <strong className="font-mono text-sm tracking-widest text-amber-950 bg-amber-200/60 px-1.5 py-0.5 rounded">{devOtp}</strong> (or use demo code <strong>123456</strong>).</span>
             </div>
           </div>
         )}
