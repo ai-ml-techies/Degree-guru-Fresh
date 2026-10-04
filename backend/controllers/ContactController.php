@@ -383,13 +383,12 @@ class ContactController extends Controller
             }
 
             $twoFactorKey = Yii::$app->params['twoFactorApiKey'] ?? getenv('TWOFACTOR_API_KEY') ?: getenv('2FACTOR_API_KEY') ?: '';
-            $fast2smsKey = Yii::$app->params['fast2smsApiKey'] ?? getenv('FAST2SMS_API_KEY') ?: '';
 
             $otp = (string)random_int(100000, 999999);
             $sessionId = null;
             $smsSent = false;
 
-            // 1a. Attempt 2Factor.in SMS Gateway (Text SMS)
+            // 1. Dispatch 2Factor.in SMS Gateway (Text SMS)
             if (!empty($twoFactorKey)) {
                 try {
                     $url = 'https://2factor.in/API/V1/' . urlencode($twoFactorKey) . '/SMS/' . $phone . '/AUTOGEN';
@@ -414,36 +413,10 @@ class ContactController extends Controller
                 }
             }
 
-            // 1b. Fallback to Fast2SMS Gateway if 2Factor not configured
-            if (!$smsSent && !empty($fast2smsKey)) {
-                try {
-                    $payload = [
-                        'variables_values' => $otp,
-                        'route' => 'otp',
-                        'numbers' => $phone,
-                    ];
-
-                    $ch = curl_init('https://www.fast2sms.com/dev/bulkV2');
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    curl_setopt($ch, CURLOPT_POST, true);
-                    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
-                    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                        'authorization: ' . $fast2smsKey,
-                        'Content-Type: application/json',
-                    ]);
-                    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-                    $res = curl_exec($ch);
-                    curl_close($ch);
-                    $smsSent = true;
-                } catch (\Throwable $e) {
-                    Yii::error('Fast2SMS Dispatch Exception: ' . $e->getMessage());
-                }
-            }
-
             $otpData = [
                 'otp' => $otp,
                 'session_id' => $sessionId,
-                'provider' => $sessionId ? '2factor' : 'local',
+                'provider' => '2factor',
                 'expires_at' => time() + 300,
                 'created_at' => time(),
             ];
