@@ -389,10 +389,10 @@ class ContactController extends Controller
             $sessionId = null;
             $smsSent = false;
 
-            // 1a. Attempt 2Factor.in SMS Gateway
+            // 1a. Attempt 2Factor.in SMS Gateway (Text SMS)
             if (!empty($twoFactorKey)) {
                 try {
-                    $url = 'https://2factor.in/API/V1/' . urlencode($twoFactorKey) . '/SMS/+91' . $phone . '/AUTOGEN/OTP1';
+                    $url = 'https://2factor.in/API/V1/' . urlencode($twoFactorKey) . '/SMS/' . $phone . '/AUTOGEN';
                     $ch = curl_init($url);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     curl_setopt($ch, CURLOPT_TIMEOUT, 10);
