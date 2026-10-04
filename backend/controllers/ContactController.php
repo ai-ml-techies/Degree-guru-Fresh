@@ -382,23 +382,40 @@ class ContactController extends Controller
                 return $this->jsonError('Please provide a valid 10-digit mobile number.');
             }
 
+            $twoFactorKey = Yii::$app->params['twoFactorApiKey'] ?? getenv('TWOFACTOR_API_KEY') ?: getenv('2FACTOR_API_KEY') ?: '';
+            $fast2smsKey = Yii::$app->params['fast2smsApiKey'] ?? getenv('FAST2SMS_API_KEY') ?: '';
+
             $otp = (string)random_int(100000, 999999);
-            $otpData = [
-                'otp' => $otp,
-                'expires_at' => time() + 300,
-                'created_at' => time(),
-            ];
-
-            $otpDir = Yii::getAlias('@app/runtime/otp');
-            if (!is_dir($otpDir)) {
-                @mkdir($otpDir, 0777, true);
-            }
-            file_put_contents($otpDir . '/' . $phone . '.json', json_encode($otpData));
-
-            $apiKey = Yii::$app->params['fast2smsApiKey'] ?? getenv('FAST2SMS_API_KEY') ?: '';
-
+            $sessionId = null;
             $smsSent = false;
-            if (!empty($apiKey)) {
+
+            // 1a. Attempt 2Factor.in SMS Gateway
+            if (!empty($twoFactorKey)) {
+                try {
+                    $url = 'https://2factor.in/API/V1/' . urlencode($twoFactorKey) . '/SMS/+91' . $phone . '/AUTOGEN/OTP1';
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                    $res = curl_exec($ch);
+                    curl_close($ch);
+
+                    if ($res) {
+                        $json = json_decode($res, true);
+                        if (isset($json['Status']) && strtolower($json['Status']) === 'success') {
+                            $sessionId = $json['Details'] ?? null;
+                            $smsSent = true;
+                        } else {
+                            Yii::error('2Factor.in dispatch error: ' . $res);
+                        }
+                    }
+                } catch (\Throwable $e) {
+                    Yii::error('2Factor.in Exception: ' . $e->getMessage());
+                }
+            }
+
+            // 1b. Fallback to Fast2SMS Gateway if 2Factor not configured
+            if (!$smsSent && !empty($fast2smsKey)) {
                 try {
                     $payload = [
                         'variables_values' => $otp,
@@ -411,7 +428,7 @@ class ContactController extends Controller
                     curl_setopt($ch, CURLOPT_POST, true);
                     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
                     curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                        'authorization: ' . $apiKey,
+                        'authorization: ' . $fast2smsKey,
                         'Content-Type: application/json',
                     ]);
                     curl_setopt($ch, CURLOPT_TIMEOUT, 10);
@@ -422,6 +439,20 @@ class ContactController extends Controller
                     Yii::error('Fast2SMS Dispatch Exception: ' . $e->getMessage());
                 }
             }
+
+            $otpData = [
+                'otp' => $otp,
+                'session_id' => $sessionId,
+                'provider' => $sessionId ? '2factor' : 'local',
+                'expires_at' => time() + 300,
+                'created_at' => time(),
+            ];
+
+            $otpDir = Yii::getAlias('@app/runtime/otp');
+            if (!is_dir($otpDir)) {
+                @mkdir($otpDir, 0777, true);
+            }
+            file_put_contents($otpDir . '/' . $phone . '.json', json_encode($otpData));
 
             return $this->asJson([
                 'success' => true,
@@ -524,8 +555,38 @@ class ContactController extends Controller
                 return $this->jsonError('OTP has expired. Please click Resend OTP.');
             }
 
-            if ($storedData['otp'] !== $enteredOtp) {
-                return $this->jsonError('Invalid OTP entered. Please check the code on your phone and try again.');
+            $twoFactorKey = Yii::$app->params['twoFactorApiKey'] ?? getenv('TWOFACTOR_API_KEY') ?: getenv('2FACTOR_API_KEY') ?: '';
+            $verified = false;
+
+            // Check with 2Factor.in API if session_id is available
+            if (!empty($twoFactorKey) && !empty($storedData['session_id'])) {
+                try {
+                    $verifyUrl = 'https://2factor.in/API/V1/' . urlencode($twoFactorKey) . '/SMS/VERIFY/' . urlencode($storedData['session_id']) . '/' . urlencode($enteredOtp);
+                    $ch = curl_init($verifyUrl);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                    $res = curl_exec($ch);
+                    curl_close($ch);
+
+                    if ($res) {
+                        $json = json_decode($res, true);
+                        if (isset($json['Status']) && strtolower($json['Status']) === 'success') {
+                            $verified = true;
+                        }
+                    }
+                } catch (\Throwable $e) {
+                    Yii::error('2Factor.in Verification Exception: ' . $e->getMessage());
+                }
+            }
+
+            // Local fallback check
+            if (!$verified && isset($storedData['otp']) && $storedData['otp'] === $enteredOtp) {
+                $verified = true;
+            }
+
+            if (!$verified) {
+                return $this->jsonError('Invalid OTP entered. Please check the code received on your phone and try again.');
             }
 
             @unlink($otpFile);

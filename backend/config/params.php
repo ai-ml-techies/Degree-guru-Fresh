@@ -49,4 +49,9 @@ return array_merge([
     // Google Sheets Integration (Google Apps Script Web App URL)
     'googleSheetWebhookUrl' => getenv('GOOGLE_SHEET_WEBHOOK_URL') ?: '',
 
+    // SMS Gateways (2Factor.in & Fast2SMS)
+    'twoFactorApiKey' => getenv('TWOFACTOR_API_KEY') ?: getenv('2FACTOR_API_KEY') ?: '',
+    'fast2smsApiKey'  => getenv('FAST2SMS_API_KEY') ?: '',
+
 ], $local);
+
