@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { submitLead } from "@/lib/api";
 import { validateIndianMobile, validateMeaningfulName, validateMeaningfulEmail } from "@/lib/validation";
+import { PhoneOtpModal } from "@/components/PhoneOtpModal";
 import aimaLogo from "@/assets/acwm/aima.png";
 import bajajCapitalLogo from "@/assets/acwm/bajaj-capital.png";
 import icofpLogo from "@/assets/acwm/icofp.png";
@@ -48,6 +49,7 @@ export const PlacementGuaranteed = () => {
   const [ageError, setAgeError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [otpModalOpen, setOtpModalOpen] = useState(false);
 
   // PDF Download Modal State (Interview Prep PDF)
   const [pdfModalOpen, setPdfModalOpen] = useState(false);
@@ -196,7 +198,16 @@ export const PlacementGuaranteed = () => {
     setCityError("");
     setAgeError("");
 
+    // Open Phone OTP Verification Modal
+    setOtpModalOpen(true);
+  };
+
+  const handleOtpVerified = async () => {
     setIsSubmitting(true);
+    setOtpModalOpen(false);
+
+    const nameCheck = validateMeaningfulName(fullName, false);
+    const phoneCheck = validateIndianMobile(phoneNumber);
 
     const leadInfo = {
       name: nameCheck.normalized || fullName.trim(),
@@ -206,14 +217,14 @@ export const PlacementGuaranteed = () => {
       age: age.trim() || "Unspecified",
       status: currentStatus,
       graduate: isGraduate,
-      program: `ACWM Wealth Officer (Bajaj Capital) | City: ${city.trim()} | Age: ${age.trim() || "N/A"} | Status: ${currentStatus} | Grad: ${isGraduate}`,
+      program: `ACWM Wealth Officer (Bajaj Capital) | City: ${city.trim()} | Age: ${age.trim() || "N/A"} | Status: ${currentStatus} | Grad: ${isGraduate} | Verified: Phone OTP`,
       source: "bajaj-capital-acwm-career-programme",
     };
 
     // 1. Save to Excel local cache
     saveLeadToExcelStorage(leadInfo);
 
-    // 2. Submit to backend API (which automatically appends to server Excel CSV and emails agestartup@gmail.com)
+    // 2. Submit to backend API & Google Sheets
     try {
       await submitLead({
         name: leadInfo.name,
@@ -221,7 +232,7 @@ export const PlacementGuaranteed = () => {
         email: leadInfo.email,
         program: leadInfo.program,
         source: leadInfo.source,
-        formHeading: "Check if you qualify (Bajaj Capital ACWM Programme)",
+        formHeading: "Check if you qualify (Bajaj Capital ACWM Programme - Phone Verified)",
         city: city.trim(),
         age: age.trim() || "Unspecified",
         status: currentStatus,
@@ -1400,6 +1411,14 @@ export const PlacementGuaranteed = () => {
           </div>
         </div>
       )}
+
+      {/* Phone OTP Verification Modal */}
+      <PhoneOtpModal
+        isOpen={otpModalOpen}
+        phoneNumber={phoneNumber}
+        onClose={() => setOtpModalOpen(false)}
+        onVerified={handleOtpVerified}
+      />
 
     </>
   );
