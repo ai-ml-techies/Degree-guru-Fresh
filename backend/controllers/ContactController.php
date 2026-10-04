@@ -427,7 +427,6 @@ class ContactController extends Controller
                 'success' => true,
                 'message' => 'OTP sent successfully via SMS to +91 ' . $phone,
                 'phone' => $phone,
-                'dev_otp' => (empty($apiKey) || !$smsSent) ? $otp : null,
             ]);
         }
 
@@ -472,7 +471,6 @@ class ContactController extends Controller
             return $this->asJson([
                 'success' => true,
                 'message' => 'Verification code sent to ' . $rawEmail,
-                'dev_otp' => (defined('YII_ENV_DEV') && YII_ENV_DEV) || !$sent ? $otp : null,
             ]);
         }
 
@@ -513,14 +511,6 @@ class ContactController extends Controller
 
             $otpFile = Yii::getAlias('@app/runtime/otp/' . $phone . '.json');
             if (!file_exists($otpFile)) {
-                // If demo bypass code entered
-                if ($enteredOtp === '123456') {
-                    return $this->asJson([
-                        'success' => true,
-                        'verified' => true,
-                        'message' => 'Phone number verified successfully.',
-                    ]);
-                }
                 return $this->jsonError('OTP expired or not found. Please request a new OTP.');
             }
 
@@ -534,8 +524,8 @@ class ContactController extends Controller
                 return $this->jsonError('OTP has expired. Please click Resend OTP.');
             }
 
-            if ($storedData['otp'] !== $enteredOtp && $enteredOtp !== '123456') {
-                return $this->jsonError('Invalid OTP entered. Please check and try again.');
+            if ($storedData['otp'] !== $enteredOtp) {
+                return $this->jsonError('Invalid OTP entered. Please check the code on your phone and try again.');
             }
 
             @unlink($otpFile);

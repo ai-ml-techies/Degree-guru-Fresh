@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { X, ShieldCheck, RefreshCw, AlertCircle, CheckCircle2, MessageSquare } from "lucide-react";
+import { X, ShieldCheck, RefreshCw, AlertCircle, CheckCircle2 } from "lucide-react";
 import { sendSmsOtp, verifySmsOtp } from "@/lib/api";
 
 interface PhoneOtpModalProps {
@@ -20,7 +20,6 @@ export const PhoneOtpModal: React.FC<PhoneOtpModalProps> = ({
   const [sending, setSending] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [resendTimer, setResendTimer] = useState<number>(30);
-  const [devOtp, setDevOtp] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
 
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
@@ -31,7 +30,6 @@ export const PhoneOtpModal: React.FC<PhoneOtpModalProps> = ({
       setOtp(["", "", "", "", "", ""]);
       setError("");
       setSuccess(false);
-      setDevOtp(null);
       return;
     }
 
@@ -39,24 +37,20 @@ export const PhoneOtpModal: React.FC<PhoneOtpModalProps> = ({
       setSending(true);
       setError("");
       setOtp(["", "", "", "", "", ""]);
-      setDevOtp(null);
 
       try {
         const res = await sendSmsOtp(phoneNumber);
         if (res.success) {
-          if (res.dev_otp) {
-            setDevOtp(res.dev_otp);
-          }
           setResendTimer(30);
           setTimeout(() => {
             inputRefs.current[0]?.focus();
           }, 300);
         } else {
-          setError(res.message || "Could not send OTP to this number. Please check and retry.");
+          setError(res.message || "Could not send OTP to this mobile number. Please try again.");
         }
       } catch (err: any) {
         console.error("SMS OTP send error:", err);
-        setError("Network error while dispatching SMS. Please try again.");
+        setError("Network error while sending SMS OTP. Please try again.");
       } finally {
         setSending(false);
       }
@@ -83,9 +77,6 @@ export const PhoneOtpModal: React.FC<PhoneOtpModalProps> = ({
     try {
       const res = await sendSmsOtp(phoneNumber);
       if (res.success) {
-        if (res.dev_otp) {
-          setDevOtp(res.dev_otp);
-        }
         setResendTimer(30);
         inputRefs.current[0]?.focus();
       } else {
@@ -144,7 +135,7 @@ export const PhoneOtpModal: React.FC<PhoneOtpModalProps> = ({
   const verifyOtp = async (codeToVerify?: string) => {
     const finalCode = codeToVerify || otp.join("");
     if (finalCode.length !== 6) {
-      setError("Please enter the complete 6-digit OTP received via SMS.");
+      setError("Please enter the complete 6-digit OTP received on your mobile phone.");
       return;
     }
 
@@ -163,15 +154,7 @@ export const PhoneOtpModal: React.FC<PhoneOtpModalProps> = ({
       }
     } catch (err: any) {
       console.error("SMS OTP verification error:", err);
-      // Fallback check if demo code
-      if (finalCode === "123456") {
-        setSuccess(true);
-        setTimeout(() => {
-          onVerified();
-        }, 500);
-      } else {
-        setError("Verification failed. Please check the code and try again.");
-      }
+      setError("Verification failed. Please check the code and try again.");
     } finally {
       setLoading(false);
     }
@@ -213,17 +196,6 @@ export const PhoneOtpModal: React.FC<PhoneOtpModalProps> = ({
             <strong className="text-slate-900 font-semibold">{formattedPhone}</strong>.
           </p>
         </div>
-
-        {/* Dev OTP helper badge if API key not set yet */}
-        {devOtp && (
-          <div className="mb-4 p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900 flex items-start gap-2">
-            <MessageSquare size={15} className="shrink-0 text-amber-600 mt-0.5" />
-            <div>
-              <span className="font-bold block">SMS Verification Code:</span>
-              <span>Your code is <strong className="font-mono text-sm tracking-widest text-amber-950 bg-amber-200/60 px-1.5 py-0.5 rounded">{devOtp}</strong> (or use demo code <strong>123456</strong>).</span>
-            </div>
-          </div>
-        )}
 
         {/* 6-Digit OTP Input Grid */}
         <div className="space-y-4">

@@ -341,14 +341,9 @@ export async function sendSmsOtp(phone: string): Promise<SmsOtpResult> {
     }
   }
 
-  // Graceful fallback for offline dev
-  const fallbackOtp = '123456';
-  sessionStorage.setItem(`degree_guru_sms_otp_${cleanPhone}`, fallbackOtp);
   return {
-    success: true,
-    message: `OTP sent successfully to +91 ${cleanPhone}`,
-    phone: cleanPhone,
-    dev_otp: fallbackOtp,
+    success: false,
+    message: 'Could not connect to the SMS server. Please check your network and try again.',
   };
 }
 
@@ -370,19 +365,11 @@ export async function verifySmsOtp(phone: string, otp: string): Promise<SmsOtpRe
       const res = await fetch(endpoint, { method: 'POST', body });
       if (res.ok) {
         const data: SmsOtpResult = await res.json();
-        if (data.success) return data;
         return data;
       }
     } catch {
       // fallback check
     }
-  }
-
-  // Check client-stored fallback code or demo code '123456'
-  const stored = sessionStorage.getItem(`degree_guru_sms_otp_${cleanPhone}`);
-  if (cleanOtp === '123456' || (stored && stored === cleanOtp)) {
-    sessionStorage.removeItem(`degree_guru_sms_otp_${cleanPhone}`);
-    return { success: true, verified: true, message: 'Phone number verified successfully!' };
   }
 
   return { success: false, message: 'Invalid or expired OTP code. Please check and try again.' };
