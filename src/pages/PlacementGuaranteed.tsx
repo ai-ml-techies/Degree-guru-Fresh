@@ -185,11 +185,20 @@ export const PlacementGuaranteed = () => {
       return;
     }
     if (!city.trim()) {
-      setCityError("Please enter your city.");
+      setCityError("City is required.");
       return;
     }
-    if (age.trim() && (isNaN(Number(age)) || Number(age) < 18 || Number(age) > 40)) {
-      setAgeError("Please enter an age between 18 and 40.");
+    if (!age.trim()) {
+      setAgeError("Age is required.");
+      return;
+    }
+    const numAge = Number(age);
+    if (isNaN(numAge) || numAge < 18) {
+      setAgeError("Age must be at least 18.");
+      return;
+    }
+    if (numAge > 28) {
+      setAgeError("Age must be 28 or under.");
       return;
     }
 
@@ -594,12 +603,15 @@ export const PlacementGuaranteed = () => {
                         <div>
                           <input
                             type="number"
-                            placeholder="Age"
+                            min={18}
+                            max={28}
+                            placeholder="Age (≤ 28)"
                             value={age}
                             onChange={(e) => {
                               setAge(e.target.value);
                               if (ageError) setAgeError("");
                             }}
+                            required
                             className={`w-full px-3.5 py-2.5 rounded-lg border ${ageError ? "border-red-500" : "border-slate-200"} text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-colors`}
                           />
                           {ageError && <p className="text-[11px] text-red-500 mt-1">{ageError}</p>}
