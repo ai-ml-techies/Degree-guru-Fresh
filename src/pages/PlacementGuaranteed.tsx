@@ -23,6 +23,7 @@ import { PhoneOtpModal } from "@/components/PhoneOtpModal";
 import aimaLogo from "@/assets/acwm/aima.png";
 import bajajCapitalLogo from "@/assets/acwm/bajaj-capital.png";
 import icofpLogo from "@/assets/acwm/icofp.png";
+import leverageEduLogo from "@/assets/acwm/leverage-edu.png";
 
 export const PlacementGuaranteed = () => {
   // Page Mount / Hero Animation
@@ -366,9 +367,9 @@ export const PlacementGuaranteed = () => {
             <div className="flex items-center min-w-0 shrink">
               <a href="#top" className="flex items-center">
                 <img
-                  src={bajajCapitalLogo}
-                  alt="Bajaj Capital"
-                  className="h-5 sm:h-8 max-h-5 sm:max-h-8 w-auto max-w-[150px] sm:max-w-none object-contain shrink-0"
+                  src={leverageEduLogo}
+                  alt="Leverage Edu"
+                  className="h-6 sm:h-9 max-h-6 sm:max-h-9 w-auto max-w-[170px] sm:max-w-none object-contain shrink-0"
                 />
               </a>
             </div>
