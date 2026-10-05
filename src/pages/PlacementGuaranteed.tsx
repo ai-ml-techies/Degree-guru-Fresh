@@ -21,7 +21,7 @@ import { submitLead } from "@/lib/api";
 import { validateIndianMobile, validateMeaningfulName, validateMeaningfulEmail } from "@/lib/validation";
 import { PhoneOtpModal } from "@/components/PhoneOtpModal";
 import { Link } from "react-router-dom";
-import degreeGuruLogo from "@/assets/logo-dark.png";
+import degreeGuruLogo from "@/assets/logo-light.png";
 import aimaLogo from "@/assets/acwm/aima.png";
 import bajajCapitalLogo from "@/assets/acwm/bajaj-capital.png";
 import icofpLogo from "@/assets/acwm/icofp.png";
