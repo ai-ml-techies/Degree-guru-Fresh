@@ -294,7 +294,7 @@ export const FloatingAiAdvisor = () => {
   };
 
   return (
-    <div className="fixed right-4 sm:right-6 bottom-14 md:bottom-4 z-[99] flex flex-col items-end">
+    <div className="fixed right-4 sm:right-6 bottom-24 md:bottom-6 z-[99] flex flex-col items-end">
       {/* Bot Chat Window */}
       {isOpen && (
         <div className="mb-2.5 w-[92vw] sm:w-[360px] max-w-[380px] h-[440px] max-h-[70vh] rounded-3xl bg-card border border-border shadow-2xl flex flex-col overflow-hidden animate-slide-up backdrop-blur-lg">

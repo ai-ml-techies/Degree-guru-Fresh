@@ -391,7 +391,7 @@ class ContactController extends Controller
             // 1. Dispatch 2Factor.in SMS Gateway (Text SMS)
             if (!empty($twoFactorKey)) {
                 try {
-                    $url = 'https://2factor.in/API/V1/' . urlencode($twoFactorKey) . '/SMS/' . $phone . '/AUTOGEN';
+                    $url = 'https://2factor.in/API/V1/' . urlencode($twoFactorKey) . '/SMS/' . $phone . '/AUTOGEN/OTP1';
                     $ch = curl_init($url);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     curl_setopt($ch, CURLOPT_TIMEOUT, 10);

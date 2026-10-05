@@ -20,6 +20,8 @@ import {
 import { submitLead } from "@/lib/api";
 import { validateIndianMobile, validateMeaningfulName, validateMeaningfulEmail } from "@/lib/validation";
 import { PhoneOtpModal } from "@/components/PhoneOtpModal";
+import { Link } from "react-router-dom";
+import degreeGuruLogo from "@/assets/logo-dark.png";
 import aimaLogo from "@/assets/acwm/aima.png";
 import bajajCapitalLogo from "@/assets/acwm/bajaj-capital.png";
 import icofpLogo from "@/assets/acwm/icofp.png";
@@ -373,12 +375,20 @@ export const PlacementGuaranteed = () => {
         {/* ========================================================================= */}
         <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between gap-3">
-            <div className="flex items-center min-w-0 shrink">
-              <a href="#top" className="flex items-center">
+            <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0 shrink">
+              <Link to="/" className="flex items-center group">
+                <img
+                  src={degreeGuruLogo}
+                  alt="Degree Guru"
+                  className="h-6 sm:h-8 max-h-7 sm:max-h-8 w-auto object-contain shrink-0 transition-opacity group-hover:opacity-90"
+                />
+              </Link>
+              <span className="text-slate-300 text-sm sm:text-base font-light select-none">|</span>
+              <a href="#top" className="flex items-center group">
                 <img
                   src={leverageEduLogo}
                   alt="Leverage Edu"
-                  className="h-6 sm:h-9 max-h-6 sm:max-h-9 w-auto max-w-[170px] sm:max-w-none object-contain shrink-0"
+                  className="h-5 sm:h-7.5 max-h-6 sm:max-h-8 w-auto max-w-[130px] sm:max-w-none object-contain shrink-0 transition-opacity group-hover:opacity-90"
                 />
               </a>
             </div>
@@ -1253,7 +1263,7 @@ export const PlacementGuaranteed = () => {
           target="_blank"
           rel="noreferrer"
           aria-label="WhatsApp Degree Guru"
-          className="fixed z-50 flex items-center gap-1.5 px-3.5 py-2.5 rounded-full bg-[#25D366] hover:bg-[#20be5a] text-white shadow-2xl hover:scale-105 active:scale-95 transition-transform duration-200 right-5 bottom-5"
+          className="fixed z-50 flex items-center gap-1.5 px-3.5 py-2.5 rounded-full bg-[#25D366] hover:bg-[#20be5a] text-white shadow-2xl hover:scale-105 active:scale-95 transition-transform duration-200 right-4 sm:right-6 bottom-24 sm:bottom-6"
         >
           <MessageCircle size={20} className="fill-white stroke-none" />
           <span className="text-xs font-bold tracking-wide">WhatsApp</span>
