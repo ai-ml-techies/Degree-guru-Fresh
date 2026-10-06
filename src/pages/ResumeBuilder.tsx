@@ -103,7 +103,7 @@ export const ResumeBuilder = () => {
   const jdInputId = useId();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // 13-step flow
+  // 11-step flow
   const STEPS = [
     { num: 1, label: "Basic Details" },
     { num: 2, label: "Career Goal" },
@@ -115,9 +115,7 @@ export const ResumeBuilder = () => {
     { num: 8, label: "Achievements & AI" },
     { num: 9, label: "Languages" },
     { num: 10, label: "Target Job" },
-    { num: 11, label: "ATS Optimization" },
-    { num: 12, label: "Theme & Palette" },
-    { num: 13, label: "Download Resume" },
+    { num: 11, label: "Download Resume" },
   ];
 
   // Handle Onboarding Completion
@@ -183,21 +181,37 @@ export const ResumeBuilder = () => {
 
   // AI Achievement Transformation
   const handleTransformAchievement = () => {
-    if (!simpleAchievement) return;
-    const metricStr = quantMetric ? ` by ${quantMetric}` : " by 25-40%";
-    const lower = simpleAchievement.toLowerCase();
+    if (!simpleAchievement.trim()) return;
+    let text = simpleAchievement.trim();
+    // Clean informal starting phrases
+    text = text.replace(/^(i\s+have\s+|i\s+worked\s+on\s+|i\s+managed\s+to\s+|i\s+|i've\s+)/i, "");
 
+    // Punctuation and capitalization fixes
+    text = text.replace(/\b(i)\b/g, "I");
+    text = text.replace(/\b(ai)\b/gi, "AI");
+    text = text.replace(/\b(seo)\b/gi, "SEO");
+    text = text.replace(/\b(roas)\b/gi, "ROAS");
+    text = text.replace(/\b(roi)\b/gi, "ROI");
+    text = text.replace(/\b(kpi|kpis)\b/gi, "KPIs");
+    text = text.replace(/\b(cac)\b/gi, "CAC");
+    text = text.replace(/\b(crm)\b/gi, "CRM");
+
+    const lower = text.toLowerCase();
     let transformed = "";
-    if (lower.includes("sales") || lower.includes("revenue")) {
-      transformed = `Spearheaded high-impact sales initiatives, accelerating top-line revenue growth${metricStr} through structured consultative client engagements.`;
-    } else if (lower.includes("team") || lower.includes("manage") || lower.includes("people")) {
-      transformed = `Led and mentored a cross-functional high-performance team, streamlining operational turnaround times${metricStr} while maintaining exceptional delivery standards.`;
-    } else if (lower.includes("instagram") || lower.includes("social") || lower.includes("marketing") || lower.includes("views")) {
-      transformed = `Orchestrated targeted digital marketing & organic content campaigns, expanding brand reach and organic engagement${metricStr}.`;
-    } else if (lower.includes("cpl") || lower.includes("ads") || lower.includes("cost") || lower.includes("budget")) {
-      transformed = `Optimized programmatic ad budget allocation and conversion funnels, reducing customer acquisition costs${metricStr} with improved return on ad spend (ROAS).`;
+
+    if (lower.includes("sales") || lower.includes("revenue") || lower.includes("deal") || lower.includes("client")) {
+      transformed = "Spearheaded strategic sales initiatives, accelerating revenue growth by 35% through structured consultative client engagements.";
+    } else if (lower.includes("team") || lower.includes("manage") || lower.includes("lead") || lower.includes("people")) {
+      transformed = "Led and mentored a cross-functional high-performance team, improving operational turnaround times by 30% while maintaining exceptional delivery standards.";
+    } else if (lower.includes("instagram") || lower.includes("social") || lower.includes("marketing") || lower.includes("views") || lower.includes("follower")) {
+      transformed = "Orchestrated targeted digital marketing and organic content campaigns, expanding brand reach by 320% and generating over 500K organic impressions.";
+    } else if (lower.includes("cpl") || lower.includes("ads") || lower.includes("cost") || lower.includes("budget") || lower.includes("cpc")) {
+      transformed = "Optimized programmatic ad budget allocation and conversion funnels, reducing customer acquisition costs by 28% with a 4.2x ROAS.";
+    } else if (lower.includes("code") || lower.includes("develop") || lower.includes("app") || lower.includes("software") || lower.includes("api") || lower.includes("bug")) {
+      transformed = "Architected and deployed scalable service modules, improving API throughput by 45% and reducing production error rates to under 0.1%.";
     } else {
-      transformed = `Executed core strategic deliverables for ${simpleAchievement}, achieving measurable efficiency improvements${metricStr} aligned with organizational KPIs.`;
+      const capitalizedFirst = text.charAt(0).toUpperCase() + text.slice(1);
+      transformed = `Executed core strategic deliverables for ${capitalizedFirst.replace(/\.$/, "")}, delivering measurable efficiency gains aligned with organizational KPIs.`;
     }
 
     setAiOptimizedBullet(transformed);
@@ -668,7 +682,7 @@ export const ResumeBuilder = () => {
             <div className="p-6 rounded-3xl bg-card border border-border/80 shadow-sm space-y-6">
               <div className="flex items-center justify-between border-b border-border/60 pb-3">
                 <span className="text-xs font-black uppercase tracking-wider text-primary">
-                  Step {currentStep} of 13: {STEPS[currentStep - 1]?.label}
+                  Step {currentStep} of {STEPS.length}: {STEPS[currentStep - 1]?.label}
                 </span>
               </div>
 
@@ -684,7 +698,7 @@ export const ResumeBuilder = () => {
                       <input
                         id={fullNameId}
                         type="text"
-                        placeholder="Full Name"
+                        placeholder="e.g. Rahul Sharma"
                         value={resumeData.fullName}
                         onChange={(e) => setResumeData({ ...resumeData, fullName: e.target.value })}
                         className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-primary/40 focus:outline-none"
@@ -697,7 +711,7 @@ export const ResumeBuilder = () => {
                       <input
                         id={professionalTitleId}
                         type="text"
-                        placeholder="Professional Title"
+                        placeholder="e.g. Senior Software Engineer"
                         value={resumeData.professionalTitle}
                         onChange={(e) => setResumeData({ ...resumeData, professionalTitle: e.target.value })}
                         className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-primary/40 focus:outline-none"
@@ -710,7 +724,7 @@ export const ResumeBuilder = () => {
                       <input
                         id={phoneId}
                         type="text"
-                        placeholder="Phone Number"
+                        placeholder="e.g. +91 98765 43210"
                         value={resumeData.phone}
                         onChange={(e) => setResumeData({ ...resumeData, phone: e.target.value })}
                         className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-primary/40 focus:outline-none"
@@ -723,7 +737,7 @@ export const ResumeBuilder = () => {
                       <input
                         id={emailId}
                         type="email"
-                        placeholder="Email Address"
+                        placeholder="e.g. rahul.sharma@example.com"
                         value={resumeData.email}
                         onChange={(e) => setResumeData({ ...resumeData, email: e.target.value })}
                         className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-primary/40 focus:outline-none"
@@ -736,7 +750,7 @@ export const ResumeBuilder = () => {
                       <input
                         id={locationId}
                         type="text"
-                        placeholder="Location / City"
+                        placeholder="e.g. New Delhi, India"
                         value={resumeData.location}
                         onChange={(e) => setResumeData({ ...resumeData, location: e.target.value })}
                         className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-primary/40 focus:outline-none"
@@ -749,7 +763,7 @@ export const ResumeBuilder = () => {
                       <input
                         id={linkedinId}
                         type="text"
-                        placeholder="LinkedIn URL"
+                        placeholder="e.g. linkedin.com/in/rahulsharma"
                         value={resumeData.linkedin}
                         onChange={(e) => setResumeData({ ...resumeData, linkedin: e.target.value })}
                         className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-primary/40 focus:outline-none"
@@ -762,7 +776,7 @@ export const ResumeBuilder = () => {
                       <input
                         id={portfolioId}
                         type="text"
-                        placeholder="Portfolio / Personal Site URL (Optional)"
+                        placeholder="e.g. https://rahulsharma.dev"
                         value={resumeData.portfolio}
                         onChange={(e) => setResumeData({ ...resumeData, portfolio: e.target.value })}
                         className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-primary/40 focus:outline-none"
@@ -1177,29 +1191,15 @@ export const ResumeBuilder = () => {
                   <div className="space-y-3">
                     <div>
                       <label htmlFor={achievementInputId} className="block text-xs font-semibold text-muted-foreground mb-1">
-                        What did you improve, manage, or accomplish? (Plain English)
+                        What did you improve, manage, or accomplish?
                       </label>
                       <input
                         id={achievementInputId}
                         type="text"
-                        placeholder="e.g. I led the social media team and increased video views and followers"
+                        placeholder="e.g. Led the social media team and increased video views and followers"
                         value={simpleAchievement}
                         onChange={(e) => setSimpleAchievement(e.target.value)}
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm focus:ring-2 focus:ring-primary/40 focus:outline-none"
-                      />
-                    </div>
-
-                    <div>
-                      <label htmlFor={metricInputId} className="block text-xs font-semibold text-muted-foreground mb-1">
-                        Any specific metric or percentage? (Optional: e.g. 15x organic growth / 35% ROAS increase)
-                      </label>
-                      <input
-                        id={metricInputId}
-                        type="text"
-                        placeholder="e.g. 35% increase in ROAS"
-                        value={quantMetric}
-                        onChange={(e) => setQuantMetric(e.target.value)}
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm focus:ring-2 focus:ring-primary/40 focus:outline-none"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm focus:ring-2 focus:ring-primary/40 focus:outline-none placeholder:text-muted-foreground/60"
                       />
                     </div>
 
@@ -1266,80 +1266,70 @@ export const ResumeBuilder = () => {
                 </div>
               )}
 
-              {/* Step 9: Languages (NEW INTERACTIVE FORM!) */}
+              {/* Step 9: Languages (Clean and Simple) */}
               {currentStep === 9 && (
                 <div className="space-y-4 animate-fade-in">
                   <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-wider">
-                    <Languages size={16} /> Languages & Communication Proficiency
+                    <Languages size={16} /> Languages Spoken
                   </div>
-                  <p className="text-xs text-muted-foreground">
-                    Add languages you speak and specify your proficiency level for domestic and multinational roles.
-                  </p>
 
-                  <div className="p-4 rounded-2xl bg-muted/40 border border-border/70 space-y-3">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <div>
-                        <label className="block text-xs font-semibold text-muted-foreground mb-1">
-                          Language
-                        </label>
-                        <input
-                          type="text"
-                          placeholder="e.g. English, Hindi, German, Spanish"
-                          value={newLangName}
-                          onChange={(e) => setNewLangName(e.target.value)}
-                          className="w-full px-3.5 py-2 rounded-xl bg-background border border-border text-xs sm:text-sm focus:ring-2 focus:ring-primary/40 focus:outline-none"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-semibold text-muted-foreground mb-1">
-                          Proficiency Level
-                        </label>
-                        <select
-                          value={newLangLevel}
-                          onChange={(e) => setNewLangLevel(e.target.value)}
-                          className="w-full px-3 py-2 rounded-xl bg-background border border-border text-xs sm:text-sm font-medium focus:ring-2 focus:ring-primary/40 focus:outline-none"
-                        >
-                          <option value="Native / Bilingual">Native / Bilingual</option>
-                          <option value="Fluent / Professional">Fluent / Professional</option>
-                          <option value="Full Working Proficiency">Full Working Proficiency</option>
-                          <option value="Conversational">Conversational</option>
-                          <option value="Basic / Elementary">Basic / Elementary</option>
-                        </select>
-                      </div>
+                  <div className="p-4 rounded-2xl bg-card border border-border space-y-3">
+                    <div>
+                      <label className="block text-xs font-semibold text-muted-foreground mb-1.5">
+                        Languages & Proficiency
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. English (Fluent), Hindi (Native), Spanish (Basic)"
+                        value={resumeData.languages}
+                        onChange={(e) => setResumeData({ ...resumeData, languages: e.target.value })}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm focus:ring-2 focus:ring-primary/40 focus:outline-none placeholder:text-muted-foreground/60"
+                      />
                     </div>
 
-                    <button
-                      type="button"
-                      onClick={handleAddLanguage}
-                      className="px-4 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-bold flex items-center gap-1.5 hover:bg-primary/90 transition-colors shadow-sm"
-                    >
-                      <Plus size={14} /> Add Language
-                    </button>
-                  </div>
-
-                  {/* Current Displayed Languages string */}
-                  <div className="p-4 rounded-2xl bg-card border border-border space-y-2">
-                    <span className="text-xs font-bold text-muted-foreground uppercase">
-                      Current Language Summary on Resume:
-                    </span>
-                    <input
-                      type="text"
-                      value={resumeData.languages}
-                      onChange={(e) => setResumeData({ ...resumeData, languages: e.target.value })}
-                      className="w-full px-3.5 py-2 rounded-xl bg-background border border-border text-xs sm:text-sm"
-                    />
-                    <p className="text-[11px] text-muted-foreground">
-                      Edit the final text above directly if needed.
-                    </p>
+                    <div className="space-y-1.5 pt-1">
+                      <span className="text-[11px] font-semibold text-muted-foreground">Quick Add:</span>
+                      <div className="flex flex-wrap gap-1.5">
+                        {[
+                          "English (Fluent)",
+                          "Hindi (Native)",
+                          "English (Conversational)",
+                          "Punjabi (Native)",
+                          "Marathi (Native)",
+                          "Bengali (Native)",
+                          "Tamil",
+                          "Telugu",
+                          "Spanish",
+                          "German",
+                          "French",
+                        ].map((lang) => (
+                          <button
+                            key={lang}
+                            type="button"
+                            onClick={() => {
+                              const current = resumeData.languages ? resumeData.languages.trim() : "";
+                              if (!current) {
+                                setResumeData({ ...resumeData, languages: lang });
+                              } else if (!current.includes(lang)) {
+                                setResumeData({ ...resumeData, languages: `${current}, ${lang}` });
+                              }
+                            }}
+                            className="px-2.5 py-1 rounded-lg bg-muted hover:bg-primary/10 hover:text-primary text-[11px] font-medium text-foreground transition-colors border border-border/60"
+                          >
+                            + {lang}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}
 
-              {/* Step 10 & 11: Job Match & ATS Score */}
-              {(currentStep === 10 || currentStep === 11) && (
+              {/* Step 10: Target Job & ATS Score Analyzer */}
+              {currentStep === 10 && (
                 <div className="space-y-4 animate-fade-in">
                   <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-wider">
-                    <Target size={16} /> Job Match & ATS Score Analyzer
+                    <Target size={16} /> Target Job & ATS Match Analyzer
                   </div>
                   <p className="text-xs text-muted-foreground">
                     Paste the target job description. We'll scan required keywords, match your credentials, and highlight gaps.
@@ -1352,7 +1342,7 @@ export const ResumeBuilder = () => {
                     placeholder="Paste job requirements or key responsibilities from LinkedIn, Naukri, or Company website..."
                     value={jobDescription}
                     onChange={(e) => setJobDescription(e.target.value)}
-                    className="w-full p-3 rounded-xl bg-background border border-border text-xs sm:text-sm"
+                    className="w-full p-3 rounded-xl bg-background border border-border text-xs sm:text-sm placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-primary/40 focus:outline-none"
                   />
 
                   <button
@@ -1396,95 +1386,15 @@ export const ResumeBuilder = () => {
                 </div>
               )}
 
-              {/* Step 12: Theme & Palette */}
-              {currentStep === 12 && (
-                <div className="space-y-5 animate-fade-in">
-                  <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-wider">
-                    <Palette size={16} /> Choose Accent Color Palette
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    Choose an accent color for your resume name, headings, and divider lines.
-                  </p>
-
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                    {RESUME_THEME_COLORS.map((col) => {
-                      const isSelected = selectedColor.toLowerCase() === col.hex.toLowerCase();
-                      return (
-                        <button
-                          key={col.id}
-                          type="button"
-                          onClick={() => {
-                            setSelectedColor(col.hex);
-                            setResumeData({ ...resumeData, themeColor: col.hex });
-                          }}
-                          className={`p-3 rounded-2xl border text-left flex items-center gap-3 transition-all ${
-                            isSelected
-                              ? "border-primary bg-primary/10 shadow-sm ring-2 ring-primary/30"
-                              : "border-border bg-card hover:bg-muted"
-                          }`}
-                        >
-                          <span
-                            className="w-5 h-5 rounded-full shrink-0 shadow-sm"
-                            style={{ backgroundColor: col.hex }}
-                          />
-                          <div className="flex flex-col min-w-0">
-                            <span className="text-xs font-bold text-foreground truncate">{col.name}</span>
-                            <span className="text-[10px] text-muted-foreground">{col.hex}</span>
-                          </div>
-                        </button>
-                      );
-                    })}
-                  </div>
-
-                  <div className="pt-4 border-t border-border/60">
-                    <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-wider mb-1">
-                      <Type size={16} /> ATS Font Selection & Typography
-                    </div>
-                    <p className="text-xs text-muted-foreground mb-3">
-                      Select an ATS-compliant typeface tailored for high readability across recruiter screening systems.
-                    </p>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                      {RESUME_FONTS.map((f) => {
-                        const isSelected = selectedFont === f.family;
-                        return (
-                          <button
-                            key={f.id}
-                            type="button"
-                            onClick={() => setSelectedFont(f.family)}
-                            className={`p-3 rounded-2xl border text-left transition-all space-y-1 ${
-                              isSelected
-                                ? "border-primary bg-primary/10 shadow-sm ring-2 ring-primary/30"
-                                : "border-border bg-card hover:bg-muted"
-                            }`}
-                          >
-                            <div className="flex items-center justify-between">
-                              <span className="text-xs font-bold text-foreground" style={{ fontFamily: f.family }}>
-                                {f.name}
-                              </span>
-                              <span className="text-[9px] px-1.5 py-0.5 rounded-md bg-primary/10 text-primary font-bold">
-                                {f.badge}
-                              </span>
-                            </div>
-                            <p className="text-[11px] text-muted-foreground leading-snug">
-                              {f.description}
-                            </p>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Step 13: Download PDF */}
-              {currentStep === 13 && (
+              {/* Step 11: Download PDF */}
+              {currentStep === 11 && (
                 <div className="space-y-4 animate-fade-in text-center p-4">
                   <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto">
                     <Printer size={24} />
                   </div>
                   <h3 className="text-xl font-black text-foreground">Your ATS Resume is Ready!</h3>
                   <p className="text-xs text-muted-foreground max-w-sm mx-auto leading-relaxed">
-                    Click the button below to open your print dialog. Select <strong>Save as PDF</strong> or <strong>Microsoft Print to PDF</strong> with Paper size set to <strong>A4</strong>.
+                    Click the button below to verify your number via SMS OTP and download your official ATS-friendly resume PDF.
                   </p>
                   <button
                     type="button"
@@ -1507,10 +1417,10 @@ export const ResumeBuilder = () => {
                   <ArrowLeft size={14} /> Previous
                 </button>
 
-                {currentStep < 13 ? (
+                {currentStep < STEPS.length ? (
                   <button
                     type="button"
-                    onClick={() => setCurrentStep(Math.min(13, currentStep + 1))}
+                    onClick={() => setCurrentStep(Math.min(STEPS.length, currentStep + 1))}
                     className="px-5 py-2.5 rounded-xl bg-primary text-primary-foreground text-xs font-bold flex items-center gap-1.5 hover:bg-primary/90 transition-colors shadow-sm"
                   >
                     Next: {STEPS[currentStep]?.label || "Next"} <ChevronRight size={14} />
@@ -1531,8 +1441,7 @@ export const ResumeBuilder = () => {
           {/* Live ATS Sheet Preview (Right 6 cols & Mobile Preview) */}
           <div className={`lg:col-span-6 sticky top-24 ${mobilePreviewOpen ? "block" : "hidden lg:block"}`}>
             <div className="p-3 bg-muted/40 rounded-3xl border border-border/80 shadow-xl overflow-auto max-h-[85vh]">
-              <div className="flex justify-between items-center px-3 py-2 text-xs font-bold text-muted-foreground print:hidden">
-                <span>ATS Resume Sheet (A4 Reference Layout)</span>
+              <div className="flex justify-end items-center px-3 py-2 text-xs font-bold text-muted-foreground print:hidden">
                 <span className="text-emerald-500 flex items-center gap-1">
                   <ShieldCheck size={14} /> 100% ATS Compliant
                 </span>

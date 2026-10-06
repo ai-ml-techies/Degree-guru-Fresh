@@ -78,14 +78,6 @@ export const RESUME_FONTS = [
     description: "Google's flagship sans-serif, standard for tech and product roles.",
   },
   {
-    id: "googlesans",
-    name: "Google Sans",
-    family: "'Google Sans', 'Product Sans', sans-serif",
-    badge: "Degree Guru Style",
-    category: "Brand Sans",
-    description: "Degree Guru's signature modern aesthetic font.",
-  },
-  {
     id: "poppins",
     name: "Poppins",
     family: "'Poppins', sans-serif",
