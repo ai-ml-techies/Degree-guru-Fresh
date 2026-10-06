@@ -455,16 +455,133 @@ export const ResumePaper: React.FC<ResumePaperProps> = ({
             {data.education.map((edu, idx) => (
               <li key={idx}>
                 <span className="font-bold">{edu.degree}</span>
-                {edu.score && ` - ${edu.score}`}
-                {edu.institution && `, ${edu.institution}`}
-                {edu.year && `, ${edu.year}`}
+                {edu.score && edu.score.trim() ? ` - ${edu.score.trim()}` : ""}
+                {edu.institution && edu.institution.trim() ? `, ${edu.institution.trim()}` : ""}
+                {edu.year && edu.year.trim() ? `, ${edu.year.trim()}` : ""}
               </li>
             ))}
           </ul>
         </section>
       )}
 
-      {/* Section Divider 4 (Proper spacing above and below) */}
+      {/* Section Divider: Projects */}
+      {data.projects && data.projects.length > 0 && (
+        <div
+          style={{
+            borderTop: `1px solid ${primaryColor}`,
+            marginTop: "12px",
+            marginBottom: "11px",
+          }}
+        />
+      )}
+
+      {/* 6. Projects & Key Initiatives */}
+      {data.projects && data.projects.length > 0 && (
+        <section className="break-inside-avoid">
+          <h2
+            className="font-bold leading-snug transition-colors"
+            style={{
+              fontSize: "12pt",
+              color: primaryColor,
+              margin: "0 0 3.5px 0",
+            }}
+          >
+            Key Projects & Initiatives:
+          </h2>
+          <div className="space-y-2">
+            {data.projects.map((proj, idx) => (
+              <div key={idx} className="break-inside-avoid">
+                <div
+                  className="font-bold text-neutral-900 leading-snug"
+                  style={{ fontSize: "11pt" }}
+                >
+                  {proj.title}
+                </div>
+                {proj.description && (
+                  <p
+                    className="text-neutral-900 m-0 leading-[1.32] text-left mt-0.5"
+                    style={{ fontSize: "11pt" }}
+                  >
+                    {proj.description}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Section Divider: Certifications */}
+      {data.certifications && data.certifications.length > 0 && (
+        <div
+          style={{
+            borderTop: `1px solid ${primaryColor}`,
+            marginTop: "12px",
+            marginBottom: "11px",
+          }}
+        />
+      )}
+
+      {/* 7. Certifications & Credentials */}
+      {data.certifications && data.certifications.length > 0 && (
+        <section className="break-inside-avoid">
+          <h2
+            className="font-bold leading-snug transition-colors"
+            style={{
+              fontSize: "12pt",
+              color: primaryColor,
+              margin: "0 0 3px 0",
+            }}
+          >
+            Certifications & Credentials:
+          </h2>
+          <ul
+            className="list-disc list-outside ml-4 mt-0.5 space-y-[1.5px] text-neutral-900 leading-[1.32]"
+            style={{ fontSize: "11pt" }}
+          >
+            {data.certifications.map((cert, idx) => (
+              <li key={idx}>{cert}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {/* Section Divider: Key Achievements */}
+      {data.achievements && data.achievements.length > 0 && (
+        <div
+          style={{
+            borderTop: `1px solid ${primaryColor}`,
+            marginTop: "12px",
+            marginBottom: "11px",
+          }}
+        />
+      )}
+
+      {/* 8. Key Achievements */}
+      {data.achievements && data.achievements.length > 0 && (
+        <section className="break-inside-avoid">
+          <h2
+            className="font-bold leading-snug transition-colors"
+            style={{
+              fontSize: "12pt",
+              color: primaryColor,
+              margin: "0 0 3px 0",
+            }}
+          >
+            Key Achievements:
+          </h2>
+          <ul
+            className="list-disc list-outside ml-4 mt-0.5 space-y-[1.5px] text-neutral-900 leading-[1.32]"
+            style={{ fontSize: "11pt" }}
+          >
+            {data.achievements.map((ach, idx) => (
+              <li key={idx}>{renderBulletContent(ach)}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {/* Section Divider: Skills */}
       {data.skills && data.skills.length > 0 && (
         <div
           style={{
@@ -475,7 +592,7 @@ export const ResumePaper: React.FC<ResumePaperProps> = ({
         />
       )}
 
-      {/* 6. Skills: (12pt Bold Heading in Accent Color) */}
+      {/* 9. Skills: (12pt Bold Heading in Accent Color) */}
       {data.skills && data.skills.length > 0 && (
         <section className="break-inside-avoid">
           <h2

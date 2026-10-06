@@ -421,9 +421,7 @@ export const ResumeBuilder = () => {
         {/* Header Bar */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border/70 print:hidden">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 text-purple-600 dark:text-purple-400 text-xs font-bold mb-1.5">
-              <Sparkles size={14} /> AI-Powered ATS Resume Builder
-            </div>
+           
             <h1 className="text-2xl sm:text-3xl font-black text-foreground tracking-tight">
               Build a Job-Ready Resume with AI
             </h1>
@@ -829,13 +827,13 @@ export const ResumeBuilder = () => {
                           ...resumeData,
                           education: [
                             ...resumeData.education,
-                            { degree: "Online MBA", institution: "Recognized Online University", year: "2024", score: "First Class" },
+                            { degree: "", institution: "", year: "", score: "" },
                           ],
                         })
                       }
                       className="text-xs text-primary hover:underline font-bold flex items-center gap-1"
                     >
-                      <Plus size={14} /> Add Degree
+                      <Plus size={14} /> Add Education
                     </button>
                   </div>
 
@@ -858,52 +856,56 @@ export const ResumeBuilder = () => {
                           <label className="block text-[11px] font-semibold text-muted-foreground mb-0.5">Degree / Course</label>
                           <input
                             type="text"
+                            placeholder="e.g. Bachelor of Technology (CSE)"
                             value={edu.degree}
                             onChange={(e) => {
                               const updated = [...resumeData.education];
                               updated[idx].degree = e.target.value;
                               setResumeData({ ...resumeData, education: updated });
                             }}
-                            className="w-full px-3 py-1.5 rounded-lg bg-background border border-border text-xs"
+                            className="w-full px-3 py-2 rounded-xl bg-background border border-border text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none placeholder:text-muted-foreground/60"
                           />
                         </div>
                         <div>
                           <label className="block text-[11px] font-semibold text-muted-foreground mb-0.5">Passing Year</label>
                           <input
                             type="text"
+                            placeholder="e.g. 2024"
                             value={edu.year}
                             onChange={(e) => {
                               const updated = [...resumeData.education];
                               updated[idx].year = e.target.value;
                               setResumeData({ ...resumeData, education: updated });
                             }}
-                            className="w-full px-3 py-1.5 rounded-lg bg-background border border-border text-xs"
+                            className="w-full px-3 py-2 rounded-xl bg-background border border-border text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none placeholder:text-muted-foreground/60"
                           />
                         </div>
                         <div>
                           <label className="block text-[11px] font-semibold text-muted-foreground mb-0.5">University / Board</label>
                           <input
                             type="text"
+                            placeholder="e.g. Delhi University"
                             value={edu.institution}
                             onChange={(e) => {
                               const updated = [...resumeData.education];
                               updated[idx].institution = e.target.value;
                               setResumeData({ ...resumeData, education: updated });
                             }}
-                            className="w-full px-3 py-1.5 rounded-lg bg-background border border-border text-xs"
+                            className="w-full px-3 py-2 rounded-xl bg-background border border-border text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none placeholder:text-muted-foreground/60"
                           />
                         </div>
                         <div>
-                          <label className="block text-[11px] font-semibold text-muted-foreground mb-0.5">Score / CGPA</label>
+                          <label className="block text-[11px] font-semibold text-muted-foreground mb-0.5">Score / CGPA (Optional)</label>
                           <input
                             type="text"
+                            placeholder="e.g. 8.5 CGPA / 82% (Optional)"
                             value={edu.score || ""}
                             onChange={(e) => {
                               const updated = [...resumeData.education];
                               updated[idx].score = e.target.value;
                               setResumeData({ ...resumeData, education: updated });
                             }}
-                            className="w-full px-3 py-1.5 rounded-lg bg-background border border-border text-xs"
+                            className="w-full px-3 py-2 rounded-xl bg-background border border-border text-xs focus:ring-2 focus:ring-primary/40 focus:outline-none placeholder:text-muted-foreground/60"
                           />
                         </div>
                       </div>
@@ -1440,14 +1442,14 @@ export const ResumeBuilder = () => {
 
           {/* Live ATS Sheet Preview (Right 6 cols & Mobile Preview) */}
           <div className={`lg:col-span-6 sticky top-24 ${mobilePreviewOpen ? "block" : "hidden lg:block"}`}>
-            <div className="p-3 bg-muted/40 rounded-3xl border border-border/80 shadow-xl overflow-auto max-h-[85vh]">
-              <div className="flex justify-end items-center px-3 py-2 text-xs font-bold text-muted-foreground print:hidden">
+            <div className="p-4 sm:p-5 bg-slate-100/90 dark:bg-slate-900/60 rounded-3xl border border-border/80 shadow-xl overflow-y-auto max-h-[85vh]">
+              <div className="flex justify-end items-center px-2 py-1 mb-2 text-xs font-bold text-muted-foreground print:hidden">
                 <span className="text-emerald-500 flex items-center gap-1">
                   <ShieldCheck size={14} /> 100% ATS Compliant
                 </span>
               </div>
-              <div className="bg-white rounded-xl shadow-inner overflow-hidden">
-                <ResumePaper data={resumeData} selectedColor={selectedColor} selectedFont={selectedFont} />
+              <div className="bg-white rounded-2xl shadow-xl border border-slate-200/80 p-3 sm:p-4 overflow-hidden">
+                <ResumePaper data={resumeData} selectedColor={selectedColor} selectedFont={selectedFont} scale={0.92} />
               </div>
             </div>
           </div>
