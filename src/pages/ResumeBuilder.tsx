@@ -43,15 +43,17 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import { PhoneOtpModal } from "@/components/PhoneOtpModal";
 
 export const ResumeBuilder = () => {
   // Onboarding state - default open to allow instant template editing
   const [hasOnboarded, setHasOnboarded] = useState<boolean>(true);
-  const [userName, setUserName] = useState<string>("Aarav Sharma");
-  const [userPhone, setUserPhone] = useState<string>("+91 98765 43210");
-  const [userEmail, setUserEmail] = useState<string>("aarav.sharma@degreeguru.in");
+  const [userName, setUserName] = useState<string>("");
+  const [userPhone, setUserPhone] = useState<string>("");
+  const [userEmail, setUserEmail] = useState<string>("");
   const [uploadFileName, setUploadFileName] = useState<string>("");
   const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [otpModalOpen, setOtpModalOpen] = useState<boolean>(false);
 
   // Stepper state
   const [currentStep, setCurrentStep] = useState<number>(1);
@@ -315,17 +317,17 @@ export const ResumeBuilder = () => {
     setDownloadModalOpen(true);
   };
 
-  // Confirm download and generate real PDF
+  // Confirm download: validate details & trigger OTP modal
   const handleConfirmDownloadPdf = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     const nameCheck = validateMeaningfulName(leadName, false);
     if (!nameCheck.valid) {
-      setDownloadError(nameCheck.error || "Please enter a valid, meaningful full name.");
+      setDownloadError(nameCheck.error || "Please enter a valid full name.");
       return;
     }
     const phoneCheck = validateIndianMobile(leadPhone);
     if (!phoneCheck.valid) {
-      setDownloadError(phoneCheck.error || "Please enter a valid 10-digit Indian mobile number.");
+      setDownloadError(phoneCheck.error || "Please enter a valid 10-digit mobile number.");
       return;
     }
     const emailCheck = validateMeaningfulEmail(leadEmail, false);
@@ -335,11 +337,19 @@ export const ResumeBuilder = () => {
     }
 
     setDownloadError(null);
+    // Open Phone OTP Modal for SMS verification
+    setOtpModalOpen(true);
+  };
+
+  // Triggered when 6-digit SMS OTP is verified
+  const handleOtpVerified = async () => {
     setIsDownloadingPdf(true);
+    setOtpModalOpen(false);
 
     const trimmedName = leadName.trim();
-    const trimmedPhone = leadPhone.trim();
-    const trimmedEmail = leadEmail.trim();
+    const cleanPhone = leadPhone.replace(/\D/g, "").slice(-10);
+    const trimmedPhone = `+91 ${cleanPhone}`;
+    const trimmedEmail = leadEmail.trim().toLowerCase();
 
     // 1. Sync confirmed details to resumeData so the PDF matches exactly
     setResumeData((prev) => ({
@@ -358,7 +368,9 @@ export const ResumeBuilder = () => {
         name: trimmedName,
         phone: trimmedPhone,
         email: trimmedEmail,
-        programOfInterest: "ATS Resume PDF Download",
+        program: "ATS Resume PDF Download (Phone Verified)",
+        source: "/resume-builder",
+        formHeading: "ATS Resume Builder PDF Download",
       });
     } catch {
       // non-blocking
@@ -375,7 +387,8 @@ export const ResumeBuilder = () => {
       setDownloadModalOpen(false);
     } catch (err) {
       console.error("PDF generation failed:", err);
-      setDownloadError("PDF generation error. You can also print via browser.");
+      setDownloadError("PDF generation error. Please try again.");
+      toast.error("Could not generate PDF. Please try again.");
     } finally {
       setIsDownloadingPdf(false);
     }
@@ -472,17 +485,17 @@ export const ResumeBuilder = () => {
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Aarav Mehta"
+                  placeholder="Full Name"
                   value={userName}
                   onChange={(e) => setUserName(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm focus:ring-2 focus:ring-primary/40 focus:outline-none"
+                  className="w-full px-4 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm focus:ring-2 focus:ring-primary/40 focus:outline-none placeholder:text-muted-foreground/60"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold text-foreground mb-1">
-                    WhatsApp Mobile Number <span className="text-red-500">*</span>
+                    Mobile Number <span className="text-red-500">*</span>
                   </label>
                   <div className="relative flex rounded-xl border border-border bg-background focus-within:ring-2 focus-within:ring-primary/40 overflow-hidden">
                     <div className="px-3 bg-muted/60 text-xs font-bold text-muted-foreground flex items-center border-r border-border select-none">
@@ -492,7 +505,7 @@ export const ResumeBuilder = () => {
                       type="tel"
                       required
                       maxLength={10}
-                      placeholder="10-digit mobile (starts with 6-9)"
+                      placeholder="Mobile Number"
                       value={userPhone}
                       onChange={(e) => setUserPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
                       className="w-full px-3.5 py-2.5 text-xs sm:text-sm font-semibold bg-transparent focus:outline-none placeholder:text-muted-foreground/60"
@@ -505,10 +518,10 @@ export const ResumeBuilder = () => {
                   </label>
                   <input
                     type="email"
-                    placeholder="e.g. aarav.mehta@example.com"
+                    placeholder="Email Address"
                     value={userEmail}
                     onChange={(e) => setUserEmail(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm focus:ring-2 focus:ring-primary/40 focus:outline-none"
+                    className="w-full px-4 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm focus:ring-2 focus:ring-primary/40 focus:outline-none placeholder:text-muted-foreground/60"
                   />
                 </div>
               </div>
@@ -657,7 +670,6 @@ export const ResumeBuilder = () => {
                 <span className="text-xs font-black uppercase tracking-wider text-primary">
                   Step {currentStep} of 13: {STEPS[currentStep - 1]?.label}
                 </span>
-                <span className="text-[11px] text-muted-foreground">Auto-saved to session</span>
               </div>
 
               {/* Step 1: Basic Details */}
@@ -672,9 +684,10 @@ export const ResumeBuilder = () => {
                       <input
                         id={fullNameId}
                         type="text"
+                        placeholder="Full Name"
                         value={resumeData.fullName}
                         onChange={(e) => setResumeData({ ...resumeData, fullName: e.target.value })}
-                        className="w-full px-3.5 py-2 rounded-xl bg-background border border-border text-xs sm:text-sm"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-primary/40 focus:outline-none"
                       />
                     </div>
                     <div>
@@ -684,10 +697,10 @@ export const ResumeBuilder = () => {
                       <input
                         id={professionalTitleId}
                         type="text"
-                        placeholder="e.g. Senior Marketing Specialist"
+                        placeholder="Professional Title"
                         value={resumeData.professionalTitle}
                         onChange={(e) => setResumeData({ ...resumeData, professionalTitle: e.target.value })}
-                        className="w-full px-3.5 py-2 rounded-xl bg-background border border-border text-xs sm:text-sm"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-primary/40 focus:outline-none"
                       />
                     </div>
                     <div>
@@ -697,9 +710,10 @@ export const ResumeBuilder = () => {
                       <input
                         id={phoneId}
                         type="text"
+                        placeholder="Phone Number"
                         value={resumeData.phone}
                         onChange={(e) => setResumeData({ ...resumeData, phone: e.target.value })}
-                        className="w-full px-3.5 py-2 rounded-xl bg-background border border-border text-xs sm:text-sm"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-primary/40 focus:outline-none"
                       />
                     </div>
                     <div>
@@ -709,9 +723,10 @@ export const ResumeBuilder = () => {
                       <input
                         id={emailId}
                         type="email"
+                        placeholder="Email Address"
                         value={resumeData.email}
                         onChange={(e) => setResumeData({ ...resumeData, email: e.target.value })}
-                        className="w-full px-3.5 py-2 rounded-xl bg-background border border-border text-xs sm:text-sm"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-primary/40 focus:outline-none"
                       />
                     </div>
                     <div>
@@ -721,10 +736,10 @@ export const ResumeBuilder = () => {
                       <input
                         id={locationId}
                         type="text"
-                        placeholder="e.g. Bengaluru, India"
+                        placeholder="Location / City"
                         value={resumeData.location}
                         onChange={(e) => setResumeData({ ...resumeData, location: e.target.value })}
-                        className="w-full px-3.5 py-2 rounded-xl bg-background border border-border text-xs sm:text-sm"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-primary/40 focus:outline-none"
                       />
                     </div>
                     <div>
@@ -734,10 +749,10 @@ export const ResumeBuilder = () => {
                       <input
                         id={linkedinId}
                         type="text"
-                        placeholder="linkedin.com/in/username"
+                        placeholder="LinkedIn URL"
                         value={resumeData.linkedin}
                         onChange={(e) => setResumeData({ ...resumeData, linkedin: e.target.value })}
-                        className="w-full px-3.5 py-2 rounded-xl bg-background border border-border text-xs sm:text-sm"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-primary/40 focus:outline-none"
                       />
                     </div>
                     <div className="sm:col-span-2">
@@ -747,10 +762,10 @@ export const ResumeBuilder = () => {
                       <input
                         id={portfolioId}
                         type="text"
-                        placeholder="https://yourportfolio.me"
+                        placeholder="Portfolio / Personal Site URL (Optional)"
                         value={resumeData.portfolio}
                         onChange={(e) => setResumeData({ ...resumeData, portfolio: e.target.value })}
-                        className="w-full px-3.5 py-2 rounded-xl bg-background border border-border text-xs sm:text-sm"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-background border border-border text-xs sm:text-sm placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-primary/40 focus:outline-none"
                       />
                     </div>
                   </div>
@@ -1535,16 +1550,10 @@ export const ResumeBuilder = () => {
       {/* ========================================================================= */}
       <Dialog open={downloadModalOpen} onOpenChange={setDownloadModalOpen}>
         <DialogContent className="sm:max-w-md rounded-3xl p-6 sm:p-7 border-border/80 shadow-2xl bg-card">
-          <DialogHeader className="space-y-2 text-center sm:text-left">
-            <div className="w-11 h-11 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-1">
-              <FileDown size={24} />
-            </div>
-            <DialogTitle className="text-xl font-black text-foreground">
+          <DialogHeader className="space-y-1 text-center sm:text-left">
+            <DialogTitle className="text-xl font-bold text-foreground">
               Download Your ATS Resume
             </DialogTitle>
-            <DialogDescription className="text-xs text-muted-foreground leading-relaxed">
-              Enter your basic contact details below to personalize your resume and download the official high-resolution PDF file.
-            </DialogDescription>
           </DialogHeader>
 
           <form onSubmit={handleConfirmDownloadPdf} className="space-y-4 pt-2">
@@ -1561,16 +1570,16 @@ export const ResumeBuilder = () => {
               <input
                 type="text"
                 required
-                placeholder="e.g. Aarav Mehta"
+                placeholder="Full Name"
                 value={leadName}
                 onChange={(e) => setLeadName(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl border border-input bg-background text-foreground text-xs focus:ring-2 focus:ring-primary focus:outline-none"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-input bg-background text-foreground text-xs focus:ring-2 focus:ring-primary focus:outline-none placeholder:text-muted-foreground/60"
               />
             </div>
 
             <div>
               <label className="block text-xs font-bold text-foreground mb-1.5 flex items-center gap-1.5">
-                <Phone size={13} className="text-primary" /> Mobile / WhatsApp Number *
+                <Phone size={13} className="text-primary" /> Mobile Number *
               </label>
               <div className="relative flex items-center">
                 <span className="absolute left-3 text-xs font-bold text-muted-foreground">+91</span>
@@ -1578,15 +1587,12 @@ export const ResumeBuilder = () => {
                   type="tel"
                   required
                   maxLength={10}
-                  placeholder="9876543210"
+                  placeholder="Mobile Number"
                   value={leadPhone.replace(/^\+91\s*/, "")}
                   onChange={(e) => setLeadPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
-                  className="w-full pl-12 pr-3.5 py-2.5 rounded-xl border border-input bg-background text-foreground text-xs font-medium focus:ring-2 focus:ring-primary focus:outline-none"
+                  className="w-full pl-12 pr-3.5 py-2.5 rounded-xl border border-input bg-background text-foreground text-xs font-medium focus:ring-2 focus:ring-primary focus:outline-none placeholder:text-muted-foreground/60"
                 />
               </div>
-              <span className="text-[10px] text-muted-foreground mt-1 block">
-                We'll also send an ATS backup copy to your WhatsApp.
-              </span>
             </div>
 
             <div>
@@ -1596,18 +1602,18 @@ export const ResumeBuilder = () => {
               <input
                 type="email"
                 required
-                placeholder="aarav.mehta@gmail.com"
+                placeholder="Email Address"
                 value={leadEmail}
                 onChange={(e) => setLeadEmail(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl border border-input bg-background text-foreground text-xs focus:ring-2 focus:ring-primary focus:outline-none"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-input bg-background text-foreground text-xs focus:ring-2 focus:ring-primary focus:outline-none placeholder:text-muted-foreground/60"
               />
             </div>
 
-            <div className="pt-2 space-y-2">
+            <div className="pt-2">
               <button
                 type="submit"
                 disabled={isDownloadingPdf}
-                className="w-full py-3 rounded-xl bg-primary text-primary-foreground font-black text-xs sm:text-sm flex items-center justify-center gap-2 hover:bg-primary/90 transition-all shadow-lg shadow-primary/25 disabled:opacity-50"
+                className="w-full py-3 rounded-xl bg-primary text-primary-foreground font-bold text-xs sm:text-sm flex items-center justify-center gap-2 hover:bg-primary/90 transition-all shadow-lg shadow-primary/25 disabled:opacity-50"
               >
                 {isDownloadingPdf ? (
                   <>
@@ -1619,30 +1625,18 @@ export const ResumeBuilder = () => {
                   </>
                 )}
               </button>
-
-              <div className="flex items-center justify-between pt-1 text-[11px] text-muted-foreground">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setDownloadModalOpen(false);
-                    handlePrint();
-                  }}
-                  className="hover:text-primary transition-colors flex items-center gap-1 underline underline-offset-2"
-                >
-                  <Printer size={12} /> Or print via system dialog
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setDownloadModalOpen(false)}
-                  className="hover:text-foreground transition-colors"
-                >
-                  Cancel
-                </button>
-              </div>
             </div>
           </form>
         </DialogContent>
       </Dialog>
+
+      {/* SMS OTP Modal */}
+      <PhoneOtpModal
+        isOpen={otpModalOpen}
+        phoneNumber={leadPhone}
+        onClose={() => setOtpModalOpen(false)}
+        onVerified={handleOtpVerified}
+      />
     </>
   );
 };

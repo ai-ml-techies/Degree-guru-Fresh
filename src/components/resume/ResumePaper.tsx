@@ -120,13 +120,13 @@ export const RESUME_FONTS = [
 ];
 
 export const DEFAULT_RESUME_DATA: ResumeData = {
-  fullName: "Aarav Sharma",
-  professionalTitle: "Senior Growth Marketing Strategist",
-  location: "New Delhi, India",
-  email: "aarav.sharma@example.com",
-  phone: "+91 98765 43210",
-  linkedin: "linkedin.com/in/aarav-sharma-growth",
-  portfolio: "https://aaravsharma.dev",
+  fullName: "",
+  professionalTitle: "",
+  location: "",
+  email: "",
+  phone: "",
+  linkedin: "",
+  portfolio: "",
   professionalSummary:
     "Data-driven Senior Growth Marketing Strategist with over 4 years of experience leading multi-channel acquisition, performance marketing, and organic content pipelines. Skilled in conversion rate optimization (CRO), search engine positioning, and cross-functional team leadership to accelerate revenue growth.",
   experiences: [
@@ -270,7 +270,7 @@ export const ResumePaper: React.FC<ResumePaperProps> = ({
             letterSpacing: "0.04em",
           }}
         >
-          {data.fullName || "YASH"}
+          {data.fullName || "FULL NAME"}
         </h1>
 
         {/* Title Below Name (12pt Bold, Centered, Dark) */}
@@ -278,7 +278,7 @@ export const ResumePaper: React.FC<ResumePaperProps> = ({
           className="font-bold text-neutral-900 mt-1 leading-snug"
           style={{ fontSize: "12pt" }}
         >
-          {data.professionalTitle || "Data Driven Digital Marketer"}
+          {data.professionalTitle || "Professional Title"}
         </div>
       </div>
 
@@ -287,46 +287,52 @@ export const ResumePaper: React.FC<ResumePaperProps> = ({
         className="text-center text-neutral-900 mt-2 flex flex-wrap justify-center items-center gap-x-2.5 leading-normal"
         style={{ fontSize: "10.5pt" }}
       >
-        {data.location && <span>{data.location}</span>}
-        {data.location && data.email && <span className="text-neutral-400">|</span>}
-
-        {data.email && (
-          <a
-            href={`mailto:${data.email}`}
-            className="text-neutral-900 no-underline hover:opacity-80 transition-opacity"
-          >
-            {data.email}
-          </a>
-        )}
-        {data.email && data.phone && <span className="text-neutral-400">|</span>}
-
-        {data.phone && (
-          <a
-            href={`tel:${data.phone.replace(/\s+/g, "")}`}
-            className="text-neutral-900 no-underline hover:opacity-80 transition-opacity"
-          >
-            {data.phone}
-          </a>
-        )}
-
-        {/* Optional LinkedIn: Displays only the word 'LinkedIn', hyperlinked to profile, no underline */}
-        {data.linkedin && data.linkedin.trim() && (
+        {(!data.location && !data.email && !data.phone && !data.linkedin) ? (
+          <span className="text-neutral-500">City, Country &nbsp;|&nbsp; email@domain.com &nbsp;|&nbsp; +91 Mobile &nbsp;|&nbsp; LinkedIn</span>
+        ) : (
           <>
-            {(data.location || data.email || data.phone) && (
-              <span className="text-neutral-400">|</span>
+            {data.location && <span>{data.location}</span>}
+            {data.location && data.email && <span className="text-neutral-400">|</span>}
+
+            {data.email && (
+              <a
+                href={`mailto:${data.email}`}
+                className="text-neutral-900 no-underline hover:opacity-80 transition-opacity"
+              >
+                {data.email}
+              </a>
             )}
-            <a
-              href={
-                data.linkedin.startsWith("http")
-                  ? data.linkedin
-                  : `https://${data.linkedin.replace(/^https?:\/\//, "")}`
-              }
-              target="_blank"
-              rel="noreferrer"
-              className="text-neutral-900 no-underline hover:opacity-80 transition-opacity"
-            >
-              LinkedIn
-            </a>
+            {data.email && data.phone && <span className="text-neutral-400">|</span>}
+
+            {data.phone && (
+              <a
+                href={`tel:${data.phone.replace(/\s+/g, "")}`}
+                className="text-neutral-900 no-underline hover:opacity-80 transition-opacity"
+              >
+                {data.phone}
+              </a>
+            )}
+
+            {/* Optional LinkedIn: Displays only the word 'LinkedIn', hyperlinked to profile, no underline */}
+            {data.linkedin && data.linkedin.trim() && (
+              <>
+                {(data.location || data.email || data.phone) && (
+                  <span className="text-neutral-400">|</span>
+                )}
+                <a
+                  href={
+                    data.linkedin.startsWith("http")
+                      ? data.linkedin
+                      : `https://${data.linkedin.replace(/^https?:\/\//, "")}`
+                  }
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-neutral-900 no-underline hover:opacity-80 transition-opacity"
+                >
+                  LinkedIn
+                </a>
+              </>
+            )}
           </>
         )}
       </div>
