@@ -172,7 +172,7 @@ const Reveal: React.FC<{ children: React.ReactNode; delay?: number; className?: 
 const JOURNEY = [
   { when: "Week 0", title: "Selection", text: "Eligibility check and a panel interview with Bajaj Capital.", tag: "₹500 registration", tone: "navy" },
   { when: "Before training", title: "Pre-Placement Offer", text: "A written Pre-Placement Offer from Bajaj Capital. The program fee starts only after you accept the offer.", tag: "Fee starts after offer acceptance", tone: "blue" },
-  { when: "Month 1 – 2.5", title: "Classroom training", text: "240 hours — 190 with ICOFP, 50 with AIMA. Includes NISM Series V-A preparation.", tag: "ACWM certification", tone: "navy" },
+  { when: "Month 1 – 2.5", title: "Classroom training", text: "240 hours — 190 with ICOFP, 50 with AIMA. Mastering practical wealth advisory.", tag: "ACWM certification", tone: "navy" },
   { when: "Month 3 – 6", title: "Bajaj Capital internship", text: "Four months inside a live Bajaj Capital branch.", tag: "₹15,000 / month stipend", tone: "green" },
   { when: "Month 6", title: "Wealth Officer", text: "Full-time role once the completion criteria are met.", tag: "₹4.2 – ₹4.8 LPA", tone: "green" },
   { when: "Month 12", title: "Retention bonus", text: "After 12 months of full-time employment.", tag: "₹85,000", tone: "gold" },
@@ -181,38 +181,36 @@ const JOURNEY = [
 const CERTIFICATIONS_EXPOSURE = [
   {
     name: "CFP Level 1 & 2",
-    type: "Global Professional Charter",
-    focus: "Comprehensive personal financial planning, tax & retirement advisory.",
-    body: "FPSB India / FPSB USA",
+    type: "Global Charter",
+    focus: "Personal financial planning, tax & wealth management.",
+    body: "FPSB India",
     typeStyle: "bg-blue-50 text-[#1557D6] border-blue-200/80",
   },
   {
     name: "NISM Series V-A",
     type: "Mandatory License",
-    focus: "Mutual fund sales, distribution compliance & investor advisory operations.",
-    body: "SEBI / NISM",
+    focus: "Mutual funds sales & investor advisory.",
+    body: "NISM",
     typeStyle: "bg-emerald-50 text-emerald-700 border-emerald-200/80",
   },
   {
     name: "NISM Series XXI-B",
     type: "Mandatory License",
-    focus: "High-level Portfolio Management Services (PMS) operations & regulatory compliance.",
-    body: "SEBI / NISM",
+    focus: "Portfolio Management Services (PMS).",
+    body: "NISM",
     typeStyle: "bg-emerald-50 text-emerald-700 border-emerald-200/80",
   },
   {
     name: "BQP",
-    subtitle: "Broker Qualified Person",
     type: "Mandatory License",
-    focus: "Insurance advisory, risk evaluation & corporate agency regulations.",
+    focus: "Insurance advisory & risk planning.",
     body: "IRDAI",
     typeStyle: "bg-emerald-50 text-emerald-700 border-emerald-200/80",
   },
   {
     name: "Joint ICOFP & AIMA",
-    subtitle: "ACWM Certification",
     type: "Professional Diploma",
-    focus: "Practical wealth management execution, live casework & job readiness.",
+    focus: "Practical wealth management & live casework.",
     body: "ICOFP & AIMA",
     typeStyle: "bg-indigo-50 text-indigo-700 border-indigo-200/80",
   },
@@ -993,41 +991,34 @@ export const PlacementGuaranteed = () => {
           </div>
         </section>
 
-        {/* CERTIFICATION EXPOSURE (AUTHORITY REGULATORY CREDENTIALS) */}
-        <section className="pt-10 pb-14 sm:pt-12 sm:pb-18 bg-[#F7F9FC] border-t border-slate-200 relative overflow-hidden">
+        {/* CERTIFICATION EXPOSURE */}
+        <section className="pt-10 pb-14 sm:pt-12 sm:pb-16 bg-[#F7F9FC] border-t border-slate-200 relative overflow-hidden">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
             <Reveal className="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
-              <span className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-bold tracking-wider text-[#1557D6] uppercase bg-blue-50 border border-blue-100 px-3 py-1 rounded-full mb-3">
-                <ShieldCheck size={14} className="text-[#1557D6]" />
-                AUTHORITY-APPROVED CREDENTIALS
-              </span>
               <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight">CERTIFICATION EXPOSURE</h2>
-              <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
-                Industry-recognized licenses and professional charters integrated into your curriculum.
+              <p className="text-xs sm:text-sm text-slate-600 mt-2">
+                Key professional certifications and licenses covered during the program.
               </p>
             </Reveal>
 
             {/* Desktop Table View */}
             <Reveal delay={100} className="hidden md:block">
               <div className="rounded-3xl border border-slate-200/90 bg-white shadow-xs overflow-hidden">
-                <div className="grid grid-cols-12 gap-4 px-6 py-4 bg-slate-50/90 border-b border-slate-200 text-xs font-bold text-slate-500 uppercase tracking-wider">
+                <div className="grid grid-cols-12 gap-4 px-6 py-3.5 bg-slate-50/80 border-b border-slate-200 text-xs font-bold text-slate-500 uppercase tracking-wider">
                   <div className="col-span-3">Certification</div>
                   <div className="col-span-3">Type</div>
                   <div className="col-span-4">Primary Focus</div>
-                  <div className="col-span-2 text-right">Issuing / Regulatory Body</div>
+                  <div className="col-span-2 text-right">Issued By</div>
                 </div>
 
                 <div className="divide-y divide-slate-100">
                   {CERTIFICATIONS_EXPOSURE.map((row) => (
                     <div
                       key={row.name}
-                      className="grid grid-cols-12 gap-4 px-6 py-4.5 items-center hover:bg-slate-50/60 transition-colors"
+                      className="grid grid-cols-12 gap-4 px-6 py-3.5 items-center hover:bg-slate-50/60 transition-colors"
                     >
                       <div className="col-span-3">
                         <div className="font-extrabold text-sm sm:text-base text-[#061A36]">{row.name}</div>
-                        {"subtitle" in row && row.subtitle && (
-                          <div className="text-[11px] text-slate-500 font-medium">{row.subtitle}</div>
-                        )}
                       </div>
 
                       <div className="col-span-3">
@@ -1036,7 +1027,7 @@ export const PlacementGuaranteed = () => {
                         </span>
                       </div>
 
-                      <div className="col-span-4 text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                      <div className="col-span-4 text-xs sm:text-sm text-slate-600 font-normal">
                         {row.focus}
                       </div>
 
@@ -1055,20 +1046,15 @@ export const PlacementGuaranteed = () => {
             <div className="md:hidden space-y-3">
               {CERTIFICATIONS_EXPOSURE.map((row, i) => (
                 <Reveal key={row.name} delay={i * 60}>
-                  <div className="rounded-2xl border border-slate-200/90 bg-white p-4.5 shadow-2xs space-y-2.5">
+                  <div className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-2xs space-y-2">
                     <div className="flex items-start justify-between gap-2">
-                      <div>
-                        <div className="font-extrabold text-base text-[#061A36]">{row.name}</div>
-                        {"subtitle" in row && row.subtitle && (
-                          <div className="text-[11px] text-slate-500 font-medium">{row.subtitle}</div>
-                        )}
-                      </div>
-                      <span className="px-2 py-0.5 rounded-md text-[11px] font-bold bg-slate-100 text-[#061A36] border border-slate-200 shrink-0">
+                      <div className="font-extrabold text-base text-[#061A36]">{row.name}</div>
+                      <span className="px-2.5 py-0.5 rounded-md text-xs font-bold bg-slate-100 text-[#061A36] border border-slate-200 shrink-0">
                         {row.body}
                       </span>
                     </div>
 
-                    <div className="text-xs text-slate-600 leading-relaxed">
+                    <div className="text-xs text-slate-600">
                       {row.focus}
                     </div>
 
@@ -1083,8 +1069,8 @@ export const PlacementGuaranteed = () => {
               ))}
             </div>
 
-            <p className="text-xs text-slate-500 mt-5 text-center">
-              Joint ICOFP &amp; AIMA certification is awarded upon successful program completion.
+            <p className="text-xs text-slate-500 mt-4 text-center">
+              Joint certification awarded by AIMA &amp; ICOFP on program completion.
             </p>
           </div>
         </section>
