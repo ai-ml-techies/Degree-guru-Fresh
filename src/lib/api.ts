@@ -226,7 +226,9 @@ export async function submitLead(payload: LeadPayload): Promise<CounselingResult
     dateTime: nowIst,
     formHeading: payload.formHeading || 'Check if you qualify (Bajaj Capital ACWM Programme)',
     name: payload.name,
-    phone: payload.phone,
+    phone: (payload.phone && (payload.phone.startsWith('+') || payload.phone.startsWith('=')))
+      ? "'" + payload.phone
+      : (payload.phone || ''),
     email: payload.email || '',
     city: payload.city || '',
     age: payload.age || '',

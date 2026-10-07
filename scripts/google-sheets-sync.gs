@@ -77,12 +77,17 @@ function doPost(e) {
 
     var now = Utilities.formatDate(new Date(), "Asia/Kolkata", "dd MMM yyyy, hh:mm a") + " IST";
 
+    var phoneVal = data.phone ? String(data.phone).trim() : "";
+    if (phoneVal.charAt(0) === "+" || phoneVal.charAt(0) === "=") {
+      phoneVal = "'" + phoneVal;
+    }
+
     sheet.appendRow([
       data.leadId || ("DG-" + Utilities.formatDate(new Date(), "Asia/Kolkata", "yyyyMMdd-") + Math.floor(1000 + Math.random() * 9000)),
       data.dateTime || now,
       data.formHeading || "Enquiry Form",
       data.name || "",
-      data.phone || "",
+      phoneVal,
       data.email || "",
       data.city || "",
       data.age || "",

@@ -221,36 +221,41 @@ class ContactController extends Controller
         if (!empty($cleanWaNumber)) {
             $waMsg = urlencode("Hello {$name}, connecting with you from Degree Guru regarding your application.");
             $waUrl = "https://wa.me/{$cleanWaNumber}?text={$waMsg}";
-            $waButton = "<a href='{$waUrl}' target='_blank' style='display:inline-block; margin-left:10px; padding:4px 10px; background-color:#25D366; color:#ffffff; font-size:12px; font-weight:700; text-decoration:none; border-radius:6px; vertical-align:middle;'>WhatsApp</a>";
+            $waButton = "<a href='{$waUrl}' target='_blank' style='display:inline-block; margin-left:6px; padding:2px 7px; background-color:#25D366; color:#ffffff; font-size:11px; font-weight:700; text-decoration:none; border-radius:4px; vertical-align:middle;'>WhatsApp</a>";
         }
 
+        $thStyle = "padding:7px 8px; width:26%; min-width:76px; background:#f8fafc; color:#64748b; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.3px; border-bottom:1px solid #e2e8f0; vertical-align:middle; white-space:nowrap;";
+        $thTopStyle = "padding:7px 8px; width:26%; min-width:76px; background:#f8fafc; color:#64748b; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.3px; border-bottom:1px solid #e2e8f0; vertical-align:top; white-space:nowrap;";
+        $tdStyle = "padding:7px 10px; width:74%; border-bottom:1px solid #e2e8f0; color:#0f172a; font-size:13px; font-weight:600; word-break:break-word; vertical-align:middle;";
+        $tdTopStyle = "padding:7px 10px; width:74%; border-bottom:1px solid #e2e8f0; color:#1e293b; font-size:12px; line-height:1.45; word-break:break-word; vertical-align:top;";
+
         $rows = [];
-        $rows[] = "<tr><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; background:#f8fafc; color:#64748b; font-size:13px; font-weight:600; width:35%;'>Name</td><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; color:#0f172a; font-size:14px; font-weight:700;'>{$name}</td></tr>";
-        $rows[] = "<tr><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; background:#f8fafc; color:#64748b; font-size:13px; font-weight:600;'>Phone</td><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; color:#0f172a; font-size:14px; font-weight:700;'><a href='tel:{$phone}' style='color:#0f172a; text-decoration:none;'>{$phone}</a>{$waButton}</td></tr>";
+        $rows[] = "<tr><td style='{$thStyle}'>Name</td><td style='{$tdStyle} font-size:14px; font-weight:700;'>{$name}</td></tr>";
+        $rows[] = "<tr><td style='{$thStyle}'>Phone</td><td style='{$tdStyle}'><a href='tel:{$phone}' style='color:#0f172a; text-decoration:none; font-weight:700;'>{$phone}</a>{$waButton}</td></tr>";
         
         if (!empty($email)) {
-            $rows[] = "<tr><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; background:#f8fafc; color:#64748b; font-size:13px; font-weight:600;'>Email</td><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; color:#0f172a; font-size:14px;'><a href='mailto:{$email}' style='color:#2563eb; text-decoration:none;'>{$email}</a></td></tr>";
+            $rows[] = "<tr><td style='{$thStyle}'>Email</td><td style='{$tdStyle}'><a href='mailto:{$email}' style='color:#2563eb; text-decoration:none; font-weight:500; word-break:break-all;'>{$email}</a></td></tr>";
         }
         if (!empty($city)) {
-            $rows[] = "<tr><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; background:#f8fafc; color:#64748b; font-size:13px; font-weight:600;'>City</td><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; color:#0f172a; font-size:14px;'>{$city}</td></tr>";
+            $rows[] = "<tr><td style='{$thStyle}'>City</td><td style='{$tdStyle}'>{$city}</td></tr>";
         }
         if (!empty($age)) {
-            $rows[] = "<tr><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; background:#f8fafc; color:#64748b; font-size:13px; font-weight:600;'>Age</td><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; color:#0f172a; font-size:14px;'>{$age}</td></tr>";
+            $rows[] = "<tr><td style='{$thStyle}'>Age</td><td style='{$tdStyle}'>{$age}</td></tr>";
         }
         if (!empty($graduate)) {
-            $rows[] = "<tr><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; background:#f8fafc; color:#64748b; font-size:13px; font-weight:600;'>Qualification</td><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; color:#0f172a; font-size:14px;'>{$graduate}</td></tr>";
+            $rows[] = "<tr><td style='{$thStyle}'>Qualification</td><td style='{$tdStyle}'>{$graduate}</td></tr>";
         }
         if (!empty($status)) {
-            $rows[] = "<tr><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; background:#f8fafc; color:#64748b; font-size:13px; font-weight:600;'>Experience</td><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; color:#0f172a; font-size:14px;'>{$status}</td></tr>";
+            $rows[] = "<tr><td style='{$thStyle}'>Experience</td><td style='{$tdStyle}'>{$status}</td></tr>";
         }
         if (!empty($program)) {
-            $rows[] = "<tr><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; background:#f8fafc; color:#64748b; font-size:13px; font-weight:600;'>Program</td><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; color:#0f172a; font-size:13px;'>{$program}</td></tr>";
+            $rows[] = "<tr><td style='{$thTopStyle}'>Program</td><td style='{$tdTopStyle}'>{$program}</td></tr>";
         }
         if (!empty($formHeading)) {
-            $rows[] = "<tr><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; background:#f8fafc; color:#64748b; font-size:13px; font-weight:600;'>Form Source</td><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; color:#0f172a; font-size:13px;'>{$formHeading} (" . ($source ?: 'website') . ")</td></tr>";
+            $rows[] = "<tr><td style='{$thTopStyle}'>Form Source</td><td style='{$tdTopStyle} color:#64748b;'>{$formHeading}" . ($source ? " ({$source})" : "") . "</td></tr>";
         }
-        $rows[] = "<tr><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; background:#f8fafc; color:#64748b; font-size:13px; font-weight:600;'>Lead ID</td><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; color:#64748b; font-size:13px;'>{$leadId}</td></tr>";
-        $rows[] = "<tr><td style='padding:9px 12px; background:#f8fafc; color:#64748b; font-size:13px; font-weight:600;'>Date & Time</td><td style='padding:9px 12px; color:#0f172a; font-size:13px;'>" . $this->getIstDateTime()->format('d M Y, h:i A') . " IST</td></tr>";
+        $rows[] = "<tr><td style='{$thStyle}'>Lead ID</td><td style='{$tdStyle} color:#64748b; font-family:monospace; font-size:11.5px;'>{$leadId}</td></tr>";
+        $rows[] = "<tr><td style='{$thStyle} border-bottom:none;'>Date & Time</td><td style='{$tdStyle} border-bottom:none; color:#047857; font-weight:700;'>" . $this->getIstDateTime()->format('d M Y, h:i A') . " IST</td></tr>";
 
         $rowsHtml = implode("\n", $rows);
 
@@ -258,18 +263,17 @@ class ContactController extends Controller
 <html>
 <head>
   <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <title>{$subject}</title>
 </head>
-<body style='font-family:-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif; background:#f8fafc; margin:0; padding:20px; color:#0f172a;'>
-  <div style='max-width:540px; margin:0 auto; background:#ffffff; border-radius:10px; border:1px solid #e2e8f0; overflow:hidden;'>
-    <div style='background:#061A36; padding:16px 20px;'>
-      <h2 style='margin:0; color:#ffffff; font-size:17px; font-weight:700;'>New Lead Notification</h2>
+<body style='font-family:-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif; background-color:#f1f5f9; margin:0; padding:8px 4px; color:#0f172a;'>
+  <div style='max-width:560px; margin:0 auto; background:#ffffff; border-radius:8px; border:1px solid #cbd5e1; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.06);'>
+    <div style='background:#061A36; padding:12px 14px;'>
+      <h2 style='margin:0; color:#ffffff; font-size:15px; font-weight:700; letter-spacing:0.3px;'>New Lead Notification</h2>
     </div>
-    <div style='padding:16px 20px;'>
-      <table width='100%' cellpadding='0' cellspacing='0' style='border-collapse:collapse;'>
-        {$rowsHtml}
-      </table>
-    </div>
+    <table width='100%' cellpadding='0' cellspacing='0' style='border-collapse:collapse; width:100%; table-layout:fixed;'>
+      {$rowsHtml}
+    </table>
   </div>
 </body>
 </html>";
@@ -324,12 +328,16 @@ class ContactController extends Controller
         }
 
         try {
+            $rawPhone = trim((string)($leadData['phone'] ?? ''));
+            // Prefix with single-quote if starts with + or = so Google Sheets treats it as plain text instead of formula
+            $sheetPhone = (str_starts_with($rawPhone, '+') || str_starts_with($rawPhone, '=')) ? ("'" . $rawPhone) : $rawPhone;
+
             $payload = json_encode([
                 'leadId'      => $leadData['id'] ?? '',
                 'dateTime'    => $this->getIstDateTime()->format('d M Y, h:i A') . ' IST',
                 'formHeading' => $leadData['form_heading'] ?? '',
                 'name'        => $leadData['name'] ?? '',
-                'phone'       => $leadData['phone'] ?? '',
+                'phone'       => $sheetPhone,
                 'email'       => $leadData['email'] ?? '',
                 'city'        => $leadData['city'] ?? '',
                 'age'         => $leadData['age'] ?? '',
