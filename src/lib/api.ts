@@ -193,7 +193,9 @@ export type LeadPayload = {
 };
 
 export async function sendLeadToGoogleSheet(payload: Record<string, any>): Promise<void> {
-  const webhookUrl = (import.meta.env.VITE_GOOGLE_SHEET_WEBHOOK_URL as string) || '';
+  const webhookUrl =
+    (import.meta.env.VITE_GOOGLE_SHEET_WEBHOOK_URL as string) ||
+    'https://script.google.com/macros/s/AKfycbzfzshHend3a3_L6CtT2q_MkqCgXcumcLAtZEvWi84MKhiwQgZgT1y693kZ0-GLWv2_/exec';
   if (!webhookUrl) return;
 
   try {
