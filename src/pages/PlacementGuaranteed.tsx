@@ -175,7 +175,47 @@ const JOURNEY = [
   { when: "Month 1 – 2.5", title: "Classroom training", text: "240 hours — 190 with ICOFP, 50 with AIMA. Includes NISM Series V-A preparation.", tag: "ACWM certification", tone: "navy" },
   { when: "Month 3 – 6", title: "Bajaj Capital internship", text: "Four months inside a live Bajaj Capital branch.", tag: "₹15,000 / month stipend", tone: "green" },
   { when: "Month 6", title: "Wealth Officer", text: "Full-time role once the completion criteria are met.", tag: "₹4.2 – ₹4.8 LPA", tone: "green" },
-  { when: "Month 12", title: "Retention bonus", text: "After 12 months of full-time employment, subject to applicable terms.", tag: "₹85,000", tone: "gold" },
+  { when: "Month 12", title: "Retention bonus", text: "After 12 months of full-time employment.", tag: "₹85,000", tone: "gold" },
+];
+
+const CERTIFICATIONS_EXPOSURE = [
+  {
+    name: "CFP Level 1 & 2",
+    type: "Global Professional Charter",
+    focus: "Comprehensive personal financial planning, tax & retirement advisory.",
+    body: "FPSB India / FPSB USA",
+    typeStyle: "bg-blue-50 text-[#1557D6] border-blue-200/80",
+  },
+  {
+    name: "NISM Series V-A",
+    type: "Mandatory License",
+    focus: "Mutual fund sales, distribution compliance & investor advisory operations.",
+    body: "SEBI / NISM",
+    typeStyle: "bg-emerald-50 text-emerald-700 border-emerald-200/80",
+  },
+  {
+    name: "NISM Series XXI-B",
+    type: "Mandatory License",
+    focus: "High-level Portfolio Management Services (PMS) operations & regulatory compliance.",
+    body: "SEBI / NISM",
+    typeStyle: "bg-emerald-50 text-emerald-700 border-emerald-200/80",
+  },
+  {
+    name: "BQP",
+    subtitle: "Broker Qualified Person",
+    type: "Mandatory License",
+    focus: "Insurance advisory, risk evaluation & corporate agency regulations.",
+    body: "IRDAI",
+    typeStyle: "bg-emerald-50 text-emerald-700 border-emerald-200/80",
+  },
+  {
+    name: "Joint ICOFP & AIMA",
+    subtitle: "ACWM Certification",
+    type: "Professional Diploma",
+    focus: "Practical wealth management execution, live casework & job readiness.",
+    body: "ICOFP & AIMA",
+    typeStyle: "bg-indigo-50 text-indigo-700 border-indigo-200/80",
+  },
 ];
 
 const MODULES = [
@@ -544,9 +584,9 @@ export const PlacementGuaranteed = () => {
         <link rel="canonical" href="https://degreeguru.in/placement-guaranteed" />
       </Helmet>
 
-      <div className="min-h-screen bg-[#F7F9FC] text-[#061A36] font-sans antialiased pb-20 md:pb-0 overflow-x-hidden">
+      <div className="min-h-screen bg-[#F7F9FC] text-[#061A36] font-sans antialiased pb-20 md:pb-0 overflow-x-clip">
         {/* HEADER */}
-        <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-2xs">
+        <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-2xs">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
             <div className="flex items-center gap-3 sm:gap-4">
               <Link to="/" className="flex items-center">
@@ -910,49 +950,8 @@ export const PlacementGuaranteed = () => {
         <section className="pt-10 pb-16 sm:pt-12 sm:pb-20 bg-white relative overflow-hidden">
           <div className="absolute top-1/2 -right-40 w-96 h-96 bg-blue-100/40 rounded-full blur-3xl pointer-events-none" />
           <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
-            <Reveal className="text-center max-w-2xl mx-auto mb-6 sm:mb-8">
+            <Reveal className="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
               <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight">BUILT AROUND REAL INSTITUTIONS.</h2>
-            </Reveal>
-
-            {/* CERTIFICATION EXPOSURE */}
-            <Reveal delay={80} className="mb-8 sm:mb-10">
-              <div className="rounded-2xl sm:rounded-3xl border border-slate-200/90 bg-[#F7F9FC]/90 backdrop-blur-md p-4.5 sm:p-6 shadow-xs">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-200/70">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-[#1557D6]" />
-                    <h3 className="text-xs sm:text-sm font-extrabold text-[#061A36] uppercase tracking-wider">
-                      Certification Exposure
-                    </h3>
-                  </div>
-                  <span className="text-[11px] sm:text-xs text-slate-500 font-medium">
-                    Plus a joint ICOFP &amp; AIMA certification on completion
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-3">
-                  {[
-                    "CFP Level 1",
-                    "CFP Level 2",
-                    "NISM Series V-A",
-                    "NISM Series XXI-B",
-                    "BQP",
-                  ].map((cert, idx) => (
-                    <div
-                      key={cert}
-                      className={`flex items-center gap-2.5 px-3.5 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:border-[#1557D6]/40 hover:shadow-xs hover:-translate-y-0.5 transition-all group ${
-                        idx === 4 ? "col-span-2 sm:col-span-1 justify-center sm:justify-start" : ""
-                      }`}
-                    >
-                      <div className="w-6 h-6 rounded-lg bg-blue-50 text-[#1557D6] flex items-center justify-center shrink-0 group-hover:bg-[#1557D6] group-hover:text-white transition-colors">
-                        <CheckCircle2 className="w-3.5 h-3.5" />
-                      </div>
-                      <span className="text-xs sm:text-sm font-bold text-[#061A36] tracking-tight whitespace-nowrap">
-                        {cert}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
             </Reveal>
 
             <div className="grid lg:grid-cols-12 gap-8 items-start">
@@ -991,6 +990,102 @@ export const PlacementGuaranteed = () => {
                 <p className="text-xs text-slate-500 mt-3 text-center">Advanced Certification in Wealth Management (ACWM)</p>
               </Reveal>
             </div>
+          </div>
+        </section>
+
+        {/* CERTIFICATION EXPOSURE (AUTHORITY REGULATORY CREDENTIALS) */}
+        <section className="pt-10 pb-14 sm:pt-12 sm:pb-18 bg-[#F7F9FC] border-t border-slate-200 relative overflow-hidden">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
+            <Reveal className="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
+              <span className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-bold tracking-wider text-[#1557D6] uppercase bg-blue-50 border border-blue-100 px-3 py-1 rounded-full mb-3">
+                <ShieldCheck size={14} className="text-[#1557D6]" />
+                AUTHORITY-APPROVED CREDENTIALS
+              </span>
+              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight">CERTIFICATION EXPOSURE</h2>
+              <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+                Industry-recognized licenses and professional charters integrated into your curriculum.
+              </p>
+            </Reveal>
+
+            {/* Desktop Table View */}
+            <Reveal delay={100} className="hidden md:block">
+              <div className="rounded-3xl border border-slate-200/90 bg-white shadow-xs overflow-hidden">
+                <div className="grid grid-cols-12 gap-4 px-6 py-4 bg-slate-50/90 border-b border-slate-200 text-xs font-bold text-slate-500 uppercase tracking-wider">
+                  <div className="col-span-3">Certification</div>
+                  <div className="col-span-3">Type</div>
+                  <div className="col-span-4">Primary Focus</div>
+                  <div className="col-span-2 text-right">Issuing / Regulatory Body</div>
+                </div>
+
+                <div className="divide-y divide-slate-100">
+                  {CERTIFICATIONS_EXPOSURE.map((row) => (
+                    <div
+                      key={row.name}
+                      className="grid grid-cols-12 gap-4 px-6 py-4.5 items-center hover:bg-slate-50/60 transition-colors"
+                    >
+                      <div className="col-span-3">
+                        <div className="font-extrabold text-sm sm:text-base text-[#061A36]">{row.name}</div>
+                        {"subtitle" in row && row.subtitle && (
+                          <div className="text-[11px] text-slate-500 font-medium">{row.subtitle}</div>
+                        )}
+                      </div>
+
+                      <div className="col-span-3">
+                        <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold border ${row.typeStyle}`}>
+                          {row.type}
+                        </span>
+                      </div>
+
+                      <div className="col-span-4 text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                        {row.focus}
+                      </div>
+
+                      <div className="col-span-2 text-right">
+                        <span className="inline-block px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 text-[#061A36] border border-slate-200/80">
+                          {row.body}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+
+            {/* Mobile Stacked Cards View */}
+            <div className="md:hidden space-y-3">
+              {CERTIFICATIONS_EXPOSURE.map((row, i) => (
+                <Reveal key={row.name} delay={i * 60}>
+                  <div className="rounded-2xl border border-slate-200/90 bg-white p-4.5 shadow-2xs space-y-2.5">
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <div className="font-extrabold text-base text-[#061A36]">{row.name}</div>
+                        {"subtitle" in row && row.subtitle && (
+                          <div className="text-[11px] text-slate-500 font-medium">{row.subtitle}</div>
+                        )}
+                      </div>
+                      <span className="px-2 py-0.5 rounded-md text-[11px] font-bold bg-slate-100 text-[#061A36] border border-slate-200 shrink-0">
+                        {row.body}
+                      </span>
+                    </div>
+
+                    <div className="text-xs text-slate-600 leading-relaxed">
+                      {row.focus}
+                    </div>
+
+                    <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
+                      <span className="text-[11px] text-slate-400 font-medium">Type</span>
+                      <span className={`px-2 py-0.5 rounded-md text-[11px] font-bold border ${row.typeStyle}`}>
+                        {row.type}
+                      </span>
+                    </div>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+
+            <p className="text-xs text-slate-500 mt-5 text-center">
+              Joint ICOFP &amp; AIMA certification is awarded upon successful program completion.
+            </p>
           </div>
         </section>
 
@@ -1118,29 +1213,32 @@ export const PlacementGuaranteed = () => {
                     </span>
                   </div>
 
-                  {/* Highlighted Main Figure */}
-                  <div className="text-center py-2">
-                    <div className="text-5xl sm:text-6xl font-black text-[#F4B942] tracking-tight drop-shadow-sm">
-                      ₹32,000
-                    </div>
-                  </div>
-
                   {/* Math Breakdown Table */}
-                  <div className="mt-4 p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md space-y-2 text-xs text-slate-200">
+                  <div className="p-4 sm:p-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md space-y-3 text-xs sm:text-sm text-slate-200">
                     <div className="flex justify-between items-center">
                       <span className="text-slate-300">Total Program Fee (incl. 18% GST):</span>
-                      <span className="font-bold text-white">₹1,77,000</span>
+                      <span className="font-bold text-white text-sm sm:text-base">₹1,77,000</span>
                     </div>
                     <div className="flex justify-between items-center text-emerald-300">
-                      <span>Internship Stipend (₹15,000/mo):</span>
-                      <span className="font-bold">− ₹60,000</span>
+                      <span>Internship Stipend (4 months × ₹15k):</span>
+                      <span className="font-bold text-sm sm:text-base">− ₹60,000</span>
                     </div>
                     <div className="flex justify-between items-center text-emerald-300">
                       <span>Retention Bonus (after 12 months):</span>
-                      <span className="font-bold">− ₹85,000</span>
+                      <span className="font-bold text-sm sm:text-base">− ₹85,000</span>
                     </div>
-                    <div className="pt-2 border-t border-white/15 flex justify-end items-center font-extrabold text-sm text-[#F4B942]">
-                      <span className="text-base">₹32,000</span>
+                    <div className="pt-4 mt-2 border-t border-white/20 flex flex-col sm:flex-row sm:items-baseline justify-between gap-1.5">
+                      <div>
+                        <div className="text-xs sm:text-sm font-black uppercase tracking-wider text-[#F4B942]">
+                          Effective Net Out-of-Pocket
+                        </div>
+                        <div className="text-[11px] text-slate-300">
+                          Total investment after stipend &amp; retention bonus
+                        </div>
+                      </div>
+                      <div className="text-4xl sm:text-5xl font-black text-[#F4B942] tracking-tight drop-shadow-sm sm:text-right">
+                        ₹32,000
+                      </div>
                     </div>
                   </div>
                 </div>

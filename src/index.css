@@ -133,8 +133,8 @@
   html {
     scroll-behavior: auto;
     -webkit-text-size-adjust: 100%;
-    /* Prevent iOS rubber-band overflow-x */
-    overflow-x: hidden;
+    /* Prevent iOS rubber-band overflow-x without breaking position sticky */
+    overflow-x: clip;
   }
   body {
     @apply bg-background text-foreground antialiased;
