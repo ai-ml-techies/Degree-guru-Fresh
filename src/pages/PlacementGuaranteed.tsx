@@ -182,37 +182,42 @@ const CERTIFICATIONS_EXPOSURE = [
   {
     name: "CFP Level 1 & 2",
     type: "Global Charter",
-    focus: "Personal financial planning, tax & wealth management.",
     body: "FPSB India",
     typeStyle: "bg-blue-50 text-[#1557D6] border-blue-200/80",
+    pitch: "The gold standard in financial planning recognized across 27+ countries. Equips you to structure high-net-worth client portfolios, tax strategies, and retirement plans.",
+    edge: "Global HNW Wealth Advisory",
   },
   {
     name: "NISM Series V-A",
     type: "Mandatory License",
-    focus: "Mutual funds sales & investor advisory.",
-    body: "NISM",
+    body: "NISM (SEBI)",
     typeStyle: "bg-emerald-50 text-emerald-700 border-emerald-200/80",
+    pitch: "The statutory regulatory license mandated by SEBI to advise on and distribute mutual funds in India. You enter Bajaj Capital legally qualified to manage investments.",
+    edge: "Mandatory for Wealth Officers",
   },
   {
     name: "NISM Series XXI-B",
     type: "Mandatory License",
-    focus: "Portfolio Management Services (PMS).",
-    body: "NISM",
+    body: "NISM (SEBI)",
     typeStyle: "bg-emerald-50 text-emerald-700 border-emerald-200/80",
+    pitch: "Specialized regulatory qualification for Portfolio Management Services (PMS), authorizing you to advise affluent investors on high-ticket customized equity portfolios.",
+    edge: "Unlocks Portfolio Management (PMS)",
   },
   {
     name: "BQP",
     type: "Mandatory License",
-    focus: "Insurance advisory & risk planning.",
     body: "IRDAI",
     typeStyle: "bg-emerald-50 text-emerald-700 border-emerald-200/80",
+    pitch: "Official Broker Qualified Person qualification under IRDAI regulations, empowering you to consult corporate and private clients on comprehensive risk and life protection.",
+    edge: "Authorized Insurance & Risk Advisory",
   },
   {
-    name: "Joint ICOFP & AIMA",
-    type: "Professional Diploma",
-    focus: "Practical wealth management & live casework.",
-    body: "ICOFP & AIMA",
+    name: "Joint ACWM",
+    type: "Executive Diploma",
+    body: "AIMA & ICOFP",
     typeStyle: "bg-indigo-50 text-indigo-700 border-indigo-200/80",
+    pitch: "Co-certified by India's apex management body (AIMA) and ICOFP. Validates 240 hours of rigorous practical training, live casework, and pre-placement readiness.",
+    edge: "Co-Certified by Apex National Body",
   },
 ];
 
@@ -992,84 +997,81 @@ export const PlacementGuaranteed = () => {
         </section>
 
         {/* CERTIFICATION EXPOSURE */}
-        <section className="pt-10 pb-14 sm:pt-12 sm:pb-16 bg-[#F7F9FC] border-t border-slate-200 relative overflow-hidden">
+        <section className="pt-10 pb-14 sm:pt-12 sm:pb-18 bg-[#F7F9FC] border-t border-slate-200 relative overflow-hidden">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
-            <Reveal className="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
+            <Reveal className="text-center max-w-2xl mx-auto mb-8 sm:mb-12">
               <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight">CERTIFICATION EXPOSURE</h2>
-              <p className="text-xs sm:text-sm text-slate-600 mt-2">
-                Key professional certifications and licenses covered during the program.
+              <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+                Key professional credentials and regulatory licenses built into your curriculum to make you career-ready from Day 1.
               </p>
             </Reveal>
 
-            {/* Desktop Table View */}
-            <Reveal delay={100} className="hidden md:block">
-              <div className="rounded-3xl border border-slate-200/90 bg-white shadow-xs overflow-hidden">
-                <div className="grid grid-cols-12 gap-4 px-6 py-3.5 bg-slate-50/80 border-b border-slate-200 text-xs font-bold text-slate-500 uppercase tracking-wider">
-                  <div className="col-span-3">Certification</div>
-                  <div className="col-span-3">Type</div>
-                  <div className="col-span-4">Primary Focus</div>
-                  <div className="col-span-2 text-right">Issued By</div>
-                </div>
-
-                <div className="divide-y divide-slate-100">
-                  {CERTIFICATIONS_EXPOSURE.map((row) => (
-                    <div
-                      key={row.name}
-                      className="grid grid-cols-12 gap-4 px-6 py-3.5 items-center hover:bg-slate-50/60 transition-colors"
-                    >
-                      <div className="col-span-3">
-                        <div className="font-extrabold text-sm sm:text-base text-[#061A36]">{row.name}</div>
-                      </div>
-
-                      <div className="col-span-3">
-                        <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold border ${row.typeStyle}`}>
-                          {row.type}
+            {/* Intuitive Credential Cards: 3 on Top Row, 2 Centered on Bottom Row */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {CERTIFICATIONS_EXPOSURE.slice(0, 3).map((item, i) => (
+                <Reveal key={item.name} delay={i * 80}>
+                  <div className="h-full rounded-2xl sm:rounded-3xl bg-white border border-slate-200/90 p-5 sm:p-6 shadow-xs hover:border-[#1557D6]/40 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
+                    <div>
+                      <div className="flex items-center justify-between gap-2 mb-3.5">
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-bold border ${item.typeStyle}`}>
+                          {item.type}
+                        </span>
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-slate-100 text-[#061A36] border border-slate-200">
+                          <span className="text-slate-400 font-normal">Issued by</span> {item.body}
                         </span>
                       </div>
 
-                      <div className="col-span-4 text-xs sm:text-sm text-slate-600 font-normal">
-                        {row.focus}
-                      </div>
+                      <h3 className="text-lg sm:text-xl font-extrabold text-[#061A36] tracking-tight group-hover:text-[#1557D6] transition-colors">
+                        {item.name}
+                      </h3>
 
-                      <div className="col-span-2 text-right">
-                        <span className="inline-block px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 text-[#061A36] border border-slate-200/80">
-                          {row.body}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </Reveal>
-
-            {/* Mobile Stacked Cards View */}
-            <div className="md:hidden space-y-3">
-              {CERTIFICATIONS_EXPOSURE.map((row, i) => (
-                <Reveal key={row.name} delay={i * 60}>
-                  <div className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-2xs space-y-2">
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="font-extrabold text-base text-[#061A36]">{row.name}</div>
-                      <span className="px-2.5 py-0.5 rounded-md text-xs font-bold bg-slate-100 text-[#061A36] border border-slate-200 shrink-0">
-                        {row.body}
-                      </span>
+                      <p className="text-xs sm:text-sm text-slate-600 mt-2.5 leading-relaxed">
+                        {item.pitch}
+                      </p>
                     </div>
 
-                    <div className="text-xs text-slate-600">
-                      {row.focus}
-                    </div>
-
-                    <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
-                      <span className="text-[11px] text-slate-400 font-medium">Type</span>
-                      <span className={`px-2 py-0.5 rounded-md text-[11px] font-bold border ${row.typeStyle}`}>
-                        {row.type}
-                      </span>
+                    <div className="mt-4 pt-3.5 border-t border-slate-100 flex items-center gap-2 text-xs font-semibold text-emerald-800 bg-emerald-50/60 -mx-1 px-3 py-1.5 rounded-xl border border-emerald-200/50">
+                      <CheckCircle2 size={14} className="text-emerald-600 shrink-0" />
+                      <span className="truncate">{item.edge}</span>
                     </div>
                   </div>
                 </Reveal>
               ))}
             </div>
 
-            <p className="text-xs text-slate-500 mt-4 text-center">
+            <div className="grid md:grid-cols-2 gap-4 sm:gap-6 max-w-4xl mx-auto mt-4 sm:mt-6">
+              {CERTIFICATIONS_EXPOSURE.slice(3, 5).map((item, i) => (
+                <Reveal key={item.name} delay={(i + 3) * 80}>
+                  <div className="h-full rounded-2xl sm:rounded-3xl bg-white border border-slate-200/90 p-5 sm:p-6 shadow-xs hover:border-[#1557D6]/40 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
+                    <div>
+                      <div className="flex items-center justify-between gap-2 mb-3.5">
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-bold border ${item.typeStyle}`}>
+                          {item.type}
+                        </span>
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-slate-100 text-[#061A36] border border-slate-200">
+                          <span className="text-slate-400 font-normal">Issued by</span> {item.body}
+                        </span>
+                      </div>
+
+                      <h3 className="text-lg sm:text-xl font-extrabold text-[#061A36] tracking-tight group-hover:text-[#1557D6] transition-colors">
+                        {item.name}
+                      </h3>
+
+                      <p className="text-xs sm:text-sm text-slate-600 mt-2.5 leading-relaxed">
+                        {item.pitch}
+                      </p>
+                    </div>
+
+                    <div className="mt-4 pt-3.5 border-t border-slate-100 flex items-center gap-2 text-xs font-semibold text-emerald-800 bg-emerald-50/60 -mx-1 px-3 py-1.5 rounded-xl border border-emerald-200/50">
+                      <CheckCircle2 size={14} className="text-emerald-600 shrink-0" />
+                      <span className="truncate">{item.edge}</span>
+                    </div>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+
+            <p className="text-xs text-slate-500 mt-6 text-center">
               Joint certification awarded by AIMA &amp; ICOFP on program completion.
             </p>
           </div>
