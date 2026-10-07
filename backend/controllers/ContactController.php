@@ -46,6 +46,7 @@ class ContactController extends Controller
 
     public function beforeAction($action): bool
     {
+        date_default_timezone_set('Asia/Kolkata');
         $this->enableCsrfValidation = false;
         if (Yii::$app->request->method === 'OPTIONS') {
             Yii::$app->response->statusCode = 200;

@@ -18,4 +18,11 @@ return array_merge([
     'username' => $envUser,
     'password' => $envPassword,
     'charset'  => $envCharset,
+    'on afterOpen' => function ($event) {
+        try {
+            $event->sender->createCommand("SET time_zone = '+05:30'")->execute();
+        } catch (\Throwable $e) {
+            // Ignore if timezone table not loaded on host
+        }
+    },
 ], $local);

@@ -47,7 +47,7 @@ return array_merge([
     'maxResumeBytes' => 5 * 1024 * 1024, // 5 MB
 
     // Google Sheets Integration (Google Apps Script Web App URL)
-    'googleSheetWebhookUrl' => getenv('GOOGLE_SHEET_WEBHOOK_URL') ?: 'https://script.google.com/macros/s/AKfycbzfzshHend3a3_L6CtT2q_MkqCgXcumcLAtZEvWi84MKhiwQgZgT1y693kZ0-GLWv2_/exec',
+    'googleSheetWebhookUrl' => getenv('GOOGLE_SHEET_WEBHOOK_URL') ?: 'https://script.google.com/macros/s/AKfycbwITv3H67pbpQKQ5gwWugDGGuyMl1StpA39EU7FX4pKjndx9aQpyRcVEQNJDGxSepWP/exec',
 
     // SMS Gateway (2Factor.in)
     'twoFactorApiKey' => getenv('TWOFACTOR_API_KEY') ?: getenv('2FACTOR_API_KEY') ?: 'a88bbcc7-c01c-11f1-af74-0200cd936042',

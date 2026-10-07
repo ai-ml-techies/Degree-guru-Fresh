@@ -91,6 +91,15 @@ $config = [
             'class' => \yii\caching\FileCache::class,
         ],
 
+        'formatter' => [
+            'class' => 'yii\i18n\Formatter',
+            'timeZone' => 'Asia/Kolkata',
+            'defaultTimeZone' => 'Asia/Kolkata',
+            'dateFormat' => 'php:d M Y',
+            'datetimeFormat' => 'php:d M Y, h:i A',
+            'timeFormat' => 'php:h:i A',
+        ],
+
         'user' => [
             'identityClass'   => \app\models\User::class,
             'enableAutoLogin' => true,
