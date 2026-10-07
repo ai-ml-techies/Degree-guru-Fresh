@@ -171,7 +171,7 @@ const Reveal: React.FC<{ children: React.ReactNode; delay?: number; className?: 
 /* ───────────── Content ───────────── */
 const JOURNEY = [
   { when: "Week 0", title: "Selection", text: "Eligibility check and a panel interview with Bajaj Capital.", tag: "₹500 registration", tone: "navy" },
-  { when: "Before training", title: "Pre-Placement Offer", text: "A written conditional offer from Bajaj Capital. The program fee is not due until you hold it.", tag: "Fee starts only here", tone: "blue" },
+  { when: "Before training", title: "Pre-Placement Offer", text: "A written Pre-Placement Offer from Bajaj Capital. The program fee starts only after you accept the offer.", tag: "Fee starts after offer acceptance", tone: "blue" },
   { when: "Month 1 – 2.5", title: "Classroom training", text: "240 hours — 190 with ICOFP, 50 with AIMA. Includes NISM Series V-A preparation.", tag: "ACWM certification", tone: "navy" },
   { when: "Month 3 – 6", title: "Bajaj Capital internship", text: "Four months inside a live Bajaj Capital branch.", tag: "₹15,000 / month stipend", tone: "green" },
   { when: "Month 6", title: "Wealth Officer", text: "Full-time role once the completion criteria are met.", tag: "₹4.2 – ₹4.8 LPA", tone: "green" },
@@ -210,7 +210,7 @@ const FAQS = [
   },
   {
     q: "When is the program fee payable?",
-    a: "The program fee is payable ONLY AFTER you receive your official written Pre-Placement Offer letter from Bajaj Capital. If you are not selected in the interview, you pay nothing. 0% EMI is also available.",
+    a: "The program fee is payable ONLY AFTER you receive and accept your official written Pre-Placement Offer letter from Bajaj Capital. If you are not selected in the interview or do not accept the offer, you pay nothing. 0% EMI is also available.",
   },
   {
     q: "What salary is offered after successful completion?",
@@ -910,8 +910,49 @@ export const PlacementGuaranteed = () => {
         <section className="pt-10 pb-16 sm:pt-12 sm:pb-20 bg-white relative overflow-hidden">
           <div className="absolute top-1/2 -right-40 w-96 h-96 bg-blue-100/40 rounded-full blur-3xl pointer-events-none" />
           <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
-            <Reveal className="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
+            <Reveal className="text-center max-w-2xl mx-auto mb-6 sm:mb-8">
               <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight">BUILT AROUND REAL INSTITUTIONS.</h2>
+            </Reveal>
+
+            {/* CERTIFICATION EXPOSURE */}
+            <Reveal delay={80} className="mb-8 sm:mb-10">
+              <div className="rounded-2xl sm:rounded-3xl border border-slate-200/90 bg-[#F7F9FC]/90 backdrop-blur-md p-4.5 sm:p-6 shadow-xs">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-200/70">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-[#1557D6]" />
+                    <h3 className="text-xs sm:text-sm font-extrabold text-[#061A36] uppercase tracking-wider">
+                      Certification Exposure
+                    </h3>
+                  </div>
+                  <span className="text-[11px] sm:text-xs text-slate-500 font-medium">
+                    Plus a joint ICOFP &amp; AIMA certification on completion
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-3">
+                  {[
+                    "CFP Level 1",
+                    "CFP Level 2",
+                    "NISM Series V-A",
+                    "NISM Series XXI-B",
+                    "BQP",
+                  ].map((cert, idx) => (
+                    <div
+                      key={cert}
+                      className={`flex items-center gap-2.5 px-3.5 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:border-[#1557D6]/40 hover:shadow-xs hover:-translate-y-0.5 transition-all group ${
+                        idx === 4 ? "col-span-2 sm:col-span-1 justify-center sm:justify-start" : ""
+                      }`}
+                    >
+                      <div className="w-6 h-6 rounded-lg bg-blue-50 text-[#1557D6] flex items-center justify-center shrink-0 group-hover:bg-[#1557D6] group-hover:text-white transition-colors">
+                        <CheckCircle2 className="w-3.5 h-3.5" />
+                      </div>
+                      <span className="text-xs sm:text-sm font-bold text-[#061A36] tracking-tight whitespace-nowrap">
+                        {cert}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </Reveal>
 
             <div className="grid lg:grid-cols-12 gap-8 items-start">
@@ -1050,7 +1091,7 @@ export const PlacementGuaranteed = () => {
                         </span>
                       </div>
                       <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                        Payable <strong>ONLY AFTER</strong> you receive your official written Pre-Placement Offer letter from Bajaj Capital.
+                        Payable <strong>ONLY AFTER</strong> you receive and accept your official written Pre-Placement Offer letter from Bajaj Capital.
                       </p>
                       <div className="mt-2 text-[11px] font-semibold text-slate-700 bg-white px-2.5 py-1 rounded-lg border border-slate-200">
                         0% interest EMI available.
