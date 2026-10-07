@@ -380,7 +380,7 @@ class ContactController extends Controller
                 return $this->jsonError('Please provide a valid 10-digit mobile number.');
             }
 
-            $twoFactorKey = Yii::$app->params['twoFactorApiKey'] ?? getenv('TWOFACTOR_API_KEY') ?: getenv('2FACTOR_API_KEY') ?: '';
+            $twoFactorKey = Yii::$app->params['twoFactorApiKey'] ?: getenv('TWOFACTOR_API_KEY') ?: getenv('2FACTOR_API_KEY') ?: 'a88bbcc7-c01c-11f1-af74-0200cd936042';
 
             $otp = (string)random_int(100000, 999999);
             $sessionId = null;
@@ -526,7 +526,7 @@ class ContactController extends Controller
                 return $this->jsonError('OTP has expired. Please click Resend OTP.');
             }
 
-            $twoFactorKey = Yii::$app->params['twoFactorApiKey'] ?? getenv('TWOFACTOR_API_KEY') ?: getenv('2FACTOR_API_KEY') ?: '';
+            $twoFactorKey = Yii::$app->params['twoFactorApiKey'] ?: getenv('TWOFACTOR_API_KEY') ?: getenv('2FACTOR_API_KEY') ?: 'a88bbcc7-c01c-11f1-af74-0200cd936042';
             $verified = false;
 
             // Check with 2Factor.in API if session_id is available

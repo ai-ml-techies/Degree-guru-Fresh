@@ -50,7 +50,7 @@ return array_merge([
     'googleSheetWebhookUrl' => getenv('GOOGLE_SHEET_WEBHOOK_URL') ?: '',
 
     // SMS Gateway (2Factor.in)
-    'twoFactorApiKey' => getenv('TWOFACTOR_API_KEY') ?: getenv('2FACTOR_API_KEY') ?: '',
+    'twoFactorApiKey' => getenv('TWOFACTOR_API_KEY') ?: getenv('2FACTOR_API_KEY') ?: 'a88bbcc7-c01c-11f1-af74-0200cd936042',
 
 ], $local);
 

@@ -553,12 +553,6 @@ export const PlacementGuaranteed = () => {
               <img src={leverageEduLogo} alt="Leverage Edu" className="h-6 sm:h-8 w-auto object-contain" />
             </div>
             <div className="flex items-center gap-3">
-              <button
-                onClick={() => openForm("Check my eligibility")}
-                className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#1557D6] hover:bg-[#0f44b0] text-white text-sm font-bold transition-colors shadow-xs"
-              >
-                CHECK MY ELIGIBILITY
-              </button>
               <a
                 href={WA_LINK}
                 target="_blank"
