@@ -1307,9 +1307,6 @@ export const PlacementGuaranteed = () => {
               <form onSubmit={submitDetails} className="space-y-3.5">
                 <div className="pr-10 mb-2">
                   <h3 className="text-2xl font-extrabold">{formHeading}</h3>
-                  <p className="text-xs sm:text-sm text-amber-800 bg-amber-50/90 border border-amber-200 rounded-xl p-2.5 mt-2 font-medium leading-relaxed">
-                    Fill only if you are a serious candidate who wants to enroll in the job guaranteed program with Bajaj Finance / Bajaj Capital.
-                  </p>
                 </div>
 
                 <div>
@@ -1398,7 +1395,7 @@ export const PlacementGuaranteed = () => {
                       className="mt-0.5 h-4 w-4 rounded border-slate-300 text-[#1557D6] focus:ring-[#1557D6] cursor-pointer shrink-0"
                     />
                     <span className="text-xs text-slate-700 font-medium leading-snug">
-                      I confirm I am a serious candidate who wants to enroll in the Job Guaranteed Program with Bajaj Finance / Bajaj Capital.
+                      I confirm I am a serious candidate who wants to enroll in the Job Guaranteed Program with Bajaj Capital.
                     </span>
                   </label>
                   {errors.serious && <p className="text-xs text-red-500 mt-1 font-semibold">{errors.serious}</p>}
