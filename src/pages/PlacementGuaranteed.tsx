@@ -23,6 +23,7 @@ import {
   ShieldCheck,
   Sparkles,
   Building2,
+  Award,
 } from "lucide-react";
 import { submitLead, sendSmsOtp, verifySmsOtp } from "@/lib/api";
 import { validateIndianMobile, validateMeaningfulName, validateMeaningfulEmail } from "@/lib/validation";
@@ -181,43 +182,33 @@ const JOURNEY = [
 const CERTIFICATIONS_EXPOSURE = [
   {
     name: "CFP Level 1 & 2",
-    type: "Global Charter",
-    body: "FPSB India",
-    typeStyle: "bg-blue-50 text-[#1557D6] border-blue-200/80",
-    pitch: "The gold standard in financial planning recognized across 27+ countries. Equips you to structure high-net-worth client portfolios, tax strategies, and retirement plans.",
-    edge: "Global HNW Wealth Advisory",
+    authority: "FPSB India",
+    subtitle: "Advanced Global Wealth Advisory Charter",
+    pitch: "Advanced international credential recognized across 27+ countries, delivering high-level expertise in comprehensive financial planning, taxation, and wealth advisory for affluent clients.",
   },
   {
     name: "NISM Series V-A",
-    type: "Mandatory License",
-    body: "NISM (SEBI)",
-    typeStyle: "bg-emerald-50 text-emerald-700 border-emerald-200/80",
-    pitch: "The statutory regulatory license mandated by SEBI to advise on and distribute mutual funds in India. You enter Bajaj Capital legally qualified to manage investments.",
-    edge: "Mandatory for Wealth Officers",
+    authority: "SEBI & NISM",
+    subtitle: "Mandatory Regulatory License",
+    pitch: "Statutory regulatory license mandated by SEBI to advise on and distribute mutual funds in India, ensuring you enter Bajaj Capital fully authorized to manage client portfolios.",
   },
   {
     name: "NISM Series XXI-B",
-    type: "Mandatory License",
-    body: "NISM (SEBI)",
-    typeStyle: "bg-emerald-50 text-emerald-700 border-emerald-200/80",
-    pitch: "Specialized regulatory qualification for Portfolio Management Services (PMS), authorizing you to advise affluent investors on high-ticket customized equity portfolios.",
-    edge: "Unlocks Portfolio Management (PMS)",
+    authority: "SEBI & NISM",
+    subtitle: "Advanced Portfolio Management License",
+    pitch: "Advanced regulatory qualification for high-level Portfolio Management Services (PMS), authorizing you to advise high-net-worth investors on customized equity portfolios.",
   },
   {
     name: "BQP",
-    type: "Mandatory License",
-    body: "IRDAI",
-    typeStyle: "bg-emerald-50 text-emerald-700 border-emerald-200/80",
-    pitch: "Official Broker Qualified Person qualification under IRDAI regulations, empowering you to consult corporate and private clients on comprehensive risk and life protection.",
-    edge: "Authorized Insurance & Risk Advisory",
+    authority: "IRDAI",
+    subtitle: "Statutory Insurance & Risk License",
+    pitch: "Official statutory qualification under IRDAI regulations, empowering you with high-level corporate risk evaluation and life advisory capabilities.",
   },
   {
     name: "Joint ACWM",
-    type: "Executive Diploma",
-    body: "AIMA & ICOFP",
-    typeStyle: "bg-indigo-50 text-indigo-700 border-indigo-200/80",
-    pitch: "Co-certified by India's apex management body (AIMA) and ICOFP. Validates 240 hours of rigorous practical training, live casework, and pre-placement readiness.",
-    edge: "Co-Certified by Apex National Body",
+    authority: "AIMA & ICOFP",
+    subtitle: "Advanced Executive Certification",
+    pitch: "Advanced Certification in Wealth Management co-awarded by India's apex national management body (AIMA) and ICOFP after 240 hours of rigorous practical training.",
   },
 ];
 
@@ -996,83 +987,80 @@ export const PlacementGuaranteed = () => {
           </div>
         </section>
 
-        {/* CERTIFICATION EXPOSURE */}
+        {/* ADVANCED CERTIFICATIONS */}
         <section className="pt-10 pb-14 sm:pt-12 sm:pb-18 bg-[#F7F9FC] border-t border-slate-200 relative overflow-hidden">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
             <Reveal className="text-center max-w-2xl mx-auto mb-8 sm:mb-12">
-              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight">CERTIFICATION EXPOSURE</h2>
-              <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
-                Key professional credentials and regulatory licenses built into your curriculum to make you career-ready from Day 1.
-              </p>
+              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-[#061A36]">
+                ADVANCED CERTIFICATIONS
+              </h2>
             </Reveal>
 
-            {/* Intuitive Credential Cards: 3 on Top Row, 2 Centered on Bottom Row */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {/* Credential Cards: Top 3, Bottom 2 Centered */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
               {CERTIFICATIONS_EXPOSURE.slice(0, 3).map((item, i) => (
                 <Reveal key={item.name} delay={i * 80}>
-                  <div className="h-full rounded-2xl sm:rounded-3xl bg-white border border-slate-200/90 p-5 sm:p-6 shadow-xs hover:border-[#1557D6]/40 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
+                  <div className="h-full rounded-2xl sm:rounded-3xl bg-white border border-slate-200/90 p-6 sm:p-7 shadow-xs hover:border-[#1557D6]/40 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
                     <div>
-                      <div className="flex items-center justify-between gap-2 mb-3.5">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-bold border ${item.typeStyle}`}>
-                          {item.type}
-                        </span>
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-slate-100 text-[#061A36] border border-slate-200">
-                          <span className="text-slate-400 font-normal">Issued by</span> {item.body}
+                      <div className="flex items-center justify-between gap-2 pb-3.5 border-b border-slate-100">
+                        <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#1557D6] flex items-center justify-center shrink-0">
+                          <Award className="w-4.5 h-4.5" />
+                        </div>
+                        <span className="text-[11px] font-extrabold tracking-wider text-slate-500 uppercase">
+                          {item.authority}
                         </span>
                       </div>
 
-                      <h3 className="text-lg sm:text-xl font-extrabold text-[#061A36] tracking-tight group-hover:text-[#1557D6] transition-colors">
+                      <h3 className="text-lg sm:text-xl font-extrabold text-[#061A36] tracking-tight mt-4 group-hover:text-[#1557D6] transition-colors">
                         {item.name}
                       </h3>
 
-                      <p className="text-xs sm:text-sm text-slate-600 mt-2.5 leading-relaxed">
+                      <div className="text-xs font-bold text-[#1557D6] mt-1">
+                        {item.subtitle}
+                      </div>
+
+                      <p className="text-xs sm:text-sm text-slate-600 mt-3 leading-relaxed">
                         {item.pitch}
                       </p>
-                    </div>
-
-                    <div className="mt-4 pt-3.5 border-t border-slate-100 flex items-center gap-2 text-xs font-semibold text-emerald-800 bg-emerald-50/60 -mx-1 px-3 py-1.5 rounded-xl border border-emerald-200/50">
-                      <CheckCircle2 size={14} className="text-emerald-600 shrink-0" />
-                      <span className="truncate">{item.edge}</span>
                     </div>
                   </div>
                 </Reveal>
               ))}
             </div>
 
-            <div className="grid md:grid-cols-2 gap-4 sm:gap-6 max-w-4xl mx-auto mt-4 sm:mt-6">
+            <div className="grid md:grid-cols-2 gap-5 sm:gap-6 max-w-4xl mx-auto mt-5 sm:mt-6">
               {CERTIFICATIONS_EXPOSURE.slice(3, 5).map((item, i) => (
                 <Reveal key={item.name} delay={(i + 3) * 80}>
-                  <div className="h-full rounded-2xl sm:rounded-3xl bg-white border border-slate-200/90 p-5 sm:p-6 shadow-xs hover:border-[#1557D6]/40 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
+                  <div className="h-full rounded-2xl sm:rounded-3xl bg-white border border-slate-200/90 p-6 sm:p-7 shadow-xs hover:border-[#1557D6]/40 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
                     <div>
-                      <div className="flex items-center justify-between gap-2 mb-3.5">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-bold border ${item.typeStyle}`}>
-                          {item.type}
-                        </span>
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-slate-100 text-[#061A36] border border-slate-200">
-                          <span className="text-slate-400 font-normal">Issued by</span> {item.body}
+                      <div className="flex items-center justify-between gap-2 pb-3.5 border-b border-slate-100">
+                        <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#1557D6] flex items-center justify-center shrink-0">
+                          <Award className="w-4.5 h-4.5" />
+                        </div>
+                        <span className="text-[11px] font-extrabold tracking-wider text-slate-500 uppercase">
+                          {item.authority}
                         </span>
                       </div>
 
-                      <h3 className="text-lg sm:text-xl font-extrabold text-[#061A36] tracking-tight group-hover:text-[#1557D6] transition-colors">
+                      <h3 className="text-lg sm:text-xl font-extrabold text-[#061A36] tracking-tight mt-4 group-hover:text-[#1557D6] transition-colors">
                         {item.name}
                       </h3>
 
-                      <p className="text-xs sm:text-sm text-slate-600 mt-2.5 leading-relaxed">
+                      <div className="text-xs font-bold text-[#1557D6] mt-1">
+                        {item.subtitle}
+                      </div>
+
+                      <p className="text-xs sm:text-sm text-slate-600 mt-3 leading-relaxed">
                         {item.pitch}
                       </p>
-                    </div>
-
-                    <div className="mt-4 pt-3.5 border-t border-slate-100 flex items-center gap-2 text-xs font-semibold text-emerald-800 bg-emerald-50/60 -mx-1 px-3 py-1.5 rounded-xl border border-emerald-200/50">
-                      <CheckCircle2 size={14} className="text-emerald-600 shrink-0" />
-                      <span className="truncate">{item.edge}</span>
                     </div>
                   </div>
                 </Reveal>
               ))}
             </div>
 
-            <p className="text-xs text-slate-500 mt-6 text-center">
-              Joint certification awarded by AIMA &amp; ICOFP on program completion.
+            <p className="text-xs text-slate-400 mt-8 text-center font-medium">
+              Dual ACWM certification is co-awarded by AIMA and ICOFP upon program completion.
             </p>
           </div>
         </section>
