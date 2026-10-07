@@ -1,1448 +1,1535 @@
-import React, { useState, useEffect, useRef, useId } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
 import {
   Check,
   ChevronDown,
   CheckCircle2,
   Download,
-  FileText,
   X,
+  ArrowRight,
+  AlertCircle,
+  RefreshCw,
   Briefcase,
-  GraduationCap,
+  Layers,
   TrendingUp,
+  Users,
+  Target,
+  ShoppingBag,
+  LineChart,
+  HelpCircle,
+  Route,
+  Percent,
   ShieldCheck,
-  Award,
-  Clock,
+  Sparkles,
   Building2,
-  Calendar,
-  MessageCircle
 } from "lucide-react";
-import { submitLead } from "@/lib/api";
+import { submitLead, sendSmsOtp, verifySmsOtp } from "@/lib/api";
 import { validateIndianMobile, validateMeaningfulName, validateMeaningfulEmail } from "@/lib/validation";
-import { PhoneOtpModal } from "@/components/PhoneOtpModal";
-import { Link } from "react-router-dom";
+import { WhatsAppCircleIcon } from "@/components/SocialIcons";
+
+/* ───────────── Custom Modern Select (Solid Pure White, Zero Transparency) ───────────── */
+const CustomSelect: React.FC<{
+  value: string;
+  onChange: (val: string) => void;
+  options: string[];
+  placeholder?: string;
+  label?: string;
+}> = ({ value, onChange, options, placeholder = "Select option", label }) => {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div ref={ref} className="relative w-full">
+      {label && <span className="block text-[11px] font-bold text-slate-500 mb-1 tracking-wide">{label}</span>}
+      <button
+        type="button"
+        onClick={() => setOpen((prev) => !prev)}
+        className={`w-full px-3.5 py-3 rounded-xl border text-sm text-slate-900 bg-white flex items-center justify-between text-left transition-all cursor-pointer shadow-xs ${
+          open
+            ? "border-[#1557D6] ring-2 ring-[#1557D6]/20 bg-blue-50/20"
+            : "border-slate-300 hover:border-slate-400"
+        }`}
+      >
+        <span className="truncate font-semibold text-slate-800">{value || placeholder}</span>
+        <ChevronDown
+          size={16}
+          className={`text-slate-500 shrink-0 ml-2 transition-transform duration-200 ${
+            open ? "rotate-180 text-[#1557D6]" : ""
+          }`}
+        />
+      </button>
+
+      {open && (
+        <div className="absolute z-[99] left-0 right-0 bottom-full mb-1.5 bg-white rounded-2xl shadow-2xl border-2 border-slate-200 py-2 max-h-56 overflow-y-auto ring-1 ring-black/10">
+          {options.map((opt) => {
+            const isSelected = opt === value;
+            return (
+              <button
+                key={opt}
+                type="button"
+                onClick={() => {
+                  onChange(opt);
+                  setOpen(false);
+                }}
+                className={`w-full px-3.5 py-2.5 text-xs sm:text-sm text-left flex items-center justify-between transition-colors cursor-pointer ${
+                  isSelected
+                    ? "bg-blue-50 text-[#1557D6] font-bold"
+                    : "bg-white text-slate-800 hover:bg-slate-100 font-medium"
+                }`}
+              >
+                <span className="truncate">{opt}</span>
+                {isSelected && (
+                  <span className="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center shrink-0 ml-2 shadow-xs">
+                    <Check size={12} strokeWidth={3} />
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+};
+
+/* Official WhatsApp brand vector icon matching reference */
+const WhatsAppOfficialIcon = ({ className = "w-6 h-6" }: { className?: string }) => (
+  <svg viewBox="0 0 48 48" className={className} fill="none">
+    <circle cx="24" cy="24" r="23" fill="#25D366" />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M34.8 13.2C32 10.4 28.2 8.9 24.2 8.9C15.8 8.9 9 15.7 9 24.1C9 26.8 9.7 29.4 11 31.7L9 39.1L16.6 37.1C18.8 38.3 21.4 39 24.1 39H24.2C32.6 39 39.4 32.2 39.4 23.8C39.4 19.8 37.8 16 34.8 13.2ZM24.2 36.4H24.1C21.8 36.4 19.6 35.8 17.6 34.6L17.1 34.3L12.6 35.5L13.8 31.1L13.5 30.6C12.2 28.6 11.6 26.4 11.6 24.1C11.6 17.2 17.3 11.5 24.2 11.5C27.5 11.5 30.7 12.8 33.1 15.1C35.4 17.5 36.8 20.6 36.8 23.9C36.8 30.8 31.1 36.4 24.2 36.4ZM31.1 27.2C30.7 27 28.9 26.1 28.6 26C28.2 25.8 28 25.8 27.7 26.1C27.4 26.5 26.8 27.3 26.6 27.5C26.4 27.7 26.2 27.7 25.8 27.5C25.4 27.3 24.3 26.9 23 25.8C22 24.9 21.3 23.8 21.1 23.4C20.9 23 21.1 22.8 21.3 22.6C21.5 22.4 21.7 22.1 21.9 21.9C22.1 21.7 22.1 21.5 22.3 21.2C22.4 21 22.3 20.7 22.2 20.5C22.1 20.3 21.4 18.6 21.1 17.9C20.8 17.2 20.5 17.3 20.3 17.3H19.6C19.3 17.3 18.9 17.4 18.5 17.8C18.1 18.2 17.1 19.2 17.1 21.2C17.1 23.2 18.6 25.1 18.8 25.3C19 25.6 21.8 29.8 26 31.6C27 32 27.8 32.3 28.4 32.5C29.4 32.8 30.4 32.8 31.1 32.7C31.9 32.6 33.5 31.7 33.8 30.8C34.2 29.8 34.2 29 34.1 28.8C33.9 28.6 33.7 28.5 33.3 28.3L31.1 27.2Z"
+      fill="white"
+    />
+  </svg>
+);
+
 import degreeGuruLogo from "@/assets/logo-light.png";
+import leverageEduLogo from "@/assets/acwm/leverage-edu.png";
 import aimaLogo from "@/assets/acwm/aima.png";
 import bajajCapitalLogo from "@/assets/acwm/bajaj-capital.png";
 import icofpLogo from "@/assets/acwm/icofp.png";
-import leverageEduLogo from "@/assets/acwm/leverage-edu.png";
+import acwmCertificate from "@/assets/acwm/acwm_certificate.jpg";
+import heroImage from "@/assets/acwm/indian_wealth_officer.jpg";
+import consultImage from "@/assets/acwm/indian_wealth_consultation.jpg";
+import goldEmblem from "@/assets/acwm/gold-emblem.png";
+import whatsappCleanIcon from "@/assets/acwm/whatsapp-clean.png";
+
+const WA_LINK =
+  "https://wa.me/919350199001?text=Hi%2C%20I%20want%20to%20know%20more%20about%20the%20Placement%20Guaranteed%20Program.";
+
+/* ───────────── Scroll reveal ───────────── */
+const Reveal: React.FC<{ children: React.ReactNode; delay?: number; className?: string }> = ({
+  children,
+  delay = 0,
+  className = "",
+}) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [shown, setShown] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setShown(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.12 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return (
+    <div
+      ref={ref}
+      className={className}
+      style={{
+        opacity: shown ? 1 : 0,
+        transform: shown ? "none" : "translateY(18px)",
+        transition: `opacity .6s ease ${delay}ms, transform .6s ease ${delay}ms`,
+      }}
+    >
+      {children}
+    </div>
+  );
+};
+
+/* ───────────── Content ───────────── */
+const JOURNEY = [
+  { when: "Week 0", title: "Selection", text: "Eligibility check and a panel interview with Bajaj Capital.", tag: "₹500 registration", tone: "navy" },
+  { when: "Before training", title: "Pre-Placement Offer", text: "A written conditional offer from Bajaj Capital. The program fee is not due until you hold it.", tag: "Fee starts only here", tone: "blue" },
+  { when: "Month 1 – 2.5", title: "Classroom training", text: "240 hours — 190 with ICOFP, 50 with AIMA. Includes NISM Series V-A preparation.", tag: "ACWM certification", tone: "navy" },
+  { when: "Month 3 – 6", title: "Bajaj Capital internship", text: "Four months inside a live Bajaj Capital branch.", tag: "₹15,000 / month stipend", tone: "green" },
+  { when: "Month 6", title: "Wealth Officer", text: "Full-time role once the completion criteria are met.", tag: "₹4.2 – ₹4.8 LPA", tone: "green" },
+  { when: "Month 12", title: "Retention bonus", text: "After 12 months of full-time employment, subject to applicable terms.", tag: "₹85,000", tone: "gold" },
+];
+
+const MODULES = [
+  { icon: Briefcase, t: "Wealth Advisory", d: "Profile clients, build goal-based plans." },
+  { icon: Layers, t: "Financial Products", d: "Mutual funds, insurance, fixed income." },
+  { icon: LineChart, t: "Investment Understanding", d: "How assets behave and why." },
+  { icon: Users, t: "Client Relationships", d: "Earn trust, retain portfolios." },
+  { icon: Target, t: "Financial Planning", d: "Retirement, tax and risk planning." },
+  { icon: ShoppingBag, t: "Sales & Distribution", d: "Compliant, ethical selling." },
+  { icon: TrendingUp, t: "Market Understanding", d: "Read the market, brief the client." },
+];
+
+const LADDER = [
+  { t: "Wealth Officer", d: "Where you start" },
+  { t: "Senior Executive", d: "Larger client book" },
+  { t: "Assistant Manager", d: "Team & branch targets" },
+  { t: "Cluster / Regional Head", d: "Multi-branch leadership" },
+];
+
+const FAQS = [
+  {
+    q: "Is the placement genuinely guaranteed?",
+    a: "Bajaj Capital issues a written Pre-Placement Offer upfront before any program fees are due. Full absorption as a Wealth Officer is guaranteed upon meeting completion criteria (85% attendance, evaluation scores, and NISM Series V-A certification).",
+  },
+  {
+    q: "Who is eligible?",
+    a: "Graduates or final-year Bachelor's students aged 28 or below across any stream. No prior experience or coding background required.",
+  },
+  {
+    q: "What happens during the 4-month Bajaj Capital internship?",
+    a: "Students work directly inside a live Bajaj Capital branch where they learn real-world wealth advisory, client relationship skills, and portfolio management with practical execution, earning a guaranteed ₹15,000/month stipend.",
+  },
+  {
+    q: "When is the program fee payable?",
+    a: "The program fee is payable ONLY AFTER you receive your official written Pre-Placement Offer letter from Bajaj Capital. If you are not selected in the interview, you pay nothing. 0% EMI is also available.",
+  },
+  {
+    q: "What salary is offered after successful completion?",
+    a: "Selected candidates join as Wealth Officers with a starting package of ₹4.2 – ₹4.8 LPA CTC, along with an ₹85,000 retention bonus payable after 12 months of full-time employment.",
+  },
+];
+
+type LegalTab = "program" | "fees" | "placement" | "terms" | "disclaimer";
+
+const LEGAL: Record<LegalTab, { label: string; body: React.ReactNode }> = {
+  program: {
+    label: "Program Terms",
+    body: (
+      <ul className="list-disc pl-5 space-y-2">
+        <li>Eligibility: graduate or final-year Bachelor's student, age 28 or below.</li>
+        <li>Selection through eligibility check and Bajaj Capital panel interview.</li>
+        <li>240 hours of training: 190 with ICOFP, 50 with AIMA.</li>
+        <li>4-month internship at Bajaj Capital with ₹15,000 per month stipend.</li>
+        <li>Certification: Advanced Certification in Wealth Management (ACWM).</li>
+      </ul>
+    ),
+  },
+  fees: {
+    label: "Fee & Refund",
+    body: (
+      <ul className="list-disc pl-5 space-y-2">
+        <li>Registration fee: ₹500, paid at the eligibility stage.</li>
+        <li>Program fee: ₹1,50,000 + 18% GST = ₹1,77,000, payable after the Pre-Placement Offer.</li>
+        <li>If you are not selected in the interview, the program fee is not charged.</li>
+        <li>0% EMI over 10 months is available.</li>
+      </ul>
+    ),
+  },
+  placement: {
+    label: "Placement Terms",
+    body: (
+      <ul className="list-disc pl-5 space-y-2">
+        <li>The Pre-Placement Offer is issued to candidates who cleared psychometric test and interview by Bajaj Capital.</li>
+        <li>Full-time absorption requires 85% attendance, 80% in evaluations, NISM Series V-A certification, professional conduct and relocation readiness.</li>
+        <li>Salary is within ₹4.2 – ₹4.8 LPA; the exact figure is stated in the offer letter.</li>
+        <li>The ₹85,000 retention bonus applies after 12 months of full-time employment, subject to terms.</li>
+        <li>Paid internship is mandatory to be eligible for full-time employment.</li>
+      </ul>
+    ),
+  },
+  terms: {
+    label: "Terms & Conditions",
+    body: <p>Participation is governed by the program terms, the Pre-Placement Offer letter and the policies of the partner institutions. Please read the official documents before registering.</p>,
+  },
+  disclaimer: {
+    label: "Disclaimer",
+    body: <p>The Pre-Placement Offer, internship, stipend, retention bonus and Wealth Officer role apply only to candidates selected into the Bajaj Capital pathway and are subject to its stated terms. Degree Guru is an admissions facilitator.</p>,
+  },
+};
+
+const toneDot: Record<string, string> = {
+  navy: "bg-[#061A36]",
+  blue: "bg-[#1557D6]",
+  green: "bg-[#18B879]",
+  gold: "bg-[#F4B942]",
+};
 
 export const PlacementGuaranteed = () => {
-  // Page Mount / Hero Animation
-  const [heroMounted, setHeroMounted] = useState(false);
+  /* Modals */
+  const [formOpen, setFormOpen] = useState(false);
+  const [legalOpen, setLegalOpen] = useState<LegalTab | null>(null);
+  const [zoomOpen, setZoomOpen] = useState(false);
+  const [feeOpen, setFeeOpen] = useState(false);
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [formHeading, setFormHeading] = useState("Check my eligibility");
+
+  /* Verification state for instant PDF download */
+  const [isVerified, setIsVerified] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem("pg_phone_verified") === "true";
+    } catch {
+      return false;
+    }
+  });
+
+  /* Form */
+  const [step, setStep] = useState<1 | 2 | 3>(1);
+  const [fullName, setFullName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [city, setCity] = useState("");
+  const [age, setAge] = useState("");
+  const [education, setEducation] = useState("Commerce / B.Com");
+  const [experience, setExperience] = useState("Fresher");
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
+  const [otpError, setOtpError] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [timer, setTimer] = useState(30);
+  const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   useEffect(() => {
-    const timer = setTimeout(() => setHeroMounted(true), 40);
+    if (step !== 2 || timer <= 0) return;
+    const i = setInterval(() => setTimer((t) => t - 1), 1000);
+    return () => clearInterval(i);
+  }, [step, timer]);
+
+  /* Typewriter effect for Hero headline (loops smoothly repeatedly) */
+  const [typedLine1, setTypedLine1] = useState("");
+  const [typedLine2, setTypedLine2] = useState("");
+
+  useEffect(() => {
+    const line1 = "JOB FIRST.";
+    const line2 = "TRAIN NEXT.";
+    let i = 0;
+    let j = 0;
+    let isDeleting = false;
+    let timer: NodeJS.Timeout;
+
+    const tick = () => {
+      if (!isDeleting) {
+        if (i < line1.length) {
+          i++;
+          setTypedLine1(line1.slice(0, i));
+          timer = setTimeout(tick, 90);
+        } else if (j < line2.length) {
+          j++;
+          setTypedLine2(line2.slice(0, j));
+          timer = setTimeout(tick, 90);
+        } else {
+          timer = setTimeout(() => {
+            isDeleting = true;
+            tick();
+          }, 2000);
+        }
+      } else {
+        if (j > 0) {
+          j--;
+          setTypedLine2(line2.slice(0, j));
+          timer = setTimeout(tick, 40);
+        } else if (i > 0) {
+          i--;
+          setTypedLine1(line1.slice(0, i));
+          timer = setTimeout(tick, 40);
+        } else {
+          isDeleting = false;
+          timer = setTimeout(tick, 500);
+        }
+      }
+    };
+
+    timer = setTimeout(tick, 300);
     return () => clearTimeout(timer);
   }, []);
 
-  // Form State (Hero & Dedicated Eligibility)
-  const [fullName, setFullName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [emailAddress, setEmailAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [age, setAge] = useState("");
-  const [currentStatus, setCurrentStatus] = useState("job-seeking");
-  const [isGraduate, setIsGraduate] = useState("yes");
-
-  const [nameError, setNameError] = useState("");
-  const [phoneError, setPhoneError] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [cityError, setCityError] = useState("");
-  const [ageError, setAgeError] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const [otpModalOpen, setOtpModalOpen] = useState(false);
-
-  // PDF Download Modal State (Interview Prep PDF)
-  const [pdfModalOpen, setPdfModalOpen] = useState(false);
-  const [pdfName, setPdfName] = useState("");
-  const [pdfPhone, setPdfPhone] = useState("");
-  const [pdfEmail, setPdfEmail] = useState("");
-  const [pdfNameError, setPdfNameError] = useState("");
-  const [pdfPhoneError, setPdfPhoneError] = useState("");
-  const [pdfEmailError, setPdfEmailError] = useState("");
-  const [pdfSubmitting, setPdfSubmitting] = useState(false);
-  const [pdfDownloaded, setPdfDownloaded] = useState(false);
-
-  // FAQ Accordion State
-  const [openFaq, setOpenFaq] = useState<number | null>(0);
-
-  // Animated Numbers State
-  const [internshipCount, setInternshipCount] = useState(0);
-
-  // Active FAQ toggler
-  const toggleFaq = (index: number) => {
-    setOpenFaq(openFaq === index ? null : index);
-  };
-
-  // Internship animation observer
-  const internshipRef = useRef<HTMLDivElement>(null);
+  /* Timeline scroll progress */
+  const tlRef = useRef<HTMLDivElement>(null);
+  const [progress, setProgress] = useState(0);
   useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        let start = 0;
-        const end = 15000;
-        const duration = 800;
-        const stepTime = 16;
-        const steps = duration / stepTime;
-        const increment = end / steps;
-        const timer = setInterval(() => {
-          start += increment;
-          if (start >= end) {
-            setInternshipCount(end);
-            clearInterval(timer);
-          } else {
-            setInternshipCount(Math.floor(start));
-          }
-        }, stepTime);
-        observer.disconnect();
-      }
-    }, { threshold: 0.2 });
-
-    if (internshipRef.current) observer.observe(internshipRef.current);
-    return () => observer.disconnect();
+    const onScroll = () => {
+      const el = tlRef.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const p = (window.innerHeight * 0.65 - r.top) / r.height;
+      setProgress(Math.min(1, Math.max(0, p)));
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
-  const nameInputId = useId();
-  const phoneInputId = useId();
-  const emailInputId = useId();
+  /* Lock body scroll while modals open */
+  useEffect(() => {
+    const open = formOpen || legalOpen || zoomOpen;
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [formOpen, legalOpen, zoomOpen]);
 
-  const scrollToApply = () => {
-    const el = document.getElementById("apply-section");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-      const firstInput = document.getElementById(nameInputId);
-      if (firstInput) firstInput.focus();
+  const openForm = (heading = "Check my eligibility") => {
+    setFormHeading(heading);
+    setFormOpen(true);
+    if (step !== 3) setStep(1);
+  };
+
+  const handleDownloadPrepKit = () => {
+    if (isVerified) {
+      downloadGuide();
+    } else {
+      openForm("Download Free Interview Prep Kit");
     }
   };
 
-  // Helper to save and export leads to Excel (client-side backup + server sync)
-  const saveLeadToExcelStorage = (leadData: Record<string, string>) => {
+  const submitDetails = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const errs: Record<string, string> = {};
+    const n = validateMeaningfulName(fullName, false);
+    if (!n.valid) errs.name = n.error || "Enter your full name.";
+    const p = validateIndianMobile(phone);
+    if (!p.valid) errs.phone = p.error || "Enter a valid 10-digit mobile number.";
+    const em = validateMeaningfulEmail(email);
+    if (!em.valid) errs.email = em.error || "Enter a valid email.";
+    if (!city.trim()) errs.city = "Enter your city.";
+    const a = Number(age);
+    if (!age.trim() || isNaN(a)) errs.age = "Enter your age.";
+    else if (a < 18) errs.age = "Minimum age is 18.";
+    else if (a > 28) errs.age = "This program is for candidates aged 28 or below.";
+    setErrors(errs);
+    if (Object.keys(errs).length) return;
+
+    setBusy(true);
+    setOtpError("");
     try {
-      const stored = localStorage.getItem("dg_acwm_excel_leads");
-      const list = stored ? JSON.parse(stored) : [];
-      list.unshift({ ...leadData, timestamp: new Date().toISOString() });
-      localStorage.setItem("dg_acwm_excel_leads", JSON.stringify(list));
+      const res = await sendSmsOtp(phone);
+      if (res.success) {
+        setStep(2);
+        setTimer(30);
+        setOtp(["", "", "", "", "", ""]);
+        setTimeout(() => otpRefs.current[0]?.focus(), 250);
+      } else {
+        setErrors({ form: res.message || "Could not send OTP. Please try again." });
+      }
     } catch {
-      // LocalStorage fallback
+      setErrors({ form: "Network error. Please try again." });
+    } finally {
+      setBusy(false);
     }
   };
 
-  // Export all collected leads to Excel (.csv format with BOM)
-  const handleExportLeadsToExcel = () => {
+  const onOtpChange = (i: number, v: string) => {
+    if (v.length > 1) {
+      const digits = v.replace(/\D/g, "").slice(0, 6).split("");
+      const next = [...otp];
+      digits.forEach((d, k) => {
+        if (i + k < 6) next[i + k] = d;
+      });
+      setOtp(next);
+      otpRefs.current[Math.min(i + digits.length, 5)]?.focus();
+      return;
+    }
+    const d = v.replace(/\D/g, "");
+    const next = [...otp];
+    next[i] = d;
+    setOtp(next);
+    if (d && i < 5) otpRefs.current[i + 1]?.focus();
+  };
+
+  const resend = async () => {
+    if (timer > 0 || busy) return;
+    setBusy(true);
+    setOtpError("");
+    setOtp(["", "", "", "", "", ""]);
     try {
-      const stored = localStorage.getItem("dg_acwm_excel_leads");
-      const list = stored ? JSON.parse(stored) : [];
-      if (!list || list.length === 0) {
-        alert("No leads recorded in local session yet. Leads are also saved directly in the backend database.");
+      const res = await sendSmsOtp(phone);
+      if (res.success) setTimer(30);
+      else setOtpError(res.message || "Could not resend OTP.");
+    } catch {
+      setOtpError("Network error while resending.");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const verify = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const code = otp.join("");
+    if (code.length !== 6) {
+      setOtpError("Enter the 6-digit code.");
+      return;
+    }
+    setBusy(true);
+    setOtpError("");
+    try {
+      const r = await verifySmsOtp(phone, code);
+      if (!r.success) {
+        setOtpError(r.message || "Invalid or expired code.");
         return;
       }
-
-      const headers = ["ID", "Timestamp", "Full Name", "Phone Number", "Email", "City", "Age", "Current Status", "Graduate", "Program", "Source"];
-      const rows = list.map((item: any, idx: number) => [
-        idx + 1,
-        item.timestamp || "",
-        `"${(item.name || "").replace(/"/g, '""')}"`,
-        `"${item.phone || ""}"`,
-        `"${item.email || ""}"`,
-        `"${item.city || ""}"`,
-        `"${item.age || ""}"`,
-        `"${item.status || ""}"`,
-        `"${item.graduate || ""}"`,
-        `"${(item.program || "").replace(/"/g, '""')}"`,
-        `"${item.source || ""}"`
-      ]);
-
-      const csvContent = "\uFEFF" + [headers.join(","), ...rows.map((r: any) => r.join(","))].join("\r\n");
-      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.setAttribute("href", url);
-      link.setAttribute("download", `Bajaj_Capital_ACWM_Leads_${new Date().toISOString().slice(0, 10)}.csv`);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } catch (e) {
-      console.error("Export error", e);
-    }
-  };
-
-  const handleMainFormSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const nameCheck = validateMeaningfulName(fullName, false);
-    if (!nameCheck.valid) {
-      setNameError(nameCheck.error || "Please enter your full name.");
-      return;
-    }
-    const phoneCheck = validateIndianMobile(phoneNumber);
-    if (!phoneCheck.valid) {
-      setPhoneError(phoneCheck.error || "Please enter a valid 10-digit mobile number.");
-      return;
-    }
-    const emailCheck = validateMeaningfulEmail(emailAddress);
-    if (!emailCheck.valid) {
-      setEmailError(emailCheck.error || "Please enter a valid email address.");
-      return;
-    }
-    if (!city.trim()) {
-      setCityError("City is required.");
-      return;
-    }
-    if (!age.trim()) {
-      setAgeError("Age is required.");
-      return;
-    }
-    const numAge = Number(age);
-    if (isNaN(numAge) || numAge < 18) {
-      setAgeError("Age must be at least 18.");
-      return;
-    }
-    if (numAge > 28) {
-      setAgeError("Age must be 28 or under.");
-      return;
-    }
-
-    setNameError("");
-    setPhoneError("");
-    setEmailError("");
-    setCityError("");
-    setAgeError("");
-
-    // Open Phone OTP Verification Modal
-    setOtpModalOpen(true);
-  };
-
-  const handleOtpVerified = async () => {
-    setIsSubmitting(true);
-    setOtpModalOpen(false);
-
-    const nameCheck = validateMeaningfulName(fullName, false);
-    const phoneCheck = validateIndianMobile(phoneNumber);
-
-    const leadInfo = {
-      name: nameCheck.normalized || fullName.trim(),
-      phone: `+91 ${phoneCheck.normalized || phoneNumber.replace(/\D/g, "").slice(-10)}`,
-      email: emailAddress.trim().toLowerCase(),
-      city: city.trim(),
-      age: age.trim() || "Unspecified",
-      status: currentStatus,
-      graduate: isGraduate,
-      program: `ACWM Wealth Officer (Bajaj Capital) | City: ${city.trim()} | Age: ${age.trim() || "N/A"} | Status: ${currentStatus} | Grad: ${isGraduate} | Verified: Phone OTP`,
-      source: "bajaj-capital-acwm-career-programme",
-    };
-
-    // 1. Save to Excel local cache
-    saveLeadToExcelStorage(leadInfo);
-
-    // 2. Submit to backend API & Google Sheets
-    try {
+      const pc = validateIndianMobile(phone);
+      const nc = validateMeaningfulName(fullName, false);
       await submitLead({
-        name: leadInfo.name,
-        phone: leadInfo.phone,
-        email: leadInfo.email,
-        program: leadInfo.program,
-        source: leadInfo.source,
-        formHeading: "Check if you qualify (Bajaj Capital ACWM Programme - Phone Verified)",
+        name: nc.normalized || fullName.trim(),
+        phone: `+91 ${pc.normalized || phone.replace(/\D/g, "").slice(-10)}`,
+        email: email.trim().toLowerCase(),
         city: city.trim(),
-        age: age.trim() || "Unspecified",
-        status: currentStatus,
-        graduate: isGraduate === "yes" ? "Yes, Completed" : "In Final Year / Not yet",
+        age: age.trim(),
+        status: experience,
+        graduate: education,
+        program: `ACWM Wealth Officer (Bajaj Capital) | City: ${city.trim()} | Age: ${age.trim()} | Education: ${education} | Exp: ${experience} | Verified: Phone OTP`,
+        source: "placement-guaranteed-trust-page",
+        formHeading: "Placement Guaranteed Eligibility (Phone Verified)",
       });
-      setSubmitted(true);
+      try {
+        localStorage.setItem("pg_phone_verified", "true");
+      } catch {}
+      setIsVerified(true);
+      setStep(3);
+      downloadGuide();
     } catch {
-      setSubmitted(true);
+      setOtpError("Something went wrong. Please try again.");
     } finally {
-      setIsSubmitting(false);
+      setBusy(false);
     }
   };
 
-  const handlePdfSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const nameCheck = validateMeaningfulName(pdfName, false);
-    if (!nameCheck.valid) {
-      setPdfNameError(nameCheck.error || "Please enter your full name.");
-      return;
-    }
-    const phoneCheck = validateIndianMobile(pdfPhone);
-    if (!phoneCheck.valid) {
-      setPdfPhoneError(phoneCheck.error || "Please enter a valid 10-digit phone number.");
-      return;
-    }
-    const emailCheck = validateMeaningfulEmail(pdfEmail);
-    if (!emailCheck.valid) {
-      setPdfEmailError(emailCheck.error || "Please enter a valid email address.");
-      return;
-    }
-
-    setPdfNameError("");
-    setPdfPhoneError("");
-    setPdfEmailError("");
-    setPdfSubmitting(true);
-
-    const pdfLeadInfo = {
-      name: nameCheck.normalized || pdfName.trim(),
-      phone: `+91 ${phoneCheck.normalized || pdfPhone.replace(/\D/g, "").slice(-10)}`,
-      email: pdfEmail.trim().toLowerCase(),
-      city: "Interview Prep Kit",
-      age: "N/A",
-      status: "Downloaded PDF",
-      graduate: "Yes",
-      program: "Interview Prep PDF Kit — ACWM Wealth Officer (Bajaj Capital)",
-      source: "acwm-interview-prep-pdf-modal",
-    };
-
-    saveLeadToExcelStorage(pdfLeadInfo);
-
-    try {
-      await submitLead({
-        name: pdfLeadInfo.name,
-        phone: pdfLeadInfo.phone,
-        email: pdfLeadInfo.email,
-        program: pdfLeadInfo.program,
-        source: pdfLeadInfo.source,
-        formHeading: "Download Interview Prep PDF Kit",
-        city: "Interview Prep Kit",
-        age: "N/A",
-        status: "Downloaded PDF",
-        graduate: "Yes",
-      });
-    } catch {
-      // Continue download even if network logger catches glitch
-    } finally {
-      setPdfSubmitting(false);
-      setPdfDownloaded(true);
-
-      const link = document.createElement("a");
-      link.href = "/assets/acwm/bajaj_capital_interview_prep_kit.pdf";
-      link.download = "Bajaj_Capital_Interview_Prep_Kit.pdf";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
+  const downloadGuide = () => {
+    const a = document.createElement("a");
+    a.href = "/assets/acwm/bajaj_capital_interview_prep_kit.pdf";
+    a.download = "Program_Guide.pdf";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   };
 
-  // Comprehensive Leverage Edu Matching FAQs
-  const FAQS = [
-    {
-      q: "Is the job guaranteed?",
-      a: "Yes, under a written conditional Pre-Placement Offer (PPO) issued directly by Bajaj Capital. Once you clear the Bajaj Capital panel interview, you receive your written PPO before training starts. You are absorbed full-time from month seven with a starting package of ₹4.2 LPA to ₹4.8 LPA upon completing evaluations (80%+), keeping 85%+ attendance, and clearing NISM VA certification.",
-    },
-    {
-      q: "What do I pay, and when?",
-      a: "You pay only a ₹500 eligibility registration fee initially. The main programme fee (₹1,50,000 + 18% GST) is payable ONLY after you clear the Bajaj Capital interview and receive your written Pre-Placement Offer. Flexible 10-month 0% interest EMI payment options are available through partner NBFCs.",
-    },
-    {
-      q: "Do I earn during the programme?",
-      a: "Yes! During your 4-month practical internship at Bajaj Capital, you earn a guaranteed stipend of ₹15,000 per month (totaling ₹60,000). On completing 12 months of full-time employment as a Wealth Officer, you also receive an ₹85,000 retention bonus. Factoring this in, your real net out-of-pocket cost in Year 1 is just ₹32,000.",
-    },
-    {
-      q: "I am not from a finance or technical background. Can I apply?",
-      a: "Absolutely! The programme is specifically designed for graduates from any stream (BA, B.Com, B.Sc, BBA, B.Tech, etc.) from any recognised university. No prior finance, sales, or coding experience is required. Training starts from core foundational concepts up to advanced wealth advisory.",
-    },
-    {
-      q: "What if I do not clear the Bajaj Capital interview?",
-      a: "If you do not clear the initial entrance interview, you pay zero tuition fee! Our counsellors will guide you on interview improvement and you can re-apply for subsequent cohorts.",
-    },
-    {
-      q: "What certifications will I receive upon completion?",
-      a: "You earn the prestigious Advanced Certification in Wealth Management (ACWM) jointly certified by the International College of Financial Planning (ICOFP) and All India Management Association (AIMA). The programme also covers preparation for NISM VA (Mutual Funds), NISM XXI-B, BQP, and CFP Level 1 & 2.",
-    },
-    {
-      q: "What are the job responsibilities and location for a Wealth Officer?",
-      a: "As a Wealth Officer at Bajaj Capital, you manage client portfolios, advise individuals on mutual funds, SIPs, insurance, and tax-saving investments, and drive client acquisition. Postings are Pan-India across major metro and tier-1/tier-2 branch networks with relocation assistance.",
-    },
-  ];
+  const inputCls = (err?: string) =>
+    `w-full px-3.5 py-3 rounded-xl border ${err ? "border-red-500" : "border-slate-300"} text-sm text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-[#1557D6]/30 focus:border-[#1557D6]`;
+
+  const stepsActive = (i: number) => progress >= i / JOURNEY.length - 0.02;
 
   return (
     <>
       <Helmet>
-        <title>ACWM Career Programme — Wealth Officer Job at Bajaj Capital | Pre-Placement Offer</title>
+        <title>Wealth Officer Career Program with Bajaj Capital | Job First, Train Next</title>
         <meta
           name="description"
-          content="Interview for a Wealth Officer role at Bajaj Capital, get a pre-placement offer, then train for the Advanced Certification in Wealth Management with ICOFP and AIMA. Starting package ₹4.2 LPA."
+          content="A structured pathway to a Wealth Officer career opportunity with Bajaj Capital. Get a written Pre-Placement Offer before you pay the program fee. Academic partner AIMA, training by ICOFP."
         />
         <link rel="canonical" href="https://degreeguru.in/placement-guaranteed" />
       </Helmet>
 
-      {/* Standalone Landing Page Wrapper */}
-      <div className="min-h-screen bg-[#F8F9FA] text-[#0B1527] font-sans antialiased selection:bg-[#2F73B2] selection:text-white">
-
-        {/* ========================================================================= */}
-        {/* HEADER / NAVIGATION BAR */}
-        {/* ========================================================================= */}
-        <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0 shrink">
-              <Link to="/" className="flex items-center group">
-                <img
-                  src={degreeGuruLogo}
-                  alt="Degree Guru"
-                  className="h-6 sm:h-8 max-h-7 sm:max-h-8 w-auto object-contain shrink-0 transition-opacity group-hover:opacity-90"
-                />
+      <div className="min-h-screen bg-[#F7F9FC] text-[#061A36] font-sans antialiased pb-20 md:pb-0 overflow-x-hidden">
+        {/* HEADER */}
+        <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-2xs">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <Link to="/" className="flex items-center">
+                <img src={degreeGuruLogo} alt="Degree Guru" className="h-8 sm:h-10 w-auto" />
               </Link>
-              <span className="text-slate-300 text-sm sm:text-base font-light select-none">|</span>
-              <a href="#top" className="flex items-center group">
-                <img
-                  src={leverageEduLogo}
-                  alt="Leverage Edu"
-                  className="h-5 sm:h-7.5 max-h-6 sm:max-h-8 w-auto max-w-[130px] sm:max-w-none object-contain shrink-0 transition-opacity group-hover:opacity-90"
-                />
+              <span className="text-slate-300 text-lg sm:text-xl font-light">|</span>
+              <img src={leverageEduLogo} alt="Leverage Edu" className="h-6 sm:h-8 w-auto object-contain" />
+            </div>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => openForm("Check my eligibility")}
+                className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#1557D6] hover:bg-[#0f44b0] text-white text-sm font-bold transition-colors shadow-xs"
+              >
+                CHECK MY ELIGIBILITY
+              </button>
+              <a
+                href={WA_LINK}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Chat on WhatsApp"
+                className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center active:scale-95 transition-all shrink-0 hover:opacity-90"
+              >
+                <img src={whatsappCleanIcon} alt="WhatsApp" className="w-8 h-8 sm:w-9 sm:h-9 object-contain drop-shadow-xs" />
               </a>
             </div>
-
-            <nav className="flex items-center gap-3 sm:gap-6 shrink-0">
-              <a href="#how" className="text-xs sm:text-sm font-semibold text-slate-600 hover:text-[#2F73B2] transition-colors hidden md:inline">
-                How it works
-              </a>
-              <a href="#job" className="text-xs sm:text-sm font-semibold text-slate-600 hover:text-[#2F73B2] transition-colors hidden md:inline">
-                The job
-              </a>
-              <a href="#money" className="text-xs sm:text-sm font-semibold text-slate-600 hover:text-[#2F73B2] transition-colors hidden md:inline">
-                Fees &amp; ROI
-              </a>
-              <a href="#faq" className="text-xs sm:text-sm font-semibold text-slate-600 hover:text-[#2F73B2] transition-colors hidden lg:inline">
-                Eligibility &amp; FAQ
-              </a>
-
-            </nav>
           </div>
-          {/* Progress fill accent bar */}
-          <div className="h-0.5 w-full bg-gradient-to-r from-[#2F73B2] via-[#25AAD3] to-[#4BBC7C]" />
         </header>
 
-        {/* ========================================================================= */}
-        {/* 1. HERO SECTION (WITH EMBEDDED APPLICATION CARD) */}
-        {/* ========================================================================= */}
-        {/* ========================================================================= */}
-        {/* 1. HERO SECTION (VERY CLEAN & MINIMAL EDITORIAL DESIGN) */}
-        {/* ========================================================================= */}
-        <section id="top" className="relative bg-[#061938] text-white pt-10 sm:pt-20 pb-16 sm:pb-24 border-b border-slate-800 overflow-hidden">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-
-              {/* Left Column: Editorial Value Proposition */}
-              <div className="lg:col-span-7 space-y-5 sm:space-y-6">
-
-                {/* Main Headline */}
-                <h1 className="text-3xl sm:text-5xl lg:text-[56px] font-extrabold tracking-tight leading-[1.12] sm:leading-[1.08] text-white">
-                  Job First.<br />
-                  Train Next.<br />
-                  <span className="text-[#2e9e5b]">
-                    Build Your Career.
-                  </span>
-                </h1>
-
-                {/* Clean Subheadline */}
-                <p className="text-sm sm:text-[17px] text-[#9fb3c8] font-normal leading-relaxed max-w-lg">
-                  Interview for a Wealth Officer role at Bajaj Capital. Starting package <strong className="text-white font-semibold">₹4.2 LPA</strong>. Receive a pre-placement offer before training begins.
-                </p>
-
-                {/* Subtle Divider */}
-                <div className="border-t border-slate-700/60 my-5 sm:my-6 max-w-lg" />
-
-                {/* 3 Key Stats (Clean Typography, No Background Cards) */}
-                <div className="grid grid-cols-3 gap-2.5 sm:gap-6 max-w-lg">
-                  <div>
-                    <div className="text-lg sm:text-3xl font-bold text-[#2e9e5b] tracking-tight">₹60,000</div>
-                    <div className="text-[11px] sm:text-xs text-[#9fb3c8] mt-1 leading-snug">stipend earned while you train</div>
-                  </div>
-
-                  <div>
-                    <div className="text-lg sm:text-3xl font-bold text-[#2e9e5b] tracking-tight">6 months</div>
-                    <div className="text-[11px] sm:text-xs text-[#9fb3c8] mt-1 leading-snug">from first interview to payroll</div>
-                  </div>
-
-                  <div>
-                    <div className="text-lg sm:text-3xl font-bold text-[#2e9e5b] tracking-tight">₹4.2 LPA</div>
-                    <div className="text-[11px] sm:text-xs text-[#9fb3c8] mt-1 leading-snug">starting package as a Wealth Officer</div>
-                  </div>
-                </div>
-
-                {/* Interview Prep PDF Button Preserved Cleanly */}
-                <div className="pt-3 sm:pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 max-w-md">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setPdfModalOpen(true);
-                      setPdfDownloaded(false);
-                    }}
-                    className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 rounded-lg bg-white/10 hover:bg-white/15 border border-white/20 text-xs sm:text-sm font-semibold text-white transition-all cursor-pointer shadow-xs whitespace-nowrap w-full sm:w-auto"
-                  >
-                    <Download size={15} className="text-[#2e9e5b] shrink-0" />
-                    <span>INTERVIEW PREP MATERIAL</span>
-                  </button>
-
-                  <a
-                    href="#how"
-                    className="text-xs sm:text-sm text-[#9fb3c8] hover:text-white transition-colors py-1 inline-flex items-center justify-center sm:justify-start gap-1"
-                  >
-                    How it works ↓
-                  </a>
-                </div>
-
+        {/* HERO SECTION WITH CLEAN TYPOGRAPHIC HIERARCHY & LIQUID GLASSMORPHISM */}
+        <section className="bg-[#061A36] text-white overflow-hidden relative">
+          <div className="absolute -top-32 -left-32 w-96 h-96 bg-blue-500/15 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none" />
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-20 grid lg:grid-cols-12 gap-10 items-center relative z-10">
+            <div className="lg:col-span-7 space-y-6">
+              {/* Eyebrow Badges */}
+              <div className="flex flex-wrap items-center gap-2.5">
+                <span className="inline-flex items-center gap-2 text-xs sm:text-sm font-extrabold tracking-wide uppercase text-[#18B879] bg-[#18B879]/10 border border-[#18B879]/30 px-3.5 py-1.5 rounded-full shadow-xs">
+                  <span className="w-2 h-2 rounded-full bg-[#18B879] animate-pulse" />
+                  India's #1 Job Guarantee Non-Tech Course
+                </span>
+                <span className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-black tracking-wide uppercase text-[#F4B942] bg-[#F4B942]/10 border border-[#F4B942]/40 px-3 py-1.5 rounded-full shadow-xs">
+                  Only 150 Seats
+                </span>
               </div>
 
-              {/* Right Column: Clean White Application Form Card */}
-              <div id="apply-section" className="lg:col-span-5">
-                <div className="bg-white text-slate-900 rounded-2xl p-4 sm:p-7 shadow-2xl border border-slate-100 max-w-md mx-auto lg:ml-auto">
-
-                  {/* Clean Form Header */}
-                  <div className="mb-4 space-y-1">
-                    <h2 className="text-2xl font-bold text-[#0c2340] tracking-tight">
-                      Check if you qualify
-                    </h2>
-                    <p className="text-xs text-slate-500 leading-relaxed">
-                      A counsellor calls you within one working day. No payment at this stage.
-                    </p>
-                  </div>
-
-                  {submitted ? (
-                    <div className="p-6 rounded-xl bg-emerald-50 border border-emerald-200 text-center space-y-4">
-                      <div className="w-12 h-12 rounded-full bg-emerald-600 text-white flex items-center justify-center mx-auto shadow-md shadow-emerald-600/30">
-                        <CheckCircle2 size={26} />
-                      </div>
-                      <div className="space-y-1">
-                        <h3 className="text-base font-bold text-emerald-950">Application Received</h3>
-                        <p className="text-xs text-emerald-800 leading-relaxed">
-                          Your profile has been received. Our career counsellor will connect with you within 1 working day.
-                        </p>
-                      </div>
-
-                      <div className="pt-2 flex flex-col gap-2">
-                        <a
-                          href="https://wa.me/919350199001?text=Hi%20Degree%20Guru%2C%20I%20have%20submitted%20my%20application%20for%20the%20Bajaj%20Capital%20ACWM%20Wealth%20Officer%20programme"
-                          target="_blank"
-                          rel="noreferrer"
-                          className="w-full py-2.5 px-3 rounded-lg bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-xs"
-                        >
-                          <MessageCircle size={15} className="fill-white stroke-none" />
-                          <span>Chat on WhatsApp (9350199001)</span>
-                        </a>
-
-                        <button
-                          type="button"
-                          onClick={() => setSubmitted(false)}
-                          className="text-xs text-slate-500 hover:text-slate-800 py-1"
-                        >
-                          Submit another profile
-                        </button>
-                      </div>
-                    </div>
-                  ) : (
-                    <form onSubmit={handleMainFormSubmit} className="space-y-3">
-                      {/* Full Name */}
-                      <div>
-                        <input
-                          id={nameInputId}
-                          type="text"
-                          placeholder="Full name"
-                          value={fullName}
-                          onChange={(e) => {
-                            setFullName(e.target.value);
-                            if (nameError) setNameError("");
-                          }}
-                          required
-                          className={`w-full px-3.5 py-2.5 rounded-lg border ${nameError ? "border-red-500 ring-1 ring-red-500/20" : "border-slate-200"} text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-colors`}
-                        />
-                        {nameError && <p className="text-[11px] text-red-500 mt-1">{nameError}</p>}
-                      </div>
-
-                      {/* Phone & Email Row */}
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                        <div>
-                          <div className={`flex rounded-lg border ${phoneError ? "border-red-500" : "border-slate-200"} overflow-hidden focus-within:ring-1 focus-within:ring-blue-500 focus-within:border-blue-500`}>
-                            <div className="flex items-center gap-1 px-2.5 bg-slate-50 border-r border-slate-200 text-xs text-slate-700 select-none">
-                              <span>🇮🇳</span>
-                              <span className="text-[9px] text-slate-400">▾</span>
-                              <span className="font-medium text-slate-700">+91</span>
-                            </div>
-                            <input
-                              id={phoneInputId}
-                              type="tel"
-                              maxLength={10}
-                              placeholder=""
-                              value={phoneNumber}
-                              onChange={(e) => {
-                                setPhoneNumber(e.target.value.replace(/\D/g, ""));
-                                if (phoneError) setPhoneError("");
-                              }}
-                              required
-                              className="w-full px-2.5 py-2 text-sm text-slate-800 focus:outline-none"
-                            />
-                          </div>
-                          {phoneError && <p className="text-[11px] text-red-500 mt-1">{phoneError}</p>}
-                        </div>
-
-                        <div>
-                          <input
-                            id={emailInputId}
-                            type="email"
-                            placeholder="Email"
-                            value={emailAddress}
-                            onChange={(e) => {
-                              setEmailAddress(e.target.value);
-                              if (emailError) setEmailError("");
-                            }}
-                            required
-                            className={`w-full px-3.5 py-2.5 rounded-lg border ${emailError ? "border-red-500" : "border-slate-200"} text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-colors`}
-                          />
-                          {emailError && <p className="text-[11px] text-red-500 mt-1">{emailError}</p>}
-                        </div>
-                      </div>
-
-                      {/* City & Age Row */}
-                      <div className="grid grid-cols-2 gap-2.5">
-                        <div>
-                          <input
-                            type="text"
-                            placeholder="City"
-                            value={city}
-                            onChange={(e) => {
-                              setCity(e.target.value);
-                              if (cityError) setCityError("");
-                            }}
-                            required
-                            className={`w-full px-3.5 py-2.5 rounded-lg border ${cityError ? "border-red-500" : "border-slate-200"} text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-colors`}
-                          />
-                          {cityError && <p className="text-[11px] text-red-500 mt-1">{cityError}</p>}
-                        </div>
-
-                        <div>
-                          <input
-                            type="number"
-                            min={18}
-                            max={28}
-                            placeholder="Age (≤ 28)"
-                            value={age}
-                            onChange={(e) => {
-                              setAge(e.target.value);
-                              if (ageError) setAgeError("");
-                            }}
-                            required
-                            className={`w-full px-3.5 py-2.5 rounded-lg border ${ageError ? "border-red-500" : "border-slate-200"} text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-colors`}
-                          />
-                          {ageError && <p className="text-[11px] text-red-500 mt-1">{ageError}</p>}
-                        </div>
-                      </div>
-
-                      {/* Graduate Question Selector */}
-                      <div className="flex items-center justify-between gap-3 pt-1">
-                        <span className="text-xs text-slate-600 font-medium">Graduate?</span>
-                        <div className="grid grid-cols-2 gap-2 flex-1 max-w-[210px]">
-                          <button
-                            type="button"
-                            onClick={() => setIsGraduate("yes")}
-                            className={`py-2 px-3 rounded-lg text-xs font-medium border text-center transition-colors cursor-pointer ${isGraduate === "yes"
-                                ? "bg-slate-50 border-slate-400 text-slate-900 font-semibold shadow-2xs"
-                                : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
-                              }`}
-                          >
-                            Yes
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => setIsGraduate("not-yet")}
-                            className={`py-2 px-3 rounded-lg text-xs font-medium border text-center transition-colors cursor-pointer ${isGraduate === "not-yet"
-                                ? "bg-slate-50 border-slate-400 text-slate-900 font-semibold shadow-2xs"
-                                : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
-                              }`}
-                          >
-                            Not yet
-                          </button>
-                        </div>
-                      </div>
-
-                      {/* Submit Button */}
-                      <button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className="w-full py-3 px-4 rounded-lg bg-[#7ea5cb] hover:bg-[#6c93be] text-white font-medium text-sm tracking-wide shadow-xs active:scale-[0.99] transition-colors cursor-pointer mt-1"
-                      >
-                        {isSubmitting ? "Checking eligibility..." : "Check my eligibility"}
-                      </button>
-
-                      {/* Terms Disclaimer */}
-                      <p className="text-[11px] text-slate-400 text-center pt-1 leading-tight">
-                        By submitting you agree to our <a href="/privacy" className="text-slate-500 hover:underline">Terms &amp; Privacy Policy</a>
-                      </p>
-                    </form>
+              {/* Main Headline with Typewriter Animation in Pure White */}
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black leading-[1.08] tracking-tight min-h-[2.2em] text-white">
+                <span className="inline-block text-white">
+                  {typedLine1}
+                  {typedLine2.length === 0 && (
+                    <span className="inline-block w-1.5 h-[0.82em] bg-white ml-1.5 align-middle animate-pulse" />
                   )}
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </section>
-
-        {/* ========================================================================= */}
-        {/* 2. DELIVERED WITH (PARTNERS SECTION - COMPACT & RESPONSIVE) */}
-        {/* ========================================================================= */}
-        <section className="py-4 sm:py-5 bg-white border-b border-slate-200">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            <div className="flex flex-col lg:flex-row items-center justify-between gap-3 lg:gap-6">
-              <div className="text-center lg:text-left shrink-0">
-                <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-slate-400 block">
-                  DELIVERED IN PARTNERSHIP WITH
                 </span>
-              </div>
-
-              {/* All 3 partners: AIMA, Bajaj Capital, ICOFP - Guaranteed strictly in ONE clean line on all devices */}
-              <div className="flex items-center justify-center lg:justify-end gap-2.5 sm:gap-6 flex-nowrap w-full lg:w-auto max-w-full py-1">
-                {/* AIMA */}
-                <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-                  <img
-                    src={aimaLogo}
-                    alt="All India Management Association (AIMA)"
-                    className="h-4 sm:h-6 max-h-[18px] sm:max-h-[26px] w-auto max-w-[70px] sm:max-w-[110px] object-contain shrink-0"
-                  />
-                  <div className="text-left hidden md:block leading-tight">
-                    <div className="text-[10px] font-black uppercase text-slate-800">AIMA</div>
-                    <div className="text-[9px] text-slate-500 font-medium">Academic Partner</div>
-                  </div>
-                </div>
-
-                <div className="h-4 sm:h-5 w-px bg-slate-200 shrink-0 block" />
-
-                {/* Bajaj Capital */}
-                <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-                  <img
-                    src={bajajCapitalLogo}
-                    alt="Bajaj Capital"
-                    className="h-[14px] sm:h-5 max-h-[16px] sm:max-h-[22px] w-auto max-w-[115px] sm:max-w-[160px] object-contain shrink-0"
-                  />
-                  <div className="text-left hidden md:block leading-tight">
-                    <div className="text-[10px] font-black uppercase text-slate-800">BAJAJ CAPITAL</div>
-                    <div className="text-[9px] text-[#2e9e5b] font-bold">Hiring Partner (BCIBL)</div>
-                  </div>
-                </div>
-
-                <div className="h-4 sm:h-5 w-px bg-slate-200 shrink-0 block" />
-
-                {/* ICOFP */}
-                <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-                  <img
-                    src={icofpLogo}
-                    alt="ICOFP"
-                    className="h-[14px] sm:h-5 max-h-[16px] sm:max-h-[22px] w-auto max-w-[75px] sm:max-w-[110px] object-contain shrink-0"
-                  />
-                  <div className="text-left hidden md:block leading-tight">
-                    <div className="text-[10px] font-black uppercase text-slate-800">ICOFP</div>
-                    <div className="text-[9px] text-slate-500 font-medium">Training Delivery</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ========================================================================= */}
-        {/* 3. CAREER PATHWAY (PHASE 1, 2, 3 + TIMELINE RAIL) */}
-        {/* ========================================================================= */}
-        <section id="how" className="py-16 sm:py-24 bg-[#F8F9FA] border-b border-slate-200">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-12">
-
-            {/* Header */}
-            <div className="text-center max-w-2xl mx-auto space-y-3">
-             
-              <h2 className="text-2xl sm:text-[2.25rem] font-bold text-[#071B35] tracking-tight leading-tight">
-                Get the job offer first. Pay fees later.
-              </h2>
-              
-            </div>
-
-            {/* 3 Key Phase Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-              {/* Phase 01 */}
-              <div className="bg-white rounded-2xl p-6 sm:p-7 border-t-4 border-t-[#2F73B2] shadow-sm border border-slate-200/80 space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-2xl font-bold text-[#2F73B2]">01</span>
-                </div>
-                <h3 className="text-lg font-bold text-[#071B35]">Get selected</h3>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  Interview with the Bajaj Capital panel and receive your written conditional pre-placement offer before classes start.
-                </p>
-              </div>
-
-              {/* Phase 02 */}
-              <div className="bg-white rounded-2xl p-6 sm:p-7 border-t-4 border-t-[#25AAD3] shadow-sm border border-slate-200/80 space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-2xl font-bold text-[#25AAD3]">02</span>
-                </div>
-                <h3 className="text-lg font-bold text-[#071B35]">Get trained</h3>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  240 hours of rigorous learning with ICOFP &amp; AIMA, followed by a guaranteed paid internship at <strong>₹15,000/month</strong>.
-                </p>
-              </div>
-
-              {/* Phase 03 */}
-              <div className="bg-white rounded-2xl p-6 sm:p-7 border-t-4 border-t-[#4BBC7C] shadow-sm border border-slate-200/80 space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-2xl font-bold text-[#4BBC7C]">03</span>
-                </div>
-                <h3 className="text-lg font-bold text-[#071B35]">Get hired</h3>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  Join Bajaj Capital as a full-time Wealth Officer starting from ₹4.2 LPA, plus an additional <strong>₹85,000 retention bonus</strong>.
-                </p>
-              </div>
-
-            </div>
-
-            {/* Week-by-Week Step Rail */}
-            <div className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-sm space-y-8">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                <h3 className="text-lg font-bold text-[#071B35] tracking-tight">
-                  6-Month Roadmap
-                </h3>
-                <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full">
-                  Pan-India Placement
+                <br />
+                <span className="inline-block text-white">
+                  {typedLine2}
+                  {typedLine2.length > 0 && (
+                    <span className="inline-block w-1.5 h-[0.82em] bg-white ml-1.5 align-middle animate-pulse" />
+                  )}
                 </span>
+              </h1>
+
+              {/* Program Name */}
+              <div className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-[#18B879] tracking-tight">
+                Advanced Certification in Wealth Management (ACWM)
               </div>
 
-              <div className="relative border-l-2 border-slate-200 ml-4 sm:ml-8 pl-6 sm:pl-10 space-y-8">
+              {/* Clear Subtext */}
+              <p className="text-sm sm:text-base text-slate-300 max-w-lg leading-relaxed">
+                A structured pathway to a Wealth Officer career opportunity with Bajaj Capital.
+              </p>
 
-                {/* Week 0 */}
-                <div className="relative space-y-1">
-                  <div className="absolute -left-[31px] sm:-left-[47px] top-0 w-6 h-6 rounded-full bg-[#2F73B2] border-4 border-white text-white flex items-center justify-center text-[10px] font-bold shadow-sm" />
-                  <span className="text-[11px] font-bold text-[#2F73B2] uppercase tracking-wider">Week 0</span>
-                  <h4 className="text-base font-bold text-[#071B35]">Interview with Bajaj Capital</h4>
-                  <p className="text-xs sm:text-sm text-slate-600">Appear for the entrance screening interview for the Wealth Officer role.</p>
-                </div>
+              {/* Package Highlight */}
+              <div className="pt-1">
+                <div className="text-3xl sm:text-5xl font-black text-[#F4B942] tracking-tight">₹4.2–₹4.8 LPA</div>
+                <div className="text-xs sm:text-sm text-slate-300 mt-1 font-medium">Guaranteed Starting CTC with Written Pre-Placement Offer</div>
+              </div>
 
-                {/* Week 1 */}
-                <div className="relative space-y-1">
-                  <div className="absolute -left-[31px] sm:-left-[47px] top-0 w-6 h-6 rounded-full bg-[#2F73B2] border-4 border-white text-white flex items-center justify-center text-[10px] font-bold shadow-sm" />
-                  <span className="text-[11px] font-bold text-[#2F73B2] uppercase tracking-wider">Week 1</span>
-                  <h4 className="text-base font-bold text-[#071B35]">Receive Written Pre-Placement Offer &amp; Begin Certification</h4>
-                  <p className="text-xs sm:text-sm text-slate-600">Receive your formal written PPO with starting package from ₹4.2 LPA before commencement.</p>
-                </div>
-
-                {/* Week 9 */}
-                <div className="relative space-y-1">
-                  <div className="absolute -left-[31px] sm:-left-[47px] top-0 w-6 h-6 rounded-full bg-[#25AAD3] border-4 border-white text-white flex items-center justify-center text-[10px] font-bold shadow-sm" />
-                  <span className="text-[11px] font-bold text-[#25AAD3] uppercase tracking-wider">Week 9</span>
-                  <h4 className="text-base font-bold text-[#071B35]">Executive Learning Module at AIMA</h4>
-                  <p className="text-xs sm:text-sm text-slate-600">Attend the specialized All India Management Association module as part of core certification.</p>
-                </div>
-
-                {/* Week 10 */}
-                <div className="relative space-y-1">
-                  <div className="absolute -left-[31px] sm:-left-[47px] top-0 w-6 h-6 rounded-full bg-[#25AAD3] border-4 border-white text-white flex items-center justify-center text-[10px] font-bold shadow-sm" />
-                  <span className="text-[11px] font-bold text-[#25AAD3] uppercase tracking-wider">Week 10</span>
-                  <h4 className="text-base font-bold text-[#071B35]">Complete Certification (ACWM)</h4>
-                  <p className="text-xs sm:text-sm text-slate-600">Graduate with the Advanced Certification in Wealth Management credential.</p>
-                </div>
-
-                {/* Week 11 */}
-                <div className="relative space-y-1">
-                  <div className="absolute -left-[31px] sm:-left-[47px] top-0 w-6 h-6 rounded-full bg-[#4BBC7C] border-4 border-white text-white flex items-center justify-center text-[10px] font-bold shadow-sm" />
-                  <span className="text-[11px] font-bold text-[#4BBC7C] uppercase tracking-wider">Week 11</span>
-                  <h4 className="text-base font-bold text-[#071B35]">Paid Internship Begins</h4>
-                  <p className="text-xs sm:text-sm text-emerald-800 font-semibold">Commence your 4-month practical internship at Bajaj Capital with ₹15,000/month stipend.</p>
-                </div>
-
-                {/* Week 28 */}
-                <div className="relative space-y-1">
-                  <div className="absolute -left-[31px] sm:-left-[47px] top-0 w-6 h-6 rounded-full bg-[#4BBC7C] border-4 border-white text-white flex items-center justify-center text-[10px] font-bold shadow-sm" />
-                  <span className="text-[11px] font-bold text-[#4BBC7C] uppercase tracking-wider">Week 28 (Month 7)</span>
-                  <h4 className="text-base font-bold text-[#071B35]">Join Full-Time as a Wealth Officer</h4>
-                  <p className="text-xs sm:text-sm text-slate-600">Full-time absorption at Bajaj Capital with package from ₹4.2 LPA to ₹4.8 LPA.</p>
-                </div>
-
-                {/* Milestone */}
-                <div className="relative space-y-1">
-                  <div className="absolute -left-[31px] sm:-left-[47px] top-0 w-6 h-6 rounded-full bg-amber-500 border-4 border-white text-white flex items-center justify-center text-[10px] font-bold shadow-sm" />
-                  <span className="text-[11px] font-bold text-amber-600 uppercase tracking-wider">Milestone (Month 12)</span>
-                  <h4 className="text-base font-bold text-[#071B35]">Retention Bonus of ₹85,000</h4>
-                  <p className="text-xs sm:text-sm text-slate-600">Awarded upon successful completion of 12 months full-time employment.</p>
-                </div>
-
+              {/* CTA Button */}
+              <div className="pt-2">
+                <button
+                  onClick={() => openForm("Check my eligibility")}
+                  className="group w-full sm:w-auto px-8 py-4 rounded-xl bg-[#18B879] hover:bg-[#15a36b] text-[#061A36] font-extrabold text-sm tracking-wide transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 active:scale-95"
+                >
+                  CHECK MY ELIGIBILITY
+                  <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+                </button>
               </div>
             </div>
 
-            {/* What you will learn grid */}
-            <div className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-sm grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-3">
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-400">WHAT YOU WILL LEARN</span>
-                <h4 className="text-xl font-bold text-[#071B35]">Practical Wealth Advisory Curriculum</h4>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  Financial Planning • Investments • Wealth Management • Mutual Funds • Retirement, Tax &amp; Risk Planning
-                </p>
-                <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600">
-                  <strong className="font-semibold text-slate-800">240 hours of industry learning:</strong> 190 hours with ICOFP + 50 hours with AIMA faculty.
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-400">CERTIFICATION EXPOSURE</span>
-                <h4 className="text-xl font-bold text-[#071B35]">Recognised Industry Credentials</h4>
-                <div className="flex flex-wrap gap-2 pt-1">
-                  <span className="px-3 py-1 rounded-lg bg-slate-100 border border-slate-200 text-xs font-bold text-slate-700">CFP Level 1</span>
-                  <span className="px-3 py-1 rounded-lg bg-slate-100 border border-slate-200 text-xs font-bold text-slate-700">CFP Level 2</span>
-                  <span className="px-3 py-1 rounded-lg bg-emerald-50 border border-emerald-200 text-xs font-bold text-emerald-800">NISM VA (Mutual Funds)</span>
-                  <span className="px-3 py-1 rounded-lg bg-slate-100 border border-slate-200 text-xs font-bold text-slate-700">NISM XXI-B</span>
-                  <span className="px-3 py-1 rounded-lg bg-slate-100 border border-slate-200 text-xs font-bold text-slate-700">BQP</span>
-                </div>
-                <p className="text-xs text-slate-500 pt-1">
-                  Plus the joint ICOFP &amp; AIMA Advanced Certification in Wealth Management upon graduation.
-                </p>
+            <div className="lg:col-span-5">
+              <div className="rounded-3xl overflow-hidden border border-white/15 shadow-2xl">
+                <img src={heroImage} alt="Wealth Officer at work" className="w-full h-[300px] sm:h-[440px] object-cover object-[65%_30%]" />
               </div>
             </div>
-
           </div>
         </section>
 
-        {/* ========================================================================= */}
-        {/* 4. CAREER PROGRESSION (WHERE YOUR CAREER CAN GO) */}
-        {/* ========================================================================= */}
-        <section id="job" className="py-16 sm:py-24 bg-[#071B35] text-white border-b border-white/10">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            {/* Career Ladder */}
-            <div className="bg-white/5 rounded-3xl p-6 sm:p-10 border border-white/10 backdrop-blur-md space-y-6">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-white/10 pb-4">
-                <div>
-                  <h3 className="text-xl sm:text-2xl font-bold text-white">Where your career can go</h3>
-                  <p className="text-xs sm:text-sm text-slate-400 mt-1">A clear, performance-driven progression pathway inside Bajaj Capital</p>
+        {/* TRUST STRIP */}
+        <section className="bg-white border-b border-slate-200">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 grid grid-cols-3 gap-3 sm:gap-8">
+            {[
+              [aimaLogo, "AIMA", "Academic Partner"],
+              [bajajCapitalLogo, "BAJAJ CAPITAL", "Hiring Partner"],
+              [icofpLogo, "ICOFP", "Training Delivery"],
+            ].map(([src, name, role]) => (
+              <div key={name} className="group text-center">
+                <div className="h-8 sm:h-10 flex items-center justify-center">
+                  <img
+                    src={src}
+                    alt={name}
+                    className="max-h-full max-w-[90px] sm:max-w-[140px] object-contain"
+                  />
                 </div>
+                <div className="text-[11px] sm:text-xs font-bold mt-2">{name}</div>
+                <div className="text-[10px] sm:text-xs text-slate-500">{role}</div>
               </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-
-                {/* Rung 1 */}
-                <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-2">
-                  <div className="w-2.5 h-2.5 rounded-full bg-[#4BBC7C]" />
-                  <span className="text-[10px] font-bold uppercase text-slate-400">WHERE YOU START</span>
-                  <h4 className="text-base font-bold text-white">Wealth Officer</h4>
-                  <p className="text-xs text-slate-300">Your first client portfolio, live from month seven.</p>
-                </div>
-
-                {/* Rung 2 */}
-                <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-2">
-                  <div className="w-2.5 h-2.5 rounded-full bg-[#25AAD3]" />
-                  <span className="text-[10px] font-bold uppercase text-slate-400">STAGE 2</span>
-                  <h4 className="text-base font-bold text-white">Senior Executive</h4>
-                  <p className="text-xs text-slate-300">A larger investment book &amp; mentoring junior advisors.</p>
-                </div>
-
-                {/* Rung 3 */}
-                <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-2">
-                  <div className="w-2.5 h-2.5 rounded-full bg-[#2F73B2]" />
-                  <span className="text-[10px] font-bold uppercase text-slate-400">STAGE 3</span>
-                  <h4 className="text-base font-bold text-white">Assistant Manager</h4>
-                  <p className="text-xs text-slate-300">Owning team performance &amp; branch advisory targets.</p>
-                </div>
-
-                {/* Rung 4 */}
-                <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-2">
-                  <div className="w-2.5 h-2.5 rounded-full bg-amber-400" />
-                  <span className="text-[10px] font-bold uppercase text-slate-400">LONG-TERM</span>
-                  <h4 className="text-base font-bold text-white">Cluster / Regional Head</h4>
-                  <p className="text-xs text-slate-300">Leading multi-branch wealth divisions across India.</p>
-                </div>
-
-              </div>
-            </div>
-
+            ))}
           </div>
         </section>
 
-        {/* ========================================================================= */}
-        {/* 5. FEES, INVESTMENT & THE "REAL NET COST" (LEVERAGE EDU MATCH) */}
-        {/* ========================================================================= */}
-        <section id="money" className="py-16 sm:py-24 bg-white border-b border-slate-200">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-12">
-
-            <div className="text-center max-w-2xl mx-auto space-y-3">
-              <span className="text-xs font-bold tracking-widest uppercase text-[#2F73B2] bg-[#2F73B2]/10 px-3 py-1 rounded-full">
-                TRANSPARENT INVESTMENT
-              </span>
-              <h2 className="text-3xl sm:text-4xl font-bold text-[#071B35] tracking-tight">
-                Invest in your career. Start earning along the way.
+        {/* COMPARISON SECTION (SLIDE ON MOBILE, SIMPLE SHORT HEADING, NO MULTI-LINE SQUEEZE) */}
+        <section className="py-16 sm:py-24 bg-white border-b border-slate-200">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6">
+            <Reveal className="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
+              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight">
+                HOW ACWM IS DIFFERENT
               </h2>
-             
-            </div>
+            </Reveal>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+            {/* Scrollable / Slideable table container for mobile with generous column widths */}
+            <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0 [scrollbar-width:none]">
+              <div className="min-w-[700px] rounded-3xl border border-slate-200 overflow-hidden shadow-sm bg-white">
+                <div className="grid grid-cols-[160px_1fr_1fr] text-center text-xs sm:text-sm font-extrabold tracking-wide border-b border-slate-200">
+                  <div className="py-4 px-3 bg-slate-50 text-slate-400 uppercase text-[11px] flex items-center justify-center">Parameter</div>
+                  <div className="py-4 px-4 bg-slate-100 text-slate-500 uppercase flex items-center justify-center">Other Institutes</div>
+                  <div className="py-4 px-4 bg-[#061A36] text-[#18B879] uppercase flex items-center justify-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-[#18B879] animate-pulse" />
+                    ACWM Pathway
+                  </div>
+                </div>
 
-              {/* Card 1: What You Pay */}
-              <div className="lg:col-span-6 bg-slate-50 rounded-3xl p-6 sm:p-8 border border-slate-200 flex flex-col justify-between space-y-6">
-                <div className="space-y-4">
-                  <h3 className="text-2xl font-bold text-[#071B35]">PROGRAMME FEES</h3>
-
-                  <div className="divide-y divide-slate-200 text-sm">
-                    <div className="py-3 flex justify-between items-center">
-                      <span className="font-semibold text-slate-700">Eligibility Registration</span>
-                      <strong className="text-slate-900">₹500</strong>
+                {[
+                  [
+                    "Seats Availability",
+                    "Unlimited (open mass enrollment batches)",
+                    "Only 150 real vacant seats linked to Bajaj Capital absorption",
+                  ],
+                  [
+                    "Admission Criteria",
+                    "Pay fee and get instant admission with zero evaluation or screening",
+                    "First clear psychometric test & panel interview to be eligible to enroll",
+                  ],
+                  [
+                    "Course Fee",
+                    "Full fee taken upfront before any job assurance",
+                    "Pay ONLY if you receive written Placement Guaranteed Offer Letter",
+                  ],
+                  [
+                    "Job Guarantee",
+                    "No job guarantee — only course completion certificate",
+                    "Yes — formal written Pre-Placement Offer letter upfront",
+                  ],
+                  [
+                    "Internship & Stipend",
+                    "Unpaid or unassisted internship with ₹0 stipend",
+                    "4-month branch internship with guaranteed ₹15,000/mo stipend",
+                  ],
+                  [
+                    "How You Learn",
+                    "Made for rote theoretical learning & memorization",
+                    "Made for real-world client advisory & live branch simulations",
+                  ],
+                  [
+                    "Placement Support",
+                    "Uncertain support across multiple external companies",
+                    "Join Bajaj Capital directly — no multi-company hustle",
+                  ],
+                ].map(([label, other, us]) => (
+                  <div key={label} className="grid grid-cols-[160px_1fr_1fr] border-t border-slate-200 text-xs sm:text-sm items-center">
+                    <div className="p-4 font-bold text-slate-800 bg-slate-50/70 border-r border-slate-100">
+                      {label}
                     </div>
-                    <div className="py-3 flex justify-between items-center">
-                      <span className="font-semibold text-slate-700">Programme Investment</span>
-                      <strong className="text-slate-900">₹1,50,000</strong>
+                    <div className="p-4 text-slate-600 flex items-center gap-2.5 border-r border-slate-100">
+                      <span className="w-5 h-5 rounded-full bg-red-100 text-red-600 flex items-center justify-center shrink-0">
+                        <X size={12} strokeWidth={3} />
+                      </span>
+                      <span className="leading-snug">{other}</span>
                     </div>
-                    <div className="py-3 flex justify-between items-center">
-                      <span className="font-semibold text-slate-700">GST (18%)</span>
-                      <strong className="text-slate-900">₹27,000</strong>
+                    <div className="p-4 font-semibold text-[#061A36] bg-emerald-50/60 flex items-center gap-2.5">
+                      <span className="w-5 h-5 rounded-full bg-[#18B879] text-white flex items-center justify-center shrink-0 shadow-xs">
+                        <Check size={12} strokeWidth={3} />
+                      </span>
+                      <span className="leading-snug">{us}</span>
                     </div>
                   </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
 
-                  {/* EMI Box */}
-                  <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-1">
-                    <span className="text-xs font-bold text-[#2F73B2] uppercase tracking-wider">OR PAY MONTHLY (0% EMI)</span>
-                    <p className="text-xs text-slate-600 leading-relaxed">
-                      Flexible no-cost EMI options available over <strong>10 months</strong>, subject to partner NBFC approval.
+        {/* PLACEMENT ROADMAP (COMES IMMEDIATELY AFTER DIFFERENCE) */}
+        <section id="how" className="py-16 sm:py-24 bg-[#F7F9FC]">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6">
+            <Reveal className="text-center mb-12">
+              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight">PLACEMENT ROADMAP</h2>
+              <p className="text-slate-600 mt-3 text-sm sm:text-base">Selection to payroll.</p>
+            </Reveal>
+
+            <div ref={tlRef} className="relative pl-10 sm:pl-14">
+              <div className="absolute left-[15px] sm:left-[23px] top-2 bottom-2 w-0.5 bg-slate-200" />
+              <div
+                className="absolute left-[15px] sm:left-[23px] top-2 w-0.5 bg-[#18B879]"
+                style={{ height: `calc((100% - 16px) * ${progress})`, transition: "height .15s linear" }}
+              />
+              <div className="space-y-8">
+                {JOURNEY.map((s, i) => {
+                  const on = stepsActive(i);
+                  return (
+                    <div key={s.title} className="relative" style={{ opacity: on ? 1 : 0.35, transition: "opacity .4s" }}>
+                      <span
+                        className={`absolute -left-10 sm:-left-14 top-1 w-8 h-8 sm:w-12 sm:h-12 rounded-full border-4 border-[#F7F9FC] flex items-center justify-center text-[11px] sm:text-sm font-extrabold text-white ${toneDot[s.tone]} ${s.tone === "gold" ? "!text-[#061A36]" : ""}`}
+                        style={{ transform: on ? "scale(1)" : "scale(.85)", transition: "transform .4s" }}
+                      >
+                        {i + 1}
+                      </span>
+                      <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm hover:shadow-md transition-shadow">
+                        <div className="text-[11px] font-bold tracking-wider text-[#1557D6] uppercase">{s.when}</div>
+                        <h3 className="text-lg sm:text-xl font-extrabold mt-0.5">{s.title}</h3>
+                        <p className="text-sm text-slate-600 mt-1 leading-relaxed">{s.text}</p>
+                        <span className="inline-block mt-3 text-xs font-bold px-3 py-1 rounded-full bg-[#061A36] text-white">
+                          {s.tag}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ELIGIBILITY (PUSHED BELOW ROADMAP) */}
+        <section id="eligibility" className="pt-8 pb-10 sm:pt-11 sm:pb-12 bg-white border-t border-slate-200 scroll-mt-24 relative overflow-hidden">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
+            <Reveal className="text-center mb-5 sm:mb-6">
+              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight">ELIGIBILITY</h2>
+            </Reveal>
+
+            <Reveal>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 max-w-5xl mx-auto">
+                {[
+                  "Graduation or Pursuing",
+                  "Age 28 or Below",
+                  "No Experience Mandatory",
+                  "Must Clear Entrance Psychometric Test & Interview",
+                ].map((item) => (
+                  <div
+                    key={item}
+                    className="h-full p-4 sm:p-4.5 rounded-2xl bg-[#F7F9FC] border border-slate-200/90 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-start gap-3.5 text-left"
+                  >
+                    <span className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+                      <Check size={14} strokeWidth={3} />
+                    </span>
+                    <span className="text-xs sm:text-sm font-extrabold text-[#061A36] leading-snug">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* INTERVIEW PREP KIT DOWNLOAD SECTION */}
+        <section className="py-8 sm:py-10 bg-slate-50 border-y border-slate-200">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6">
+            <div className="rounded-2xl sm:rounded-3xl bg-white border border-slate-200 p-5 sm:p-7 flex flex-col sm:flex-row items-center justify-between gap-5 shadow-xs">
+              <h3 className="text-lg sm:text-xl font-extrabold text-[#061A36] text-center sm:text-left">
+                Bajaj Capital Interview Prep Kit
+              </h3>
+              <button
+                onClick={handleDownloadPrepKit}
+                className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-[#061A36] hover:bg-[#0c2952] text-white text-xs sm:text-sm font-extrabold tracking-wide transition-all shrink-0 active:scale-95 shadow-md"
+              >
+                DOWNLOAD PREP KIT
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* CAREER ADVANTAGE (BRIGHT BASE COLOR, REDUCED GAP, SOFT SHADOW) */}
+        <section className="py-14 sm:py-20 bg-[#F7F9FC] text-[#061A36] border-b border-slate-200">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6">
+            <Reveal className="text-center max-w-2xl mx-auto mb-5 sm:mb-6">
+              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight">
+                CAREER ADVANTAGE?
+              </h2>
+            </Reveal>
+
+            {/* 3 Streamlined Cards: Swipable on mobile, 3-column grid on desktop */}
+            <div className="flex flex-nowrap sm:grid sm:grid-cols-3 gap-3.5 overflow-x-auto sm:overflow-visible snap-x snap-mandatory -mx-4 px-4 sm:mx-0 sm:px-0 pb-3 [scrollbar-width:none]">
+              <div className="snap-start shrink-0 w-[82%] sm:w-auto h-full">
+                <Reveal delay={0} className="h-full">
+                  <div className="h-full rounded-2xl sm:rounded-3xl bg-white border border-slate-200/90 p-4 sm:p-5 transition-all duration-300 shadow-[0_4px_20px_-2px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_25px_-2px_rgba(0,0,0,0.09)] hover:border-[#18B879]/50">
+                    <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#18B879] flex items-center justify-center mb-2.5">
+                      <ShieldCheck size={20} />
+                    </div>
+                    <h3 className="text-base sm:text-lg font-extrabold text-[#061A36]">No Fear of AI Job Loss</h3>
+                    <p className="text-xs sm:text-sm text-slate-600 mt-1.5 leading-relaxed">
+                      High-stakes wealth management is relationship-driven — clients trust experienced human advisors with their life savings, not algorithms.
                     </p>
                   </div>
-                </div>
-                <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-200/80 text-xs text-amber-900 leading-relaxed font-medium">
-                  <strong>Zero Risk:</strong> Nothing is payable until our counsellor confirms your eligibility. The programme fee applies only <em>after</em> you clear the Bajaj Capital interview and get your written PPO.
-                </div>
+                </Reveal>
               </div>
 
-              {/* Card 2: What You Earn & Net Cost */}
-              <div className="lg:col-span-6 bg-emerald-50/60 rounded-3xl p-6 sm:p-8 border border-emerald-200 flex flex-col justify-between space-y-6">
-                <div className="space-y-4">
-                  <span className="text-xs font-bold uppercase tracking-wider text-emerald-800">GUARANTEED RETURNS</span>
-                  <h3 className="text-2xl font-bold text-emerald-950">Your Journey to Earning</h3>
-
-                  <div className="divide-y divide-emerald-200/80 text-sm">
-                    <div className="py-3 flex justify-between items-center">
-                      <div>
-                        <span className="font-bold text-emerald-900 block">During 4-Month Internship</span>
-                        <span className="text-xs text-emerald-700 font-medium">Earn while gaining live work experience</span>
-                      </div>
-                      <strong className="text-emerald-900 text-base">₹15,000 / mo (₹60,000 total)</strong>
+              <div className="snap-start shrink-0 w-[82%] sm:w-auto h-full">
+                <Reveal delay={100} className="h-full">
+                  <div className="h-full rounded-2xl sm:rounded-3xl bg-white border border-slate-200/90 p-4 sm:p-5 transition-all duration-300 shadow-[0_4px_20px_-2px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_25px_-2px_rgba(0,0,0,0.09)] hover:border-blue-400/50">
+                    <div className="w-10 h-10 rounded-xl bg-blue-50 text-[#1557D6] flex items-center justify-center mb-2.5">
+                      <Sparkles size={20} />
                     </div>
-
-                    <div className="py-3 flex justify-between items-center">
-                      <div>
-                        <span className="font-bold text-emerald-900 block">Starting Salary (Month 7)</span>
-                        <span className="text-xs text-emerald-700 font-medium">Full-time Wealth Officer compensation</span>
-                      </div>
-                      <strong className="text-emerald-900 text-base">₹4.2 LPA to ₹4.8 LPA</strong>
-                    </div>
-
-                    <div className="py-3 flex justify-between items-center">
-                      <div>
-                        <span className="font-bold text-emerald-900 block">Year 1 Retention Bonus</span>
-                        <span className="text-xs text-emerald-700 font-medium">On completing 12 months full-time</span>
-                      </div>
-                      <strong className="text-emerald-900 text-base">₹85,000</strong>
-                    </div>
+                    <h3 className="text-base sm:text-lg font-extrabold text-[#061A36]">No Coding, No Tech Needed</h3>
+                    <p className="text-xs sm:text-sm text-slate-600 mt-1.5 leading-relaxed">
+                      Open to graduates of all streams (Commerce, Arts, Science, Management) — zero coding or technical background required.
+                    </p>
                   </div>
-                </div>
-
-                {/* Net Cost Box */}
-                <div className="p-5 rounded-2xl bg-white border border-emerald-300 shadow-md space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-emerald-800 uppercase tracking-wider">WHAT YOU ACTUALLY PAY</span>
-      
-                  </div>
-
-                  <div className="space-y-1.5 text-xs text-slate-700 bg-emerald-50/50 p-3.5 rounded-xl border border-emerald-100">
-                    <div className="flex justify-between items-center">
-                      <span>Course Fee incl. GST:</span>
-                      <strong className="text-slate-900">₹1,77,000</strong>
-                    </div>
-                    <div className="flex justify-between items-center text-emerald-800">
-                      <span>Stipend Earned:</span>
-                      <strong>₹60,000</strong>
-                    </div>
-                    <div className="flex justify-between items-center text-emerald-800">
-                      <span>Retention Bonus:</span>
-                      <strong>₹85,000</strong>
-                    </div>
-                    <div className="pt-2 mt-1 border-t border-emerald-200 flex justify-between items-center font-bold text-emerald-900">
-                      <span>Total Earnings:</span>
-                      <span className="text-sm font-bold text-emerald-700">₹1,45,000</span>
-                    </div>
-                  </div>
-
-                  <div className="pt-0.5">
-                    <div className="text-xs font-bold text-slate-600">
-                      So your effective cost is only:
-                    </div>
-                    <div className="text-3xl sm:text-4xl font-bold text-emerald-700 tracking-tight">
-                      ₹32,000!
-                    </div>
-                  </div>
-
-                </div>
+                </Reveal>
               </div>
 
+              <div className="snap-start shrink-0 w-[82%] sm:w-auto h-full">
+                <Reveal delay={200} className="h-full">
+                  <div className="h-full rounded-2xl sm:rounded-3xl bg-white border border-slate-200/90 p-4 sm:p-5 transition-all duration-300 shadow-[0_4px_20px_-2px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_25px_-2px_rgba(0,0,0,0.09)] hover:border-[#F4B942]/50">
+                    <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-2.5">
+                      <Users size={20} />
+                    </div>
+                    <h3 className="text-base sm:text-lg font-extrabold text-[#061A36]">No Prior Experience Needed</h3>
+                    <p className="text-xs sm:text-sm text-slate-600 mt-1.5 leading-relaxed">
+                      Freshers are welcome — 240 hours of practical training and a 4-month corporate internship groom you from the ground up.
+                    </p>
+                  </div>
+                </Reveal>
+              </div>
             </div>
 
-          </div>
-        </section>
-
-        {/* ========================================================================= */}
-        {/* 6. WRITTEN PPO PROOF & CERTIFICATE SHOWCASE */}
-        {/* ========================================================================= */}
-        <section className="py-16 sm:py-24 bg-[#F8F9FA] border-b border-slate-200">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-12">
-
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-
-              <div className="lg:col-span-5 space-y-4">
-                <span className="text-xs font-bold tracking-widest uppercase text-[#2F73B2] bg-[#2F73B2]/10 px-3 py-1 rounded-full">
-                  YOUR CAREER IN WRITING
-                </span>
-                <h2 className="text-3xl sm:text-4xl font-bold text-[#071B35] tracking-tight">
-                  Backed by a written offer from Bajaj Capital.
-                </h2>
-                <p className="text-sm text-slate-600 leading-relaxed">
-                  Selected candidates receive a formal conditional Pre-Placement Offer (PPO) before beginning their training journey.
-                </p>
-
-               
-              </div>
-
-              {/* Certificate image */}
-              <div className="lg:col-span-7">
-                <div className="bg-white rounded-3xl p-4 sm:p-6 border border-slate-200 shadow-xl space-y-3">
-                  <div className="flex items-center justify-between px-2">
-                    <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-                      Joint ICOFP &amp; AIMA Certification
-                    </span>
-                    
-                  </div>
-                  <img
-                    src="/assets/acwm/acwm_certificate.jpg"
-                    alt="Advanced Certification in Wealth Management"
-                    className="w-full h-auto rounded-xl object-contain border border-slate-100"
-                  />
-                </div>
-              </div>
-
-            </div>
-
-          </div>
-        </section>
-
-        {/* ========================================================================= */}
-        {/* 7. WHO CAN APPLY & FAQS ACCORDION */}
-        {/* ========================================================================= */}
-        <section id="faq" className="py-16 sm:py-24 bg-white border-b border-slate-200">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6">
-
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-
-              {/* Left Column: Who Can Apply Criteria */}
-              <div className="lg:col-span-5 space-y-6">
-                <div className="space-y-2">
-
-                  <h2 className="text-3xl font-bold text-[#071B35] tracking-tight">
-                    Who can apply
-                  </h2>
-
-                </div>
-
-                <div className="space-y-4">
-
-                  <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-start gap-3.5">
-                    <div className="w-7 h-7 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 mt-0.5">
-                      <Check size={16} />
-                    </div>
-                    <div>
-                      <h4 className="text-sm font-bold text-slate-900">Graduate in any stream</h4>
-                    </div>
-                  </div>
-
-                  <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-start gap-3.5">
-                    <div className="w-7 h-7 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 mt-0.5">
-                      <Check size={16} />
-                    </div>
-                    <div>
-                      <h4 className="text-sm font-bold text-slate-900">You are 28 years or under</h4>
-                      {/* <p className="text-xs text-slate-600 mt-0.5">The pathway is custom built for young professionals launching their first serious finance career.</p> */}
-                    </div>
-                  </div>
-
-                  <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-start gap-3.5">
-                    <div className="w-7 h-7 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 mt-0.5">
-                      <Check size={16} />
-                    </div>
-                    <div>
-                      <h4 className="text-sm font-bold text-slate-900">You clear the 3-step entrance selection</h4>
-                      {/* <p className="text-xs text-slate-600 mt-0.5">Aptitude assessment, counsellor pre-screening, and the final Bajaj Capital panel interview.</p> */}
-                    </div>
-                  </div>
-
-                </div>
-
-                <div className="p-4 rounded-2xl bg-amber-50/60 border border-amber-200 text-xs text-amber-900 leading-relaxed font-medium">
-                  <strong>Please note:</strong> This programme is not for candidates seeking back-office data entry roles, unable to relocate, or only wanting an offline degree certificate without employment.
-                </div>
-              </div>
-
-              {/* Right Column: Accordion FAQs */}
-              <div className="lg:col-span-7 space-y-4">
-                <div className="space-y-1 mb-2">
-                  <h3 className="text-2xl font-bold text-[#071B35] tracking-tight">
-                    Frequently Asked Questions
+            {/* SEPARATE CONTAINER FOR BAJAJ LEGACY WITH GOLD EMBLEM */}
+            <Reveal delay={300}>
+              <div className="mt-5 rounded-2xl sm:rounded-3xl bg-white border border-slate-200/90 p-5 sm:p-6 flex flex-col sm:flex-row items-center gap-5 shadow-[0_4px_20px_-2px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_25px_-2px_rgba(0,0,0,0.08)] transition-all">
+                <img
+                  src={goldEmblem}
+                  alt="Century-Old Legacy Emblem"
+                  className="w-14 h-18 sm:w-16 sm:h-20 object-contain shrink-0"
+                />
+                <div className="text-center sm:text-left flex-1">
+                  <h3 className="text-lg sm:text-xl font-extrabold text-[#061A36]">
+                    Backed by Bajaj Capital's Century-Old Legacy
                   </h3>
-                  <p className="text-xs text-slate-500">
-                    Transparent answers regarding eligibility, offers, stipend and curriculum
+                  <p className="text-xs sm:text-sm text-slate-600 mt-1.5 leading-relaxed">
+                    Build your career with India's premier investment network backed by trusted advisory, lakhs of satisfied clients, and extensive branch offices nationwide.
                   </p>
                 </div>
+              </div>
+            </Reveal>
+          </div>
+        </section>
 
-                <div className="divide-y divide-slate-200 border-t border-b border-slate-200">
-                  {FAQS.map((faq, index) => {
-                    const isOpen = openFaq === index;
-                    return (
-                      <div key={index} className="py-4">
-                        <button
-                          type="button"
-                          onClick={() => toggleFaq(index)}
-                          className="w-full flex items-center justify-between text-left gap-4 font-bold text-sm sm:text-base text-[#071B35] hover:text-[#2F73B2] transition-colors cursor-pointer"
-                        >
-                          <span>{faq.q}</span>
-                          <span className={`w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold shrink-0 transition-transform ${isOpen ? "rotate-180 bg-[#2F73B2] text-white" : ""}`}>
-                            <ChevronDown size={14} />
-                          </span>
-                        </button>
+        {/* PROOF + INSTITUTIONS */}
+        <section className="pt-10 pb-16 sm:pt-12 sm:pb-20 bg-white relative overflow-hidden">
+          <div className="absolute top-1/2 -right-40 w-96 h-96 bg-blue-100/40 rounded-full blur-3xl pointer-events-none" />
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
+            <Reveal className="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
+              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight">BUILT AROUND REAL INSTITUTIONS.</h2>
+            </Reveal>
 
-                        {isOpen && (
-                          <div className="mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed pr-6 animate-in fade-in">
-                            {faq.a}
-                          </div>
-                        )}
+            <div className="grid lg:grid-cols-12 gap-8 items-start">
+              <div className="lg:col-span-7 grid gap-4">
+                {[
+                  [aimaLogo, "Academic Partner", "AIMA", "India's apex national management body established under Government & Industry leadership. Co-certifies the ACWM and delivers executive training."],
+                  [bajajCapitalLogo, "Hiring Partner", "Bajaj Capital", "Interviews you, issues the Pre-Placement Offer and runs your internship."],
+                  [icofpLogo, "Training Delivery", "ICOFP", "Delivers 190 hours of classroom training and NISM preparation."],
+                ].map(([logo, role, name, line], i) => (
+                  <Reveal key={name} delay={i * 100}>
+                    <div className="flex items-center gap-5 rounded-3xl border border-slate-200/80 bg-white/80 backdrop-blur-md p-5 hover:border-[#1557D6]/40 hover:shadow-lg transition-all duration-300">
+                      <div className="w-24 sm:w-32 h-14 shrink-0 bg-white rounded-2xl border border-slate-100 flex items-center justify-center p-2 shadow-2xs">
+                        <img src={logo} alt={name} className="max-h-full max-w-full object-contain" />
                       </div>
-                    );
-                  })}
+                      <div>
+                        <div className="text-[11px] font-bold tracking-wider text-[#1557D6] uppercase">{role}</div>
+                        <p className="text-sm text-slate-700 mt-0.5 leading-relaxed">{line}</p>
+                      </div>
+                    </div>
+                  </Reveal>
+                ))}
+              </div>
+
+              <Reveal delay={150} className="lg:col-span-5">
+                <button
+                  onClick={() => setZoomOpen(true)}
+                  className="group relative block w-full rounded-3xl overflow-hidden border border-slate-200/80 shadow-lg text-left backdrop-blur-md"
+                  aria-label="Enlarge certificate"
+                >
+                  <img
+                    src={acwmCertificate}
+                    alt="ACWM certificate"
+                    className="w-full transition-transform duration-500 group-hover:scale-105"
+                  />
+                </button>
+                <p className="text-xs text-slate-500 mt-3 text-center">Advanced Certification in Wealth Management (ACWM)</p>
+              </Reveal>
+            </div>
+          </div>
+        </section>
+
+        {/* WHAT YOU'LL LEARN */}
+        <section className="pt-8 pb-10 sm:pt-11 sm:pb-14 bg-[#F7F9FC] border-t border-slate-200 relative overflow-hidden">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
+            <Reveal className="text-center mb-3 sm:mb-4">
+              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight">What You'll Learn</h2>
+            </Reveal>
+
+            <div className="flex md:grid md:grid-cols-3 lg:grid-cols-4 gap-4 overflow-x-auto md:overflow-visible snap-x snap-mandatory -mx-4 px-4 md:mx-0 md:px-0 pb-2 [scrollbar-width:none]">
+              {MODULES.map(({ icon: Icon, t, d }) => (
+                <div
+                  key={t}
+                  className="snap-start shrink-0 w-[72%] sm:w-[48%] md:w-auto rounded-3xl bg-white border border-slate-200/90 p-5 sm:p-6 hover:-translate-y-1.5 hover:shadow-lg hover:border-[#1557D6]/30 transition-all duration-300 group shadow-xs"
+                >
+                  <div className="w-11 h-11 rounded-2xl bg-blue-50 text-[#1557D6] flex items-center justify-center group-hover:scale-105 transition-transform">
+                    <Icon size={22} />
+                  </div>
+                  <h3 className="font-extrabold text-base mt-4 text-[#061A36]">{t}</h3>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-1.5 leading-relaxed">{d}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* WHERE CAN THIS CAREER GO? (HEADING ABOVE IMAGE) */}
+        <section className="pt-8 pb-12 sm:pt-11 sm:pb-16 bg-[#F7F9FC] border-t border-slate-200 relative overflow-hidden">
+          <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-emerald-100/40 rounded-full blur-3xl pointer-events-none" />
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
+            <Reveal className="text-center lg:text-left mb-5 sm:mb-7">
+              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight">WHERE CAN THIS CAREER GO?</h2>
+            </Reveal>
+
+            <div className="grid lg:grid-cols-2 gap-8 lg:gap-10 items-center">
+              <Reveal>
+                <div className="rounded-3xl overflow-hidden shadow-xl border border-slate-200/80 bg-white">
+                  <img src={consultImage} alt="Advisor meeting a client" className="w-full h-[260px] sm:h-[400px] object-cover object-[70%_40%]" />
+                </div>
+              </Reveal>
+              <div className="space-y-3">
+                {LADDER.map((l, i) => (
+                  <Reveal key={l.t} delay={i * 80}>
+                    <div className="flex items-center gap-4 rounded-2xl border border-slate-200/80 bg-white/90 backdrop-blur-md p-4 sm:p-4.5 hover:border-[#1557D6]/40 hover:shadow-md hover:-translate-x-1 transition-all duration-300">
+                      <span className="w-10 h-10 rounded-xl bg-[#061A36] text-white text-sm font-extrabold flex items-center justify-center shrink-0 shadow-xs">
+                        0{i + 1}
+                      </span>
+                      <div className="flex-1">
+                        <div className="font-extrabold text-sm sm:text-base text-[#061A36]">{l.t}</div>
+                        <div className="text-xs text-slate-500 mt-0.5">{l.d}</div>
+                      </div>
+                    </div>
+                  </Reveal>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* FEES (PAYMENT SECTION) */}
+        <section id="fees" className="pt-10 pb-16 sm:pt-12 sm:pb-20 bg-white border-t border-slate-200 scroll-mt-24 relative overflow-hidden">
+          <div className="absolute top-1/4 -right-28 w-96 h-96 bg-amber-100/30 rounded-full blur-3xl pointer-events-none" />
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
+            <Reveal className="text-center mb-8 sm:mb-10">
+              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight">WHAT WILL YOU PAY?</h2>
+            </Reveal>
+
+            {/* Hierarchical 2-Column Grid */}
+            <div className="grid lg:grid-cols-12 gap-6 items-stretch">
+
+              {/* Left Column: Milestones */}
+              <div className="lg:col-span-6 rounded-3xl border border-slate-200/80 bg-[#F7F9FC]/90 backdrop-blur-md p-6 sm:p-7 flex flex-col justify-between shadow-xs">
+                <div className="space-y-6">
+                  {/* Stage 1 */}
+                  <div className="flex gap-4 items-center">
+                    <div className="w-8 h-8 rounded-full bg-[#1557D6] text-white flex items-center justify-center text-xs font-bold shrink-0 shadow-xs">
+                      1
+                    </div>
+                    <div className="flex-1 flex items-baseline justify-between">
+                      <h4 className="text-sm font-extrabold text-[#061A36]">Registration Fee</h4>
+                      <span className="text-base font-extrabold text-[#061A36]">₹500</span>
+                    </div>
+                  </div>
+
+                  <div className="ml-4 border-l-2 border-dashed border-slate-300 h-4" />
+
+                  {/* Stage 2 */}
+                  <div className="flex gap-4 items-start">
+                    <div className="w-8 h-8 rounded-full bg-[#061A36] text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 shadow-xs">
+                      2
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-baseline justify-between">
+                        <h4 className="text-sm font-extrabold text-[#061A36]">Program Tuition Fee</h4>
+                        <span className="text-sm font-bold text-[#1557D6] bg-blue-50 px-2.5 py-0.5 rounded-lg border border-blue-100">
+                          ₹1.77 Lakh
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                        Payable <strong>ONLY AFTER</strong> you receive your official written Pre-Placement Offer letter from Bajaj Capital.
+                      </p>
+                      <div className="mt-2 text-[11px] font-semibold text-slate-700 bg-white px-2.5 py-1 rounded-lg border border-slate-200">
+                        0% interest EMI available.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6 pt-4 border-t border-slate-200 text-xs text-emerald-900 bg-emerald-50/80 p-3.5 rounded-xl border border-emerald-200/80 leading-relaxed flex items-center gap-2">
+                  <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
+                  <span><strong>Zero-Risk Commitment:</strong> If you are not selected in the interview, you do not pay any program fee.</span>
+                </div>
+              </div>
+
+              {/* Right Column: Highlighted Glassmorphic Container (₹32,000) */}
+              <div className="lg:col-span-6 rounded-3xl border-2 border-[#F4B942] bg-gradient-to-br from-[#061A36] via-[#092244] to-[#061A36] text-white p-6 sm:p-7 flex flex-col justify-between shadow-2xl relative overflow-hidden backdrop-blur-xl">
+                <div className="absolute -right-12 -top-12 w-44 h-44 bg-[#F4B942]/15 rounded-full blur-2xl pointer-events-none animate-pulse" />
+
+                <div>
+                  <div className="pb-3 border-b border-white/10 mb-4">
+                    <span className="inline-flex items-center gap-1.5 text-[11px] font-bold tracking-widest text-[#F4B942] uppercase">
+                      <Sparkles size={13} className="text-[#F4B942]" />
+                      WHAT YOU'LL ACTUALLY PAY
+                    </span>
+                  </div>
+
+                  {/* Highlighted Main Figure */}
+                  <div className="text-center py-2">
+                    <div className="text-5xl sm:text-6xl font-black text-[#F4B942] tracking-tight drop-shadow-sm">
+                      ₹32,000
+                    </div>
+                  </div>
+
+                  {/* Math Breakdown Table */}
+                  <div className="mt-4 p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md space-y-2 text-xs text-slate-200">
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-300">Total Program Fee (incl. 18% GST):</span>
+                      <span className="font-bold text-white">₹1,77,000</span>
+                    </div>
+                    <div className="flex justify-between items-center text-emerald-300">
+                      <span>Internship Stipend (₹15,000/mo):</span>
+                      <span className="font-bold">− ₹60,000</span>
+                    </div>
+                    <div className="flex justify-between items-center text-emerald-300">
+                      <span>Retention Bonus (after 12 months):</span>
+                      <span className="font-bold">− ₹85,000</span>
+                    </div>
+                    <div className="pt-2 border-t border-white/15 flex justify-end items-center font-extrabold text-sm text-[#F4B942]">
+                      <span className="text-base">₹32,000</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-4 pt-3 border-t border-white/10 text-center">
+                  <span className="text-xs text-slate-300">
+                    + Full-time starting CTC at month 7: <strong className="text-[#18B879]">₹4.2 – ₹4.8 LPA</strong>
+                  </span>
                 </div>
               </div>
 
             </div>
-
           </div>
         </section>
 
-        {/* ========================================================================= */}
-        {/* 13. FINAL CTA (DARK NAVY SECTION - RESTORED FROM OLD CODE) */}
-        {/* ========================================================================= */}
-        <section className="py-16 sm:py-24 bg-[#071B35] text-white text-center">
-          <div className="max-w-2xl mx-auto px-4 sm:px-8 space-y-5">
-            <h2 className="text-3xl sm:text-4xl font-bold leading-tight tracking-tight">
-              Ready to start your finance career?
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-300 font-medium">
-              Check your eligibility and take the first step.
+        {/* GUARANTEE */}
+        <section className="py-16 sm:py-24 bg-[#061A36] text-white relative overflow-hidden">
+          <div className="absolute top-1/2 -left-32 w-96 h-96 bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none" />
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
+            <Reveal className="text-center max-w-2xl mx-auto mb-10">
+              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight">WHAT DOES PLACEMENT GUARANTEED MEAN?</h2>
+              <p className="text-slate-300 mt-3 text-sm sm:text-base">Exactly this — no more, no less.</p>
+            </Reveal>
+
+            <div className="grid md:grid-cols-2 gap-5 max-w-4xl mx-auto">
+              <Reveal>
+                <div className="h-full rounded-3xl bg-white/5 backdrop-blur-xl border border-[#18B879]/40 p-6 shadow-xl hover:border-[#18B879]/70 transition-all">
+                  <div className="text-xs font-bold tracking-widest text-[#18B879] mb-4">WHAT IS GUARANTEED</div>
+                  <ul className="space-y-3 text-sm text-slate-200">
+                    {[
+                      "A written Pre-Placement Offer from Bajaj Capital once you clear selection.",
+                      "A 4-month Bajaj Capital internship with ₹15,000 per month stipend.",
+                      "The Wealth Officer role (₹4.2 – ₹4.8 LPA) when you meet the criteria below.",
+                    ].map((t) => (
+                      <li key={t} className="flex gap-2.5">
+                        <Check size={16} className="text-[#18B879] shrink-0 mt-0.5" />
+                        <span>{t}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Reveal>
+              <Reveal delay={100}>
+                <div className="h-full rounded-3xl bg-white/5 backdrop-blur-xl border border-white/15 p-6 shadow-xl hover:border-white/30 transition-all">
+                  <div className="text-xs font-bold tracking-widest text-[#F4B942] mb-4">THE CONDITIONS</div>
+                  <ul className="space-y-3 text-sm text-slate-200">
+                    {[
+                      "Clear the Bajaj Capital interview",
+                      "85% attendance",
+                      "80% in evaluations",
+                      "NISM Series V-A certification",
+                      "Professional conduct and relocation readiness",
+                    ].map((t) => (
+                      <li key={t} className="flex gap-2.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#F4B942] mt-2 shrink-0" />
+                        <span>{t}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Reveal>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section id="faq" className="py-16 sm:py-24 bg-white scroll-mt-20">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6">
+            <Reveal className="text-center mb-10">
+              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight">FREQUENTLY ASKED QUESTIONS</h2>
+            </Reveal>
+            <div className="divide-y divide-slate-200 border-y border-slate-200">
+              {FAQS.map((f, i) => {
+                const open = openFaq === i;
+                return (
+                  <div key={f.q}>
+                    <button
+                      onClick={() => setOpenFaq(open ? null : i)}
+                      className="w-full flex items-center justify-between gap-4 py-5 text-left font-bold text-sm sm:text-base hover:text-[#1557D6] transition-colors"
+                    >
+                      {f.q}
+                      <ChevronDown size={18} className={`shrink-0 transition-transform duration-300 ${open ? "rotate-180 text-[#1557D6]" : ""}`} />
+                    </button>
+                    <div className="grid transition-all duration-300" style={{ gridTemplateRows: open ? "1fr" : "0fr" }}>
+                      <div className="overflow-hidden">
+                        <p className="pb-5 pr-8 text-sm text-slate-600 leading-relaxed">{f.a}</p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* FINAL CTA */}
+        <section className="py-16 sm:py-24 bg-[#061A36] text-white text-center">
+          <div className="max-w-2xl mx-auto px-4 sm:px-6">
+            <Reveal>
+              <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight">READY TO TAKE THE NEXT STEP?</h2>
+              <button
+                onClick={openForm}
+                className="group mt-8 px-9 py-4 rounded-xl bg-[#18B879] hover:bg-[#15a36b] text-[#061A36] font-extrabold text-sm tracking-wide transition-all inline-flex items-center gap-2"
+              >
+                CHECK MY ELIGIBILITY
+                <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+              </button>
+                
+            </Reveal>
+          </div>
+        </section>
+
+        {/* FOOTER */}
+        <footer className="bg-[#04101e] text-slate-400 text-xs py-8">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-5">
+            <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-6 gap-y-2">
+              {(["program", "fees", "placement", "terms", "disclaimer"] as LegalTab[]).map((k) => (
+                <button key={k} onClick={() => setLegalOpen(k)} className="hover:text-white transition-colors">
+                  {k === "fees" ? "Fee & Refund Policy" : LEGAL[k].label}
+                </button>
+              ))}
+              <Link to="/privacy" className="hover:text-white transition-colors">
+                Privacy Policy
+              </Link>
+            </div>
+            <p className="text-[11px] leading-relaxed text-slate-500">
+              The Pre-Placement Offer, internship, stipend, retention bonus and Wealth Officer role apply only to candidates selected into the Bajaj Capital pathway and are subject to its stated terms. © {new Date().getFullYear()} Degree Guru.
             </p>
-            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
-              <button
-                type="button"
-                onClick={scrollToApply}
-                className="group w-full sm:w-auto px-8 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-[#071B35] font-bold text-sm tracking-wide transition-all duration-200 shadow-lg hover:shadow-emerald-500/20 active:scale-95 cursor-pointer flex items-center justify-center gap-2"
-              >
-                <span>CHECK MY ELIGIBILITY</span>
-                <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setPdfModalOpen(true);
-                  setPdfDownloaded(false);
-                }}
-                className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-xs sm:text-sm transition-all cursor-pointer flex items-center justify-center gap-2"
-              >
-                <Download size={15} className="text-emerald-400" />
-                <span>INTERVIEW PREP PDF</span>
-              </button>
-            </div>
-          </div>
-        </section>
-
-        {/* ========================================================================= */}
-        {/* 14. FLOATING WHATSAPP BUTTON (NUMBER: 9350199001) */}
-        {/* ========================================================================= */}
-        <a
-          href="https://wa.me/919350199001?text=Hi%20Degree%20Guru%2C%20I%20have%20a%20query%20about%20the%20Wealth%20Officer%20career%20programme"
-          target="_blank"
-          rel="noreferrer"
-          aria-label="WhatsApp Degree Guru"
-          className="fixed z-50 flex items-center gap-1.5 px-3.5 py-2.5 rounded-full bg-[#25D366] hover:bg-[#20be5a] text-white shadow-2xl hover:scale-105 active:scale-95 transition-transform duration-200 right-4 sm:right-6 bottom-24 sm:bottom-6"
-        >
-          <MessageCircle size={20} className="fill-white stroke-none" />
-          <span className="text-xs font-bold tracking-wide">WhatsApp</span>
-        </a>
-
-        {/* ========================================================================= */}
-        {/* FOOTER & DISCLOSURES (OLD FOOTER COPY - NO EXCEL BUTTON) */}
-        {/* ========================================================================= */}
-        <footer className="py-8 bg-[#04101e] text-slate-400 text-xs border-t border-white/10 pb-20 sm:pb-8">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-4">
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-white/10 pb-4">
-              <div className="flex items-center gap-2 text-white font-bold text-sm">
-                <img
-                  src={bajajCapitalLogo}
-                  alt="Bajaj Capital"
-                  className="h-6 w-auto object-contain brightness-0 invert opacity-80"
-                />
-                <span className="text-slate-500">|</span>
-                <span className="text-slate-300 font-normal text-xs">ACWM Career Programme</span>
-              </div>
-              <div className="flex items-center gap-6 text-xs text-slate-400">
-                <a href="#how" className="hover:text-white transition-colors">How it works</a>
-                <a href="#job" className="hover:text-white transition-colors">The job</a>
-                <a href="#money" className="hover:text-white transition-colors">Fees</a>
-                <a href="#faq" className="hover:text-white transition-colors">FAQ</a>
-              </div>
-            </div>
-
-            <div className="space-y-2 leading-relaxed text-[11px] text-slate-500">
-              <p>
-                <strong>Disclosure:</strong> The conditional Pre-Placement Offer, paid internship, retention bonus, and Wealth Officer role apply only to candidates selected into the Bajaj Capital / BCIBL pathway, and are subject to that pathway's stated terms and interview process.
-              </p>
-              <p>
-                Full-time absorption from month seven is subject to satisfactory internship evaluation (min 80%), minimum 85% attendance, NISM VA certification, professional conduct, relocation readiness, and conditions in the Conditional Pre-Placement Offer Letter.
-              </p>
-              <p>
-                © {new Date().getFullYear()} Degree Guru &amp; Bajaj Capital. ACWM is delivered by the International College of Financial Planning (ICOFP) with AIMA as academic partner.
-              </p>
-            </div>
           </div>
         </footer>
 
+        {/* MOBILE FLOATING BAR: 5 APP BUTTONS */}
+        <div className="md:hidden fixed z-40 bottom-3 inset-x-2 max-w-lg mx-auto">
+          <div className="bg-[#061A36]/95 backdrop-blur-md text-white rounded-2xl py-2 px-1.5 shadow-2xl border border-white/10 flex items-center justify-around">
+            <button
+              onClick={() => openForm("Apply for Program")}
+              className="flex flex-col items-center gap-0.5 text-[#18B879] active:scale-95 transition-transform cursor-pointer px-1"
+            >
+              <Briefcase size={17} />
+              <span className="text-[10px] font-bold tracking-tight">Apply</span>
+            </button>
+            <a
+              href="#eligibility"
+              className="flex flex-col items-center gap-0.5 text-slate-300 hover:text-white active:scale-95 transition-transform px-1"
+            >
+              <CheckCircle2 size={17} />
+              <span className="text-[10px] font-semibold tracking-tight">Eligibility</span>
+            </a>
+            <a
+              href="#how"
+              className="flex flex-col items-center gap-0.5 text-slate-300 hover:text-white active:scale-95 transition-transform px-1"
+            >
+              <Route size={17} />
+              <span className="text-[10px] font-semibold tracking-tight">Roadmap</span>
+            </a>
+            <a
+              href="#fees"
+              className="flex flex-col items-center gap-0.5 text-slate-300 hover:text-white active:scale-95 transition-transform px-1"
+            >
+              <Percent size={17} />
+              <span className="text-[10px] font-semibold tracking-tight">Fee</span>
+            </a>
+            <a
+              href="#faq"
+              className="flex flex-col items-center gap-0.5 text-slate-300 hover:text-white active:scale-95 transition-transform px-1"
+            >
+              <HelpCircle size={17} />
+              <span className="text-[10px] font-semibold tracking-tight">FAQ</span>
+            </a>
+          </div>
+        </div>
+
+        {/* DESKTOP FLOATING WHATSAPP */}
+        <a
+          href={WA_LINK}
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Talk to an Advisor on WhatsApp"
+          className="hidden md:flex fixed z-40 right-6 bottom-6 items-center gap-2.5 bg-white rounded-full pl-1.5 pr-5 py-1.5 shadow-xl border border-slate-200 hover:shadow-2xl hover:-translate-y-0.5 transition-all"
+        >
+          <WhatsAppCircleIcon className="w-11 h-11" />
+          <span className="text-sm font-bold text-[#061A36]">Talk to an Advisor</span>
+        </a>
       </div>
 
-      {/* ========================================================================= */}
-      {/* 9. PDF DOWNLOAD MODAL (DOWNLOAD INTERVIEW PREP PDF KEPT INTACT) */}
-      {/* ========================================================================= */}
-      {pdfModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-200 relative">
-
-            {/* Close Button */}
+      {/* ELIGIBILITY MODAL / BOTTOM SHEET */}
+      {formOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/70 backdrop-blur-sm"
+          onClick={() => setFormOpen(false)}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white w-full sm:max-w-lg rounded-t-3xl sm:rounded-3xl max-h-[94vh] overflow-y-auto p-6 sm:p-8 relative shadow-2xl"
+          >
             <button
-              type="button"
-              onClick={() => setPdfModalOpen(false)}
-              className="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors cursor-pointer"
+              onClick={() => setFormOpen(false)}
+              aria-label="Close"
+              className="absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center cursor-pointer"
             >
               <X size={18} />
             </button>
 
-            {pdfDownloaded ? (
-              <div className="text-center py-6 space-y-4">
-                <div className="w-14 h-14 rounded-full bg-emerald-600 text-white flex items-center justify-center mx-auto shadow-lg shadow-emerald-600/30">
-                  <CheckCircle2 size={30} />
-                </div>
-                <div className="space-y-1">
-                  <h3 className="text-lg font-black text-slate-900">Download Started!</h3>
-                  <p className="text-xs text-slate-600 leading-relaxed">
-                    Your <strong>Bajaj Capital Interview Prep Kit (PDF)</strong> has been downloaded to your device.
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setPdfModalOpen(false)}
-                  className="w-full py-2.5 rounded-xl bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition-colors"
-                >
-                  Close Window
-                </button>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                <div className="space-y-1">
-                  <span className="text-[10px] font-black uppercase text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full">
-                    FREE INTERVIEW PREP KIT
-                  </span>
-                  <h3 className="text-xl font-black text-slate-900 tracking-tight">
-                    Download Interview Prep PDF
-                  </h3>
-                  <p className="text-xs text-slate-500 leading-relaxed">
-                    Get the 2026 Bajaj Capital Wealth Officer interview questions, syllabus preview, and selection tips.
-                  </p>
+            {step === 1 && (
+              <form onSubmit={submitDetails} className="space-y-3.5">
+                <div className="pr-10 mb-2">
+                  <h3 className="text-2xl font-extrabold">{formHeading}</h3>
+                  {formHeading.includes("Prep Kit") && (
+                    <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                      
+                    </p>
+                  )}
                 </div>
 
-                <form onSubmit={handlePdfSubmit} className="space-y-3">
-                  <div className="space-y-1">
-                    <label className="text-xs font-bold text-slate-800">
-                      Full Name <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="e.g. Rahul Sharma"
-                      value={pdfName}
-                      onChange={(e) => {
-                        setPdfName(e.target.value);
-                        if (pdfNameError) setPdfNameError("");
-                      }}
-                      required
-                      className="w-full px-3 py-2 text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#2F73B2]/40"
-                    />
-                    {pdfNameError && <p className="text-[11px] text-red-500 font-semibold">{pdfNameError}</p>}
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="text-xs font-bold text-slate-800">
-                      Phone Number <span className="text-red-500">*</span>
-                    </label>
+                <div>
+                  <input className={inputCls(errors.name)} placeholder="Full name" value={fullName} onChange={(e) => setFullName(e.target.value)} />
+                  {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name}</p>}
+                </div>
+                <div>
+                  <div className={`flex rounded-xl border ${errors.phone ? "border-red-500" : "border-slate-300"} overflow-hidden focus-within:ring-2 focus-within:ring-[#1557D6]/30`}>
+                    <span className="px-3.5 flex items-center bg-slate-50 border-r border-slate-200 text-sm font-semibold">+91</span>
                     <input
                       type="tel"
+                      inputMode="numeric"
                       maxLength={10}
-                      placeholder="10-digit mobile number"
-                      value={pdfPhone}
-                      onChange={(e) => {
-                        setPdfPhone(e.target.value.replace(/\D/g, ""));
-                        if (pdfPhoneError) setPdfPhoneError("");
-                      }}
-                      required
-                      className="w-full px-3 py-2 text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#2F73B2]/40"
+                      className="w-full px-3.5 py-3 text-sm focus:outline-none"
+                      placeholder="Mobile number"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
                     />
-                    {pdfPhoneError && <p className="text-[11px] text-red-500 font-semibold">{pdfPhoneError}</p>}
                   </div>
-
-                  <div className="space-y-1">
-                    <label className="text-xs font-bold text-slate-800">
-                      Email Address <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="email"
-                      placeholder="name@email.com"
-                      value={pdfEmail}
-                      onChange={(e) => {
-                        setPdfEmail(e.target.value);
-                        if (pdfEmailError) setPdfEmailError("");
-                      }}
-                      required
-                      className="w-full px-3 py-2 text-sm rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#2F73B2]/40"
-                    />
-                    {pdfEmailError && <p className="text-[11px] text-red-500 font-semibold">{pdfEmailError}</p>}
+                  {errors.phone && <p className="text-xs text-red-500 mt-1">{errors.phone}</p>}
+                </div>
+                <div>
+                  <input type="email" className={inputCls(errors.email)} placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                  {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email}</p>}
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <input className={inputCls(errors.city)} placeholder="City" value={city} onChange={(e) => setCity(e.target.value)} />
+                    {errors.city && <p className="text-xs text-red-500 mt-1">{errors.city}</p>}
                   </div>
+                  <div>
+                    <input type="number" inputMode="numeric" className={inputCls(errors.age)} placeholder="Age" value={age} onChange={(e) => setAge(e.target.value)} />
+                    {errors.age && <p className="text-xs text-red-500 mt-1">{errors.age}</p>}
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <CustomSelect
+                    value={education}
+                    onChange={setEducation}
+                    options={[
+                      "Commerce / B.Com",
+                      "Management / BBA",
+                      "Science / B.Sc",
+                      "Arts / BA",
+                      "Engineering / B.Tech",
+                      "Postgraduate / Other",
+                    ]}
+                    placeholder="Highest qualification"
+                    label="Qualification"
+                  />
+                  <CustomSelect
+                    value={experience}
+                    onChange={setExperience}
+                    options={[
+                      "Fresher",
+                      "Less than 1 year",
+                      "1 to 2 years",
+                      "2+ years",
+                    ]}
+                    placeholder="Work experience"
+                    label="Experience"
+                  />
+                </div>
 
-                  <button
-                    type="submit"
-                    disabled={pdfSubmitting}
-                    className="w-full py-3 px-4 rounded-xl bg-[#2F73B2] hover:bg-[#255D91] text-white text-xs sm:text-sm font-extrabold shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer mt-2"
-                  >
-                    {pdfSubmitting ? (
-                      <span>Preparing download...</span>
-                    ) : (
-                      <>
-                        <Download size={15} />
-                        <span>DOWNLOAD PDF NOW</span>
-                      </>
-                    )}
-                  </button>
-                </form>
-              </div>
+                {errors.form && (
+                  <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-xs text-red-600 flex items-center gap-2">
+                    <AlertCircle size={15} /> {errors.form}
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={busy}
+                  className="w-full py-4 rounded-xl bg-[#1557D6] hover:bg-[#0f44b0] disabled:opacity-70 text-white font-extrabold text-sm tracking-wide flex items-center justify-center gap-2 transition-colors"
+                >
+                  {busy ? <><RefreshCw size={16} className="animate-spin" /> SENDING OTP…</> : "SEND OTP"}
+                </button>
+                <p className="text-[11px] text-slate-400 text-center leading-snug">
+                  Your information is used only to process your enquiry and connect you with the admissions team.
+                </p>
+              </form>
             )}
 
+            {step === 2 && (
+              <form onSubmit={verify} className="space-y-5">
+                <div className="pr-10">
+                  <h3 className="text-2xl font-extrabold">Verify OTP</h3>
+                  <p className="text-sm text-slate-500 mt-1">
+                    Code sent to <strong className="text-slate-900">+91 {phone}</strong>
+                  </p>
+                </div>
+                <div className="flex justify-between gap-2">
+                  {otp.map((d, i) => (
+                    <input
+                      key={i}
+                      ref={(el) => {
+                        otpRefs.current[i] = el;
+                      }}
+                      inputMode="numeric"
+                      maxLength={1}
+                      value={d}
+                      onChange={(e) => onOtpChange(i, e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Backspace" && !otp[i] && i > 0) otpRefs.current[i - 1]?.focus();
+                      }}
+                      className="w-full max-w-[52px] h-14 text-center text-xl font-bold rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#1557D6] focus:border-[#1557D6]"
+                    />
+                  ))}
+                </div>
+                {otpError && (
+                  <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-xs text-red-600 flex items-center gap-2">
+                    <AlertCircle size={15} /> {otpError}
+                  </div>
+                )}
+                <button
+                  type="submit"
+                  disabled={busy}
+                  className="w-full py-4 rounded-xl bg-[#18B879] hover:bg-[#15a36b] disabled:opacity-70 text-[#061A36] font-extrabold text-sm tracking-wide flex items-center justify-center gap-2 transition-colors"
+                >
+                  {busy ? <><RefreshCw size={16} className="animate-spin" /> VERIFYING…</> : "VERIFY OTP"}
+                </button>
+                <div className="flex justify-between text-xs">
+                  <button type="button" onClick={() => setStep(1)} className="text-slate-500 underline">
+                    Change number
+                  </button>
+                  <button
+                    type="button"
+                    onClick={resend}
+                    disabled={timer > 0}
+                    className={timer > 0 ? "text-slate-400" : "text-[#1557D6] font-semibold"}
+                  >
+                    {timer > 0 ? `Resend in ${timer}s` : "Resend OTP"}
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {step === 3 && (
+              <div className="text-center space-y-5 py-2">
+                <div className="w-16 h-16 rounded-full bg-[#18B879] text-white flex items-center justify-center mx-auto">
+                  <CheckCircle2 size={34} />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-extrabold">Eligibility request submitted</h3>
+                  <p className="text-sm text-slate-600 mt-2">Our admissions team will contact you within one working day.</p>
+                </div>
+                <div className="space-y-3">
+                  <button
+                    onClick={downloadGuide}
+                    className="w-full py-4 rounded-xl bg-[#061A36] hover:bg-[#0c2952] text-white font-extrabold text-sm tracking-wide flex items-center justify-center gap-2 transition-colors"
+                  >
+                    <Download size={16} /> DOWNLOAD PROGRAM GUIDE
+                  </button>
+                  <a
+                    href={WA_LINK}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="w-full py-4 rounded-xl border border-slate-300 hover:bg-slate-50 text-[#061A36] font-extrabold text-sm tracking-wide flex items-center justify-center gap-2 transition-colors"
+                  >
+                    <WhatsAppCircleIcon className="w-5 h-5" /> SPEAK TO AN ADVISOR
+                  </a>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
 
-      {/* Phone OTP Verification Modal */}
-      <PhoneOtpModal
-        isOpen={otpModalOpen}
-        phoneNumber={phoneNumber}
-        onClose={() => setOtpModalOpen(false)}
-        onVerified={handleOtpVerified}
-      />
+      {/* CERTIFICATE ZOOM */}
+      {zoomOpen && (
+        <div className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4" onClick={() => setZoomOpen(false)}>
+          <button
+            aria-label="Close"
+            onClick={() => setZoomOpen(false)}
+            className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/15 hover:bg-white/25 text-white flex items-center justify-center"
+          >
+            <X size={20} />
+          </button>
+          <img
+            src={acwmCertificate}
+            alt="ACWM certificate"
+            onClick={(e) => e.stopPropagation()}
+            className="max-h-[88vh] max-w-full rounded-xl shadow-2xl"
+          />
+        </div>
+      )}
 
+      {/* LEGAL */}
+      {legalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center" onClick={() => setLegalOpen(null)}>
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white w-full sm:max-w-xl rounded-t-3xl sm:rounded-3xl max-h-[88vh] flex flex-col shadow-2xl"
+          >
+            <div className="flex items-center justify-between p-5 border-b border-slate-200">
+              <h3 className="text-lg font-extrabold">Program disclosures</h3>
+              <button onClick={() => setLegalOpen(null)} aria-label="Close" className="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center">
+                <X size={18} />
+              </button>
+            </div>
+            <div className="flex overflow-x-auto border-b border-slate-200 text-xs font-bold [scrollbar-width:none]">
+              {(Object.keys(LEGAL) as LegalTab[]).map((k) => (
+                <button
+                  key={k}
+                  onClick={() => setLegalOpen(k)}
+                  className={`px-4 py-3 whitespace-nowrap border-b-2 ${legalOpen === k ? "border-[#1557D6] text-[#1557D6]" : "border-transparent text-slate-500"}`}
+                >
+                  {LEGAL[k].label}
+                </button>
+              ))}
+            </div>
+            <div className="p-6 overflow-y-auto text-sm text-slate-700 leading-relaxed">{LEGAL[legalOpen].body}</div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

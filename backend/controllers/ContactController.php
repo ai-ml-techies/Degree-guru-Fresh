@@ -204,13 +204,54 @@ class ContactController extends Controller
         $source = $leadData['source'] ?? '/placement-guaranteed';
         $leadId = $leadData['id'] ?? ('DG-' . date('Ymd') . '-' . substr(uniqid(), -4));
 
-        $subject = "[New Lead] {$formHeading} - {$name}";
+        $subject = "[New Lead] {$name} - {$phone}";
 
-        $cityRow = $city ? "<tr><td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; background: #f8fafc; color: #64748b; font-size: 13px; font-weight: 600;'>City</td><td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; color: #0f172a; font-size: 14px;'>{$city}</td></tr>" : "";
-        $ageRow = $age ? "<tr><td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; background: #f8fafc; color: #64748b; font-size: 13px; font-weight: 600;'>Age</td><td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; color: #0f172a; font-size: 14px;'>{$age}</td></tr>" : "";
-        $statusRow = $status ? "<tr><td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; background: #f8fafc; color: #64748b; font-size: 13px; font-weight: 600;'>Current Status</td><td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; color: #0f172a; font-size: 14px;'>{$status}</td></tr>" : "";
-        $graduateRow = $graduate ? "<tr><td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; background: #f8fafc; color: #64748b; font-size: 13px; font-weight: 600;'>Graduate?</td><td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; color: #0f172a; font-size: 14px;'>{$graduate}</td></tr>" : "";
-        $programRow = $program ? "<tr><td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; background: #f8fafc; color: #64748b; font-size: 13px; font-weight: 600;'>Programme / Notes</td><td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; color: #0f172a; font-size: 13px; line-height: 1.4;'>{$program}</td></tr>" : "";
+        $rawPhoneDigits = preg_replace('/\D/', '', $phone);
+        $cleanWaNumber = '';
+        if (strlen($rawPhoneDigits) === 10) {
+            $cleanWaNumber = '91' . $rawPhoneDigits;
+        } elseif (strlen($rawPhoneDigits) === 12 && str_starts_with($rawPhoneDigits, '91')) {
+            $cleanWaNumber = $rawPhoneDigits;
+        } elseif (strlen($rawPhoneDigits) > 10) {
+            $cleanWaNumber = $rawPhoneDigits;
+        }
+
+        $waButton = '';
+        if (!empty($cleanWaNumber)) {
+            $waMsg = urlencode("Hello {$name}, connecting with you from Degree Guru regarding your application.");
+            $waUrl = "https://wa.me/{$cleanWaNumber}?text={$waMsg}";
+            $waButton = "<a href='{$waUrl}' target='_blank' style='display:inline-flex; align-items:center; margin-left:10px; padding:5px 12px; background-color:#25D366; color:#ffffff; font-size:12px; font-weight:700; text-decoration:none; border-radius:6px; vertical-align:middle;'><img src='https://cdn.iconscout.com/icon/free/png-256/free-whatsapp-logo-icon-download-in-svg-png-gif-file-formats--chat-social-media-pack-logos-icons-498414.png' width='14' height='14' style='vertical-align:middle; margin-right:5px;' alt=''/>WhatsApp</a>";
+        }
+
+        $rows = [];
+        $rows[] = "<tr><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; background:#f8fafc; color:#64748b; font-size:13px; font-weight:600; width:35%;'>Name</td><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; color:#0f172a; font-size:14px; font-weight:700;'>{$name}</td></tr>";
+        $rows[] = "<tr><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; background:#f8fafc; color:#64748b; font-size:13px; font-weight:600;'>Mobile Number</td><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; color:#0f172a; font-size:14px; font-weight:700;'><a href='tel:{$phone}' style='color:#0f172a; text-decoration:none;'>{$phone}</a>{$waButton}</td></tr>";
+        
+        if (!empty($email)) {
+            $rows[] = "<tr><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; background:#f8fafc; color:#64748b; font-size:13px; font-weight:600;'>Email</td><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; color:#0f172a; font-size:14px;'><a href='mailto:{$email}' style='color:#2563eb; text-decoration:none;'>{$email}</a></td></tr>";
+        }
+        if (!empty($city)) {
+            $rows[] = "<tr><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; background:#f8fafc; color:#64748b; font-size:13px; font-weight:600;'>City</td><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; color:#0f172a; font-size:14px;'>{$city}</td></tr>";
+        }
+        if (!empty($age)) {
+            $rows[] = "<tr><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; background:#f8fafc; color:#64748b; font-size:13px; font-weight:600;'>Age</td><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; color:#0f172a; font-size:14px;'>{$age}</td></tr>";
+        }
+        if (!empty($graduate)) {
+            $rows[] = "<tr><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; background:#f8fafc; color:#64748b; font-size:13px; font-weight:600;'>Qualification</td><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; color:#0f172a; font-size:14px;'>{$graduate}</td></tr>";
+        }
+        if (!empty($status)) {
+            $rows[] = "<tr><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; background:#f8fafc; color:#64748b; font-size:13px; font-weight:600;'>Experience</td><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; color:#0f172a; font-size:14px;'>{$status}</td></tr>";
+        }
+        if (!empty($program)) {
+            $rows[] = "<tr><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; background:#f8fafc; color:#64748b; font-size:13px; font-weight:600;'>Program / Details</td><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; color:#0f172a; font-size:13px;'>{$program}</td></tr>";
+        }
+        if (!empty($formHeading)) {
+            $rows[] = "<tr><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; background:#f8fafc; color:#64748b; font-size:13px; font-weight:600;'>Form Source</td><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; color:#0f172a; font-size:13px;'>{$formHeading} (" . ($source ?: 'website') . ")</td></tr>";
+        }
+        $rows[] = "<tr><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; background:#f8fafc; color:#64748b; font-size:13px; font-weight:600;'>Lead ID</td><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; color:#64748b; font-size:13px;'>{$leadId}</td></tr>";
+        $rows[] = "<tr><td style='padding:9px 12px; background:#f8fafc; color:#64748b; font-size:13px; font-weight:600;'>Date & Time</td><td style='padding:9px 12px; color:#0f172a; font-size:13px;'>" . date('d M Y, h:i A') . " IST</td></tr>";
+
+        $rowsHtml = implode("\n", $rows);
 
         $html = "<!DOCTYPE html>
 <html>
@@ -218,60 +259,17 @@ class ContactController extends Controller
   <meta charset='utf-8'>
   <title>{$subject}</title>
 </head>
-<body style='font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif; background-color: #f1f5f9; margin: 0; padding: 24px; color: #1e293b;'>
-  <table width='100%' cellpadding='0' cellspacing='0' style='max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.06);'>
-    <tr>
-      <td style='background: #071B35; padding: 24px 28px;'>
-        <span style='background: #2e9e5b; color: #ffffff; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;'>New Candidate Lead</span>
-        <h1 style='margin: 10px 0 4px 0; color: #ffffff; font-size: 22px; font-weight: 700; line-height: 1.3;'>{$formHeading}</h1>
-        <p style='margin: 0; color: #94a3b8; font-size: 13px;'>Degree Guru • Pre-Placement Job Opportunity with Bajaj Capital</p>
-      </td>
-    </tr>
-    <tr>
-      <td style='padding: 24px 28px;'>
-        <table width='100%' cellpadding='0' cellspacing='0' style='border-collapse: collapse;'>
-          <tr>
-            <td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; background: #f8fafc; color: #64748b; font-size: 13px; font-weight: 600; width: 36%;'>Lead ID</td>
-            <td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; color: #0f172a; font-size: 14px; font-weight: 700;'>{$leadId}</td>
-          </tr>
-          <tr>
-            <td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; background: #f8fafc; color: #64748b; font-size: 13px; font-weight: 600;'>Form Heading</td>
-            <td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; color: #2563eb; font-size: 14px; font-weight: 700;'>{$formHeading}</td>
-          </tr>
-          <tr>
-            <td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; background: #f8fafc; color: #64748b; font-size: 13px; font-weight: 600;'>Candidate Name</td>
-            <td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; color: #0f172a; font-size: 15px; font-weight: 700;'>{$name}</td>
-          </tr>
-          <tr>
-            <td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; background: #f8fafc; color: #64748b; font-size: 13px; font-weight: 600;'>Mobile Number</td>
-            <td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; color: #0f172a; font-size: 15px; font-weight: 700;'><a href='tel:{$phone}' style='color: #2563eb; text-decoration: none;'>{$phone}</a></td>
-          </tr>
-          <tr>
-            <td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; background: #f8fafc; color: #64748b; font-size: 13px; font-weight: 600;'>Email Address</td>
-            <td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; color: #0f172a; font-size: 14px;'>" . ($email ? "<a href='mailto:{$email}' style='color: #2563eb; text-decoration: none;'>{$email}</a>" : "<em style='color: #94a3b8;'>Not provided</em>") . "</td>
-          </tr>
-          {$cityRow}
-          {$ageRow}
-          {$statusRow}
-          {$graduateRow}
-          {$programRow}
-          <tr>
-            <td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; background: #f8fafc; color: #64748b; font-size: 13px; font-weight: 600;'>Source Page</td>
-            <td style='padding: 10px 14px; border-bottom: 1px solid #e2e8f0; color: #64748b; font-size: 13px;'>{$source}</td>
-          </tr>
-          <tr>
-            <td style='padding: 10px 14px; background: #f8fafc; color: #64748b; font-size: 13px; font-weight: 600;'>Received At</td>
-            <td style='padding: 10px 14px; color: #0f172a; font-size: 13px;'>" . date('d M Y, h:i:s A') . " (IST)</td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <tr>
-      <td style='background: #f8fafc; padding: 16px 28px; text-align: center; border-top: 1px solid #e2e8f0;'>
-        <p style='margin: 0; font-size: 12px; color: #64748b;'>Degree Guru Automated Lead Delivery System</p>
-      </td>
-    </tr>
-  </table>
+<body style='font-family:-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif; background:#f8fafc; margin:0; padding:20px; color:#0f172a;'>
+  <div style='max-width:540px; margin:0 auto; background:#ffffff; border-radius:10px; border:1px solid #e2e8f0; overflow:hidden;'>
+    <div style='background:#061A36; padding:16px 20px;'>
+      <h2 style='margin:0; color:#ffffff; font-size:17px; font-weight:700;'>New Lead Notification</h2>
+    </div>
+    <div style='padding:16px 20px;'>
+      <table width='100%' cellpadding='0' cellspacing='0' style='border-collapse:collapse;'>
+        {$rowsHtml}
+      </table>
+    </div>
+  </div>
 </body>
 </html>";
 
