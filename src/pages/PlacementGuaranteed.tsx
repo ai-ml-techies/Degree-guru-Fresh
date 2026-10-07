@@ -122,6 +122,9 @@ import leverageEduLogo from "@/assets/acwm/leverage-edu.png";
 import aimaLogo from "@/assets/acwm/aima.png";
 import bajajCapitalLogo from "@/assets/acwm/bajaj-capital.png";
 import icofpLogo from "@/assets/acwm/icofp.png";
+import fpsbLogo from "@/assets/acwm/fpsb.jpg";
+import nismLogo from "@/assets/acwm/nism.png";
+import irdaiLogo from "@/assets/acwm/irdai.svg";
 import acwmCertificate from "@/assets/acwm/acwm_certificate.jpg";
 import heroImage from "@/assets/acwm/indian_wealth_officer.jpg";
 import consultImage from "@/assets/acwm/indian_wealth_consultation.jpg";
@@ -182,33 +185,31 @@ const JOURNEY = [
 const CERTIFICATIONS_EXPOSURE = [
   {
     name: "CFP Level 1 & 2",
-    authority: "FPSB India",
     subtitle: "Advanced Global Wealth Advisory Charter",
-    pitch: "Advanced international credential recognized across 27+ countries, delivering high-level expertise in comprehensive financial planning, taxation, and wealth advisory for affluent clients.",
+    pitch: "Prestigious international credential recognized across 27+ countries, providing advanced expertise in financial planning and high-net-worth wealth advisory.",
+    logo: fpsbLogo,
+    issuer: "FPSB India",
   },
   {
     name: "NISM Series V-A",
-    authority: "SEBI & NISM",
-    subtitle: "Mandatory Regulatory License",
-    pitch: "Statutory regulatory license mandated by SEBI to advise on and distribute mutual funds in India, ensuring you enter Bajaj Capital fully authorized to manage client portfolios.",
+    subtitle: "SEBI-Mandated Mutual Fund License",
+    pitch: "Statutory regulatory license mandated by SEBI to distribute and advise on mutual fund portfolios across India.",
+    logo: nismLogo,
+    issuer: "NISM",
   },
   {
     name: "NISM Series XXI-B",
-    authority: "SEBI & NISM",
-    subtitle: "Advanced Portfolio Management License",
-    pitch: "Advanced regulatory qualification for high-level Portfolio Management Services (PMS), authorizing you to advise high-net-worth investors on customized equity portfolios.",
+    subtitle: "Advanced PMS Advisory License",
+    pitch: "High-level regulatory qualification for Portfolio Management Services (PMS), authorizing you to manage affluent client equity portfolios.",
+    logo: nismLogo,
+    issuer: "NISM",
   },
   {
-    name: "BQP",
-    authority: "IRDAI",
-    subtitle: "Statutory Insurance & Risk License",
-    pitch: "Official statutory qualification under IRDAI regulations, empowering you with high-level corporate risk evaluation and life advisory capabilities.",
-  },
-  {
-    name: "Joint ACWM",
-    authority: "AIMA & ICOFP",
-    subtitle: "Advanced Executive Certification",
-    pitch: "Advanced Certification in Wealth Management co-awarded by India's apex national management body (AIMA) and ICOFP after 240 hours of rigorous practical training.",
+    name: "BQP (Broker Qualified Person)",
+    subtitle: "Statutory IRDAI Insurance License",
+    pitch: "Official regulatory qualification under IRDAI guidelines, empowering you with high-level corporate risk evaluation and life advisory capabilities.",
+    logo: irdaiLogo,
+    issuer: "IRDAI",
   },
 ];
 
@@ -578,7 +579,7 @@ export const PlacementGuaranteed = () => {
         <link rel="canonical" href="https://degreeguru.in/placement-guaranteed" />
       </Helmet>
 
-      <div className="min-h-screen bg-[#F7F9FC] text-[#061A36] font-sans antialiased pb-20 md:pb-0 overflow-x-clip">
+      <div className="min-h-screen bg-[#F7F9FC] text-[#061A36] font-sans antialiased pb-20 md:pb-0 overflow-x-clip scroll-smooth">
         {/* HEADER */}
         <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-2xs">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
@@ -589,6 +590,22 @@ export const PlacementGuaranteed = () => {
               <span className="text-slate-300 text-lg sm:text-xl font-light">|</span>
               <img src={leverageEduLogo} alt="Leverage Edu" className="h-6 sm:h-8 w-auto object-contain" />
             </div>
+            <nav className="hidden md:flex items-center gap-1.5" aria-label="Page sections">
+              {[
+                ["#eligibility", "Eligibility", "nav-eligibility"],
+                ["#certifications", "Certifications", "nav-certifications"],
+                ["#fees", "Fees", "nav-fees"],
+              ].map(([href, label, id]) => (
+                <a
+                  key={href}
+                  id={id}
+                  href={href}
+                  className="px-4 py-2 rounded-xl text-sm font-bold text-[#061A36] hover:text-[#1557D6] hover:bg-blue-50 transition-colors"
+                >
+                  {label}
+                </a>
+              ))}
+            </nav>
             <div className="flex items-center gap-3">
               <a
                 href={WA_LINK}
@@ -988,7 +1005,7 @@ export const PlacementGuaranteed = () => {
         </section>
 
         {/* ADVANCED CERTIFICATIONS */}
-        <section className="pt-10 pb-14 sm:pt-12 sm:pb-18 bg-[#F7F9FC] border-t border-slate-200 relative overflow-hidden">
+        <section id="certifications" className="pt-10 pb-14 sm:pt-12 sm:pb-18 bg-[#F7F9FC] border-t border-slate-200 scroll-mt-24 relative overflow-hidden">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
             <Reveal className="text-center max-w-2xl mx-auto mb-8 sm:mb-12">
               <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-[#061A36]">
@@ -996,22 +1013,24 @@ export const PlacementGuaranteed = () => {
               </h2>
             </Reveal>
 
-            {/* Credential Cards: Top 3, Bottom 2 Centered */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
-              {CERTIFICATIONS_EXPOSURE.slice(0, 3).map((item, i) => (
+            {/* Credential Cards: Intuitive, Mobile-Optimised 4-Card Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+              {CERTIFICATIONS_EXPOSURE.map((item, i) => (
                 <Reveal key={item.name} delay={i * 80}>
-                  <div className="h-full rounded-2xl sm:rounded-3xl bg-white border border-slate-200/90 p-6 sm:p-7 shadow-xs hover:border-[#1557D6]/40 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
+                  <div className="h-full rounded-2xl sm:rounded-3xl bg-white border border-slate-200/90 p-5 sm:p-6 shadow-xs hover:border-[#1557D6]/40 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
                     <div>
-                      <div className="flex items-center justify-between gap-2 pb-3.5 border-b border-slate-100">
-                        <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#1557D6] flex items-center justify-center shrink-0">
-                          <Award className="w-4.5 h-4.5" />
+                      {/* Official Issuing Body Logo */}
+                      <div className="h-12 flex items-center justify-start pb-3 border-b border-slate-100">
+                        <div className="h-9 px-2.5 py-1 bg-slate-50/90 rounded-xl border border-slate-200/70 inline-flex items-center justify-center">
+                          <img
+                            src={item.logo}
+                            alt={item.issuer}
+                            className="h-6 max-h-6 w-auto max-w-[130px] sm:max-w-[140px] object-contain"
+                          />
                         </div>
-                        <span className="text-[11px] font-extrabold tracking-wider text-slate-500 uppercase">
-                          {item.authority}
-                        </span>
                       </div>
 
-                      <h3 className="text-lg sm:text-xl font-extrabold text-[#061A36] tracking-tight mt-4 group-hover:text-[#1557D6] transition-colors">
+                      <h3 className="text-base sm:text-lg font-extrabold text-[#061A36] tracking-tight mt-4 group-hover:text-[#1557D6] transition-colors leading-snug">
                         {item.name}
                       </h3>
 
@@ -1019,7 +1038,7 @@ export const PlacementGuaranteed = () => {
                         {item.subtitle}
                       </div>
 
-                      <p className="text-xs sm:text-sm text-slate-600 mt-3 leading-relaxed">
+                      <p className="text-xs sm:text-sm text-slate-600 mt-2.5 leading-relaxed">
                         {item.pitch}
                       </p>
                     </div>
@@ -1028,40 +1047,13 @@ export const PlacementGuaranteed = () => {
               ))}
             </div>
 
-            <div className="grid md:grid-cols-2 gap-5 sm:gap-6 max-w-4xl mx-auto mt-5 sm:mt-6">
-              {CERTIFICATIONS_EXPOSURE.slice(3, 5).map((item, i) => (
-                <Reveal key={item.name} delay={(i + 3) * 80}>
-                  <div className="h-full rounded-2xl sm:rounded-3xl bg-white border border-slate-200/90 p-6 sm:p-7 shadow-xs hover:border-[#1557D6]/40 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
-                    <div>
-                      <div className="flex items-center justify-between gap-2 pb-3.5 border-b border-slate-100">
-                        <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#1557D6] flex items-center justify-center shrink-0">
-                          <Award className="w-4.5 h-4.5" />
-                        </div>
-                        <span className="text-[11px] font-extrabold tracking-wider text-slate-500 uppercase">
-                          {item.authority}
-                        </span>
-                      </div>
-
-                      <h3 className="text-lg sm:text-xl font-extrabold text-[#061A36] tracking-tight mt-4 group-hover:text-[#1557D6] transition-colors">
-                        {item.name}
-                      </h3>
-
-                      <div className="text-xs font-bold text-[#1557D6] mt-1">
-                        {item.subtitle}
-                      </div>
-
-                      <p className="text-xs sm:text-sm text-slate-600 mt-3 leading-relaxed">
-                        {item.pitch}
-                      </p>
-                    </div>
-                  </div>
-                </Reveal>
-              ))}
+            <div className="mt-8 sm:mt-10 flex flex-wrap items-center justify-center gap-2.5 text-xs text-slate-500 font-medium text-center px-4">
+              <span>Dual ACWM qualification co-awarded by</span>
+              <img src={aimaLogo} alt="AIMA" className="h-4.5 sm:h-5 w-auto object-contain inline-block" />
+              <span className="text-slate-300">&amp;</span>
+              <img src={icofpLogo} alt="ICOFP" className="h-4.5 sm:h-5 w-auto object-contain inline-block" />
+              <span>upon program completion.</span>
             </div>
-
-            <p className="text-xs text-slate-400 mt-8 text-center font-medium">
-              Dual ACWM certification is co-awarded by AIMA and ICOFP upon program completion.
-            </p>
           </div>
         </section>
 
@@ -1203,16 +1195,9 @@ export const PlacementGuaranteed = () => {
                       <span>Retention Bonus (after 12 months):</span>
                       <span className="font-bold text-sm sm:text-base">− ₹85,000</span>
                     </div>
-                    <div className="pt-4 mt-2 border-t border-white/20 flex flex-col sm:flex-row sm:items-baseline justify-between gap-1.5">
-                      <div>
-                        <div className="text-xs sm:text-sm font-black uppercase tracking-wider text-[#F4B942]">
-                          Effective Net Out-of-Pocket
-                        </div>
-                        <div className="text-[11px] text-slate-300">
-                          Total investment after stipend &amp; retention bonus
-                        </div>
-                      </div>
-                      <div className="text-4xl sm:text-5xl font-black text-[#F4B942] tracking-tight drop-shadow-sm sm:text-right">
+                    <div className="pt-4 mt-2 border-t border-white/20 flex items-baseline justify-between">
+                      <span className="text-sm sm:text-base font-extrabold text-white">Grand Total:</span>
+                      <div className="text-4xl sm:text-5xl font-black text-[#F4B942] tracking-tight drop-shadow-sm">
                         ₹32,000
                       </div>
                     </div>
