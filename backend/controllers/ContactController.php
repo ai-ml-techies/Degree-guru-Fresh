@@ -221,12 +221,12 @@ class ContactController extends Controller
         if (!empty($cleanWaNumber)) {
             $waMsg = urlencode("Hello {$name}, connecting with you from Degree Guru regarding your application.");
             $waUrl = "https://wa.me/{$cleanWaNumber}?text={$waMsg}";
-            $waButton = "<a href='{$waUrl}' target='_blank' style='display:inline-flex; align-items:center; margin-left:10px; padding:5px 12px; background-color:#25D366; color:#ffffff; font-size:12px; font-weight:700; text-decoration:none; border-radius:6px; vertical-align:middle;'><img src='https://cdn.iconscout.com/icon/free/png-256/free-whatsapp-logo-icon-download-in-svg-png-gif-file-formats--chat-social-media-pack-logos-icons-498414.png' width='14' height='14' style='vertical-align:middle; margin-right:5px;' alt=''/>WhatsApp</a>";
+            $waButton = "<a href='{$waUrl}' target='_blank' style='display:inline-block; margin-left:10px; padding:4px 10px; background-color:#25D366; color:#ffffff; font-size:12px; font-weight:700; text-decoration:none; border-radius:6px; vertical-align:middle;'>WhatsApp</a>";
         }
 
         $rows = [];
         $rows[] = "<tr><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; background:#f8fafc; color:#64748b; font-size:13px; font-weight:600; width:35%;'>Name</td><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; color:#0f172a; font-size:14px; font-weight:700;'>{$name}</td></tr>";
-        $rows[] = "<tr><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; background:#f8fafc; color:#64748b; font-size:13px; font-weight:600;'>Mobile Number</td><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; color:#0f172a; font-size:14px; font-weight:700;'><a href='tel:{$phone}' style='color:#0f172a; text-decoration:none;'>{$phone}</a>{$waButton}</td></tr>";
+        $rows[] = "<tr><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; background:#f8fafc; color:#64748b; font-size:13px; font-weight:600;'>Phone</td><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; color:#0f172a; font-size:14px; font-weight:700;'><a href='tel:{$phone}' style='color:#0f172a; text-decoration:none;'>{$phone}</a>{$waButton}</td></tr>";
         
         if (!empty($email)) {
             $rows[] = "<tr><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; background:#f8fafc; color:#64748b; font-size:13px; font-weight:600;'>Email</td><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; color:#0f172a; font-size:14px;'><a href='mailto:{$email}' style='color:#2563eb; text-decoration:none;'>{$email}</a></td></tr>";
@@ -244,7 +244,7 @@ class ContactController extends Controller
             $rows[] = "<tr><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; background:#f8fafc; color:#64748b; font-size:13px; font-weight:600;'>Experience</td><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; color:#0f172a; font-size:14px;'>{$status}</td></tr>";
         }
         if (!empty($program)) {
-            $rows[] = "<tr><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; background:#f8fafc; color:#64748b; font-size:13px; font-weight:600;'>Program / Details</td><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; color:#0f172a; font-size:13px;'>{$program}</td></tr>";
+            $rows[] = "<tr><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; background:#f8fafc; color:#64748b; font-size:13px; font-weight:600;'>Program</td><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; color:#0f172a; font-size:13px;'>{$program}</td></tr>";
         }
         if (!empty($formHeading)) {
             $rows[] = "<tr><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; background:#f8fafc; color:#64748b; font-size:13px; font-weight:600;'>Form Source</td><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; color:#0f172a; font-size:13px;'>{$formHeading} (" . ($source ?: 'website') . ")</td></tr>";

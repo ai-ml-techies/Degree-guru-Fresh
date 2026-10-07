@@ -300,6 +300,7 @@ export const PlacementGuaranteed = () => {
   const [age, setAge] = useState("");
   const [education, setEducation] = useState("Commerce / B.Com");
   const [experience, setExperience] = useState("Fresher");
+  const [isSerious, setIsSerious] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
   const [otpError, setOtpError] = useState("");
@@ -392,6 +393,7 @@ export const PlacementGuaranteed = () => {
 
   const openForm = (heading = "Check my eligibility") => {
     setFormHeading(heading);
+    setIsSerious(false);
     setFormOpen(true);
     if (step !== 3) setStep(1);
   };
@@ -418,6 +420,7 @@ export const PlacementGuaranteed = () => {
     if (!age.trim() || isNaN(a)) errs.age = "Enter your age.";
     else if (a < 18) errs.age = "Minimum age is 18.";
     else if (a > 28) errs.age = "This program is for candidates aged 28 or below.";
+    if (!isSerious) errs.serious = "Please check the confirmation box below to proceed.";
     setErrors(errs);
     if (Object.keys(errs).length) return;
 
@@ -1304,11 +1307,9 @@ export const PlacementGuaranteed = () => {
               <form onSubmit={submitDetails} className="space-y-3.5">
                 <div className="pr-10 mb-2">
                   <h3 className="text-2xl font-extrabold">{formHeading}</h3>
-                  {formHeading.includes("Prep Kit") && (
-                    <p className="text-xs sm:text-sm text-slate-500 mt-1">
-                      
-                    </p>
-                  )}
+                  <p className="text-xs sm:text-sm text-amber-800 bg-amber-50/90 border border-amber-200 rounded-xl p-2.5 mt-2 font-medium leading-relaxed">
+                    Fill only if you are a serious candidate who wants to enroll in the job guaranteed program with Bajaj Finance / Bajaj Capital.
+                  </p>
                 </div>
 
                 <div>
@@ -1379,10 +1380,34 @@ export const PlacementGuaranteed = () => {
                   </div>
                 )}
 
+                <div className="pt-1">
+                  <label className="flex items-start gap-2.5 p-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 cursor-pointer transition-colors">
+                    <input
+                      type="checkbox"
+                      checked={isSerious}
+                      onChange={(e) => {
+                        setIsSerious(e.target.checked);
+                        if (errors.serious) {
+                          setErrors((prev) => {
+                            const next = { ...prev };
+                            delete next.serious;
+                            return next;
+                          });
+                        }
+                      }}
+                      className="mt-0.5 h-4 w-4 rounded border-slate-300 text-[#1557D6] focus:ring-[#1557D6] cursor-pointer shrink-0"
+                    />
+                    <span className="text-xs text-slate-700 font-medium leading-snug">
+                      I confirm I am a serious candidate who wants to enroll in the Job Guaranteed Program with Bajaj Finance / Bajaj Capital.
+                    </span>
+                  </label>
+                  {errors.serious && <p className="text-xs text-red-500 mt-1 font-semibold">{errors.serious}</p>}
+                </div>
+
                 <button
                   type="submit"
-                  disabled={busy}
-                  className="w-full py-4 rounded-xl bg-[#1557D6] hover:bg-[#0f44b0] disabled:opacity-70 text-white font-extrabold text-sm tracking-wide flex items-center justify-center gap-2 transition-colors"
+                  disabled={busy || !isSerious}
+                  className="w-full py-4 rounded-xl bg-[#1557D6] hover:bg-[#0f44b0] disabled:opacity-50 disabled:cursor-not-allowed text-white font-extrabold text-sm tracking-wide flex items-center justify-center gap-2 transition-all shadow-md"
                 >
                   {busy ? <><RefreshCw size={16} className="animate-spin" /> SENDING OTP…</> : "SEND OTP"}
                 </button>
