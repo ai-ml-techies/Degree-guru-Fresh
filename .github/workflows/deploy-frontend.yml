@@ -44,6 +44,20 @@ jobs:
         run: npm run build
 
       - name: Deploy to Hostinger Frontend (degreeguru.in)
+        id: deploy_attempt1
+        continue-on-error: true
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_FRONTEND_USERNAME || secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_FRONTEND_PASSWORD || secrets.FTP_PASSWORD }}
+          local-dir: ./dist/
+          server-dir: ./
+          timeout: 600000
+          dangerous-clean-slate: false
+
+      - name: Retry Deploy to Hostinger if first attempt timed out
+        if: steps.deploy_attempt1.outcome == 'failure'
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
