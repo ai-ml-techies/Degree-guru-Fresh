@@ -93,7 +93,7 @@ class ContactController extends Controller
             ]);
         }
 
-        $leadId = 'DG-' . date('Ymd') . '-' . substr(uniqid(), -4);
+        $leadId = 'DG-' . $this->getIstDateTime()->format('Ymd') . '-' . substr(uniqid(), -4);
 
         // 1. Save lead immediately to Excel-compatible CSV file with UTF-8 BOM
         try {
@@ -112,7 +112,7 @@ class ContactController extends Controller
                 }
                 fputcsv($fp, [
                     $leadId,
-                    date('Y-m-d H:i:s'),
+                    $this->getIstDateTime()->format('d M Y, h:i:s A') . ' IST',
                     $formHeading,
                     $name,
                     $phone,
@@ -202,7 +202,7 @@ class ContactController extends Controller
         $graduate = $leadData['graduate'] ?? '';
         $program = $leadData['program'] ?? '';
         $source = $leadData['source'] ?? '/placement-guaranteed';
-        $leadId = $leadData['id'] ?? ('DG-' . date('Ymd') . '-' . substr(uniqid(), -4));
+        $leadId = $leadData['id'] ?? ('DG-' . $this->getIstDateTime()->format('Ymd') . '-' . substr(uniqid(), -4));
 
         $subject = "[New Lead] {$name} - {$phone}";
 
@@ -249,7 +249,7 @@ class ContactController extends Controller
             $rows[] = "<tr><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; background:#f8fafc; color:#64748b; font-size:13px; font-weight:600;'>Form Source</td><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; color:#0f172a; font-size:13px;'>{$formHeading} (" . ($source ?: 'website') . ")</td></tr>";
         }
         $rows[] = "<tr><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; background:#f8fafc; color:#64748b; font-size:13px; font-weight:600;'>Lead ID</td><td style='padding:9px 12px; border-bottom:1px solid #e2e8f0; color:#64748b; font-size:13px;'>{$leadId}</td></tr>";
-        $rows[] = "<tr><td style='padding:9px 12px; background:#f8fafc; color:#64748b; font-size:13px; font-weight:600;'>Date & Time</td><td style='padding:9px 12px; color:#0f172a; font-size:13px;'>" . date('d M Y, h:i A') . " IST</td></tr>";
+        $rows[] = "<tr><td style='padding:9px 12px; background:#f8fafc; color:#64748b; font-size:13px; font-weight:600;'>Date & Time</td><td style='padding:9px 12px; color:#0f172a; font-size:13px;'>" . $this->getIstDateTime()->format('d M Y, h:i A') . " IST</td></tr>";
 
         $rowsHtml = implode("\n", $rows);
 
@@ -325,7 +325,7 @@ class ContactController extends Controller
         try {
             $payload = json_encode([
                 'leadId'      => $leadData['id'] ?? '',
-                'dateTime'    => date('Y-m-d H:i:s'),
+                'dateTime'    => $this->getIstDateTime()->format('d M Y, h:i A') . ' IST',
                 'formHeading' => $leadData['form_heading'] ?? '',
                 'name'        => $leadData['name'] ?? '',
                 'phone'       => $leadData['phone'] ?? '',
@@ -341,16 +341,33 @@ class ContactController extends Controller
             $ch = curl_init($webhookUrl);
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'Content-Type: application/json',
+                'Accept: application/json',
+            ]);
+            curl_setopt($ch, CURLOPT_USERAGENT, 'DegreeGuru-Backend/1.0');
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 6);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 10);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_exec($ch);
+            $response = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             curl_close($ch);
+
+            if ($httpCode >= 400) {
+                Yii::warning("Google Sheet webhook returned HTTP {$httpCode}: {$response}", __METHOD__);
+            }
         } catch (\Throwable $e) {
             Yii::error("Failed to forward lead to Google Sheet: " . $e->getMessage(), __METHOD__);
         }
+    }
+
+    /**
+     * Get current DateTime in Indian Standard Time (IST)
+     */
+    private function getIstDateTime(): \DateTime
+    {
+        return new \DateTime('now', new \DateTimeZone('Asia/Kolkata'));
     }
 
     /**

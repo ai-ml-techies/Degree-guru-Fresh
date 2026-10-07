@@ -202,7 +202,7 @@ export async function sendLeadToGoogleSheet(payload: Record<string, any>): Promi
     await fetch(webhookUrl, {
       method: 'POST',
       mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify(payload),
     });
   } catch {
@@ -211,9 +211,19 @@ export async function sendLeadToGoogleSheet(payload: Record<string, any>): Promi
 }
 
 export async function submitLead(payload: LeadPayload): Promise<CounselingResult> {
+  const nowIst = new Date().toLocaleString('en-IN', {
+    timeZone: 'Asia/Kolkata',
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+  }) + ' IST';
+
   sendLeadToGoogleSheet({
     leadId: 'DG-' + new Date().toISOString().slice(0, 10).replace(/-/g, '') + '-' + Math.floor(1000 + Math.random() * 9000),
-    dateTime: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
+    dateTime: nowIst,
     formHeading: payload.formHeading || 'Check if you qualify (Bajaj Capital ACWM Programme)',
     name: payload.name,
     phone: payload.phone,

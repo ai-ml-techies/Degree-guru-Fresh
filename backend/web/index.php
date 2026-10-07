@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+// Set default timezone to Indian Standard Time (IST)
+date_default_timezone_set('Asia/Kolkata');
+
 // ── Environment ───────────────────────────────────────────────────────────────
 // Set DEGREE_GURU_ENV=production in your server environment to go live.
 // Automatically activates production mode on *.degreeguru.in hostnames.

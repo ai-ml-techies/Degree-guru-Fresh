@@ -2,29 +2,44 @@
  * Google Apps Script Web App for Degree Guru Leads
  * Connected to Spreadsheet:
  * https://docs.google.com/spreadsheets/d/1k9e609RyT_1bJcNnowpSebw1eMZkieZ7Wtqzdpw3vv8/edit?gid=0#gid=0
- * 
- * Instructions:
- * 1. Open the Google Sheet above.
- * 2. Click "Extensions" -> "Apps Script".
- * 3. Replace any code with this entire script and click Save (Ctrl+S).
- * 4. Click "Deploy" -> "New deployment".
- * 5. Select type: "Web app".
- * 6. Set Description: "Degree Guru Leads Webhook".
- * 7. Set "Execute as": "Me (your account)".
- * 8. Set "Who has access": "Anyone" (allows website and backend to submit leads).
- * 9. Click "Deploy" and authorize permissions.
- * 10. Copy the Web App URL (e.g. https://script.google.com/macros/s/.../exec).
- * 11. Add it to .env.development and .env.production as:
- *     VITE_GOOGLE_SHEET_WEBHOOK_URL=https://script.google.com/macros/s/.../exec
- *     GOOGLE_SHEET_WEBHOOK_URL=https://script.google.com/macros/s/.../exec
+ *
+ * CRITICAL DEPLOYMENT SETTING:
+ * In Google Apps Script -> Deploy -> Manage deployments -> Edit (pencil icon):
+ * - "Execute as": "Me"
+ * - "Who has access": "Anyone"  <-- MUST BE "Anyone", NOT "Only myself"!
+ * - "Version": "New version"
+ * - Click Deploy!
  */
+
+var SPREADSHEET_ID = "1k9e609RyT_1bJcNnowpSebw1eMZkieZ7Wtqzdpw3vv8";
+
+function getTargetSheet() {
+  var ss = null;
+  try {
+    ss = SpreadsheetApp.getActiveSpreadsheet();
+  } catch (err) {}
+
+  if (!ss) {
+    try {
+      ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+    } catch (err) {
+      Logger.log("openById error: " + err);
+    }
+  }
+
+  if (!ss) {
+    throw new Error("Could not locate spreadsheet. Make sure SPREADSHEET_ID is valid and authorized.");
+  }
+
+  return ss.getActiveSheet() || ss.getSheets()[0];
+}
 
 function doPost(e) {
   var lock = LockService.getScriptLock();
   lock.tryLock(10000);
 
   try {
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    var sheet = getTargetSheet();
     var data = {};
 
     if (e && e.postData && e.postData.contents) {
@@ -60,7 +75,7 @@ function doPost(e) {
       headerRange.setFontColor("#FFFFFF");
     }
 
-    var now = Utilities.formatDate(new Date(), "Asia/Kolkata", "yyyy-MM-dd HH:mm:ss");
+    var now = Utilities.formatDate(new Date(), "Asia/Kolkata", "dd MMM yyyy, hh:mm a") + " IST";
 
     sheet.appendRow([
       data.leadId || ("DG-" + Utilities.formatDate(new Date(), "Asia/Kolkata", "yyyyMMdd-") + Math.floor(1000 + Math.random() * 9000)),
@@ -90,4 +105,25 @@ function doPost(e) {
 function doGet(e) {
   return ContentService.createTextOutput(JSON.stringify({ status: "active", message: "Degree Guru Google Sheet Webhook is active" }))
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+// Simple test function you can run inside the Apps Script editor to test insertion
+function testLeadPunch() {
+  var sheet = getTargetSheet();
+  var now = Utilities.formatDate(new Date(), "Asia/Kolkata", "dd MMM yyyy, hh:mm a") + " IST";
+  sheet.appendRow([
+    "TEST-LEAD-001",
+    now,
+    "Test Form",
+    "Test Student",
+    "9999999999",
+    "test@example.com",
+    "Delhi",
+    "24",
+    "Graduate",
+    "B.Com",
+    "Test notes",
+    "/placement-guaranteed"
+  ]);
+  Logger.log("Test row punched successfully into: " + sheet.getName());
 }
