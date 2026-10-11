@@ -24,6 +24,9 @@ import {
   Sparkles,
   Building2,
   Award,
+  Loader2,
+  Play,
+  Pause,
 } from "lucide-react";
 import { submitLead, sendSmsOtp, verifySmsOtp } from "@/lib/api";
 import { validateIndianMobile, validateMeaningfulName, validateMeaningfulEmail } from "@/lib/validation";
@@ -426,6 +429,17 @@ export const PlacementGuaranteed = () => {
     };
   }, [formOpen, legalOpen, zoomOpen]);
 
+  const scrollToHeroForm = () => {
+    const el = document.getElementById("hero-apply-form");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+      const firstInput = el.querySelector("input");
+      if (firstInput) (firstInput as HTMLInputElement).focus();
+    } else {
+      openForm("Check my eligibility");
+    }
+  };
+
   const openForm = (heading = "Check my eligibility") => {
     setFormHeading(heading);
     setIsSerious(false);
@@ -593,6 +607,7 @@ export const PlacementGuaranteed = () => {
             <nav className="hidden md:flex items-center gap-1.5" aria-label="Page sections">
               {[
                 ["#eligibility", "Eligibility", "nav-eligibility"],
+                ["#testimonials", "Candidate Stories", "nav-testimonials"],
                 ["#certifications", "Certifications", "nav-certifications"],
                 ["#fees", "Fees", "nav-fees"],
               ].map(([href, label, id]) => (
@@ -620,12 +635,24 @@ export const PlacementGuaranteed = () => {
           </div>
         </header>
 
-        {/* HERO SECTION WITH CLEAN TYPOGRAPHIC HIERARCHY & LIQUID GLASSMORPHISM */}
+        {/* HERO SECTION WITH CLEAN TYPOGRAPHIC HIERARCHY, BLENDED BACKGROUND & CLEAR INLINE FORM */}
         <section className="bg-[#061A36] text-white overflow-hidden relative">
+          {/* BLENDED BACKGROUND IMAGE */}
+          <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+            <img
+              src={heroImage}
+              alt=""
+              className="w-full h-full object-cover object-[70%_25%] opacity-15 filter contrast-125 saturate-150 scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#061A36] via-[#061A36]/90 to-[#061A36]/80" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#061A36] via-transparent to-[#061A36]/60" />
+          </div>
+
           <div className="absolute -top-32 -left-32 w-96 h-96 bg-blue-500/15 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none" />
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-20 grid lg:grid-cols-12 gap-10 items-center relative z-10">
-            <div className="lg:col-span-7 space-y-6">
+
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-16 grid lg:grid-cols-12 gap-8 lg:gap-10 items-center relative z-10">
+            <div className="lg:col-span-7 space-y-5 sm:space-y-6">
               {/* Eyebrow Badges */}
               <div className="flex flex-wrap items-center gap-2.5">
                 <span className="inline-flex items-center gap-2 text-xs sm:text-sm font-extrabold tracking-wide uppercase text-[#18B879] bg-[#18B879]/10 border border-[#18B879]/30 px-3.5 py-1.5 rounded-full shadow-xs">
@@ -671,10 +698,10 @@ export const PlacementGuaranteed = () => {
               </div>
 
               {/* CTA Button */}
-              <div className="pt-2">
+              <div className="pt-1">
                 <button
-                  onClick={() => openForm("Check my eligibility")}
-                  className="group w-full sm:w-auto px-8 py-4 rounded-xl bg-[#18B879] hover:bg-[#15a36b] text-[#061A36] font-extrabold text-sm tracking-wide transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 active:scale-95"
+                  onClick={scrollToHeroForm}
+                  className="group w-full sm:w-auto px-8 py-3.5 rounded-xl bg-[#18B879] hover:bg-[#15a36b] text-[#061A36] font-extrabold text-sm tracking-wide transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 active:scale-95 cursor-pointer"
                 >
                   CHECK MY ELIGIBILITY
                   <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
@@ -682,9 +709,238 @@ export const PlacementGuaranteed = () => {
               </div>
             </div>
 
-            <div className="lg:col-span-5">
-              <div className="rounded-3xl overflow-hidden border border-white/15 shadow-2xl">
-                <img src={heroImage} alt="Wealth Officer at work" className="w-full h-[300px] sm:h-[440px] object-cover object-[65%_30%]" />
+            {/* Clear Form in Replace of Hero Image */}
+            <div className="lg:col-span-5" id="hero-apply-form">
+              <div className="rounded-3xl bg-white text-[#061A36] p-6 sm:p-7 shadow-2xl border border-slate-100 relative">
+                {/* Form Top Badge & Header */}
+                <div className="flex items-center justify-between gap-2 pb-3.5 border-b border-slate-100 mb-4">
+                  <div>
+                    <span className="text-[10px] font-black tracking-wider uppercase text-[#1557D6] bg-blue-50 px-2.5 py-1 rounded-full border border-blue-100 inline-block mb-1">
+                      Direct Application • Batch 2026
+                    </span>
+                    <h3 className="text-xl sm:text-2xl font-black text-[#061A36] tracking-tight">
+                      Check Your Eligibility
+                    </h3>
+                  </div>
+                  <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-[#18B879] flex items-center justify-center shrink-0 border border-emerald-100">
+                    <ShieldCheck className="w-5 h-5" />
+                  </div>
+                </div>
+
+                {step === 1 && (
+                  <form onSubmit={submitDetails} className="space-y-3.5">
+                    {/* Full Name */}
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 mb-1">
+                        Full Name <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
+                        placeholder="e.g. Rahul Sharma"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#1557D6] bg-slate-50/50"
+                      />
+                      {errors.name && <p className="text-[11px] text-red-500 mt-0.5">{errors.name}</p>}
+                    </div>
+
+                    {/* Phone Number */}
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 mb-1">
+                        WhatsApp / Mobile Number <span className="text-red-500">*</span>
+                      </label>
+                      <div className="relative">
+                        <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
+                          +91
+                        </span>
+                        <input
+                          type="tel"
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
+                          placeholder="10-digit number"
+                          className="w-full pl-12 pr-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#1557D6] bg-slate-50/50 font-medium"
+                        />
+                      </div>
+                      {errors.phone && <p className="text-[11px] text-red-500 mt-0.5">{errors.phone}</p>}
+                    </div>
+
+                    {/* Email */}
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 mb-1">
+                        Email Address <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="you@gmail.com"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#1557D6] bg-slate-50/50"
+                      />
+                      {errors.email && <p className="text-[11px] text-red-500 mt-0.5">{errors.email}</p>}
+                    </div>
+
+                    {/* Qualification + Age in 2 columns */}
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-1">
+                          Qualification <span className="text-red-500">*</span>
+                        </label>
+                        <select
+                          value={education}
+                          onChange={(e) => setEducation(e.target.value)}
+                          className="w-full px-2.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#1557D6] bg-slate-50/50 font-medium truncate"
+                        >
+                          <option value="Commerce / B.Com">Commerce / B.Com</option>
+                          <option value="BBA / BMS / Management">BBA / BMS</option>
+                          <option value="B.Sc / Science">B.Sc / Science</option>
+                          <option value="Arts / Humanities">Arts / BA</option>
+                          <option value="Engineering / B.Tech">B.Tech / BCA</option>
+                          <option value="Final-Year Bachelor's">Final Year Student</option>
+                          <option value="Other Graduate">Other Graduate</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-1">
+                          Age (Max 28) <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="number"
+                          value={age}
+                          onChange={(e) => setAge(e.target.value.slice(0, 2))}
+                          placeholder="e.g. 22"
+                          className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#1557D6] bg-slate-50/50"
+                        />
+                        {errors.age && <p className="text-[11px] text-red-500 mt-0.5">{errors.age}</p>}
+                      </div>
+                    </div>
+
+                    {/* City */}
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 mb-1">
+                        Current City <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                        placeholder="e.g. Delhi NCR, Lucknow, Mumbai"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#1557D6] bg-slate-50/50"
+                      />
+                      {errors.city && <p className="text-[11px] text-red-500 mt-0.5">{errors.city}</p>}
+                    </div>
+
+                    {/* Checkbox */}
+                    <div className="pt-1">
+                      <label className="flex items-start gap-2 cursor-pointer text-[11px] text-slate-600 leading-snug">
+                        <input
+                          type="checkbox"
+                          checked={isSerious}
+                          onChange={(e) => setIsSerious(e.target.checked)}
+                          className="mt-0.5 rounded text-[#18B879] focus:ring-[#18B879] shrink-0"
+                        />
+                        <span>
+                          I confirm I am below 28 and ready for the Bajaj Capital panel interview & 4-month branch internship.
+                        </span>
+                      </label>
+                      {errors.serious && <p className="text-[11px] text-red-500 mt-0.5">{errors.serious}</p>}
+                    </div>
+
+                    {errors.form && (
+                      <p className="text-xs text-red-600 bg-red-50 p-2 rounded-lg border border-red-200">{errors.form}</p>
+                    )}
+
+                    {/* Submit Button */}
+                    <button
+                      type="submit"
+                      disabled={busy}
+                      className="w-full py-3.5 px-4 rounded-xl bg-[#18B879] hover:bg-[#15a36b] text-[#061A36] font-extrabold text-sm tracking-wide transition-all shadow-md active:scale-98 flex items-center justify-center gap-2 mt-2 cursor-pointer disabled:opacity-60"
+                    >
+                      {busy ? (
+                        <>
+                          <Loader2 size={16} className="animate-spin" />
+                          <span>Sending verification...</span>
+                        </>
+                      ) : (
+                        <>
+                          <span>CHECK ELIGIBILITY & GET PREP KIT</span>
+                          <ArrowRight size={16} />
+                        </>
+                      )}
+                    </button>
+
+                    <p className="text-[11px] text-slate-400 text-center font-medium">
+                      🔒 100% Free screening • Instant Prep Kit PDF download
+                    </p>
+                  </form>
+                )}
+
+                {step === 2 && (
+                  <form onSubmit={verify} className="space-y-4 py-2">
+                    <div className="text-center">
+                      <h4 className="text-base font-bold text-[#061A36]">Verify Mobile Number</h4>
+                      <p className="text-xs text-slate-500 mt-1">
+                        Enter 6-digit OTP sent to <strong>+91 {phone}</strong>
+                      </p>
+                    </div>
+
+                    <div className="flex justify-center gap-2 my-2">
+                      {otp.map((d, idx) => (
+                        <input
+                          key={idx}
+                          ref={(el) => (otpRefs.current[idx] = el)}
+                          type="text"
+                          inputMode="numeric"
+                          maxLength={1}
+                          value={d}
+                          onChange={(e) => onOtpChange(idx, e.target.value)}
+                          className="w-10 h-12 text-center text-lg font-bold rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-[#1557D6] focus:ring-2 focus:ring-blue-100 outline-none"
+                        />
+                      ))}
+                    </div>
+
+                    {otpError && <p className="text-xs text-red-500 text-center font-medium">{otpError}</p>}
+
+                    <button
+                      type="submit"
+                      disabled={busy}
+                      className="w-full py-3 px-4 rounded-xl bg-[#18B879] hover:bg-[#15a36b] text-[#061A36] font-extrabold text-sm tracking-wide transition-all shadow-md active:scale-98 flex items-center justify-center gap-2"
+                    >
+                      {busy ? <Loader2 size={16} className="animate-spin" /> : "VERIFY & DOWNLOAD GUIDE"}
+                    </button>
+
+                    <div className="text-center text-xs text-slate-500">
+                      {timer > 0 ? (
+                        <span>Resend OTP in <strong>{timer}s</strong></span>
+                      ) : (
+                        <button type="button" onClick={resend} className="text-[#1557D6] font-bold underline cursor-pointer">
+                          Resend OTP
+                        </button>
+                      )}
+                    </div>
+                  </form>
+                )}
+
+                {step === 3 && (
+                  <div className="text-center py-6 space-y-3">
+                    <div className="w-14 h-14 bg-emerald-100 text-[#18B879] rounded-full flex items-center justify-center mx-auto shadow-inner">
+                      <CheckCircle2 size={32} />
+                    </div>
+                    <h4 className="text-xl font-black text-[#061A36]">Application Submitted!</h4>
+                    <p className="text-xs text-slate-600 max-w-xs mx-auto leading-relaxed">
+                      Your eligibility screening is registered. Our admissions advisor will contact you within 24 hours.
+                    </p>
+                    <div className="pt-2">
+                      <button
+                        onClick={downloadGuide}
+                        className="w-full py-3 px-4 rounded-xl bg-[#061A36] text-white font-bold text-xs tracking-wide flex items-center justify-center gap-2 shadow-md hover:bg-[#0c2a54] transition-colors cursor-pointer"
+                      >
+                        <Download size={15} />
+                        DOWNLOAD INTERVIEW PREP KIT PDF
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -954,6 +1210,124 @@ export const PlacementGuaranteed = () => {
                 </div>
               </div>
             </Reveal>
+          </div>
+        </section>
+
+        {/* VIDEO TESTIMONIALS (STUDENT STORIES) */}
+        <section id="testimonials" className="pt-12 pb-16 sm:pt-16 sm:pb-22 bg-[#F7F9FC] border-t border-slate-200 scroll-mt-24 relative overflow-hidden">
+          <div className="absolute top-1/3 -left-32 w-80 h-80 bg-blue-100/50 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-10 -right-32 w-80 h-80 bg-emerald-100/50 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
+            <Reveal className="text-center max-w-2xl mx-auto mb-10 sm:mb-14">
+              <span className="inline-flex items-center gap-1.5 text-xs font-black tracking-widest uppercase text-[#1557D6] bg-blue-50 border border-blue-200/80 px-3.5 py-1.5 rounded-full mb-3 shadow-2xs">
+                Candidate Stories &amp; Reviews
+              </span>
+              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-[#061A36]">
+                HEAR FROM OUR CANDIDATES.
+              </h2>
+              <p className="text-xs sm:text-base text-slate-600 mt-2.5 leading-relaxed">
+                Watch real candidates share their journey clearing the Bajaj Capital selection interview, receiving their written Pre-Placement Offer, and transitioning into corporate wealth advisory.
+              </p>
+            </Reveal>
+
+            {/* Video Cards Grid */}
+            <div className="grid md:grid-cols-2 gap-8 lg:gap-10 max-w-4xl mx-auto items-stretch">
+              {/* Candidate Story 1 */}
+              <Reveal delay={100}>
+                <div className="h-full rounded-3xl bg-white border border-slate-200/90 p-5 sm:p-6 shadow-xs hover:shadow-xl hover:border-[#1557D6]/30 transition-all duration-300 flex flex-col justify-between group">
+                  <div>
+                    {/* 9:16 Vertical Video Container */}
+                    <div className="relative rounded-2xl overflow-hidden bg-black shadow-md border border-slate-200 aspect-[9/16] max-w-[280px] sm:max-w-[310px] mx-auto">
+                      <video
+                        src="/videos/studentstory1.mp4"
+                        controls
+                        playsInline
+                        preload="metadata"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+
+                    <div className="mt-5 space-y-2 text-left">
+                      <div className="flex items-center gap-2">
+                        <span className="px-2.5 py-0.5 rounded-md text-[11px] font-extrabold bg-emerald-100/80 text-emerald-800 border border-emerald-200 inline-block">
+                          Verified Candidate Story
+                        </span>
+                        <span className="text-[11px] text-slate-400 font-semibold">• 38s watch</span>
+                      </div>
+
+                      <h3 className="text-base sm:text-lg font-extrabold text-[#061A36] leading-snug group-hover:text-[#1557D6] transition-colors">
+                        "Pre-Placement Offer in Hand Before Paying Any Fee"
+                      </h3>
+
+                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        Shares the honest selection interview experience with Bajaj Capital and the confidence of securing the official written offer upfront before training started.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 pt-3.5 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-medium">
+                    <span className="flex items-center gap-1.5 text-emerald-700 font-bold">
+                      <CheckCircle2 size={15} className="text-emerald-600" /> Pre-Placement Offer Issued
+                    </span>
+                    <span>Bajaj Capital Selection</span>
+                  </div>
+                </div>
+              </Reveal>
+
+              {/* Candidate Story 2 */}
+              <Reveal delay={200}>
+                <div className="h-full rounded-3xl bg-white border border-slate-200/90 p-5 sm:p-6 shadow-xs hover:shadow-xl hover:border-[#1557D6]/30 transition-all duration-300 flex flex-col justify-between group">
+                  <div>
+                    {/* 9:16 Vertical Video Container */}
+                    <div className="relative rounded-2xl overflow-hidden bg-black shadow-md border border-slate-200 aspect-[9/16] max-w-[280px] sm:max-w-[310px] mx-auto">
+                      <video
+                        src="/videos/studentstory2.mp4"
+                        controls
+                        playsInline
+                        preload="metadata"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+
+                    <div className="mt-5 space-y-2 text-left">
+                      <div className="flex items-center gap-2">
+                        <span className="px-2.5 py-0.5 rounded-md text-[11px] font-extrabold bg-blue-100/80 text-blue-800 border border-blue-200 inline-block">
+                          Non-Tech to Wealth Officer
+                        </span>
+                        <span className="text-[11px] text-slate-400 font-semibold">• 42s watch</span>
+                      </div>
+
+                      <h3 className="text-base sm:text-lg font-extrabold text-[#061A36] leading-snug group-hover:text-[#1557D6] transition-colors">
+                        "Zero Prior Finance Experience, Yet Fully Prepared"
+                      </h3>
+
+                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        Explains how 240 hours of practical curriculum and the 4-month live branch internship with ₹15,000/month stipend provided hands-on confidence from Day 1.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 pt-3.5 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-medium">
+                    <span className="flex items-center gap-1.5 text-emerald-700 font-bold">
+                      <CheckCircle2 size={15} className="text-emerald-600" /> ₹15,000/Mo Stipend Active
+                    </span>
+                    <span>₹4.2–₹4.8 LPA Career Start</span>
+                  </div>
+                </div>
+              </Reveal>
+            </div>
+
+            {/* Bottom Callout */}
+            <div className="mt-10 sm:mt-12 text-center">
+              <button
+                onClick={scrollToHeroForm}
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-[#061A36] hover:bg-[#0e2a54] text-white font-extrabold text-xs sm:text-sm tracking-wide transition-all shadow-md active:scale-95 cursor-pointer"
+              >
+                CHECK IF YOU ARE ELIGIBLE FOR NEXT BATCH
+                <ArrowRight size={16} />
+              </button>
+            </div>
           </div>
         </section>
 
