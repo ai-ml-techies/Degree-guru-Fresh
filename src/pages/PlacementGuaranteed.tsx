@@ -6,6 +6,7 @@ import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
+  ChevronUp,
   CheckCircle2,
   Download,
   X,
@@ -450,6 +451,21 @@ export const PlacementGuaranteed = () => {
       window.removeEventListener("resize", onScroll);
     };
   }, []);
+
+  /* Scroll to top button visibility */
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 400);
+    };
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   /* Lock body scroll while modals open */
   useEffect(() => {
@@ -1708,6 +1724,21 @@ export const PlacementGuaranteed = () => {
           <WhatsAppCircleIcon className="w-11 h-11" />
           <span className="text-sm font-bold text-[#061A36]">Talk to an Advisor</span>
         </a>
+
+        {/* FLOATING SCROLL TO TOP BUTTON */}
+        <button
+          type="button"
+          onClick={scrollToTop}
+          aria-label="Scroll to top"
+          title="Scroll to top"
+          className={`fixed z-40 right-4 sm:right-6 bottom-20 md:bottom-24 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-[#061A36] text-white hover:bg-[#1557D6] shadow-[0_4px_20px_rgba(6,26,54,0.35)] hover:shadow-2xl border border-white/20 flex items-center justify-center cursor-pointer transition-all duration-300 active:scale-90 ${
+            showScrollTop
+              ? "opacity-100 translate-y-0 pointer-events-auto"
+              : "opacity-0 translate-y-4 pointer-events-none"
+          }`}
+        >
+          <ChevronUp size={22} className="stroke-[2.5]" />
+        </button>
       </div>
 
       {/* ELIGIBILITY MODAL / BOTTOM SHEET */}
