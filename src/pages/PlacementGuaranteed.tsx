@@ -1236,7 +1236,7 @@ export const PlacementGuaranteed = () => {
               </div>
 
               {/* Right Column: Highlighted Glassmorphic Container (₹32,000) */}
-              <div className="lg:col-span-6 rounded-3xl border-2 border-[#F4B942] bg-gradient-to-br from-[#061A36] via-[#092244] to-[#061A36] text-white p-6 sm:p-7 flex flex-col justify-between shadow-2xl relative overflow-hidden backdrop-blur-xl">
+              <div className="lg:col-span-6 rounded-3xl border-2 border-[#F4B942] bg-gradient-to-br from-[#061A36] via-[#092244] to-[#061A36] text-white p-5 sm:p-7 flex flex-col justify-between shadow-2xl relative overflow-hidden backdrop-blur-xl">
                 <div className="absolute -right-12 -top-12 w-44 h-44 bg-[#F4B942]/15 rounded-full blur-2xl pointer-events-none animate-pulse" />
 
                 <div>
@@ -1248,22 +1248,22 @@ export const PlacementGuaranteed = () => {
                   </div>
 
                   {/* Math Breakdown Table */}
-                  <div className="p-4 sm:p-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md space-y-3 text-xs sm:text-sm text-slate-200">
-                    <div className="flex justify-between items-center">
-                      <span className="text-slate-300">Total Program Fee (incl. 18% GST):</span>
-                      <span className="font-bold text-white text-sm sm:text-base">₹1,77,000</span>
+                  <div className="p-3.5 sm:p-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md space-y-3 text-[11px] min-[390px]:text-xs sm:text-sm text-slate-200">
+                    <div className="flex justify-between items-center gap-2">
+                      <span className="text-slate-300 whitespace-nowrap">Total Program Fee (incl. 18% GST):</span>
+                      <span className="font-bold text-white text-xs sm:text-base shrink-0 whitespace-nowrap">₹1,77,000</span>
                     </div>
-                    <div className="flex justify-between items-center text-emerald-300">
-                      <span>Internship Stipend (4 months × ₹15k):</span>
-                      <span className="font-bold text-sm sm:text-base">− ₹60,000</span>
+                    <div className="flex justify-between items-center gap-2 text-emerald-300">
+                      <span className="whitespace-nowrap">Internship Stipend (4 months × ₹15k):</span>
+                      <span className="font-bold text-xs sm:text-base shrink-0 whitespace-nowrap">− ₹60,000</span>
                     </div>
-                    <div className="flex justify-between items-center text-emerald-300">
-                      <span>Retention Bonus (after 12 months):</span>
-                      <span className="font-bold text-sm sm:text-base">− ₹85,000</span>
+                    <div className="flex justify-between items-center gap-2 text-emerald-300">
+                      <span className="whitespace-nowrap">Retention Bonus (after 12 months):</span>
+                      <span className="font-bold text-xs sm:text-base shrink-0 whitespace-nowrap">− ₹85,000</span>
                     </div>
-                    <div className="pt-4 mt-2 border-t border-white/20 flex items-baseline justify-between">
-                      <span className="text-sm sm:text-base font-extrabold text-white">Grand Total:</span>
-                      <div className="text-4xl sm:text-5xl font-black text-[#F4B942] tracking-tight drop-shadow-sm">
+                    <div className="pt-3.5 sm:pt-4 mt-2 border-t border-white/20 flex items-baseline justify-between gap-2">
+                      <span className="text-sm sm:text-base font-extrabold text-white whitespace-nowrap">Grand Total:</span>
+                      <div className="text-4xl sm:text-5xl font-black text-[#F4B942] tracking-tight drop-shadow-sm whitespace-nowrap">
                         ₹32,000
                       </div>
                     </div>
