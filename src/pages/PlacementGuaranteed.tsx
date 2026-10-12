@@ -780,7 +780,7 @@ export const PlacementGuaranteed = () => {
                           type="tel"
                           value={phone}
                           onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
-                          placeholder="WhatsApp / Mobile Number *"
+                          placeholder="Mobile Number *"
                           className="w-full pl-12 pr-3.5 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#1557D6] bg-slate-50/60 font-medium placeholder:text-slate-400"
                         />
                       </div>
@@ -1262,7 +1262,7 @@ export const PlacementGuaranteed = () => {
                       <span className="font-bold text-xs sm:text-base shrink-0 whitespace-nowrap">− ₹85,000</span>
                     </div>
                     <div className="pt-3.5 sm:pt-4 mt-2 border-t border-white/20 flex items-baseline justify-between gap-2">
-                      <span className="text-sm sm:text-base font-extrabold text-white whitespace-nowrap">Grand Total:</span>
+                      <span className="text-sm sm:text-base font-extrabold text-white whitespace-nowrap">Cost to you:</span>
                       <div className="text-4xl sm:text-5xl font-black text-[#F4B942] tracking-tight drop-shadow-sm whitespace-nowrap">
                         ₹32,000
                       </div>
