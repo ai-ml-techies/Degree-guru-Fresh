@@ -688,8 +688,8 @@ export const PlacementGuaranteed = () => {
               <div className="flex flex-wrap items-center gap-2.5">
                 <div className="relative inline-flex p-[2px] overflow-hidden rounded-full shadow-xl shadow-emerald-500/25">
                   <span className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#18B879_0%,#4ade80_25%,#F4B942_50%,#34d399_75%,#18B879_100%)]" />
-                  <span className="relative inline-flex items-center gap-2 sm:gap-2.5 px-5 py-2.5 sm:px-6 sm:py-3 rounded-full bg-[#061A36] text-white text-xs sm:text-sm md:text-base font-black tracking-wider uppercase backdrop-blur-xl">
-                    <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-[#34D399] shadow-[0_0_10px_#34D399] animate-pulse shrink-0" />
+                  <span className="relative inline-flex items-center gap-2.5 sm:gap-3 px-6 py-3 sm:px-7 sm:py-3.5 rounded-full bg-[#061A36] text-white text-[13px] sm:text-[15px] md:text-[17px] font-black tracking-wider uppercase backdrop-blur-xl">
+                    <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#34D399] shadow-[0_0_10px_#34D399] animate-pulse shrink-0" />
                     <span className="text-[#34D399] drop-shadow-sm">India's #1</span>
                     <span className="text-white drop-shadow-sm">Job Guaranteed Program</span>
                   </span>
