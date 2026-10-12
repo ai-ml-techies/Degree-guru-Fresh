@@ -216,6 +216,23 @@ const CERTIFICATIONS_EXPOSURE = [
   },
 ];
 
+const CANDIDATE_STORIES = [
+  {
+    video: "/videos/studentstory1.mp4",
+    title: "Written Pre-Placement Offer in Hand Before Paying Any Fee",
+    desc: "Cleared Bajaj Capital selection interview and secured written offer upfront.",
+    badge: "Written Offer Secured",
+    tag: "Offer Letter",
+  },
+  {
+    video: "/videos/studentstory2.mp4",
+    title: "Non-Tech Background to Guaranteed Wealth Officer",
+    desc: "Zero prior finance experience — practical training & ₹15,000/mo branch stipend.",
+    badge: "₹15,000/Mo Stipend Active",
+    tag: "Non-Tech to Finance",
+  },
+];
+
 const MODULES = [
   { icon: Briefcase, t: "Wealth Advisory", d: "Profile clients, build goal-based plans." },
   { icon: Layers, t: "Financial Products", d: "Mutual funds, insurance, fixed income." },
@@ -345,6 +362,17 @@ export const PlacementGuaranteed = () => {
   const [busy, setBusy] = useState(false);
   const [timer, setTimer] = useState(30);
   const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const [activeStory, setActiveStory] = useState<0 | 1>(0);
+  const videoRef0 = useRef<HTMLVideoElement | null>(null);
+  const videoRef1 = useRef<HTMLVideoElement | null>(null);
+
+  useEffect(() => {
+    if (activeStory === 0 && videoRef1.current) {
+      videoRef1.current.pause();
+    } else if (activeStory === 1 && videoRef0.current) {
+      videoRef0.current.pause();
+    }
+  }, [activeStory]);
 
   useEffect(() => {
     if (step !== 2 || timer <= 0) return;
@@ -607,8 +635,8 @@ export const PlacementGuaranteed = () => {
             <nav className="hidden md:flex items-center gap-1.5" aria-label="Page sections">
               {[
                 ["#eligibility", "Eligibility", "nav-eligibility"],
+                ["#how", "How It Works", "nav-how"],
                 ["#testimonials", "Candidate Stories", "nav-testimonials"],
-                ["#certifications", "Certifications", "nav-certifications"],
                 ["#fees", "Fees", "nav-fees"],
               ].map(([href, label, id]) => (
                 <a
@@ -637,15 +665,15 @@ export const PlacementGuaranteed = () => {
 
         {/* HERO SECTION WITH CLEAN TYPOGRAPHIC HIERARCHY, BLENDED BACKGROUND & CLEAR INLINE FORM */}
         <section className="bg-[#061A36] text-white overflow-hidden relative">
-          {/* BLENDED BACKGROUND IMAGE */}
+          {/* BLENDED BACKGROUND IMAGE (LESS OPACITY) */}
           <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
             <img
               src={heroImage}
               alt=""
-              className="w-full h-full object-cover object-[70%_25%] opacity-15 filter contrast-125 saturate-150 scale-105"
+              className="w-full h-full object-cover object-[70%_25%] opacity-7 filter contrast-110 saturate-125 scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#061A36] via-[#061A36]/90 to-[#061A36]/80" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#061A36] via-transparent to-[#061A36]/60" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#061A36] via-[#061A36]/95 to-[#061A36]/90" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#061A36] via-transparent to-[#061A36]/70" />
           </div>
 
           <div className="absolute -top-32 -left-32 w-96 h-96 bg-blue-500/15 rounded-full blur-3xl pointer-events-none" />
@@ -653,14 +681,11 @@ export const PlacementGuaranteed = () => {
 
           <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-16 grid lg:grid-cols-12 gap-8 lg:gap-10 items-center relative z-10">
             <div className="lg:col-span-7 space-y-5 sm:space-y-6">
-              {/* Eyebrow Badges */}
+              {/* Eyebrow Badge */}
               <div className="flex flex-wrap items-center gap-2.5">
                 <span className="inline-flex items-center gap-2 text-xs sm:text-sm font-extrabold tracking-wide uppercase text-[#18B879] bg-[#18B879]/10 border border-[#18B879]/30 px-3.5 py-1.5 rounded-full shadow-xs">
                   <span className="w-2 h-2 rounded-full bg-[#18B879] animate-pulse" />
                   India's #1 Job Guarantee Non-Tech Course
-                </span>
-                <span className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-black tracking-wide uppercase text-[#F4B942] bg-[#F4B942]/10 border border-[#F4B942]/40 px-3 py-1.5 rounded-full shadow-xs">
-                  Only 150 Seats
                 </span>
               </div>
 
@@ -712,43 +737,29 @@ export const PlacementGuaranteed = () => {
             {/* Clear Form in Replace of Hero Image */}
             <div className="lg:col-span-5" id="hero-apply-form">
               <div className="rounded-3xl bg-white text-[#061A36] p-6 sm:p-7 shadow-2xl border border-slate-100 relative">
-                {/* Form Top Badge & Header */}
-                <div className="flex items-center justify-between gap-2 pb-3.5 border-b border-slate-100 mb-4">
-                  <div>
-                    <span className="text-[10px] font-black tracking-wider uppercase text-[#1557D6] bg-blue-50 px-2.5 py-1 rounded-full border border-blue-100 inline-block mb-1">
-                      Direct Application • Batch 2026
-                    </span>
-                    <h3 className="text-xl sm:text-2xl font-black text-[#061A36] tracking-tight">
-                      Check Your Eligibility
-                    </h3>
-                  </div>
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-[#18B879] flex items-center justify-center shrink-0 border border-emerald-100">
-                    <ShieldCheck className="w-5 h-5" />
-                  </div>
+                {/* Form Header Inside Column */}
+                <div className="pb-3 border-b border-slate-100 mb-4">
+                  <h3 className="text-xl sm:text-2xl font-black text-[#061A36] tracking-tight">
+                    Check Your Eligibility
+                  </h3>
                 </div>
 
                 {step === 1 && (
-                  <form onSubmit={submitDetails} className="space-y-3.5">
+                  <form onSubmit={submitDetails} className="space-y-3">
                     {/* Full Name */}
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1">
-                        Full Name <span className="text-red-500">*</span>
-                      </label>
                       <input
                         type="text"
                         value={fullName}
                         onChange={(e) => setFullName(e.target.value)}
-                        placeholder="e.g. Rahul Sharma"
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#1557D6] bg-slate-50/50"
+                        placeholder="Full Name *"
+                        className="w-full px-3.5 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#1557D6] bg-slate-50/60 font-medium placeholder:text-slate-400"
                       />
                       {errors.name && <p className="text-[11px] text-red-500 mt-0.5">{errors.name}</p>}
                     </div>
 
                     {/* Phone Number */}
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1">
-                        WhatsApp / Mobile Number <span className="text-red-500">*</span>
-                      </label>
                       <div className="relative">
                         <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
                           +91
@@ -757,8 +768,8 @@ export const PlacementGuaranteed = () => {
                           type="tel"
                           value={phone}
                           onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
-                          placeholder="10-digit number"
-                          className="w-full pl-12 pr-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#1557D6] bg-slate-50/50 font-medium"
+                          placeholder="WhatsApp / Mobile Number *"
+                          className="w-full pl-12 pr-3.5 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#1557D6] bg-slate-50/60 font-medium placeholder:text-slate-400"
                         />
                       </div>
                       {errors.phone && <p className="text-[11px] text-red-500 mt-0.5">{errors.phone}</p>}
@@ -766,29 +777,23 @@ export const PlacementGuaranteed = () => {
 
                     {/* Email */}
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1">
-                        Email Address <span className="text-red-500">*</span>
-                      </label>
                       <input
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder="you@gmail.com"
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#1557D6] bg-slate-50/50"
+                        placeholder="Email Address *"
+                        className="w-full px-3.5 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#1557D6] bg-slate-50/60 font-medium placeholder:text-slate-400"
                       />
                       {errors.email && <p className="text-[11px] text-red-500 mt-0.5">{errors.email}</p>}
                     </div>
 
                     {/* Qualification + Age in 2 columns */}
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-2 gap-2.5">
                       <div>
-                        <label className="block text-xs font-bold text-slate-700 mb-1">
-                          Qualification <span className="text-red-500">*</span>
-                        </label>
                         <select
                           value={education}
                           onChange={(e) => setEducation(e.target.value)}
-                          className="w-full px-2.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#1557D6] bg-slate-50/50 font-medium truncate"
+                          className="w-full px-3 py-3 rounded-xl border border-slate-200 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#1557D6] bg-slate-50/60 font-medium text-slate-700 truncate"
                         >
                           <option value="Commerce / B.Com">Commerce / B.Com</option>
                           <option value="BBA / BMS / Management">BBA / BMS</option>
@@ -796,20 +801,17 @@ export const PlacementGuaranteed = () => {
                           <option value="Arts / Humanities">Arts / BA</option>
                           <option value="Engineering / B.Tech">B.Tech / BCA</option>
                           <option value="Final-Year Bachelor's">Final Year Student</option>
-                          <option value="Other Graduate">Other Graduate</option>
+                          <option value="Master's / Post Graduate">Master's / PG</option>
                         </select>
                       </div>
 
                       <div>
-                        <label className="block text-xs font-bold text-slate-700 mb-1">
-                          Age (Max 28) <span className="text-red-500">*</span>
-                        </label>
                         <input
                           type="number"
                           value={age}
                           onChange={(e) => setAge(e.target.value.slice(0, 2))}
-                          placeholder="e.g. 22"
-                          className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#1557D6] bg-slate-50/50"
+                          placeholder="Age (Max 28) *"
+                          className="w-full px-3.5 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#1557D6] bg-slate-50/60 font-medium placeholder:text-slate-400"
                         />
                         {errors.age && <p className="text-[11px] text-red-500 mt-0.5">{errors.age}</p>}
                       </div>
@@ -817,21 +819,18 @@ export const PlacementGuaranteed = () => {
 
                     {/* City */}
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1">
-                        Current City <span className="text-red-500">*</span>
-                      </label>
                       <input
                         type="text"
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
-                        placeholder="e.g. Delhi NCR, Lucknow, Mumbai"
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#1557D6] bg-slate-50/50"
+                        placeholder="Current City *"
+                        className="w-full px-3.5 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#1557D6] bg-slate-50/60 font-medium placeholder:text-slate-400"
                       />
                       {errors.city && <p className="text-[11px] text-red-500 mt-0.5">{errors.city}</p>}
                     </div>
 
                     {/* Checkbox */}
-                    <div className="pt-1">
+                    <div className="pt-0.5">
                       <label className="flex items-start gap-2 cursor-pointer text-[11px] text-slate-600 leading-snug">
                         <input
                           type="checkbox"
@@ -840,7 +839,7 @@ export const PlacementGuaranteed = () => {
                           className="mt-0.5 rounded text-[#18B879] focus:ring-[#18B879] shrink-0"
                         />
                         <span>
-                          I confirm I am below 28 and ready for the Bajaj Capital panel interview & 4-month branch internship.
+                          I confirm I am below 28 and ready for the Bajaj Capital interview & 4-month branch internship.
                         </span>
                       </label>
                       {errors.serious && <p className="text-[11px] text-red-500 mt-0.5">{errors.serious}</p>}
@@ -854,7 +853,7 @@ export const PlacementGuaranteed = () => {
                     <button
                       type="submit"
                       disabled={busy}
-                      className="w-full py-3.5 px-4 rounded-xl bg-[#18B879] hover:bg-[#15a36b] text-[#061A36] font-extrabold text-sm tracking-wide transition-all shadow-md active:scale-98 flex items-center justify-center gap-2 mt-2 cursor-pointer disabled:opacity-60"
+                      className="w-full py-3.5 px-4 rounded-xl bg-[#18B879] hover:bg-[#15a36b] text-[#061A36] font-extrabold text-sm tracking-wide transition-all shadow-md active:scale-98 flex items-center justify-center gap-2 mt-1 cursor-pointer disabled:opacity-60"
                     >
                       {busy ? (
                         <>
@@ -863,15 +862,11 @@ export const PlacementGuaranteed = () => {
                         </>
                       ) : (
                         <>
-                          <span>CHECK ELIGIBILITY & GET PREP KIT</span>
+                          <span>CHECK ELIGIBILITY & PROCEED</span>
                           <ArrowRight size={16} />
                         </>
                       )}
                     </button>
-
-                    <p className="text-[11px] text-slate-400 text-center font-medium">
-                      🔒 100% Free screening • Instant Prep Kit PDF download
-                    </p>
                   </form>
                 )}
 
@@ -969,84 +964,44 @@ export const PlacementGuaranteed = () => {
           </div>
         </section>
 
-        {/* COMPARISON SECTION (SLIDE ON MOBILE, SIMPLE SHORT HEADING, NO MULTI-LINE SQUEEZE) */}
-        <section className="py-16 sm:py-24 bg-white border-b border-slate-200">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6">
-            <Reveal className="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
-              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight">
-                HOW ACWM IS DIFFERENT
+        {/* DOES THIS SOUND FAMILIAR? (PAIN POINT HOOK) */}
+        <section className="py-14 sm:py-20 bg-white border-b border-slate-200">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6">
+            <Reveal className="text-center mb-8 sm:mb-10">
+              <span className="inline-flex items-center gap-1.5 text-xs font-black tracking-widest uppercase text-red-600 bg-red-50 border border-red-100 px-3.5 py-1.5 rounded-full mb-3 shadow-2xs">
+                Sound Familiar?
+              </span>
+              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-[#061A36]">
+                DOES THIS SOUND FAMILIAR?
               </h2>
             </Reveal>
 
-            {/* Scrollable / Slideable table container for mobile with generous column widths */}
-            <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0 [scrollbar-width:none]">
-              <div className="min-w-[700px] rounded-3xl border border-slate-200 overflow-hidden shadow-sm bg-white">
-                <div className="grid grid-cols-[160px_1fr_1fr] text-center text-xs sm:text-sm font-extrabold tracking-wide border-b border-slate-200">
-                  <div className="py-4 px-3 bg-slate-50 text-slate-400 uppercase text-[11px] flex items-center justify-center">Parameter</div>
-                  <div className="py-4 px-4 bg-slate-100 text-slate-500 uppercase flex items-center justify-center">Other Institutes</div>
-                  <div className="py-4 px-4 bg-[#061A36] text-[#18B879] uppercase flex items-center justify-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-[#18B879] animate-pulse" />
-                    ACWM Pathway
+            <div className="space-y-3 sm:space-y-3.5 max-w-2xl mx-auto">
+              {[
+                "You have a degree but lack a clear career path.",
+                "You have certificates but lack real-world skills.",
+                "You keep applying for jobs but rarely get selected.",
+                "You have years of experience, but your salary is still below ₹30,000.",
+                "You want to enter finance but don't know where to begin.",
+              ].map((point, idx) => (
+                <Reveal key={idx} delay={idx * 60}>
+                  <div className="flex items-center gap-3.5 sm:gap-4 p-4 sm:p-4.5 rounded-2xl bg-[#F7F9FC] border border-slate-200/90 hover:border-red-200 hover:bg-red-50/20 transition-all duration-300 group">
+                    <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-red-100/80 text-red-600 font-black text-xs sm:text-sm flex items-center justify-center shrink-0 border border-red-200/70">
+                      ✕
+                    </span>
+                    <p className="text-sm sm:text-base font-semibold text-slate-800 leading-snug">
+                      {point}
+                    </p>
                   </div>
-                </div>
-
-                {[
-                  [
-                    "Seats Availability",
-                    "Unlimited (open mass enrollment batches)",
-                    "Only 150 real vacant seats linked to Bajaj Capital absorption",
-                  ],
-                  [
-                    "Admission Criteria",
-                    "Pay fee and get instant admission with zero evaluation or screening",
-                    "First clear psychometric test & panel interview to be eligible to enroll",
-                  ],
-                  [
-                    "Course Fee",
-                    "Full fee taken upfront before any job assurance",
-                    "Pay ONLY if you receive written Placement Guaranteed Offer Letter",
-                  ],
-                  [
-                    "Job Guarantee",
-                    "No job guarantee — only course completion certificate",
-                    "Yes — formal written Pre-Placement Offer letter upfront",
-                  ],
-                  [
-                    "Internship & Stipend",
-                    "Unpaid or unassisted internship with ₹0 stipend",
-                    "4-month branch internship with guaranteed ₹15,000/mo stipend",
-                  ],
-                  [
-                    "How You Learn",
-                    "Made for rote theoretical learning & memorization",
-                    "Made for real-world client advisory & live branch simulations",
-                  ],
-                  [
-                    "Placement Support",
-                    "Uncertain support across multiple external companies",
-                    "Join Bajaj Capital directly — no multi-company hustle",
-                  ],
-                ].map(([label, other, us]) => (
-                  <div key={label} className="grid grid-cols-[160px_1fr_1fr] border-t border-slate-200 text-xs sm:text-sm items-center">
-                    <div className="p-4 font-bold text-slate-800 bg-slate-50/70 border-r border-slate-100">
-                      {label}
-                    </div>
-                    <div className="p-4 text-slate-600 flex items-center gap-2.5 border-r border-slate-100">
-                      <span className="w-5 h-5 rounded-full bg-red-100 text-red-600 flex items-center justify-center shrink-0">
-                        <X size={12} strokeWidth={3} />
-                      </span>
-                      <span className="leading-snug">{other}</span>
-                    </div>
-                    <div className="p-4 font-semibold text-[#061A36] bg-emerald-50/60 flex items-center gap-2.5">
-                      <span className="w-5 h-5 rounded-full bg-[#18B879] text-white flex items-center justify-center shrink-0 shadow-xs">
-                        <Check size={12} strokeWidth={3} />
-                      </span>
-                      <span className="leading-snug">{us}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                </Reveal>
+              ))}
             </div>
+
+            <Reveal delay={350} className="text-center mt-8 sm:mt-10">
+              <p className="text-xs sm:text-sm text-slate-500 font-medium max-w-xl mx-auto leading-relaxed">
+                The ACWM Pathway eliminates this uncertainty by granting you an official <strong>written Pre-Placement Offer upfront</strong> before training begins.
+              </p>
+            </Reveal>
           </div>
         </section>
 
@@ -1219,103 +1174,113 @@ export const PlacementGuaranteed = () => {
           <div className="absolute bottom-10 -right-32 w-80 h-80 bg-emerald-100/50 rounded-full blur-3xl pointer-events-none" />
 
           <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
-            <Reveal className="text-center max-w-2xl mx-auto mb-10 sm:mb-14">
-              <span className="inline-flex items-center gap-1.5 text-xs font-black tracking-widest uppercase text-[#1557D6] bg-blue-50 border border-blue-200/80 px-3.5 py-1.5 rounded-full mb-3 shadow-2xs">
-                Candidate Stories &amp; Reviews
+            <Reveal className="text-center max-w-xl mx-auto mb-7 sm:mb-9">
+              <span className="inline-flex items-center gap-1.5 text-xs font-black tracking-widest uppercase text-[#1557D6] bg-blue-50 border border-blue-200/80 px-3.5 py-1.5 rounded-full mb-2.5 shadow-2xs">
+                Candidate Stories
               </span>
               <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-[#061A36]">
                 HEAR FROM OUR CANDIDATES.
               </h2>
-              <p className="text-xs sm:text-base text-slate-600 mt-2.5 leading-relaxed">
-                Watch real candidates share their journey clearing the Bajaj Capital selection interview, receiving their written Pre-Placement Offer, and transitioning into corporate wealth advisory.
+              <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+                Watch real candidates share how they cleared the Bajaj Capital interview and secured their written offer upfront.
               </p>
             </Reveal>
 
-            {/* Video Cards Grid */}
-            <div className="grid md:grid-cols-2 gap-8 lg:gap-10 max-w-4xl mx-auto items-stretch">
-              {/* Candidate Story 1 */}
-              <Reveal delay={100}>
-                <div className="h-full rounded-3xl bg-white border border-slate-200/90 p-5 sm:p-6 shadow-xs hover:shadow-xl hover:border-[#1557D6]/30 transition-all duration-300 flex flex-col justify-between group">
-                  <div>
-                    {/* 9:16 Vertical Video Container */}
-                    <div className="relative rounded-2xl overflow-hidden bg-black shadow-md border border-slate-200 aspect-[9/16] max-w-[280px] sm:max-w-[310px] mx-auto">
-                      <video
-                        src="/videos/studentstory1.mp4"
-                        controls
-                        playsInline
-                        preload="metadata"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
+            {/* Story Switcher Tabs & Shuffle Button */}
+            <div className="flex items-center justify-center gap-2 mb-8">
+              {CANDIDATE_STORIES.map((story, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => setActiveStory(idx as 0 | 1)}
+                  className={`px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                    activeStory === idx
+                      ? "bg-[#061A36] text-white shadow-md scale-102"
+                      : "bg-white text-slate-600 border border-slate-200 hover:border-slate-300 hover:bg-slate-50"
+                  }`}
+                >
+                  <span className={`w-2 h-2 rounded-full ${activeStory === idx ? "bg-[#18B879]" : "bg-slate-300"}`} />
+                  <span>Story {idx + 1}</span>
+                  <span className="text-[10px] font-medium opacity-70 hidden sm:inline">• {story.tag}</span>
+                </button>
+              ))}
+              <button
+                type="button"
+                onClick={() => setActiveStory((prev) => (prev === 0 ? 1 : 0))}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-extrabold text-[#1557D6] bg-blue-50 border border-blue-200 hover:bg-blue-100/70 transition-all cursor-pointer ml-1 active:scale-95 shadow-2xs"
+                title="Shuffle Story"
+              >
+                <RefreshCw size={12} className="text-[#1557D6]" />
+                <span>Shuffle</span>
+              </button>
+            </div>
 
-                    <div className="mt-5 space-y-2 text-left">
-                      <div className="flex items-center gap-2">
-                        <span className="px-2.5 py-0.5 rounded-md text-[11px] font-extrabold bg-emerald-100/80 text-emerald-800 border border-emerald-200 inline-block">
-                          Verified Candidate Story
+            {/* Stacked Soft Shuffle Video Cards (1 shown in front, hidden stacked behind) */}
+            <div className="relative mx-auto max-w-[340px] sm:max-w-[370px] min-h-[580px] sm:min-h-[610px]">
+              {CANDIDATE_STORIES.map((story, idx) => {
+                const isFront = activeStory === idx;
+                const videoRef = idx === 0 ? videoRef0 : videoRef1;
+
+                return (
+                  <div
+                    key={idx}
+                    onClick={() => {
+                      if (!isFront) setActiveStory(idx as 0 | 1);
+                    }}
+                    className={`absolute inset-0 rounded-3xl bg-white border border-slate-200/90 p-4 sm:p-5 flex flex-col justify-between transition-all duration-500 ease-out ${
+                      isFront
+                        ? "z-20 scale-100 opacity-100 translate-x-0 translate-y-0 rotate-0 shadow-2xl pointer-events-auto"
+                        : "z-10 scale-95 opacity-55 translate-x-4 sm:translate-x-6 translate-y-3 sm:translate-y-4 rotate-2 shadow-lg hover:opacity-85 cursor-pointer pointer-events-auto"
+                    }`}
+                  >
+                    <div>
+                      {/* Top Meta */}
+                      <div className="flex items-center justify-between mb-3">
+                        <span className="px-2.5 py-0.5 rounded-md text-[11px] font-extrabold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                          {story.tag}
                         </span>
-                        <span className="text-[11px] text-slate-400 font-semibold">• 38s watch</span>
+                        <span className="text-[11px] font-bold text-slate-400">
+                          {isFront ? "Story " + (idx + 1) + " of 2" : "Tap to Switch"}
+                        </span>
                       </div>
 
-                      <h3 className="text-base sm:text-lg font-extrabold text-[#061A36] leading-snug group-hover:text-[#1557D6] transition-colors">
-                        "Pre-Placement Offer in Hand Before Paying Any Fee"
-                      </h3>
-
-                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                        Shares the honest selection interview experience with Bajaj Capital and the confidence of securing the official written offer upfront before training started.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="mt-4 pt-3.5 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-medium">
-                    <span className="flex items-center gap-1.5 text-emerald-700 font-bold">
-                      <CheckCircle2 size={15} className="text-emerald-600" /> Pre-Placement Offer Issued
-                    </span>
-                    <span>Bajaj Capital Selection</span>
-                  </div>
-                </div>
-              </Reveal>
-
-              {/* Candidate Story 2 */}
-              <Reveal delay={200}>
-                <div className="h-full rounded-3xl bg-white border border-slate-200/90 p-5 sm:p-6 shadow-xs hover:shadow-xl hover:border-[#1557D6]/30 transition-all duration-300 flex flex-col justify-between group">
-                  <div>
-                    {/* 9:16 Vertical Video Container */}
-                    <div className="relative rounded-2xl overflow-hidden bg-black shadow-md border border-slate-200 aspect-[9/16] max-w-[280px] sm:max-w-[310px] mx-auto">
-                      <video
-                        src="/videos/studentstory2.mp4"
-                        controls
-                        playsInline
-                        preload="metadata"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-
-                    <div className="mt-5 space-y-2 text-left">
-                      <div className="flex items-center gap-2">
-                        <span className="px-2.5 py-0.5 rounded-md text-[11px] font-extrabold bg-blue-100/80 text-blue-800 border border-blue-200 inline-block">
-                          Non-Tech to Wealth Officer
-                        </span>
-                        <span className="text-[11px] text-slate-400 font-semibold">• 42s watch</span>
+                      {/* 9:16 Vertical Video Container */}
+                      <div className="relative rounded-2xl overflow-hidden bg-black shadow-md border border-slate-200 aspect-[9/16] max-h-[380px] sm:max-h-[400px] mx-auto w-full">
+                        <video
+                          ref={videoRef}
+                          src={story.video}
+                          controls
+                          playsInline
+                          preload="metadata"
+                          className="w-full h-full object-cover"
+                        />
                       </div>
 
-                      <h3 className="text-base sm:text-lg font-extrabold text-[#061A36] leading-snug group-hover:text-[#1557D6] transition-colors">
-                        "Zero Prior Finance Experience, Yet Fully Prepared"
-                      </h3>
+                      {/* Crisp On-Point Text */}
+                      <div className="mt-4 space-y-1.5 text-left">
+                        <h3 className="text-sm sm:text-base font-extrabold text-[#061A36] leading-snug">
+                          {story.title}
+                        </h3>
+                        <p className="text-xs text-slate-500 leading-relaxed">
+                          {story.desc}
+                        </p>
+                      </div>
+                    </div>
 
-                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                        Explains how 240 hours of practical curriculum and the 4-month live branch internship with ₹15,000/month stipend provided hands-on confidence from Day 1.
-                      </p>
+                    {/* Bottom Status */}
+                    <div className="mt-3.5 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold">
+                      <span className="flex items-center gap-1.5 text-emerald-700 font-bold text-[11px]">
+                        <CheckCircle2 size={14} className="text-emerald-600" /> {story.badge}
+                      </span>
+                      {!isFront && (
+                        <span className="text-xs text-[#1557D6] font-bold">
+                          Click to view →
+                        </span>
+                      )}
                     </div>
                   </div>
-
-                  <div className="mt-4 pt-3.5 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-medium">
-                    <span className="flex items-center gap-1.5 text-emerald-700 font-bold">
-                      <CheckCircle2 size={15} className="text-emerald-600" /> ₹15,000/Mo Stipend Active
-                    </span>
-                    <span>₹4.2–₹4.8 LPA Career Start</span>
-                  </div>
-                </div>
-              </Reveal>
+                );
+              })}
             </div>
 
             {/* Bottom Callout */}
