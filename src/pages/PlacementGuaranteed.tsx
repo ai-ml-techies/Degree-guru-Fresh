@@ -183,7 +183,7 @@ const JOURNEY = [
   { when: "Before training", title: "Pre-Placement Offer", text: "A written Pre-Placement Offer from Bajaj Capital. The program fee starts only after you accept the offer.", tag: "Fee starts after offer acceptance", tone: "blue" },
   { when: "Month 1 – 2.5", title: "Classroom training", text: "240 hours — 190 with ICOFP, 50 with AIMA. Mastering practical wealth advisory.", tag: "ACWM certification", tone: "navy" },
   { when: "Month 3 – 6", title: "Bajaj Capital internship", text: "Four months inside a live Bajaj Capital branch.", tag: "₹15,000 / month stipend", tone: "green" },
-  { when: "Month 6", title: "Wealth Officer", text: "Full-time role once the completion criteria are met.", tag: "₹4.2 – ₹4.8 LPA", tone: "green" },
+  { when: "Month 7", title: "Wealth Officer", text: "Full-time role once the completion criteria are met.", tag: "₹4.2 – ₹4.8 LPA", tone: "green" },
   { when: "Month 12", title: "Retention bonus", text: "After 12 months of full-time employment.", tag: "₹85,000", tone: "gold" },
 ];
 
@@ -673,10 +673,10 @@ export const PlacementGuaranteed = () => {
             <img
               src={heroImage}
               alt=""
-              className="w-full h-full object-cover object-[70%_25%] opacity-20 filter contrast-105 saturate-110 scale-105"
+              className="w-full h-full object-cover object-[70%_25%] opacity-35 filter contrast-110 saturate-115 scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#061A36] via-[#061A36]/85 to-[#061A36]/80" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#061A36] via-transparent to-[#061A36]/60" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#061A36]/90 via-[#061A36]/75 to-[#061A36]/60" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#061A36] via-transparent to-[#061A36]/50" />
           </div>
 
           <div className="absolute -top-32 -left-32 w-96 h-96 bg-blue-500/15 rounded-full blur-3xl pointer-events-none" />
@@ -684,12 +684,16 @@ export const PlacementGuaranteed = () => {
 
           <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-16 grid lg:grid-cols-12 gap-8 lg:gap-10 items-center relative z-10">
             <div className="lg:col-span-7 space-y-5 sm:space-y-6">
-              {/* Eyebrow Badge */}
+              {/* Eyebrow Badge with Moving Animated Glowing Stroke */}
               <div className="flex flex-wrap items-center gap-2.5">
-                <span className="inline-flex items-center gap-2 text-xs sm:text-sm font-black tracking-wide uppercase text-emerald-300 bg-emerald-950/70 border border-emerald-400/60 px-4 py-1.5 rounded-full shadow-sm">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  India's #1 Job Guarantee Non-Tech Course
-                </span>
+                <div className="relative inline-flex p-[1.5px] overflow-hidden rounded-full shadow-lg shadow-emerald-500/25">
+                  <span className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#18B879_0%,#4ade80_25%,#F4B942_50%,#34d399_75%,#18B879_100%)]" />
+                  <span className="relative inline-flex items-center gap-2.5 px-4.5 py-1.5 rounded-full bg-[#061A36] text-white text-sm sm:text-base font-black tracking-wide uppercase backdrop-blur-xl">
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#34D399] shadow-[0_0_10px_#34D399] animate-pulse shrink-0" />
+                    <span className="text-[#34D399] drop-shadow-sm">India's #1</span>
+                    <span className="text-white drop-shadow-sm">Job Guaranteed Program</span>
+                  </span>
+                </div>
               </div>
 
               {/* Main Headline with Typewriter Animation in Pure White */}
@@ -1276,9 +1280,9 @@ export const PlacementGuaranteed = () => {
               </h2>
             </Reveal>
 
-            {/* Stacked Soft Shuffle Video Cards (1 shown in front, 2nd video visibly peeking behind, swipeable) */}
+            {/* Stacked Soft Shuffle Video Cards (Pure clean video frame, zero text clutter) */}
             <div
-              className="relative mx-auto max-w-[340px] sm:max-w-[370px] min-h-[580px] sm:min-h-[610px] select-none"
+              className="relative mx-auto w-full max-w-[280px] sm:max-w-[310px] aspect-[9/16] select-none"
               onTouchStart={(e) => {
                 touchStartX.current = e.touches[0].clientX;
               }}
@@ -1301,7 +1305,7 @@ export const PlacementGuaranteed = () => {
                     onClick={() => {
                       if (!isFront) setActiveStory(idx as 0 | 1);
                     }}
-                    className={`absolute inset-0 rounded-3xl bg-white border border-slate-200/90 p-4 sm:p-5 flex flex-col justify-between transition-all duration-500 ease-out ${
+                    className={`absolute inset-0 rounded-3xl bg-white border border-slate-200/90 p-2 sm:p-2.5 transition-all duration-500 ease-out overflow-hidden ${
                       isFront
                         ? "z-20 scale-100 opacity-100 translate-x-0 translate-y-0 rotate-0 shadow-2xl pointer-events-auto"
                         : idx === 1
@@ -1309,47 +1313,16 @@ export const PlacementGuaranteed = () => {
                         : "z-10 scale-[0.93] opacity-75 -translate-x-8 sm:-translate-x-12 translate-y-2 sm:translate-y-3 -rotate-2 shadow-lg hover:opacity-95 hover:-translate-x-10 cursor-pointer pointer-events-auto border-2 border-slate-300/80"
                     }`}
                   >
-                    <div>
-                      {/* Top Meta */}
-                      <div className="flex items-center justify-between mb-3">
-                        <span className="px-2.5 py-0.5 rounded-md text-[11px] font-extrabold bg-emerald-50 text-emerald-800 border border-emerald-200">
-                          {story.tag}
-                        </span>
-                      </div>
-
-                      {/* 9:16 Vertical Video Container */}
-                      <div className="relative rounded-2xl overflow-hidden bg-black shadow-md border border-slate-200 aspect-[9/16] max-h-[380px] sm:max-h-[400px] mx-auto w-full">
-                        <video
-                          ref={videoRef}
-                          src={story.video}
-                          controls
-                          playsInline
-                          preload="metadata"
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-
-                      {/* Crisp On-Point Text */}
-                      <div className="mt-4 space-y-1.5 text-left">
-                        <h3 className="text-sm sm:text-base font-extrabold text-[#061A36] leading-snug">
-                          {story.title}
-                        </h3>
-                        <p className="text-xs text-slate-500 leading-relaxed">
-                          {story.desc}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Bottom Status */}
-                    <div className="mt-3.5 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold">
-                      <span className="flex items-center gap-1.5 text-emerald-700 font-bold text-[11px]">
-                        <CheckCircle2 size={14} className="text-emerald-600" /> {story.badge}
-                      </span>
-                      {!isFront && (
-                        <span className="text-xs text-[#1557D6] font-bold">
-                          Click to view →
-                        </span>
-                      )}
+                    {/* Pure Clean 9:16 Video Frame with Zero Text */}
+                    <div className="relative rounded-2xl overflow-hidden bg-black shadow-inner border border-slate-200 w-full h-full">
+                      <video
+                        ref={videoRef}
+                        src={story.video}
+                        controls
+                        playsInline
+                        preload="metadata"
+                        className="w-full h-full object-cover"
+                      />
                     </div>
                   </div>
                 );
