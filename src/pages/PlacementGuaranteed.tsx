@@ -689,17 +689,17 @@ export const PlacementGuaranteed = () => {
             <img
               src={heroImage}
               alt=""
-              className="w-full h-full object-cover object-[70%_25%] opacity-35 filter contrast-110 saturate-115 scale-105"
+              className="w-full h-full object-cover object-[75%_20%] sm:object-[70%_25%] opacity-55 sm:opacity-50 filter contrast-115 saturate-120 scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#061A36]/90 via-[#061A36]/75 to-[#061A36]/60" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#061A36] via-transparent to-[#061A36]/50" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#061A36]/80 via-[#061A36]/60 to-[#061A36]/40" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#061A36] via-transparent to-[#061A36]/35" />
           </div>
 
           <div className="absolute -top-32 -left-32 w-96 h-96 bg-blue-500/15 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none" />
 
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-16 grid lg:grid-cols-12 gap-8 lg:gap-10 items-center relative z-10">
-            <div className="lg:col-span-7 space-y-5 sm:space-y-6">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16 lg:py-20 grid lg:grid-cols-12 gap-12 lg:gap-12 items-center relative z-10">
+            <div className="lg:col-span-7 space-y-6 sm:space-y-7 pt-2 sm:pt-0 pb-6 sm:pb-0">
               {/* Eyebrow Badge with Moving Animated Glowing Stroke */}
               <div className="flex flex-wrap items-center gap-2.5">
                 <div className="relative inline-flex p-[2px] overflow-hidden rounded-full shadow-xl shadow-emerald-500/25">
@@ -713,7 +713,7 @@ export const PlacementGuaranteed = () => {
               </div>
 
               {/* Main Headline with Typewriter Animation in Pure White */}
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black leading-[1.08] tracking-tight min-h-[2.2em] text-white">
+              <h1 className="text-[38px] sm:text-6xl lg:text-7xl font-black leading-[1.05] sm:leading-[1.08] tracking-tight min-h-[2.2em] text-white">
                 <span className="inline-block text-white">
                   {typedLine1}
                   {typedLine2.length === 0 && (
@@ -740,14 +740,14 @@ export const PlacementGuaranteed = () => {
               </p>
 
               {/* Package Highlight */}
-              <div className="pt-1">
+              <div className="pt-2">
                 <div className="text-3xl sm:text-5xl font-black text-[#F4B942] tracking-tight">₹4.2–₹4.8 LPA</div>
                 <div className="text-xs sm:text-sm text-slate-300 mt-1 font-medium">Guaranteed Starting CTC with Written Pre-Placement Offer</div>
               </div>
             </div>
 
             {/* Clear Form in Replace of Hero Image */}
-            <div className="lg:col-span-5" id="hero-apply-form">
+            <div className="lg:col-span-5 mt-4 sm:mt-0" id="hero-apply-form">
               <div className="rounded-3xl bg-white text-[#061A36] p-6 sm:p-7 shadow-2xl border border-slate-100 relative">
                 {/* Form Header Inside Column */}
                 <div className="pb-3 border-b border-slate-100 mb-4">
