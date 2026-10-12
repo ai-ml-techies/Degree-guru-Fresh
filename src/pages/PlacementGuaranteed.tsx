@@ -639,8 +639,8 @@ export const PlacementGuaranteed = () => {
               {[
                 ["#eligibility", "Eligibility", "nav-eligibility"],
                 ["#how", "How It Works", "nav-how"],
-                ["#testimonials", "Candidate Stories", "nav-testimonials"],
                 ["#fees", "Fees", "nav-fees"],
+                ["#testimonials", "Candidate Stories", "nav-testimonials"],
               ].map(([href, label, id]) => (
                 <a
                   key={href}
@@ -668,15 +668,15 @@ export const PlacementGuaranteed = () => {
 
         {/* HERO SECTION WITH CLEAN TYPOGRAPHIC HIERARCHY, BLENDED BACKGROUND & CLEAR INLINE FORM */}
         <section className="bg-[#061A36] text-white overflow-hidden relative">
-          {/* BLENDED BACKGROUND IMAGE (LESS OPACITY) */}
+          {/* BLENDED BACKGROUND IMAGE */}
           <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
             <img
               src={heroImage}
               alt=""
-              className="w-full h-full object-cover object-[70%_25%] opacity-7 filter contrast-110 saturate-125 scale-105"
+              className="w-full h-full object-cover object-[70%_25%] opacity-20 filter contrast-105 saturate-110 scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#061A36] via-[#061A36]/95 to-[#061A36]/90" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#061A36] via-transparent to-[#061A36]/70" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#061A36] via-[#061A36]/85 to-[#061A36]/80" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#061A36] via-transparent to-[#061A36]/60" />
           </div>
 
           <div className="absolute -top-32 -left-32 w-96 h-96 bg-blue-500/15 rounded-full blur-3xl pointer-events-none" />
@@ -831,7 +831,7 @@ export const PlacementGuaranteed = () => {
                           className="mt-0.5 rounded text-[#18B879] focus:ring-[#18B879] shrink-0"
                         />
                         <span>
-                          I confirm I am below 28 and ready for the Bajaj Capital interview & 4-month branch internship.
+                          I'm ready to appear for the program entrance assessment test and interview.
                         </span>
                       </label>
                       {errors.serious && <p className="text-[11px] text-red-500 mt-0.5">{errors.serious}</p>}
@@ -854,7 +854,7 @@ export const PlacementGuaranteed = () => {
                         </>
                       ) : (
                         <>
-                          <span>CHECK ELIGIBILITY & PROCEED</span>
+                          <span>CHECK ELIGIBILITY</span>
                           <ArrowRight size={16} />
                         </>
                       )}
@@ -1160,6 +1160,107 @@ export const PlacementGuaranteed = () => {
           </div>
         </section>
 
+        {/* FEES (PAYMENT SECTION) */}
+        <section id="fees" className="pt-10 pb-16 sm:pt-12 sm:pb-20 bg-white border-t border-slate-200 scroll-mt-24 relative overflow-hidden">
+          <div className="absolute top-1/4 -right-28 w-96 h-96 bg-amber-100/30 rounded-full blur-3xl pointer-events-none" />
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
+            <Reveal className="text-center mb-8 sm:mb-10">
+              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight">WHAT WILL YOU PAY?</h2>
+            </Reveal>
+
+            {/* Hierarchical 2-Column Grid */}
+            <div className="grid lg:grid-cols-12 gap-6 items-stretch">
+
+              {/* Left Column: Milestones */}
+              <div className="lg:col-span-6 rounded-3xl border border-slate-200/80 bg-[#F7F9FC]/90 backdrop-blur-md p-6 sm:p-7 flex flex-col justify-between shadow-xs">
+                <div className="space-y-6">
+                  {/* Stage 1 */}
+                  <div className="flex gap-4 items-center">
+                    <div className="w-8 h-8 rounded-full bg-[#1557D6] text-white flex items-center justify-center text-xs font-bold shrink-0 shadow-xs">
+                      1
+                    </div>
+                    <div className="flex-1 flex items-baseline justify-between">
+                      <h4 className="text-sm font-extrabold text-[#061A36]">Registration Fee</h4>
+                      <span className="text-base font-extrabold text-[#061A36]">₹500</span>
+                    </div>
+                  </div>
+
+                  <div className="ml-4 border-l-2 border-dashed border-slate-300 h-4" />
+
+                  {/* Stage 2 */}
+                  <div className="flex gap-4 items-start">
+                    <div className="w-8 h-8 rounded-full bg-[#061A36] text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 shadow-xs">
+                      2
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-baseline justify-between">
+                        <h4 className="text-sm font-extrabold text-[#061A36]">Program Tuition Fee</h4>
+                        <span className="text-sm font-bold text-[#1557D6] bg-blue-50 px-2.5 py-0.5 rounded-lg border border-blue-100">
+                          ₹1.77 Lakh
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                        Payable <strong>ONLY AFTER</strong> you receive and accept your official written Pre-Placement Offer letter from Bajaj Capital.
+                      </p>
+                      <div className="mt-2 text-[11px] font-semibold text-slate-700 bg-white px-2.5 py-1 rounded-lg border border-slate-200">
+                        0% interest EMI available.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6 pt-4 border-t border-slate-200 text-xs text-emerald-900 bg-emerald-50/80 p-3.5 rounded-xl border border-emerald-200/80 leading-relaxed flex items-center gap-2">
+                  <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
+                  <span><strong>Zero-Risk Commitment:</strong> If you are not selected in the interview, you do not pay any program fee.</span>
+                </div>
+              </div>
+
+              {/* Right Column: Highlighted Glassmorphic Container (₹32,000) */}
+              <div className="lg:col-span-6 rounded-3xl border-2 border-[#F4B942] bg-gradient-to-br from-[#061A36] via-[#092244] to-[#061A36] text-white p-6 sm:p-7 flex flex-col justify-between shadow-2xl relative overflow-hidden backdrop-blur-xl">
+                <div className="absolute -right-12 -top-12 w-44 h-44 bg-[#F4B942]/15 rounded-full blur-2xl pointer-events-none animate-pulse" />
+
+                <div>
+                  <div className="pb-3 border-b border-white/10 mb-4">
+                    <span className="inline-flex items-center gap-1.5 text-[11px] font-bold tracking-widest text-[#F4B942] uppercase">
+                      <Sparkles size={13} className="text-[#F4B942]" />
+                      YOUR ACTUAL INVESTMENT
+                    </span>
+                  </div>
+
+                  {/* Math Breakdown Table */}
+                  <div className="p-4 sm:p-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md space-y-3 text-xs sm:text-sm text-slate-200">
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-300">Total Program Fee (incl. 18% GST):</span>
+                      <span className="font-bold text-white text-sm sm:text-base">₹1,77,000</span>
+                    </div>
+                    <div className="flex justify-between items-center text-emerald-300">
+                      <span>Internship Stipend (4 months × ₹15k):</span>
+                      <span className="font-bold text-sm sm:text-base">− ₹60,000</span>
+                    </div>
+                    <div className="flex justify-between items-center text-emerald-300">
+                      <span>Retention Bonus (after 12 months):</span>
+                      <span className="font-bold text-sm sm:text-base">− ₹85,000</span>
+                    </div>
+                    <div className="pt-4 mt-2 border-t border-white/20 flex items-baseline justify-between">
+                      <span className="text-sm sm:text-base font-extrabold text-white">Grand Total:</span>
+                      <div className="text-4xl sm:text-5xl font-black text-[#F4B942] tracking-tight drop-shadow-sm">
+                        ₹32,000
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-4 pt-3 border-t border-white/10 text-center">
+                  <span className="text-xs text-slate-300">
+                    + Full-time starting CTC at month 7: <strong className="text-[#18B879]">₹4.2 – ₹4.8 LPA</strong>
+                  </span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
         {/* VIDEO TESTIMONIALS (STUDENT STORIES) */}
         <section id="testimonials" className="pt-12 pb-16 sm:pt-16 sm:pb-22 bg-[#F7F9FC] border-t border-slate-200 scroll-mt-24 relative overflow-hidden">
           <div className="absolute top-1/3 -left-32 w-80 h-80 bg-blue-100/50 rounded-full blur-3xl pointer-events-none" />
@@ -1171,11 +1272,8 @@ export const PlacementGuaranteed = () => {
                 Candidate Stories
               </span>
               <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-[#061A36]">
-                HEAR FROM OUR CANDIDATES.
+                Their Journey. Their Words.
               </h2>
-              <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
-                Watch real candidates share how they cleared the Bajaj Capital interview and secured their written offer upfront.
-              </p>
             </Reveal>
 
             {/* Stacked Soft Shuffle Video Cards (1 shown in front, 2nd video visibly peeking behind, swipeable) */}
@@ -1216,9 +1314,6 @@ export const PlacementGuaranteed = () => {
                       <div className="flex items-center justify-between mb-3">
                         <span className="px-2.5 py-0.5 rounded-md text-[11px] font-extrabold bg-emerald-50 text-emerald-800 border border-emerald-200">
                           {story.tag}
-                        </span>
-                        <span className="text-[11px] font-bold text-slate-400">
-                          {isFront ? "Verified Story" : "Tap to Switch"}
                         </span>
                       </div>
 
@@ -1314,48 +1409,75 @@ export const PlacementGuaranteed = () => {
           </div>
         </section>
 
-        {/* PROOF + INSTITUTIONS */}
-        <section className="pt-10 pb-16 sm:pt-12 sm:pb-20 bg-white relative overflow-hidden">
-          <div className="absolute top-1/2 -right-40 w-96 h-96 bg-blue-100/40 rounded-full blur-3xl pointer-events-none" />
+        {/* WHAT YOU'LL LEARN */}
+        <section className="pt-8 pb-10 sm:pt-11 sm:pb-14 bg-white border-t border-slate-200 relative overflow-hidden">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
-            <Reveal className="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
-              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight">BUILT AROUND REAL INSTITUTIONS.</h2>
+            <Reveal className="text-center mb-3 sm:mb-4">
+              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight">What You'll Learn</h2>
             </Reveal>
 
-            <div className="grid lg:grid-cols-12 gap-8 items-start">
-              <div className="lg:col-span-7 grid gap-4">
-                {[
-                  [aimaLogo, "Academic Partner", "AIMA", "India's apex national management body established under Government & Industry leadership. Co-certifies the ACWM and delivers executive training."],
-                  [bajajCapitalLogo, "Hiring Partner", "Bajaj Capital", "Interviews you, issues the Pre-Placement Offer and runs your internship."],
-                  [icofpLogo, "Training Delivery", "ICOFP", "Delivers 190 hours of classroom training and NISM preparation."],
-                ].map(([logo, role, name, line], i) => (
-                  <Reveal key={name} delay={i * 100}>
-                    <div className="flex items-center gap-5 rounded-3xl border border-slate-200/80 bg-white/80 backdrop-blur-md p-5 hover:border-[#1557D6]/40 hover:shadow-lg transition-all duration-300">
-                      <div className="w-24 sm:w-32 h-14 shrink-0 bg-white rounded-2xl border border-slate-100 flex items-center justify-center p-2 shadow-2xs">
-                        <img src={logo} alt={name} className="max-h-full max-w-full object-contain" />
-                      </div>
-                      <div>
-                        <div className="text-[11px] font-bold tracking-wider text-[#1557D6] uppercase">{role}</div>
-                        <p className="text-sm text-slate-700 mt-0.5 leading-relaxed">{line}</p>
-                      </div>
-                    </div>
-                  </Reveal>
-                ))}
-              </div>
-
-              <Reveal delay={150} className="lg:col-span-5">
-                <button
-                  onClick={() => setZoomOpen(true)}
-                  className="group relative block w-full rounded-3xl overflow-hidden border border-slate-200/80 shadow-lg text-left backdrop-blur-md"
-                  aria-label="Enlarge certificate"
+            <div className="flex md:grid md:grid-cols-3 lg:grid-cols-4 gap-4 overflow-x-auto md:overflow-visible snap-x snap-mandatory -mx-4 px-4 md:mx-0 md:px-0 pb-2 [scrollbar-width:none]">
+              {MODULES.map(({ icon: Icon, t, d }) => (
+                <div
+                  key={t}
+                  className="snap-start shrink-0 w-[72%] sm:w-[48%] md:w-auto rounded-3xl bg-[#F7F9FC] border border-slate-200/90 p-5 sm:p-6 hover:-translate-y-1.5 hover:shadow-lg hover:border-[#1557D6]/30 transition-all duration-300 group shadow-xs"
                 >
-                  <img
-                    src={acwmCertificate}
-                    alt="ACWM certificate"
-                    className="w-full transition-transform duration-500 group-hover:scale-105"
-                  />
-                </button>
-                <p className="text-xs text-slate-500 mt-3 text-center">Advanced Certification in Wealth Management (ACWM)</p>
+                  <div className="w-11 h-11 rounded-2xl bg-blue-50 text-[#1557D6] flex items-center justify-center group-hover:scale-105 transition-transform">
+                    <Icon size={22} />
+                  </div>
+                  <h3 className="font-extrabold text-base mt-4 text-[#061A36]">{t}</h3>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-1.5 leading-relaxed">{d}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* GUARANTEE (WHAT DOES PLACEMENT GUARANTEED MEAN?) */}
+        <section className="py-16 sm:py-24 bg-[#061A36] text-white relative overflow-hidden">
+          <div className="absolute top-1/2 -left-32 w-96 h-96 bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none" />
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
+            <Reveal className="text-center max-w-2xl mx-auto mb-10">
+              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight">WHAT DOES PLACEMENT GUARANTEED MEAN?</h2>
+              <p className="text-slate-300 mt-3 text-sm sm:text-base">Exactly this — no more, no less.</p>
+            </Reveal>
+
+            <div className="grid md:grid-cols-2 gap-5 max-w-4xl mx-auto">
+              <Reveal>
+                <div className="h-full rounded-3xl bg-white/5 backdrop-blur-xl border border-[#18B879]/40 p-6 shadow-xl hover:border-[#18B879]/70 transition-all">
+                  <div className="text-xs font-bold tracking-widest text-[#18B879] mb-4">WHAT IS GUARANTEED</div>
+                  <ul className="space-y-3 text-sm text-slate-200">
+                    {[
+                      "A written Pre-Placement Offer from Bajaj Capital once you clear selection.",
+                      "A 4-month Bajaj Capital internship with ₹15,000 per month stipend.",
+                      "The Wealth Officer role (₹4.2 – ₹4.8 LPA) when you meet the criteria below.",
+                    ].map((t) => (
+                      <li key={t} className="flex gap-2.5">
+                        <Check size={16} className="text-[#18B879] shrink-0 mt-0.5" />
+                        <span>{t}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Reveal>
+              <Reveal delay={100}>
+                <div className="h-full rounded-3xl bg-white/5 backdrop-blur-xl border border-white/15 p-6 shadow-xl hover:border-white/30 transition-all">
+                  <div className="text-xs font-bold tracking-widest text-[#F4B942] mb-4">THE CONDITIONS</div>
+                  <ul className="space-y-3 text-sm text-slate-200">
+                    {[
+                      "Clear the Bajaj Capital interview",
+                      "85% attendance",
+                      "80% in evaluations",
+                      "NISM Series V-A certification",
+                      "Professional conduct and relocation readiness",
+                    ].map((t) => (
+                      <li key={t} className="flex gap-2.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#F4B942] mt-2 shrink-0" />
+                        <span>{t}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </Reveal>
             </div>
           </div>
@@ -1414,32 +1536,8 @@ export const PlacementGuaranteed = () => {
           </div>
         </section>
 
-        {/* WHAT YOU'LL LEARN */}
-        <section className="pt-8 pb-10 sm:pt-11 sm:pb-14 bg-[#F7F9FC] border-t border-slate-200 relative overflow-hidden">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
-            <Reveal className="text-center mb-3 sm:mb-4">
-              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight">What You'll Learn</h2>
-            </Reveal>
-
-            <div className="flex md:grid md:grid-cols-3 lg:grid-cols-4 gap-4 overflow-x-auto md:overflow-visible snap-x snap-mandatory -mx-4 px-4 md:mx-0 md:px-0 pb-2 [scrollbar-width:none]">
-              {MODULES.map(({ icon: Icon, t, d }) => (
-                <div
-                  key={t}
-                  className="snap-start shrink-0 w-[72%] sm:w-[48%] md:w-auto rounded-3xl bg-white border border-slate-200/90 p-5 sm:p-6 hover:-translate-y-1.5 hover:shadow-lg hover:border-[#1557D6]/30 transition-all duration-300 group shadow-xs"
-                >
-                  <div className="w-11 h-11 rounded-2xl bg-blue-50 text-[#1557D6] flex items-center justify-center group-hover:scale-105 transition-transform">
-                    <Icon size={22} />
-                  </div>
-                  <h3 className="font-extrabold text-base mt-4 text-[#061A36]">{t}</h3>
-                  <p className="text-xs sm:text-sm text-slate-600 mt-1.5 leading-relaxed">{d}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* WHERE CAN THIS CAREER GO? (HEADING ABOVE IMAGE) */}
-        <section className="pt-8 pb-12 sm:pt-11 sm:pb-16 bg-[#F7F9FC] border-t border-slate-200 relative overflow-hidden">
+        <section className="pt-8 pb-12 sm:pt-11 sm:pb-16 bg-white border-t border-slate-200 relative overflow-hidden">
           <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-emerald-100/40 rounded-full blur-3xl pointer-events-none" />
           <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
             <Reveal className="text-center lg:text-left mb-5 sm:mb-7">
@@ -1471,156 +1569,53 @@ export const PlacementGuaranteed = () => {
           </div>
         </section>
 
-        {/* FEES (PAYMENT SECTION) */}
-        <section id="fees" className="pt-10 pb-16 sm:pt-12 sm:pb-20 bg-white border-t border-slate-200 scroll-mt-24 relative overflow-hidden">
-          <div className="absolute top-1/4 -right-28 w-96 h-96 bg-amber-100/30 rounded-full blur-3xl pointer-events-none" />
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
-            <Reveal className="text-center mb-8 sm:mb-10">
-              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight">WHAT WILL YOU PAY?</h2>
-            </Reveal>
-
-            {/* Hierarchical 2-Column Grid */}
-            <div className="grid lg:grid-cols-12 gap-6 items-stretch">
-
-              {/* Left Column: Milestones */}
-              <div className="lg:col-span-6 rounded-3xl border border-slate-200/80 bg-[#F7F9FC]/90 backdrop-blur-md p-6 sm:p-7 flex flex-col justify-between shadow-xs">
-                <div className="space-y-6">
-                  {/* Stage 1 */}
-                  <div className="flex gap-4 items-center">
-                    <div className="w-8 h-8 rounded-full bg-[#1557D6] text-white flex items-center justify-center text-xs font-bold shrink-0 shadow-xs">
-                      1
-                    </div>
-                    <div className="flex-1 flex items-baseline justify-between">
-                      <h4 className="text-sm font-extrabold text-[#061A36]">Registration Fee</h4>
-                      <span className="text-base font-extrabold text-[#061A36]">₹500</span>
-                    </div>
-                  </div>
-
-                  <div className="ml-4 border-l-2 border-dashed border-slate-300 h-4" />
-
-                  {/* Stage 2 */}
-                  <div className="flex gap-4 items-start">
-                    <div className="w-8 h-8 rounded-full bg-[#061A36] text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 shadow-xs">
-                      2
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-baseline justify-between">
-                        <h4 className="text-sm font-extrabold text-[#061A36]">Program Tuition Fee</h4>
-                        <span className="text-sm font-bold text-[#1557D6] bg-blue-50 px-2.5 py-0.5 rounded-lg border border-blue-100">
-                          ₹1.77 Lakh
-                        </span>
-                      </div>
-                      <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                        Payable <strong>ONLY AFTER</strong> you receive and accept your official written Pre-Placement Offer letter from Bajaj Capital.
-                      </p>
-                      <div className="mt-2 text-[11px] font-semibold text-slate-700 bg-white px-2.5 py-1 rounded-lg border border-slate-200">
-                        0% interest EMI available.
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-6 pt-4 border-t border-slate-200 text-xs text-emerald-900 bg-emerald-50/80 p-3.5 rounded-xl border border-emerald-200/80 leading-relaxed flex items-center gap-2">
-                  <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
-                  <span><strong>Zero-Risk Commitment:</strong> If you are not selected in the interview, you do not pay any program fee.</span>
-                </div>
-              </div>
-
-              {/* Right Column: Highlighted Glassmorphic Container (₹32,000) */}
-              <div className="lg:col-span-6 rounded-3xl border-2 border-[#F4B942] bg-gradient-to-br from-[#061A36] via-[#092244] to-[#061A36] text-white p-6 sm:p-7 flex flex-col justify-between shadow-2xl relative overflow-hidden backdrop-blur-xl">
-                <div className="absolute -right-12 -top-12 w-44 h-44 bg-[#F4B942]/15 rounded-full blur-2xl pointer-events-none animate-pulse" />
-
-                <div>
-                  <div className="pb-3 border-b border-white/10 mb-4">
-                    <span className="inline-flex items-center gap-1.5 text-[11px] font-bold tracking-widest text-[#F4B942] uppercase">
-                      <Sparkles size={13} className="text-[#F4B942]" />
-                      WHAT IT WILL COST YOU ACTUALLY
-                    </span>
-                  </div>
-
-                  {/* Math Breakdown Table */}
-                  <div className="p-4 sm:p-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md space-y-3 text-xs sm:text-sm text-slate-200">
-                    <div className="flex justify-between items-center">
-                      <span className="text-slate-300">Total Program Fee (incl. 18% GST):</span>
-                      <span className="font-bold text-white text-sm sm:text-base">₹1,77,000</span>
-                    </div>
-                    <div className="flex justify-between items-center text-emerald-300">
-                      <span>Internship Stipend (4 months × ₹15k):</span>
-                      <span className="font-bold text-sm sm:text-base">− ₹60,000</span>
-                    </div>
-                    <div className="flex justify-between items-center text-emerald-300">
-                      <span>Retention Bonus (after 12 months):</span>
-                      <span className="font-bold text-sm sm:text-base">− ₹85,000</span>
-                    </div>
-                    <div className="pt-4 mt-2 border-t border-white/20 flex items-baseline justify-between">
-                      <span className="text-sm sm:text-base font-extrabold text-white">Grand Total:</span>
-                      <div className="text-4xl sm:text-5xl font-black text-[#F4B942] tracking-tight drop-shadow-sm">
-                        ₹32,000
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-4 pt-3 border-t border-white/10 text-center">
-                  <span className="text-xs text-slate-300">
-                    + Full-time starting CTC at month 7: <strong className="text-[#18B879]">₹4.2 – ₹4.8 LPA</strong>
-                  </span>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </section>
-
-        {/* GUARANTEE */}
-        <section className="py-16 sm:py-24 bg-[#061A36] text-white relative overflow-hidden">
-          <div className="absolute top-1/2 -left-32 w-96 h-96 bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none" />
+        {/* PROOF + INSTITUTIONS (BUILT AROUND REAL INSTITUTIONS) */}
+        <section className="pt-10 pb-16 sm:pt-12 sm:pb-20 bg-[#F7F9FC] border-t border-slate-200 relative overflow-hidden">
+          <div className="absolute top-1/2 -right-40 w-96 h-96 bg-blue-100/40 rounded-full blur-3xl pointer-events-none" />
           <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
-            <Reveal className="text-center max-w-2xl mx-auto mb-10">
-              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight">WHAT DOES PLACEMENT GUARANTEED MEAN?</h2>
-              <p className="text-slate-300 mt-3 text-sm sm:text-base">Exactly this — no more, no less.</p>
+            <Reveal className="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
+              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight">BUILT AROUND REAL INSTITUTIONS.</h2>
             </Reveal>
 
-            <div className="grid md:grid-cols-2 gap-5 max-w-4xl mx-auto">
-              <Reveal>
-                <div className="h-full rounded-3xl bg-white/5 backdrop-blur-xl border border-[#18B879]/40 p-6 shadow-xl hover:border-[#18B879]/70 transition-all">
-                  <div className="text-xs font-bold tracking-widest text-[#18B879] mb-4">WHAT IS GUARANTEED</div>
-                  <ul className="space-y-3 text-sm text-slate-200">
-                    {[
-                      "A written Pre-Placement Offer from Bajaj Capital once you clear selection.",
-                      "A 4-month Bajaj Capital internship with ₹15,000 per month stipend.",
-                      "The Wealth Officer role (₹4.2 – ₹4.8 LPA) when you meet the criteria below.",
-                    ].map((t) => (
-                      <li key={t} className="flex gap-2.5">
-                        <Check size={16} className="text-[#18B879] shrink-0 mt-0.5" />
-                        <span>{t}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </Reveal>
-              <Reveal delay={100}>
-                <div className="h-full rounded-3xl bg-white/5 backdrop-blur-xl border border-white/15 p-6 shadow-xl hover:border-white/30 transition-all">
-                  <div className="text-xs font-bold tracking-widest text-[#F4B942] mb-4">THE CONDITIONS</div>
-                  <ul className="space-y-3 text-sm text-slate-200">
-                    {[
-                      "Clear the Bajaj Capital interview",
-                      "85% attendance",
-                      "80% in evaluations",
-                      "NISM Series V-A certification",
-                      "Professional conduct and relocation readiness",
-                    ].map((t) => (
-                      <li key={t} className="flex gap-2.5">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#F4B942] mt-2 shrink-0" />
-                        <span>{t}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+            <div className="grid lg:grid-cols-12 gap-8 items-start">
+              <div className="lg:col-span-7 grid gap-4">
+                {[
+                  [aimaLogo, "Academic Partner", "AIMA", "India's apex national management body established under Government & Industry leadership. Co-certifies the ACWM and delivers executive training."],
+                  [bajajCapitalLogo, "Hiring Partner", "Bajaj Capital", "Interviews you, issues the Pre-Placement Offer and runs your internship."],
+                  [icofpLogo, "Training Delivery", "ICOFP", "Delivers 190 hours of classroom training and NISM preparation."],
+                ].map(([logo, role, name, line], i) => (
+                  <Reveal key={name} delay={i * 100}>
+                    <div className="flex items-center gap-5 rounded-3xl border border-slate-200/80 bg-white/80 backdrop-blur-md p-5 hover:border-[#1557D6]/40 hover:shadow-lg transition-all duration-300">
+                      <div className="w-24 sm:w-32 h-14 shrink-0 bg-white rounded-2xl border border-slate-100 flex items-center justify-center p-2 shadow-2xs">
+                        <img src={logo} alt={name} className="max-h-full max-w-full object-contain" />
+                      </div>
+                      <div>
+                        <div className="text-[11px] font-bold tracking-wider text-[#1557D6] uppercase">{role}</div>
+                        <p className="text-sm text-slate-700 mt-0.5 leading-relaxed">{line}</p>
+                      </div>
+                    </div>
+                  </Reveal>
+                ))}
+              </div>
+
+              <Reveal delay={150} className="lg:col-span-5">
+                <button
+                  onClick={() => setZoomOpen(true)}
+                  className="group relative block w-full rounded-3xl overflow-hidden border border-slate-200/80 shadow-lg text-left backdrop-blur-md cursor-pointer"
+                  aria-label="Enlarge certificate"
+                >
+                  <img
+                    src={acwmCertificate}
+                    alt="ACWM certificate"
+                    className="w-full transition-transform duration-500 group-hover:scale-105"
+                  />
+                </button>
+                <p className="text-xs text-slate-500 mt-3 text-center">Advanced Certification in Wealth Management (ACWM)</p>
               </Reveal>
             </div>
           </div>
         </section>
+
 
         {/* FAQ */}
         <section id="faq" className="py-16 sm:py-24 bg-white scroll-mt-20">
