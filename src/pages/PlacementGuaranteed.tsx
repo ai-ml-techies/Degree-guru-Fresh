@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import {
   Check,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   CheckCircle2,
   Download,
   X,
@@ -365,6 +367,7 @@ export const PlacementGuaranteed = () => {
   const [activeStory, setActiveStory] = useState<0 | 1>(0);
   const videoRef0 = useRef<HTMLVideoElement | null>(null);
   const videoRef1 = useRef<HTMLVideoElement | null>(null);
+  const touchStartX = useRef<number | null>(null);
 
   useEffect(() => {
     if (activeStory === 0 && videoRef1.current) {
@@ -683,8 +686,8 @@ export const PlacementGuaranteed = () => {
             <div className="lg:col-span-7 space-y-5 sm:space-y-6">
               {/* Eyebrow Badge */}
               <div className="flex flex-wrap items-center gap-2.5">
-                <span className="inline-flex items-center gap-2 text-xs sm:text-sm font-extrabold tracking-wide uppercase text-[#18B879] bg-[#18B879]/10 border border-[#18B879]/30 px-3.5 py-1.5 rounded-full shadow-xs">
-                  <span className="w-2 h-2 rounded-full bg-[#18B879] animate-pulse" />
+                <span className="inline-flex items-center gap-2 text-xs sm:text-sm font-black tracking-wide uppercase text-emerald-300 bg-emerald-950/70 border border-emerald-400/60 px-4 py-1.5 rounded-full shadow-sm">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                   India's #1 Job Guarantee Non-Tech Course
                 </span>
               </div>
@@ -720,17 +723,6 @@ export const PlacementGuaranteed = () => {
               <div className="pt-1">
                 <div className="text-3xl sm:text-5xl font-black text-[#F4B942] tracking-tight">₹4.2–₹4.8 LPA</div>
                 <div className="text-xs sm:text-sm text-slate-300 mt-1 font-medium">Guaranteed Starting CTC with Written Pre-Placement Offer</div>
-              </div>
-
-              {/* CTA Button */}
-              <div className="pt-1">
-                <button
-                  onClick={scrollToHeroForm}
-                  className="group w-full sm:w-auto px-8 py-3.5 rounded-xl bg-[#18B879] hover:bg-[#15a36b] text-[#061A36] font-extrabold text-sm tracking-wide transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 active:scale-95 cursor-pointer"
-                >
-                  CHECK MY ELIGIBILITY
-                  <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
-                </button>
               </div>
             </div>
 
@@ -1186,37 +1178,21 @@ export const PlacementGuaranteed = () => {
               </p>
             </Reveal>
 
-            {/* Story Switcher Tabs & Shuffle Button */}
-            <div className="flex items-center justify-center gap-2 mb-8">
-              {CANDIDATE_STORIES.map((story, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => setActiveStory(idx as 0 | 1)}
-                  className={`px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
-                    activeStory === idx
-                      ? "bg-[#061A36] text-white shadow-md scale-102"
-                      : "bg-white text-slate-600 border border-slate-200 hover:border-slate-300 hover:bg-slate-50"
-                  }`}
-                >
-                  <span className={`w-2 h-2 rounded-full ${activeStory === idx ? "bg-[#18B879]" : "bg-slate-300"}`} />
-                  <span>Story {idx + 1}</span>
-                  <span className="text-[10px] font-medium opacity-70 hidden sm:inline">• {story.tag}</span>
-                </button>
-              ))}
-              <button
-                type="button"
-                onClick={() => setActiveStory((prev) => (prev === 0 ? 1 : 0))}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-extrabold text-[#1557D6] bg-blue-50 border border-blue-200 hover:bg-blue-100/70 transition-all cursor-pointer ml-1 active:scale-95 shadow-2xs"
-                title="Shuffle Story"
-              >
-                <RefreshCw size={12} className="text-[#1557D6]" />
-                <span>Shuffle</span>
-              </button>
-            </div>
-
-            {/* Stacked Soft Shuffle Video Cards (1 shown in front, hidden stacked behind) */}
-            <div className="relative mx-auto max-w-[340px] sm:max-w-[370px] min-h-[580px] sm:min-h-[610px]">
+            {/* Stacked Soft Shuffle Video Cards (1 shown in front, 2nd video visibly peeking behind, swipeable) */}
+            <div
+              className="relative mx-auto max-w-[340px] sm:max-w-[370px] min-h-[580px] sm:min-h-[610px] select-none"
+              onTouchStart={(e) => {
+                touchStartX.current = e.touches[0].clientX;
+              }}
+              onTouchEnd={(e) => {
+                if (touchStartX.current !== null) {
+                  const diff = e.changedTouches[0].clientX - touchStartX.current;
+                  if (diff < -40) setActiveStory(1);
+                  else if (diff > 40) setActiveStory(0);
+                  touchStartX.current = null;
+                }
+              }}
+            >
               {CANDIDATE_STORIES.map((story, idx) => {
                 const isFront = activeStory === idx;
                 const videoRef = idx === 0 ? videoRef0 : videoRef1;
@@ -1230,7 +1206,9 @@ export const PlacementGuaranteed = () => {
                     className={`absolute inset-0 rounded-3xl bg-white border border-slate-200/90 p-4 sm:p-5 flex flex-col justify-between transition-all duration-500 ease-out ${
                       isFront
                         ? "z-20 scale-100 opacity-100 translate-x-0 translate-y-0 rotate-0 shadow-2xl pointer-events-auto"
-                        : "z-10 scale-95 opacity-55 translate-x-4 sm:translate-x-6 translate-y-3 sm:translate-y-4 rotate-2 shadow-lg hover:opacity-85 cursor-pointer pointer-events-auto"
+                        : idx === 1
+                        ? "z-10 scale-[0.93] opacity-75 translate-x-8 sm:translate-x-12 translate-y-2 sm:translate-y-3 rotate-2 shadow-lg hover:opacity-95 hover:translate-x-10 cursor-pointer pointer-events-auto border-2 border-slate-300/80"
+                        : "z-10 scale-[0.93] opacity-75 -translate-x-8 sm:-translate-x-12 translate-y-2 sm:translate-y-3 -rotate-2 shadow-lg hover:opacity-95 hover:-translate-x-10 cursor-pointer pointer-events-auto border-2 border-slate-300/80"
                     }`}
                   >
                     <div>
@@ -1240,7 +1218,7 @@ export const PlacementGuaranteed = () => {
                           {story.tag}
                         </span>
                         <span className="text-[11px] font-bold text-slate-400">
-                          {isFront ? "Story " + (idx + 1) + " of 2" : "Tap to Switch"}
+                          {isFront ? "Verified Story" : "Tap to Switch"}
                         </span>
                       </div>
 
@@ -1281,6 +1259,46 @@ export const PlacementGuaranteed = () => {
                   </div>
                 );
               })}
+            </div>
+
+            {/* Subtle Controls */}
+            <div className="flex items-center justify-center gap-3 mt-6">
+              <button
+                type="button"
+                onClick={() => setActiveStory(0)}
+                disabled={activeStory === 0}
+                aria-label="Previous video"
+                className="w-9 h-9 rounded-full flex items-center justify-center bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-all shadow-xs active:scale-95"
+              >
+                <ChevronLeft size={16} />
+              </button>
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => setActiveStory(0)}
+                  aria-label="Show video 1"
+                  className={`h-2 rounded-full transition-all cursor-pointer ${
+                    activeStory === 0 ? "bg-[#061A36] w-6" : "bg-slate-300 w-2 hover:bg-slate-400"
+                  }`}
+                />
+                <button
+                  type="button"
+                  onClick={() => setActiveStory(1)}
+                  aria-label="Show video 2"
+                  className={`h-2 rounded-full transition-all cursor-pointer ${
+                    activeStory === 1 ? "bg-[#061A36] w-6" : "bg-slate-300 w-2 hover:bg-slate-400"
+                  }`}
+                />
+              </div>
+              <button
+                type="button"
+                onClick={() => setActiveStory(1)}
+                disabled={activeStory === 1}
+                aria-label="Next video"
+                className="w-9 h-9 rounded-full flex items-center justify-center bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-all shadow-xs active:scale-95"
+              >
+                <ChevronRight size={16} />
+              </button>
             </div>
 
             {/* Bottom Callout */}
@@ -1516,7 +1534,7 @@ export const PlacementGuaranteed = () => {
                   <div className="pb-3 border-b border-white/10 mb-4">
                     <span className="inline-flex items-center gap-1.5 text-[11px] font-bold tracking-widest text-[#F4B942] uppercase">
                       <Sparkles size={13} className="text-[#F4B942]" />
-                      WHAT YOU'LL ACTUALLY PAY
+                      WHAT IT WILL COST YOU ACTUALLY
                     </span>
                   </div>
 
