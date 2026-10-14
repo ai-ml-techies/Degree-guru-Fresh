@@ -384,53 +384,7 @@ export const PlacementGuaranteed = () => {
     return () => clearInterval(i);
   }, [step, timer]);
 
-  /* Typewriter effect for Hero headline (loops smoothly repeatedly) */
-  const [typedLine1, setTypedLine1] = useState("");
-  const [typedLine2, setTypedLine2] = useState("");
 
-  useEffect(() => {
-    const line1 = "JOB OFFER FIRST.";
-    const line2 = "PAY LATER.";
-    let i = 0;
-    let j = 0;
-    let isDeleting = false;
-    let timer: NodeJS.Timeout;
-
-    const tick = () => {
-      if (!isDeleting) {
-        if (i < line1.length) {
-          i++;
-          setTypedLine1(line1.slice(0, i));
-          timer = setTimeout(tick, 90);
-        } else if (j < line2.length) {
-          j++;
-          setTypedLine2(line2.slice(0, j));
-          timer = setTimeout(tick, 90);
-        } else {
-          timer = setTimeout(() => {
-            isDeleting = true;
-            tick();
-          }, 2000);
-        }
-      } else {
-        if (j > 0) {
-          j--;
-          setTypedLine2(line2.slice(0, j));
-          timer = setTimeout(tick, 40);
-        } else if (i > 0) {
-          i--;
-          setTypedLine1(line1.slice(0, i));
-          timer = setTimeout(tick, 40);
-        } else {
-          isDeleting = false;
-          timer = setTimeout(tick, 500);
-        }
-      }
-    };
-
-    timer = setTimeout(tick, 300);
-    return () => clearTimeout(timer);
-  }, []);
 
   /* Timeline scroll progress */
   const tlRef = useRef<HTMLDivElement>(null);
@@ -716,43 +670,33 @@ export const PlacementGuaranteed = () => {
                   <span className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#18B879_0%,#4ade80_25%,#F4B942_50%,#34d399_75%,#18B879_100%)]" />
                   <span className="relative inline-flex items-center gap-2 sm:gap-2.5 px-3.5 py-1.5 sm:px-5 sm:py-2 rounded-full bg-[#061A36] text-white text-[10.5px] min-[380px]:text-[11.5px] sm:text-xs md:text-sm font-black tracking-wider uppercase backdrop-blur-xl whitespace-nowrap">
                     <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-[#34D399] shadow-[0_0_8px_#34D399] animate-pulse shrink-0" />
-                    <span className="text-[#34D399] drop-shadow-sm whitespace-nowrap">India's #1</span>
-                    <span className="text-white drop-shadow-sm whitespace-nowrap">Job Guaranteed Program</span>
+                    <span className="text-[#34D399] drop-shadow-sm whitespace-nowrap">100%</span>
+                    <span className="text-white drop-shadow-sm whitespace-nowrap">JOB GUARANTEED COURSE</span>
                   </span>
                 </div>
               </div>
 
-              {/* Main Headline with Typewriter Animation in Pure White */}
-              <h1 className="text-[26px] min-[390px]:text-[29px] sm:text-5xl lg:text-6xl font-black leading-[1.08] tracking-tight min-h-[2.3em] text-white">
-                <span className="inline-block text-white">
-                  {typedLine1}
-                  {typedLine2.length === 0 && (
-                    <span className="inline-block w-1.5 h-[0.82em] bg-white ml-1.5 align-middle animate-pulse" />
-                  )}
-                </span>
+              {/* Main Headline in Pure White */}
+              <h1 className="text-3xl min-[390px]:text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.08] tracking-tight text-white">
+                JOB OFFER FIRST.
                 <br />
-                <span className="inline-block text-white">
-                  {typedLine2}
-                  {typedLine2.length > 0 && (
-                    <span className="inline-block w-1.5 h-[0.82em] bg-white ml-1.5 align-middle animate-pulse" />
-                  )}
-                </span>
+                PAY LATER.
               </h1>
 
-              {/* Program Name */}
-              <div className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-[#18B879] tracking-tight">
+              {/* Program Name with Visible Radiant Gradient */}
+              <div className="text-xl sm:text-2xl lg:text-3xl font-black bg-gradient-to-r from-[#34D399] via-[#10B981] to-[#F4B942] bg-clip-text text-transparent tracking-tight">
                 Advanced Certification in Wealth Management (ACWM)
               </div>
 
               {/* Clear Subtext */}
               <p className="text-sm sm:text-base text-slate-300 max-w-lg leading-relaxed">
-                A structured pathway to a Wealth Officer career opportunity with Bajaj Capital.
+                Start your finance career as a Wealth Officer with Bajaj Capital. No tech background or prior work experience required.
               </p>
 
               {/* Package Highlight */}
               <div className="pt-2">
                 <div className="text-3xl sm:text-5xl font-black text-[#F4B942] tracking-tight">₹4.2–₹4.8 LPA</div>
-                <div className="text-xs sm:text-sm text-slate-300 mt-1 font-medium">Guaranteed Starting CTC with Written Pre-Placement Offer</div>
+                <div className="text-xs sm:text-sm text-slate-300 mt-1 font-bold uppercase tracking-wider">STARTING PACKAGE</div>
               </div>
             </div>
 
@@ -875,7 +819,7 @@ export const PlacementGuaranteed = () => {
                     <button
                       type="submit"
                       disabled={busy}
-                      className="w-full py-3.5 px-4 rounded-xl bg-[#18B879] hover:bg-[#15a36b] text-[#061A36] font-extrabold text-sm tracking-wide transition-all shadow-md active:scale-98 flex items-center justify-center gap-2 mt-1 cursor-pointer disabled:opacity-60"
+                      className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-[#18B879] via-[#34D399] to-[#F4B942] hover:brightness-105 text-[#061A36] font-black text-sm tracking-wider transition-all shadow-lg shadow-emerald-500/25 active:scale-98 flex items-center justify-center gap-2 mt-1 cursor-pointer disabled:opacity-60"
                     >
                       {busy ? (
                         <>
@@ -921,7 +865,7 @@ export const PlacementGuaranteed = () => {
                     <button
                       type="submit"
                       disabled={busy}
-                      className="w-full py-3 px-4 rounded-xl bg-[#18B879] hover:bg-[#15a36b] text-[#061A36] font-extrabold text-sm tracking-wide transition-all shadow-md active:scale-98 flex items-center justify-center gap-2"
+                      className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#18B879] via-[#34D399] to-[#F4B942] hover:brightness-105 text-[#061A36] font-black text-sm tracking-wider transition-all shadow-lg shadow-emerald-500/25 active:scale-98 flex items-center justify-center gap-2"
                     >
                       {busy ? <Loader2 size={16} className="animate-spin" /> : "VERIFY & DOWNLOAD GUIDE"}
                     </button>
@@ -1612,7 +1556,7 @@ export const PlacementGuaranteed = () => {
               <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight">READY TO TAKE THE NEXT STEP?</h2>
               <button
                 onClick={openForm}
-                className="group mt-8 px-9 py-4 rounded-xl bg-[#18B879] hover:bg-[#15a36b] text-[#061A36] font-extrabold text-sm tracking-wide transition-all inline-flex items-center gap-2"
+                className="group mt-8 px-9 py-4 rounded-xl bg-gradient-to-r from-[#18B879] via-[#34D399] to-[#F4B942] hover:brightness-105 text-[#061A36] font-black text-sm tracking-wider transition-all shadow-xl shadow-emerald-500/25 inline-flex items-center gap-2 active:scale-98 cursor-pointer"
               >
                 CHECK MY ELIGIBILITY
                 <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
@@ -1873,7 +1817,7 @@ export const PlacementGuaranteed = () => {
                 <button
                   type="submit"
                   disabled={busy}
-                  className="w-full py-4 rounded-xl bg-[#18B879] hover:bg-[#15a36b] disabled:opacity-70 text-[#061A36] font-extrabold text-sm tracking-wide flex items-center justify-center gap-2 transition-colors"
+                  className="w-full py-4 rounded-xl bg-gradient-to-r from-[#18B879] via-[#34D399] to-[#F4B942] hover:brightness-105 disabled:opacity-70 text-[#061A36] font-black text-sm tracking-wider flex items-center justify-center gap-2 transition-all shadow-lg shadow-emerald-500/25"
                 >
                   {busy ? <><RefreshCw size={16} className="animate-spin" /> VERIFYING…</> : "VERIFY OTP"}
                 </button>
