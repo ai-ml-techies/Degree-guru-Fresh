@@ -617,8 +617,8 @@ export const PlacementGuaranteed = () => {
             </div>
             <nav className="hidden md:flex items-center gap-1.5" aria-label="Page sections">
               {[
-                ["#eligibility", "Eligibility", "nav-eligibility"],
                 ["#how", "How It Works", "nav-how"],
+                ["#eligibility", "Eligibility", "nav-eligibility"],
                 ["#fees", "Fees", "nav-fees"],
                 ["#testimonials", "Candidate Stories", "nav-testimonials"],
               ].map(([href, label, id]) => (
@@ -930,11 +930,11 @@ export const PlacementGuaranteed = () => {
           </div>
         </section>
 
-        {/* PLACEMENT ROADMAP (COMES IMMEDIATELY AFTER DIFFERENCE) */}
+        {/* HOW IT WORKS (ROADMAP) */}
         <section id="how" className="py-16 sm:py-24 bg-[#F7F9FC]">
           <div className="max-w-3xl mx-auto px-4 sm:px-6">
             <Reveal className="text-center mb-12">
-              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight">PLACEMENT ROADMAP</h2>
+              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight">HOW IT WORKS?</h2>
               <p className="text-slate-600 mt-3 text-sm sm:text-base">Selection to payroll.</p>
             </Reveal>
 
@@ -1596,18 +1596,18 @@ export const PlacementGuaranteed = () => {
               <span className="text-[10px] font-bold tracking-tight">Apply</span>
             </button>
             <a
+              href="#how"
+              className="flex flex-col items-center gap-0.5 text-slate-300 hover:text-white active:scale-95 transition-transform px-1"
+            >
+              <Route size={17} />
+              <span className="text-[10px] font-semibold tracking-tight">How It Works</span>
+            </a>
+            <a
               href="#eligibility"
               className="flex flex-col items-center gap-0.5 text-slate-300 hover:text-white active:scale-95 transition-transform px-1"
             >
               <CheckCircle2 size={17} />
               <span className="text-[10px] font-semibold tracking-tight">Eligibility</span>
-            </a>
-            <a
-              href="#how"
-              className="flex flex-col items-center gap-0.5 text-slate-300 hover:text-white active:scale-95 transition-transform px-1"
-            >
-              <Route size={17} />
-              <span className="text-[10px] font-semibold tracking-tight">Roadmap</span>
             </a>
             <a
               href="#fees"
