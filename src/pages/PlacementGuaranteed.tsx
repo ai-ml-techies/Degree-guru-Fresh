@@ -632,15 +632,20 @@ export const PlacementGuaranteed = () => {
   return (
     <>
       <Helmet>
-        <title>Job Guaranteed Course in Finance | Wealth Officer at Bajaj Capital (₹4.2 LPA)</title>
+        <title>100% Job Guaranteed Course with Bajaj Capital</title>
         <meta
           name="description"
-          content="India's #1 Job Guaranteed Finance Course with Bajaj Capital as Wealth Officer. Written Pre-Placement Offer (PPO) before paying fees. Starting package ₹4.2–₹4.8 LPA."
+          content="100% job guarantee programme with Bajaj Capital. Starting package ₹4.2–₹4.8 LPA, online training and paid internship. Freshers can apply."
         />
-        <meta property="og:title" content="Job Guaranteed Course in Finance | Wealth Officer at Bajaj Capital" />
+        <meta property="og:title" content="100% Job Guaranteed Course with Bajaj Capital" />
         <meta
           property="og:description"
-          content="India's #1 Job Guaranteed Finance Course with Bajaj Capital as Wealth Officer. Written Pre-Placement Offer (PPO) before paying fees. Starting package ₹4.2–₹4.8 LPA."
+          content="100% job guarantee programme with Bajaj Capital. Starting package ₹4.2–₹4.8 LPA, online training and paid internship. Freshers can apply."
+        />
+        <meta name="twitter:title" content="100% Job Guaranteed Course with Bajaj Capital" />
+        <meta
+          name="twitter:description"
+          content="100% job guarantee programme with Bajaj Capital. Starting package ₹4.2–₹4.8 LPA, online training and paid internship. Freshers can apply."
         />
         <link rel="canonical" href="https://degreeguru.in/placement-guaranteed" />
       </Helmet>
