@@ -389,8 +389,8 @@ export const PlacementGuaranteed = () => {
   const [typedLine2, setTypedLine2] = useState("");
 
   useEffect(() => {
-    const line1 = "JOB FIRST.";
-    const line2 = "TRAIN NEXT.";
+    const line1 = "JOB OFFER FIRST.";
+    const line2 = "PAY LATER.";
     let i = 0;
     let j = 0;
     let isDeleting = false;
@@ -632,10 +632,15 @@ export const PlacementGuaranteed = () => {
   return (
     <>
       <Helmet>
-        <title>Wealth Officer Career Program with Bajaj Capital | Job First, Train Next</title>
+        <title>Job Guaranteed Course in Finance | Wealth Officer at Bajaj Capital (₹4.2 LPA)</title>
         <meta
           name="description"
-          content="A structured pathway to a Wealth Officer career opportunity with Bajaj Capital. Get a written Pre-Placement Offer before you pay the program fee. Academic partner AIMA, training by ICOFP."
+          content="India's #1 Job Guaranteed Finance Course with Bajaj Capital as Wealth Officer. Written Pre-Placement Offer (PPO) before paying fees. Starting package ₹4.2–₹4.8 LPA."
+        />
+        <meta property="og:title" content="Job Guaranteed Course in Finance | Wealth Officer at Bajaj Capital" />
+        <meta
+          property="og:description"
+          content="India's #1 Job Guaranteed Finance Course with Bajaj Capital as Wealth Officer. Written Pre-Placement Offer (PPO) before paying fees. Starting package ₹4.2–₹4.8 LPA."
         />
         <link rel="canonical" href="https://degreeguru.in/placement-guaranteed" />
       </Helmet>
@@ -689,31 +694,31 @@ export const PlacementGuaranteed = () => {
             <img
               src={heroImage}
               alt=""
-              className="w-full h-full object-cover object-[75%_20%] sm:object-[70%_25%] opacity-55 sm:opacity-50 filter contrast-115 saturate-120 scale-105"
+              className="w-full h-full object-cover object-[75%_20%] sm:object-[70%_25%] opacity-28 sm:opacity-30 filter contrast-110 saturate-110 scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#061A36]/80 via-[#061A36]/60 to-[#061A36]/40" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#061A36] via-transparent to-[#061A36]/35" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#061A36]/90 via-[#061A36]/80 to-[#061A36]/65" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#061A36] via-[#061A36]/40 to-[#061A36]/60" />
           </div>
 
           <div className="absolute -top-32 -left-32 w-96 h-96 bg-blue-500/15 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none" />
 
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16 lg:py-20 grid lg:grid-cols-12 gap-12 lg:gap-12 items-center relative z-10">
-            <div className="lg:col-span-7 space-y-6 sm:space-y-7 pt-2 sm:pt-0 pb-6 sm:pb-0">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-5 pb-12 sm:py-16 lg:py-20 grid lg:grid-cols-12 gap-10 lg:gap-12 items-center relative z-10">
+            <div className="lg:col-span-7 space-y-4 sm:space-y-6 pt-0 pb-4 sm:pb-0">
               {/* Eyebrow Badge with Moving Animated Glowing Stroke */}
-              <div className="flex flex-wrap items-center gap-2.5">
-                <div className="relative inline-flex p-[2px] overflow-hidden rounded-full shadow-xl shadow-emerald-500/25">
+              <div className="flex flex-wrap items-center gap-2">
+                <div className="relative inline-flex p-[1.5px] sm:p-[2px] overflow-hidden rounded-full shadow-lg shadow-emerald-500/20 max-w-full">
                   <span className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#18B879_0%,#4ade80_25%,#F4B942_50%,#34d399_75%,#18B879_100%)]" />
-                  <span className="relative inline-flex items-center gap-2.5 sm:gap-3 px-6 py-3 sm:px-7 sm:py-3.5 rounded-full bg-[#061A36] text-white text-[13px] sm:text-[15px] md:text-[17px] font-black tracking-wider uppercase backdrop-blur-xl">
-                    <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#34D399] shadow-[0_0_10px_#34D399] animate-pulse shrink-0" />
-                    <span className="text-[#34D399] drop-shadow-sm">India's #1</span>
-                    <span className="text-white drop-shadow-sm">Job Guaranteed Program</span>
+                  <span className="relative inline-flex items-center gap-2 sm:gap-2.5 px-3.5 py-1.5 sm:px-5 sm:py-2 rounded-full bg-[#061A36] text-white text-[10.5px] min-[380px]:text-[11.5px] sm:text-xs md:text-sm font-black tracking-wider uppercase backdrop-blur-xl whitespace-nowrap">
+                    <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-[#34D399] shadow-[0_0_8px_#34D399] animate-pulse shrink-0" />
+                    <span className="text-[#34D399] drop-shadow-sm whitespace-nowrap">India's #1</span>
+                    <span className="text-white drop-shadow-sm whitespace-nowrap">Job Guaranteed Program</span>
                   </span>
                 </div>
               </div>
 
               {/* Main Headline with Typewriter Animation in Pure White */}
-              <h1 className="text-[38px] sm:text-6xl lg:text-7xl font-black leading-[1.05] sm:leading-[1.08] tracking-tight min-h-[2.2em] text-white">
+              <h1 className="text-[26px] min-[390px]:text-[29px] sm:text-5xl lg:text-6xl font-black leading-[1.08] tracking-tight min-h-[2.3em] text-white">
                 <span className="inline-block text-white">
                   {typedLine1}
                   {typedLine2.length === 0 && (
@@ -973,47 +978,6 @@ export const PlacementGuaranteed = () => {
                 <div className="text-[10px] sm:text-xs text-slate-500">{role}</div>
               </div>
             ))}
-          </div>
-        </section>
-
-        {/* DOES THIS SOUND FAMILIAR? (PAIN POINT HOOK) */}
-        <section className="py-14 sm:py-20 bg-white border-b border-slate-200">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6">
-            <Reveal className="text-center mb-8 sm:mb-10">
-              <span className="inline-flex items-center gap-1.5 text-xs font-black tracking-widest uppercase text-red-600 bg-red-50 border border-red-100 px-3.5 py-1.5 rounded-full mb-3 shadow-2xs">
-                Sound Familiar?
-              </span>
-              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-[#061A36]">
-                DOES THIS SOUND FAMILIAR?
-              </h2>
-            </Reveal>
-
-            <div className="space-y-3 sm:space-y-3.5 max-w-2xl mx-auto">
-              {[
-                "You have a degree but lack a clear career path.",
-                "You have certificates but lack real-world skills.",
-                "You keep applying for jobs but rarely get selected.",
-                "You have years of experience, but your salary is still below ₹30,000.",
-                "You want to enter finance but don't know where to begin.",
-              ].map((point, idx) => (
-                <Reveal key={idx} delay={idx * 60}>
-                  <div className="flex items-center gap-3.5 sm:gap-4 p-4 sm:p-4.5 rounded-2xl bg-[#F7F9FC] border border-slate-200/90 hover:border-red-200 hover:bg-red-50/20 transition-all duration-300 group">
-                    <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-red-100/80 text-red-600 font-black text-xs sm:text-sm flex items-center justify-center shrink-0 border border-red-200/70">
-                      ✕
-                    </span>
-                    <p className="text-sm sm:text-base font-semibold text-slate-800 leading-snug">
-                      {point}
-                    </p>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-
-            <Reveal delay={350} className="text-center mt-8 sm:mt-10">
-              <p className="text-xs sm:text-sm text-slate-500 font-medium max-w-xl mx-auto leading-relaxed">
-                The ACWM Pathway eliminates this uncertainty by granting you an official <strong>written Pre-Placement Offer upfront</strong> before training begins.
-              </p>
-            </Reveal>
           </div>
         </section>
 
