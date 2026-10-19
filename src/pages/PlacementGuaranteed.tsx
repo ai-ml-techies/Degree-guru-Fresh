@@ -406,13 +406,30 @@ export const PlacementGuaranteed = () => {
     };
   }, []);
 
-  /* Scroll to top button visibility */
+  /* Header auto-hide on scroll down, show on scroll up & scroll-to-top visibility */
+  const [showHeader, setShowHeader] = useState(true);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const lastScrollY = useRef(0);
+
   useEffect(() => {
     const handleScroll = () => {
-      setShowScrollTop(window.scrollY > 400);
+      const currentScrollY = window.scrollY;
+      setShowScrollTop(currentScrollY > 400);
+
+      // Always show when near the top of the page
+      if (currentScrollY < 60) {
+        setShowHeader(true);
+      } else if (currentScrollY > lastScrollY.current + 8) {
+        // Scrolling down -> hide header and top ticker
+        setShowHeader(false);
+      } else if (currentScrollY < lastScrollY.current - 8) {
+        // Scrolling up -> reveal header
+        setShowHeader(true);
+      }
+
+      lastScrollY.current = currentScrollY;
     };
-    handleScroll();
+
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -605,8 +622,12 @@ export const PlacementGuaranteed = () => {
       </Helmet>
 
       <div className="min-h-screen bg-[#F7F9FC] text-[#061A36] font-sans antialiased pb-20 md:pb-0 overflow-x-clip scroll-smooth">
-        {/* HEADER */}
-        <header className="sticky top-0 z-50 shadow-2xs">
+        {/* HEADER (Auto-hides on scroll down, shows on scroll up) */}
+        <header
+          className={`sticky top-0 z-50 shadow-2xs transition-transform duration-300 ease-in-out ${
+            showHeader ? "translate-y-0" : "-translate-y-full"
+          }`}
+        >
           {/* Top Running Announcement Ticker */}
           <div
             onClick={scrollToHeroForm}
