@@ -631,21 +631,16 @@ export const PlacementGuaranteed = () => {
           {/* Top Running Announcement Ticker */}
           <div
             onClick={scrollToHeroForm}
-            className="h-8 bg-gradient-to-r from-[#061A36] via-[#0d2d5a] to-[#061A36] text-white overflow-hidden flex items-center cursor-pointer select-none border-b border-white/10"
+            className="h-8 bg-[#061A36] text-white/90 overflow-hidden flex items-center cursor-pointer select-none border-b border-white/10"
             title="Click to register"
           >
             <div className="flex animate-ticker whitespace-nowrap">
               {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
                 <span
                   key={i}
-                  className="text-[11px] sm:text-xs font-semibold tracking-wide px-4 sm:px-8 inline-flex items-center gap-2"
+                  className="text-[11px] sm:text-xs font-medium tracking-wide px-6 sm:px-12 inline-block text-white"
                 >
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#F4B942] animate-pulse shrink-0" />
-                  <span>Current cohort registration is closing soon.</span>
-                  <span className="text-[#F4B942] font-black underline underline-offset-2 hover:text-white transition-colors">
-                    Register today →
-                  </span>
-                  <span className="text-white/30 ml-4 font-normal">|</span>
+                  Current cohort registration is closing soon. Register today.
                 </span>
               ))}
             </div>
@@ -851,7 +846,7 @@ export const PlacementGuaranteed = () => {
                           className="mt-0.5 rounded text-[#18B879] focus:ring-[#18B879] shrink-0"
                         />
                         <span>
-                          I'm ready to appear for the program entrance assessment test and interview.
+                          I understand a ₹500 registration fee applies for the entrance assessment and interview. The programme fee is payable only after I receive the job offer.
                         </span>
                       </label>
                       {errors.serious && <p className="text-[11px] text-red-500 mt-0.5">{errors.serious}</p>}
@@ -1820,7 +1815,7 @@ export const PlacementGuaranteed = () => {
                       className="mt-0.5 h-4 w-4 rounded border-slate-300 text-[#1557D6] focus:ring-[#1557D6] cursor-pointer shrink-0"
                     />
                     <span className="text-xs text-slate-700 font-medium leading-snug">
-                      I confirm I am a serious candidate who wants to enroll in the Job Guaranteed Program with Bajaj Capital.
+                      I understand a ₹500 registration fee applies for the entrance assessment and interview. The programme fee is payable only after I receive the job offer.
                     </span>
                   </label>
                   {errors.serious && <p className="text-xs text-red-500 mt-1 font-semibold">{errors.serious}</p>}
