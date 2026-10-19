@@ -846,7 +846,7 @@ export const PlacementGuaranteed = () => {
                           className="mt-0.5 rounded text-[#18B879] focus:ring-[#18B879] shrink-0"
                         />
                         <span>
-                          I understand a ₹500 registration fee applies for the entrance assessment and interview. The programme fee is payable only after I receive the job offer.
+                          I understand the ₹500 registration fee applies, and the programme fee is payable only after receiving the job offer.
                         </span>
                       </label>
                       {errors.serious && <p className="text-[11px] text-red-500 mt-0.5">{errors.serious}</p>}
@@ -1815,7 +1815,7 @@ export const PlacementGuaranteed = () => {
                       className="mt-0.5 h-4 w-4 rounded border-slate-300 text-[#1557D6] focus:ring-[#1557D6] cursor-pointer shrink-0"
                     />
                     <span className="text-xs text-slate-700 font-medium leading-snug">
-                      I understand a ₹500 registration fee applies for the entrance assessment and interview. The programme fee is payable only after I receive the job offer.
+                      I understand the ₹500 registration fee applies, and the programme fee is payable only after receiving the job offer.
                     </span>
                   </label>
                   {errors.serious && <p className="text-xs text-red-500 mt-1 font-semibold">{errors.serious}</p>}
