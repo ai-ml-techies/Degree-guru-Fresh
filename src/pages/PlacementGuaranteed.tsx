@@ -138,7 +138,8 @@ import goldEmblem from "@/assets/acwm/gold-emblem.png";
 import whatsappCleanIcon from "@/assets/acwm/whatsapp-clean.png";
 
 const WA_LINK =
-  "https://wa.me/919350199001?text=Hi%2C%20I%20want%20to%20know%20more%20about%20the%20Placement%20Guaranteed%20Program.";
+  "https://wa.me/919350199001?text=" +
+  encodeURIComponent("Hi, I'm interested in the Bajaj Capital ACWM Program and want to enroll.");
 
 /* ───────────── Scroll reveal ───────────── */
 const Reveal: React.FC<{ children: React.ReactNode; delay?: number; className?: string }> = ({
@@ -356,7 +357,7 @@ export const PlacementGuaranteed = () => {
   const [email, setEmail] = useState("");
   const [city, setCity] = useState("");
   const [age, setAge] = useState("");
-  const [education, setEducation] = useState("Commerce / B.Com");
+  const [education, setEducation] = useState("B.Com");
   const [experience, setExperience] = useState("Fresher");
   const [isSerious, setIsSerious] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -801,13 +802,13 @@ export const PlacementGuaranteed = () => {
                           onChange={(e) => setEducation(e.target.value)}
                           className="w-full px-3 py-3 rounded-xl border border-slate-200 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#1557D6] bg-slate-50/60 font-medium text-slate-700 truncate"
                         >
-                          <option value="Commerce / B.Com">Commerce / B.Com</option>
-                          <option value="BBA / BMS / Management">BBA / BMS</option>
-                          <option value="B.Sc / Science">B.Sc / Science</option>
-                          <option value="Arts / Humanities">Arts / BA</option>
-                          <option value="Engineering / B.Tech">B.Tech / BCA</option>
+                          <option value="B.Com">B.Com</option>
+                          <option value="BBA / BMS">BBA / BMS</option>
+                          <option value="B.Sc">B.Sc</option>
+                          <option value="BA">BA</option>
+                          <option value="B.Tech / BCA">B.Tech / BCA</option>
                           <option value="Pursuing Bachelor's">Pursuing Bachelor's</option>
-                          <option value="Master's / Post Graduate">Master's / PG</option>
+                          <option value="Master's / PG">Master's / PG</option>
                         </select>
                       </div>
 
@@ -1790,13 +1791,13 @@ export const PlacementGuaranteed = () => {
                     value={education}
                     onChange={setEducation}
                     options={[
-                      "Commerce / B.Com",
-                      "Management / BBA",
-                      "Science / B.Sc",
-                      "Arts / BA",
-                      "Engineering / B.Tech",
+                      "B.Com",
+                      "BBA / BMS",
+                      "B.Sc",
+                      "BA",
+                      "B.Tech / BCA",
                       "Pursuing Bachelor's",
-                      "Postgraduate / Other",
+                      "Master's / PG",
                     ]}
                     placeholder="Highest qualification"
                     label="Qualification"
