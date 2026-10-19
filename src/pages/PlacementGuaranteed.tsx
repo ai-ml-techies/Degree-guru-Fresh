@@ -260,7 +260,7 @@ const FAQS = [
   },
   {
     q: "Who is eligible?",
-    a: "Graduates or final-year Bachelor's students aged 28 or below across any stream. No prior experience or coding background required.",
+    a: "Graduates or final-year Bachelor's students aged 28 (with 2–3 years buffer) across any stream. No prior experience or coding background required.",
   },
   {
     q: "What happens during the 4-month Bajaj Capital internship?",
@@ -283,7 +283,7 @@ const LEGAL: Record<LegalTab, { label: string; body: React.ReactNode }> = {
     label: "Program Terms",
     body: (
       <ul className="list-disc pl-5 space-y-2">
-        <li>Eligibility: graduate or final-year Bachelor's student, age 28 or below.</li>
+        <li>Eligibility: graduate or final-year Bachelor's student, age 28 (with 2–3 years buffer).</li>
         <li>Selection through eligibility check and Bajaj Capital panel interview.</li>
         <li>240 hours of training: 190 with ICOFP, 50 with AIMA.</li>
         <li>4-month internship at Bajaj Capital with ₹15,000 per month stipend.</li>
@@ -486,7 +486,7 @@ export const PlacementGuaranteed = () => {
     const a = Number(age);
     if (!age.trim() || isNaN(a)) errs.age = "Enter your age.";
     else if (a < 18) errs.age = "Minimum age is 18.";
-    else if (a > 28) errs.age = "This program is for candidates aged 28 or below.";
+    else if (a > 31) errs.age = "Eligible age is 28 (with 2–3 years buffer).";
     if (!isSerious) errs.serious = "Please check the confirmation box below to proceed.";
     setErrors(errs);
     if (Object.keys(errs).length) return;
@@ -817,7 +817,7 @@ export const PlacementGuaranteed = () => {
                           type="number"
                           value={age}
                           onChange={(e) => setAge(e.target.value.slice(0, 2))}
-                          placeholder="Age (Max 28) *"
+                          placeholder="Age (28 + 2–3 yrs buffer) *"
                           className="w-full px-3.5 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#1557D6] bg-slate-50/60 font-medium placeholder:text-slate-400"
                         />
                         {errors.age && <p className="text-[11px] text-red-500 mt-0.5">{errors.age}</p>}
@@ -1023,7 +1023,7 @@ export const PlacementGuaranteed = () => {
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 max-w-5xl mx-auto">
                 {[
                   "Graduation or Pursuing",
-                  "Age 28 or Below",
+                  "Age 28 (+ 2–3 yrs buffer)",
                   "No Experience Mandatory",
                   "Must Clear Entrance Psychometric Test & Interview",
                 ].map((item) => (
@@ -1758,7 +1758,7 @@ export const PlacementGuaranteed = () => {
                     {errors.city && <p className="text-xs text-red-500 mt-1">{errors.city}</p>}
                   </div>
                   <div>
-                    <input type="number" inputMode="numeric" className={inputCls(errors.age)} placeholder="Age" value={age} onChange={(e) => setAge(e.target.value)} />
+                    <input type="number" inputMode="numeric" className={inputCls(errors.age)} placeholder="Age (28 + 2–3 yrs buffer)" value={age} onChange={(e) => setAge(e.target.value)} />
                     {errors.age && <p className="text-xs text-red-500 mt-1">{errors.age}</p>}
                   </div>
                 </div>
