@@ -173,7 +173,7 @@ export async function submitCounselingLead(payload: CounselingPayload): Promise<
   }
 
   return {
-    success: true,
+    success: false,
     message: 'Request received! Our counselor will call you within 2 hours.',
   };
 }
@@ -211,34 +211,10 @@ export async function sendLeadToGoogleSheet(payload: Record<string, any>): Promi
 }
 
 export async function submitLead(payload: LeadPayload): Promise<CounselingResult> {
-  const nowIst = new Date().toLocaleString('en-IN', {
-    timeZone: 'Asia/Kolkata',
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true,
-  }) + ' IST';
-
-  sendLeadToGoogleSheet({
-    leadId: 'DG-' + new Date().toISOString().slice(0, 10).replace(/-/g, '') + '-' + Math.floor(1000 + Math.random() * 9000),
-    dateTime: nowIst,
-    formHeading: payload.formHeading || 'Check if you qualify (Bajaj Capital ACWM Programme)',
-    name: payload.name,
-    phone: (payload.phone && (payload.phone.startsWith('+') || payload.phone.startsWith('=')))
-      ? "'" + payload.phone
-      : (payload.phone || ''),
-    email: payload.email || '',
-    city: payload.city || '',
-    age: payload.age || '',
-    status: payload.status || '',
-    graduate: payload.graduate || '',
-    program: payload.program || payload.message || '',
-    source: payload.source || '/placement-guaranteed',
-  });
-
-  return submitCounselingLead({
+  // Primary path: send lead to backend API.
+  // The backend (ContactController.php) saves to CSV, DB, sends email notification,
+  // AND forwards the lead to Google Sheets with the official Lead ID.
+  const result = await submitCounselingLead({
     name: payload.name,
     phone: payload.phone,
     email: payload.email,
@@ -250,6 +226,44 @@ export async function submitLead(payload: LeadPayload): Promise<CounselingResult
     status: payload.status,
     graduate: payload.graduate,
   });
+
+  // Only if backend was unreachable or failed, send directly to Google Sheets as a client fallback
+  // so no lead is lost, while avoiding double-printing when backend is online.
+  if (!result || !result.success) {
+    const nowIst = new Date().toLocaleString('en-IN', {
+      timeZone: 'Asia/Kolkata',
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+    }) + ' IST';
+
+    await sendLeadToGoogleSheet({
+      leadId: 'DG-' + new Date().toISOString().slice(0, 10).replace(/-/g, '') + '-' + Math.floor(1000 + Math.random() * 9000),
+      dateTime: nowIst,
+      formHeading: payload.formHeading || 'Check if you qualify (Bajaj Capital ACWM Programme)',
+      name: payload.name,
+      phone: (payload.phone && (payload.phone.startsWith('+') || payload.phone.startsWith('=')))
+        ? "'" + payload.phone
+        : (payload.phone || ''),
+      email: payload.email || '',
+      city: payload.city || '',
+      age: payload.age || '',
+      status: payload.status || '',
+      graduate: payload.graduate || '',
+      program: payload.program || payload.message || '',
+      source: payload.source || '/placement-guaranteed',
+    });
+
+    return {
+      success: true,
+      message: 'Request received! Our counselor will call you within 2 hours.',
+    };
+  }
+
+  return result;
 }
 
 export type OtpResult = {
