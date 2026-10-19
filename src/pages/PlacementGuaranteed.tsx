@@ -606,42 +606,67 @@ export const PlacementGuaranteed = () => {
 
       <div className="min-h-screen bg-[#F7F9FC] text-[#061A36] font-sans antialiased pb-20 md:pb-0 overflow-x-clip scroll-smooth">
         {/* HEADER */}
-        <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-2xs">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
-            <div className="flex items-center gap-3 sm:gap-4">
-              <Link to="/" className="flex items-center">
-                <img src={degreeGuruLogo} alt="Degree Guru" className="h-8 sm:h-10 w-auto" />
-              </Link>
-              <span className="text-slate-300 text-lg sm:text-xl font-light">|</span>
-              <img src={leverageEduLogo} alt="Leverage Edu" className="h-6 sm:h-8 w-auto object-contain" />
-            </div>
-            <nav className="hidden md:flex items-center gap-1.5" aria-label="Page sections">
-              {[
-                ["#how", "How It Works", "nav-how"],
-                ["#eligibility", "Eligibility", "nav-eligibility"],
-                ["#fees", "Fees", "nav-fees"],
-                ["#testimonials", "Candidate Stories", "nav-testimonials"],
-              ].map(([href, label, id]) => (
-                <a
-                  key={href}
-                  id={id}
-                  href={href}
-                  className="px-4 py-2 rounded-xl text-sm font-bold text-[#061A36] hover:text-[#1557D6] hover:bg-blue-50 transition-colors"
+        <header className="sticky top-0 z-50 shadow-2xs">
+          {/* Top Running Announcement Ticker */}
+          <div
+            onClick={scrollToHeroForm}
+            className="h-8 bg-gradient-to-r from-[#061A36] via-[#0d2d5a] to-[#061A36] text-white overflow-hidden flex items-center cursor-pointer select-none border-b border-white/10"
+            title="Click to register"
+          >
+            <div className="flex animate-ticker whitespace-nowrap">
+              {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
+                <span
+                  key={i}
+                  className="text-[11px] sm:text-xs font-semibold tracking-wide px-4 sm:px-8 inline-flex items-center gap-2"
                 >
-                  {label}
-                </a>
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#F4B942] animate-pulse shrink-0" />
+                  <span>Current cohort registration is closing soon.</span>
+                  <span className="text-[#F4B942] font-black underline underline-offset-2 hover:text-white transition-colors">
+                    Register today →
+                  </span>
+                  <span className="text-white/30 ml-4 font-normal">|</span>
+                </span>
               ))}
-            </nav>
-            <div className="flex items-center gap-3">
-              <a
-                href={WA_LINK}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Chat on WhatsApp"
-                className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center active:scale-95 transition-all shrink-0 hover:opacity-90"
-              >
-                <img src={whatsappCleanIcon} alt="WhatsApp" className="w-8 h-8 sm:w-9 sm:h-9 object-contain drop-shadow-xs" />
-              </a>
+            </div>
+          </div>
+
+          <div className="bg-white/95 backdrop-blur-md border-b border-slate-200">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
+              <div className="flex items-center gap-3 sm:gap-4">
+                <Link to="/" className="flex items-center">
+                  <img src={degreeGuruLogo} alt="Degree Guru" className="h-8 sm:h-10 w-auto" />
+                </Link>
+                <span className="text-slate-300 text-lg sm:text-xl font-light">|</span>
+                <img src={leverageEduLogo} alt="Leverage Edu" className="h-6 sm:h-8 w-auto object-contain" />
+              </div>
+              <nav className="hidden md:flex items-center gap-1.5" aria-label="Page sections">
+                {[
+                  ["#how", "How It Works", "nav-how"],
+                  ["#eligibility", "Eligibility", "nav-eligibility"],
+                  ["#fees", "Fees", "nav-fees"],
+                  ["#testimonials", "Candidate Stories", "nav-testimonials"],
+                ].map(([href, label, id]) => (
+                  <a
+                    key={href}
+                    id={id}
+                    href={href}
+                    className="px-4 py-2 rounded-xl text-sm font-bold text-[#061A36] hover:text-[#1557D6] hover:bg-blue-50 transition-colors"
+                  >
+                    {label}
+                  </a>
+                ))}
+              </nav>
+              <div className="flex items-center gap-3">
+                <a
+                  href={WA_LINK}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Chat on WhatsApp"
+                  className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center active:scale-95 transition-all shrink-0 hover:opacity-90"
+                >
+                  <img src={whatsappCleanIcon} alt="WhatsApp" className="w-8 h-8 sm:w-9 sm:h-9 object-contain drop-shadow-xs" />
+                </a>
+              </div>
             </div>
           </div>
         </header>
