@@ -260,7 +260,7 @@ const FAQS = [
   },
   {
     q: "Who is eligible?",
-    a: "Graduates or final-year Bachelor's students aged 28 (with 2–3 years buffer) across any stream. No prior experience or coding background required.",
+    a: "Graduates or final-year Bachelor's students aged 28 (buffer 2 to 3 years above threshold is allowed) across any stream. No prior experience or coding background required.",
   },
   {
     q: "What happens during the 4-month Bajaj Capital internship?",
@@ -283,7 +283,7 @@ const LEGAL: Record<LegalTab, { label: string; body: React.ReactNode }> = {
     label: "Program Terms",
     body: (
       <ul className="list-disc pl-5 space-y-2">
-        <li>Eligibility: graduate or final-year Bachelor's student, age 28 (with 2–3 years buffer).</li>
+        <li>Eligibility: graduate or final-year Bachelor's student, age 28 (buffer 2 to 3 years above threshold is allowed).</li>
         <li>Selection through eligibility check and Bajaj Capital panel interview.</li>
         <li>240 hours of training: 190 with ICOFP, 50 with AIMA.</li>
         <li>4-month internship at Bajaj Capital with ₹15,000 per month stipend.</li>
@@ -484,9 +484,8 @@ export const PlacementGuaranteed = () => {
     if (!em.valid) errs.email = em.error || "Enter a valid email.";
     if (!city.trim()) errs.city = "Enter your city.";
     const a = Number(age);
-    if (!age.trim() || isNaN(a)) errs.age = "Enter your age.";
-    else if (a < 18) errs.age = "Minimum age is 18.";
-    else if (a > 31) errs.age = "Eligible age is 28 (with 2–3 years buffer).";
+    if (!age.trim() || isNaN(a)) errs.age = "Select your age.";
+    else if (a < 18 || a > 31) errs.age = "Eligible age is 18 to 31.";
     if (!isSerious) errs.serious = "Please check the confirmation box below to proceed.";
     setErrors(errs);
     if (Object.keys(errs).length) return;
@@ -813,13 +812,22 @@ export const PlacementGuaranteed = () => {
                       </div>
 
                       <div>
-                        <input
-                          type="number"
+                        <select
                           value={age}
-                          onChange={(e) => setAge(e.target.value.slice(0, 2))}
-                          placeholder="Age (28 + 2–3 yrs buffer) *"
-                          className="w-full px-3.5 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#1557D6] bg-slate-50/60 font-medium placeholder:text-slate-400"
-                        />
+                          onChange={(e) => setAge(e.target.value)}
+                          className={`w-full px-3.5 py-3 rounded-xl border ${
+                            errors.age ? "border-red-500" : "border-slate-200"
+                          } text-sm focus:outline-none focus:ring-2 focus:ring-[#1557D6] bg-slate-50/60 font-medium ${
+                            age ? "text-slate-800" : "text-slate-400"
+                          } cursor-pointer`}
+                        >
+                          <option value="">Age *</option>
+                          {Array.from({ length: 14 }, (_, idx) => 18 + idx).map((num) => (
+                            <option key={num} value={num} className="text-slate-800">
+                              {num}
+                            </option>
+                          ))}
+                        </select>
                         {errors.age && <p className="text-[11px] text-red-500 mt-0.5">{errors.age}</p>}
                       </div>
                     </div>
@@ -1023,7 +1031,7 @@ export const PlacementGuaranteed = () => {
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 max-w-5xl mx-auto">
                 {[
                   "Graduation or Pursuing",
-                  "Age 28 (+ 2–3 yrs buffer)",
+                  "Age 28 (Buffer 2 to 3 years above threshold is allowed)",
                   "No Experience Mandatory",
                   "Must Clear Entrance Psychometric Test & Interview",
                 ].map((item) => (
@@ -1758,7 +1766,22 @@ export const PlacementGuaranteed = () => {
                     {errors.city && <p className="text-xs text-red-500 mt-1">{errors.city}</p>}
                   </div>
                   <div>
-                    <input type="number" inputMode="numeric" className={inputCls(errors.age)} placeholder="Age (28 + 2–3 yrs buffer)" value={age} onChange={(e) => setAge(e.target.value)} />
+                    <select
+                      value={age}
+                      onChange={(e) => setAge(e.target.value)}
+                      className={`w-full px-3.5 py-3 rounded-xl border ${
+                        errors.age ? "border-red-500" : "border-slate-300"
+                      } text-sm focus:outline-none focus:ring-2 focus:ring-[#1557D6]/30 bg-white font-medium ${
+                        age ? "text-slate-900" : "text-slate-400"
+                      } cursor-pointer`}
+                    >
+                      <option value="">Age *</option>
+                      {Array.from({ length: 14 }, (_, idx) => 18 + idx).map((num) => (
+                        <option key={num} value={num} className="text-slate-800">
+                          {num}
+                        </option>
+                      ))}
+                    </select>
                     {errors.age && <p className="text-xs text-red-500 mt-1">{errors.age}</p>}
                   </div>
                 </div>
