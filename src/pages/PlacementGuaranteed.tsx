@@ -139,7 +139,7 @@ import whatsappCleanIcon from "@/assets/acwm/whatsapp-clean.png";
 
 const WA_LINK =
   "https://wa.me/919350199001?text=" +
-  encodeURIComponent("Hi, I'm interested in the Bajaj Capital ACWM Program and want to enroll.");
+  encodeURIComponent("Hi, I'm interested in the Bajaj Capital 100% Job Guaranteed Program and want to enroll.");
 
 /* ───────────── Scroll reveal ───────────── */
 const Reveal: React.FC<{ children: React.ReactNode; delay?: number; className?: string }> = ({

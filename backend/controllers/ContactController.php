@@ -166,6 +166,21 @@ class ContactController extends Controller
         ]);
 
         // 4. Forward lead to Google Sheets (Degree Guru Guranteed Placement Leads)
+        $post = Yii::$app->request->post();
+        $trackingFields = [
+            'source_type', 'campaign_type', 'first_source_type', 'first_campaign_type',
+            'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
+            'first_utm_campaign', 'first_utm_content', 'ref', 'fbclid', 'gclid',
+            'referrer', 'landing_url', 'first_visit_at', 'visit_count', 'device',
+            'in_app_browser', 'fbp', 'fbc', 'page_url'
+        ];
+        $trackingData = [];
+        foreach ($trackingFields as $tf) {
+            if (isset($post[$tf]) && $post[$tf] !== '') {
+                $trackingData[$tf] = trim((string)$post[$tf]);
+            }
+        }
+
         $this->sendToGoogleSheet([
             'id'           => $leadId,
             'form_heading' => $formHeading,
@@ -178,7 +193,7 @@ class ContactController extends Controller
             'graduate'     => $graduate,
             'program'      => $message,
             'source'       => $source,
-        ]);
+        ], $trackingData);
 
         return $this->asJson([
             'success' => true,
@@ -318,7 +333,7 @@ class ContactController extends Controller
      * Forward lead to Google Sheets (Degree Guru Guranteed Placement Leads)
      * Compatible with Google Apps Script Web App webhook
      */
-    private function sendToGoogleSheet(array $leadData): void
+    private function sendToGoogleSheet(array $leadData, array $trackingData = []): void
     {
         $webhookUrl = getenv('GOOGLE_SHEET_WEBHOOK_URL')
             ?: (Yii::$app->params['googleSheetWebhookUrl'] ?? null);
@@ -332,20 +347,20 @@ class ContactController extends Controller
             // Prefix with single-quote if starts with + or = so Google Sheets treats it as plain text instead of formula
             $sheetPhone = (str_starts_with($rawPhone, '+') || str_starts_with($rawPhone, '=')) ? ("'" . $rawPhone) : $rawPhone;
 
-            $payload = json_encode([
-                'leadId'      => $leadData['id'] ?? '',
-                'dateTime'    => $this->getIstDateTime()->format('d M Y, h:i A') . ' IST',
-                'formHeading' => $leadData['form_heading'] ?? '',
-                'name'        => $leadData['name'] ?? '',
-                'phone'       => $sheetPhone,
-                'email'       => $leadData['email'] ?? '',
-                'city'        => $leadData['city'] ?? '',
-                'age'         => $leadData['age'] ?? '',
-                'status'      => $leadData['status'] ?? '',
-                'graduate'    => $leadData['graduate'] ?? '',
-                'program'     => $leadData['program'] ?? '',
-                'source'      => $leadData['source'] ?? '',
-            ]);
+            $payload = json_encode(array_merge([
+                'Lead ID'             => $leadData['id'] ?? '',
+                'Date & Time'         => $this->getIstDateTime()->format('d M Y, h:i A') . ' IST',
+                'Form Heading'        => $leadData['form_heading'] ?? '',
+                'Full Name'           => $leadData['name'] ?? '',
+                'Mobile Number'       => $sheetPhone,
+                'Email'               => $leadData['email'] ?? '',
+                'City'                => $leadData['city'] ?? '',
+                'Age'                 => $leadData['age'] ?? '',
+                'Status / Experience' => $leadData['status'] ?? '',
+                'Qualification'       => $leadData['graduate'] ?? '',
+                'Program / Note'      => $leadData['program'] ?? '',
+                'Source Page'         => $leadData['source'] ?? '',
+            ], $trackingData));
 
             $ch = curl_init($webhookUrl);
             curl_setopt($ch, CURLOPT_POST, true);

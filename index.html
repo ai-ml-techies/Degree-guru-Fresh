@@ -48,6 +48,197 @@
   <meta name="twitter:image" content="https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/bfd069d8-ac7b-4a52-b538-66857c498b62/id-preview-f8181de7--3d6f390e-9463-4593-baaf-22277a3d5db8.lovable.app-1777484915139.png">
   <meta name="twitter:card" content="summary_large_image">
     <meta name="google-site-verification" content="pmwCxh-dERVnO_X7bY9Q1vIF7K0VtPvgzHt4VVGI2k8" />
+
+    <!-- Degree Guru Lead Source Tracker -->
+    <script>
+    (function () {
+      'use strict';
+
+      /* ===== CONFIG ===== */
+      var OWN_HOSTS = ['degreeguru.in'];
+      var CLEAN_URL = true;
+      var FIRST_TOUCH_DAYS = 90, LAST_TOUCH_DAYS = 30;
+      var KEY = 'dg_track', SESSION_KEY = 'dg_session', DIRECT = 'Direct / Unknown';
+
+      /* Campaign type is detected from keywords in the Meta campaign name (utm_campaign). First match wins. */
+      var CAMPAIGN_TYPES = [
+        [/awareness|reach|brand/i, 'Awareness'],
+        [/retarget|remarket/i,     'Retargeting'],
+        [/lead|form/i,             'Leads'],
+        [/traffic|click/i,         'Traffic'],
+        [/engage/i,                'Engagement'],
+        [/video|view/i,            'Video views'],
+        [/message|whatsapp/i,      'Messaging']
+      ];
+      function campaignType(name) {
+        if (!name) return '';
+        for (var i = 0; i < CAMPAIGN_TYPES.length; i++) {
+          if (CAMPAIGN_TYPES[i][0].test(name)) return CAMPAIGN_TYPES[i][1];
+        }
+        return 'Other';
+      }
+
+      /* ===== storage ===== */
+      var memory = {};
+      function read() {
+        try { var raw = localStorage.getItem(KEY); if (raw) return JSON.parse(raw); } catch (e) {}
+        return memory;
+      }
+      function write(obj) {
+        memory = obj;
+        try { localStorage.setItem(KEY, JSON.stringify(obj)); } catch (e) {}
+      }
+      function getCookie(name) {
+        var m = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+        try { return m ? decodeURIComponent(m[1]) : ''; } catch (e) { return ''; }
+      }
+
+      var newSession = true;
+      try {
+        if (sessionStorage.getItem(SESSION_KEY)) newSession = false;
+        else sessionStorage.setItem(SESSION_KEY, '1');
+      } catch (e) {}
+
+      /* ===== current visit ===== */
+      var qs = new URLSearchParams(location.search);
+      function q(k, n) { return (qs.get(k) || '').slice(0, n || 150); }
+      var cur = {
+        utm_source: q('utm_source'), utm_medium: q('utm_medium'),
+        utm_campaign: q('utm_campaign'), utm_content: q('utm_content'),
+        utm_term: q('utm_term'), ref: q('ref'),
+        fbclid: q('fbclid', 100), gclid: q('gclid', 100)
+      };
+      var hasParams = !!(cur.utm_source || cur.utm_medium || cur.utm_campaign ||
+                         cur.ref || cur.fbclid || cur.gclid);
+
+      function isOwn(h) {
+        return OWN_HOSTS.some(function (o) { return h === o || h.slice(-(o.length + 1)) === '.' + o; });
+      }
+      var refHost = '';
+      try {
+        if (document.referrer) refHost = new URL(document.referrer).hostname.replace(/^www\./, '').toLowerCase();
+      } catch (e) {}
+      if (isOwn(refHost)) refHost = '';
+
+      var ua = navigator.userAgent || '';
+      var inApp = /Instagram/i.test(ua) ? 'Instagram app'
+                : /FBAN|FBAV|FB_IAB/i.test(ua) ? 'Facebook app'
+                : /LinkedInApp/i.test(ua) ? 'LinkedIn app' : '';
+      var device = /iPad|Tablet/i.test(ua) ? 'tablet'
+                 : /Mobi|Android|iPhone/i.test(ua) ? 'mobile' : 'desktop';
+
+      /* ===== classify traffic source ===== */
+      function cap(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
+      function classify(t, host) {
+        var s = (t.utm_source || '').toLowerCase();
+        var m = (t.utm_medium || '').toLowerCase();
+        if (s || m || t.utm_campaign) {
+          if (/paid|cpc|ppc|cpm|ads/.test(m)) {
+            var ct = campaignType(t.utm_campaign);
+            return 'Paid - ' + (cap(s) || 'Unknown') + (ct ? ' - ' + ct : '');
+          }
+          return 'Tagged link - ' + (s || 'unknown') + (m ? ' / ' + m : '');
+        }
+        if (t.gclid) return 'Google Ads (untagged)';
+        if (t.ref) return 'Shared link - ' + t.ref;
+        if (t.fbclid) return 'Meta (untagged: paid or organic)';
+        if (host) {
+          if (/(^|\.)(google|bing|duckduckgo|yahoo|ecosia|baidu)\./.test(host)) return 'Organic Search - ' + host;
+          if (/whatsapp/.test(host)) return 'WhatsApp';
+          if (/(facebook|instagram|linkedin|twitter|x\.com|t\.co|youtube|youtu\.be|reddit|telegram|t\.me|quora|pinterest|snapchat)/.test(host)) return 'Organic Social - ' + host;
+          return 'Referral - ' + host;
+        }
+        if (inApp) return inApp + ' (untagged)';
+        return DIRECT;
+      }
+
+      /* ===== first / last touch ===== */
+      var now = Date.now();
+      var data = read();
+      if (!data.first_visit_at) data.first_visit_at = new Date(now).toISOString();
+      if (newSession) data.visits = (data.visits || 0) + 1;
+
+      if (newSession || hasParams) {
+        var touch = {
+          ts: now,
+          type: classify(cur, refHost),
+          campaign_type: /paid|cpc|ppc|cpm|ads/i.test(cur.utm_medium) ? campaignType(cur.utm_campaign) : '',
+          referrer: refHost,
+          landing_url: (location.origin + location.pathname + location.search).slice(0, 300)
+        };
+        for (var k in cur) touch[k] = cur[k];
+        var meaningful = touch.type !== DIRECT;
+        var firstExpired = data.first && (now - data.first.ts > FIRST_TOUCH_DAYS * 864e5);
+        var lastExpired = data.last && (now - data.last.ts > LAST_TOUCH_DAYS * 864e5);
+        if (!data.first || firstExpired || (data.first.type === DIRECT && meaningful)) data.first = touch;
+        if (!data.last || lastExpired || meaningful) data.last = touch;
+      }
+      write(data);
+
+      /* ===== clean address bar so shared links carry no tracking ===== */
+      function cleanUrl() {
+        setTimeout(function () {
+          try {
+            var u = new URL(location.href);
+            ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','utm_id','ref','fbclid','gclid']
+              .forEach(function (p) { u.searchParams.delete(p); });
+            history.replaceState(null, '', u.pathname + u.search + u.hash);
+          } catch (e) {}
+        }, 2500);
+      }
+      if (CLEAN_URL && hasParams && window.history && history.replaceState) {
+        if (document.readyState === 'complete') cleanUrl();
+        else window.addEventListener('load', cleanUrl);
+      }
+
+      /* ===== fields sent with the form ===== */
+      function fields() {
+        var d = read(), f = d.first || {}, l = d.last || {};
+        return {
+          source_type: l.type || DIRECT,
+          campaign_type: l.campaign_type || '',
+          first_source_type: f.type || DIRECT,
+          first_campaign_type: f.campaign_type || '',
+          utm_source: l.utm_source || '',
+          utm_medium: l.utm_medium || '',
+          utm_campaign: l.utm_campaign || '',
+          utm_content: l.utm_content || '',
+          utm_term: l.utm_term || '',
+          first_utm_campaign: f.utm_campaign || '',
+          first_utm_content: f.utm_content || '',
+          ref: l.ref || f.ref || '',
+          fbclid: l.fbclid || f.fbclid || '',
+          gclid: l.gclid || f.gclid || '',
+          referrer: l.referrer || f.referrer || '',
+          landing_url: l.landing_url || '',
+          first_visit_at: d.first_visit_at || '',
+          visit_count: d.visits || 1,
+          device: device,
+          in_app_browser: inApp,
+          fbp: getCookie('_fbp'),
+          fbc: getCookie('_fbc'),
+          page_url: location.href
+        };
+      }
+
+      function attach(form) {
+        var old = form.querySelectorAll('input[data-dg]');
+        for (var i = 0; i < old.length; i++) old[i].parentNode.removeChild(old[i]);
+        var f = fields();
+        Object.keys(f).forEach(function (key) {
+          var inp = document.createElement('input');
+          inp.type = 'hidden'; inp.name = key; inp.value = f[key];
+          inp.setAttribute('data-dg', '1');
+          form.appendChild(inp);
+        });
+      }
+      document.addEventListener('submit', function (e) {
+        if (e.target && e.target.tagName === 'FORM') attach(e.target);
+      }, true);
+
+      window.DGTracker = { getFields: fields, attachToForm: attach };
+    })();
+    </script>
 </head>
   <body>
     <!-- Google Tag Manager (noscript) -->

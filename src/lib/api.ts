@@ -131,7 +131,7 @@ export async function applyToJob(postingId: number, seekerId: number): Promise<J
   return res.json();
 }
 
-export async function submitCounselingLead(payload: CounselingPayload): Promise<CounselingResult> {
+export async function submitCounselingLead(payload: CounselingPayload & Record<string, any>): Promise<CounselingResult> {
   const body = new FormData();
   body.append('name', payload.name);
   body.append('phone', payload.phone);
@@ -146,6 +146,16 @@ export async function submitCounselingLead(payload: CounselingPayload): Promise<
   if (payload.age)         body.append('age', payload.age);
   if (payload.status)      body.append('status', payload.status);
   if (payload.graduate)    body.append('graduate', payload.graduate);
+
+  // Merge DGTracker lead source tracking fields
+  const tracking = (typeof window !== 'undefined' && (window as any).DGTracker?.getFields)
+    ? (window as any).DGTracker.getFields()
+    : {};
+  Object.keys(tracking).forEach((k) => {
+    if (tracking[k] !== undefined && tracking[k] !== null && tracking[k] !== '') {
+      body.append(k, String(tracking[k]));
+    }
+  });
 
   const endpoints = [
     `${API_BASE}/web/contact/submit`,
@@ -198,12 +208,38 @@ export async function sendLeadToGoogleSheet(payload: Record<string, any>): Promi
     'https://script.google.com/macros/s/AKfycbwITv3H67pbpQKQ5gwWugDGGuyMl1StpA39EU7FX4pKjndx9aQpyRcVEQNJDGxSepWP/exec';
   if (!webhookUrl) return;
 
+  const tracking = (typeof window !== 'undefined' && (window as any).DGTracker?.getFields)
+    ? (window as any).DGTracker.getFields()
+    : {};
+
+  const cleanPhone = (payload.phone && (String(payload.phone).startsWith('+') || String(payload.phone).startsWith('=')))
+    ? "'" + payload.phone
+    : (payload.phone || '');
+
+  // Exact matching sheet headers (case-insensitive in Apps Script, but matching existing columns)
+  const fullPayload = {
+    'Lead ID': payload.leadId || payload.id || '',
+    'Date & Time': payload.dateTime || payload.date_time || '',
+    'Form Heading': payload.formHeading || payload.form_heading || 'Check if you qualify (Bajaj Capital ACWM Programme)',
+    'Full Name': payload.name || payload.fullName || payload.full_name || '',
+    'Mobile Number': cleanPhone,
+    'Email': payload.email || '',
+    'City': payload.city || '',
+    'Age': payload.age || '',
+    'Status / Experience': payload.status || payload.experience || '',
+    'Qualification': payload.graduate || payload.education || payload.qualification || '',
+    'Program / Note': payload.program || payload.message || '',
+    'Source Page': payload.source || payload.source_page || '/placement-guaranteed',
+    ...tracking,
+    ...payload,
+  };
+
   try {
     await fetch(webhookUrl, {
       method: 'POST',
       mode: 'no-cors',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(fullPayload),
     });
   } catch {
     // silent fallback
@@ -245,9 +281,7 @@ export async function submitLead(payload: LeadPayload): Promise<CounselingResult
       dateTime: nowIst,
       formHeading: payload.formHeading || 'Check if you qualify (Bajaj Capital ACWM Programme)',
       name: payload.name,
-      phone: (payload.phone && (payload.phone.startsWith('+') || payload.phone.startsWith('=')))
-        ? "'" + payload.phone
-        : (payload.phone || ''),
+      phone: payload.phone || '',
       email: payload.email || '',
       city: payload.city || '',
       age: payload.age || '',
