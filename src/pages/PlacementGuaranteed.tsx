@@ -139,7 +139,7 @@ import whatsappCleanIcon from "@/assets/acwm/whatsapp-clean.png";
 
 const WA_LINK =
   "https://wa.me/919350199001?text=" +
-  encodeURIComponent("Hi, I'm interested in the Bajaj Capital 100% Job Guaranteed Program and want to enroll.");
+  encodeURIComponent("Hi team, I'm interested in the Bajaj Capital's 100% Job Guaranteed Program in Wealth Management and want to enroll.");
 
 /* ───────────── Scroll reveal ───────────── */
 const Reveal: React.FC<{ children: React.ReactNode; delay?: number; className?: string }> = ({
@@ -261,7 +261,11 @@ const FAQS = [
   },
   {
     q: "Who is eligible?",
-    a: "Graduates or final-year Bachelor's students aged 28 (buffer 2 to 3 years above threshold is allowed) across any stream. No prior experience or coding background required.",
+    a: "Graduates or final-year Bachelor's students aged 20-28 (buffer 2 to 3 years above threshold is allowed) across any stream. No prior experience or coding background required.",
+  },
+  {
+    q: "What are the job placement locations?",
+    a: "Except Jammu and Kashmir, Bajaj Capital has offices in almost every state. If an applicant wants to work in their home state branch of Bajaj Capital they can; otherwise, they may relocate to metro cities like Delhi, Noida, Gurugram, etc.",
   },
   {
     q: "What happens during the 4-month Bajaj Capital internship?",
@@ -284,7 +288,7 @@ const LEGAL: Record<LegalTab, { label: string; body: React.ReactNode }> = {
     label: "Program Terms",
     body: (
       <ul className="list-disc pl-5 space-y-2">
-        <li>Eligibility: graduate or final-year Bachelor's student, age 28 (buffer 2 to 3 years above threshold is allowed).</li>
+        <li>Eligibility: graduate or final-year Bachelor's student, age 20-28 (buffer 2 to 3 years above threshold is allowed).</li>
         <li>Selection through eligibility check and Bajaj Capital panel interview.</li>
         <li>240 hours of training: 190 with ICOFP, 50 with AIMA.</li>
         <li>4-month internship at Bajaj Capital with ₹15,000 per month stipend.</li>
@@ -486,7 +490,7 @@ export const PlacementGuaranteed = () => {
     if (!city.trim()) errs.city = "Enter your city.";
     const a = Number(age);
     if (!age.trim() || isNaN(a)) errs.age = "Select your age.";
-    else if (a < 18 || a > 31) errs.age = "Eligible age is 18 to 31.";
+    else if (a < 20 || a > 31) errs.age = "Eligible age is 20 to 31.";
     if (!isSerious) errs.serious = "Please check the confirmation box below to proceed.";
     setErrors(errs);
     if (Object.keys(errs).length) return;
@@ -823,7 +827,7 @@ export const PlacementGuaranteed = () => {
                           } cursor-pointer`}
                         >
                           <option value="">Age *</option>
-                          {Array.from({ length: 14 }, (_, idx) => 18 + idx).map((num) => (
+                          {Array.from({ length: 12 }, (_, idx) => 20 + idx).map((num) => (
                             <option key={num} value={num} className="text-slate-800">
                               {num}
                             </option>
@@ -1032,7 +1036,7 @@ export const PlacementGuaranteed = () => {
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 max-w-5xl mx-auto">
                 {[
                   "Graduation or Pursuing",
-                  "Age 28 (Buffer 2 to 3 years above threshold is allowed)",
+                  "Age 20-28 (Buffer 2 to 3 years above threshold is allowed)",
                   "No Experience Mandatory",
                   "Must Clear Entrance Psychometric Test & Interview",
                 ].map((item) => (
@@ -1777,7 +1781,7 @@ export const PlacementGuaranteed = () => {
                       } cursor-pointer`}
                     >
                       <option value="">Age *</option>
-                      {Array.from({ length: 14 }, (_, idx) => 18 + idx).map((num) => (
+                      {Array.from({ length: 12 }, (_, idx) => 20 + idx).map((num) => (
                         <option key={num} value={num} className="text-slate-800">
                           {num}
                         </option>
