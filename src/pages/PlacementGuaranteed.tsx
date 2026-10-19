@@ -806,7 +806,7 @@ export const PlacementGuaranteed = () => {
                           <option value="B.Sc / Science">B.Sc / Science</option>
                           <option value="Arts / Humanities">Arts / BA</option>
                           <option value="Engineering / B.Tech">B.Tech / BCA</option>
-                          <option value="Final-Year Bachelor's">Final Year Student</option>
+                          <option value="Pursuing Bachelor's">Pursuing Bachelor's</option>
                           <option value="Master's / Post Graduate">Master's / PG</option>
                         </select>
                       </div>
@@ -1795,6 +1795,7 @@ export const PlacementGuaranteed = () => {
                       "Science / B.Sc",
                       "Arts / BA",
                       "Engineering / B.Tech",
+                      "Pursuing Bachelor's",
                       "Postgraduate / Other",
                     ]}
                     placeholder="Highest qualification"
