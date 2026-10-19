@@ -268,7 +268,7 @@ const FAQS = [
   },
   {
     q: "When is the program fee payable?",
-    a: "The program fee is payable ONLY AFTER you receive and accept your official written Pre-Placement Offer letter from Bajaj Capital. If you are not selected in the interview or do not accept the offer, you pay nothing. 0% EMI is also available.",
+    a: "The program fee is payable ONLY AFTER you receive and accept your official written Pre-Placement Offer letter from Bajaj Capital. If you are not selected in the interview or do not accept the offer, you pay nothing. 0% EMI is available, and the first EMI will be paid by the company.",
   },
   {
     q: "What salary is offered after successful completion?",
@@ -298,7 +298,7 @@ const LEGAL: Record<LegalTab, { label: string; body: React.ReactNode }> = {
         <li>Registration fee: ₹500, paid at the eligibility stage.</li>
         <li>Program fee: ₹1,50,000 + 18% GST = ₹1,77,000, payable after the Pre-Placement Offer.</li>
         <li>If you are not selected in the interview, the program fee is not charged.</li>
-        <li>0% EMI over 10 months is available.</li>
+        <li>0% EMI over 10 months is available, and the first EMI will be paid by the company.</li>
       </ul>
     ),
   },
@@ -1135,8 +1135,14 @@ export const PlacementGuaranteed = () => {
                       <p className="text-xs text-slate-500 mt-1 leading-relaxed">
                         Payable <strong>ONLY AFTER</strong> you receive and accept your official written Pre-Placement Offer letter from Bajaj Capital.
                       </p>
-                      <div className="mt-2 text-[11px] font-semibold text-slate-700 bg-white px-2.5 py-1 rounded-lg border border-slate-200">
-                        0% interest EMI available.
+                      <div className="mt-2.5 flex flex-wrap items-center gap-2">
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-extrabold bg-emerald-50 text-emerald-800 border border-emerald-200/90 shadow-2xs">
+                          <CheckCircle2 size={13} className="text-emerald-600 shrink-0" />
+                          First EMI will be paid by company
+                        </span>
+                        <span className="text-[11px] font-semibold text-slate-700 bg-white px-2.5 py-1 rounded-lg border border-slate-200">
+                          0% interest EMI available
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -1148,7 +1154,7 @@ export const PlacementGuaranteed = () => {
                 </div>
               </div>
 
-              {/* Right Column: Highlighted Glassmorphic Container (₹32,000) */}
+              {/* Right Column: Highlighted Glassmorphic Container (₹14,300) */}
               <div className="lg:col-span-6 rounded-3xl border-2 border-[#F4B942] bg-gradient-to-br from-[#061A36] via-[#092244] to-[#061A36] text-white p-5 sm:p-7 flex flex-col justify-between shadow-2xl relative overflow-hidden backdrop-blur-xl">
                 <div className="absolute -right-12 -top-12 w-44 h-44 bg-[#F4B942]/15 rounded-full blur-2xl pointer-events-none animate-pulse" />
 
@@ -1167,6 +1173,10 @@ export const PlacementGuaranteed = () => {
                       <span className="font-bold text-white text-xs sm:text-base shrink-0 whitespace-nowrap">₹1,77,000</span>
                     </div>
                     <div className="flex justify-between items-center gap-2 text-emerald-300">
+                      <span className="whitespace-nowrap">1st EMI Paid by Company:</span>
+                      <span className="font-bold text-xs sm:text-base shrink-0 whitespace-nowrap">− ₹17,700</span>
+                    </div>
+                    <div className="flex justify-between items-center gap-2 text-emerald-300">
                       <span className="whitespace-nowrap">Internship Stipend (4 months × ₹15k):</span>
                       <span className="font-bold text-xs sm:text-base shrink-0 whitespace-nowrap">− ₹60,000</span>
                     </div>
@@ -1177,7 +1187,7 @@ export const PlacementGuaranteed = () => {
                     <div className="pt-3.5 sm:pt-4 mt-2 border-t border-white/20 flex items-baseline justify-between gap-2">
                       <span className="text-sm sm:text-base font-extrabold text-white whitespace-nowrap">Cost to you:</span>
                       <div className="text-4xl sm:text-5xl font-black text-[#F4B942] tracking-tight drop-shadow-sm whitespace-nowrap">
-                        ₹32,000
+                        ₹14,300
                       </div>
                     </div>
                   </div>
