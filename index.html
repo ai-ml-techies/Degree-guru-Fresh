@@ -31,6 +31,55 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
+
+    <!-- Immediate deployment sync & chunk recovery -->
+    <script>
+      (function() {
+        // Auto-refresh when restoring from browser Back/Forward cache (bfcache)
+        window.addEventListener('pageshow', function(e) {
+          if (e.persisted) {
+            window.location.reload();
+          }
+        });
+
+        function handleChunkMismatch() {
+          var key = 'dg_chunk_reload_lock';
+          var last = sessionStorage.getItem(key);
+          var now = Date.now();
+          if (!last || now - parseInt(last, 10) > 8000) {
+            sessionStorage.setItem(key, now.toString());
+            window.location.reload();
+          }
+        }
+
+        window.addEventListener('error', function(e) {
+          var msg = ((e && e.message) || '') + '';
+          if (
+            msg.indexOf('dynamically imported module') !== -1 ||
+            msg.indexOf('Loading chunk') !== -1 ||
+            msg.indexOf('Importing a module script failed') !== -1
+          ) {
+            handleChunkMismatch();
+          }
+        }, true);
+
+        window.addEventListener('unhandledrejection', function(e) {
+          var reason = (e && e.reason) ? (e.reason.message || e.reason) + '' : '';
+          if (
+            reason.indexOf('dynamically imported module') !== -1 ||
+            reason.indexOf('Loading chunk') !== -1 ||
+            reason.indexOf('Importing a module script failed') !== -1
+          ) {
+            handleChunkMismatch();
+          }
+        });
+
+        window.addEventListener('vite:preloadError', function(e) {
+          if (e && e.preventDefault) e.preventDefault();
+          handleChunkMismatch();
+        });
+      })();
+    </script>
     <title>Degree Guru — Education Marketplace, Career Discovery & Job Platform</title>
     <meta name="description" content="Explore online degrees, compare accredited universities, find career paths, build ATS resumes and discover jobs — all in one place. 100% free career discovery.">
     <meta name="author" content="Degree Guru" />

@@ -40,6 +40,14 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Restore previous build chunks so open tabs never 404
+        uses: actions/cache@v4
+        with:
+          path: ./dist/assets
+          key: frontend-assets-${{ github.sha }}
+          restore-keys: |
+            frontend-assets-
+
       - name: Build project for Production
         run: npm run build
 

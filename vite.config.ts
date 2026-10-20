@@ -146,6 +146,7 @@ export default defineConfig(({ mode }) => ({
     mode === "development" && componentTagger(),
   ].filter(Boolean),
   build: {
+    emptyOutDir: false,
     target: ['es2015', 'safari13'],
     rollupOptions: {
       output: {
