@@ -229,7 +229,6 @@ export async function sendLeadToGoogleSheet(payload: Record<string, any>): Promi
     age: payload.age || '',
     status: payload.status || payload.experience || '',
     graduate: payload.graduate || payload.education || payload.qualification || '',
-    program: payload.program || payload.message || '',
     source: payload.source || payload.source_page || '/placement-guaranteed',
 
     // Column header keys:
@@ -243,7 +242,6 @@ export async function sendLeadToGoogleSheet(payload: Record<string, any>): Promi
     'Age': payload.age || '',
     'Status / Experience': payload.status || payload.experience || '',
     'Qualification': payload.graduate || payload.education || payload.qualification || '',
-    'Program / Note': payload.program || payload.message || '',
     'Source Page': payload.source || payload.source_page || '/placement-guaranteed',
     ...tracking,
     ...payload,

@@ -359,7 +359,6 @@ class ContactController extends Controller
                 'age'                 => $leadData['age'] ?? '',
                 'status'              => $leadData['status'] ?? '',
                 'graduate'            => $leadData['graduate'] ?? '',
-                'program'             => $leadData['program'] ?? '',
                 'source'              => $leadData['source'] ?? '',
 
                 // Human-readable header keys matching sheet columns
@@ -373,7 +372,6 @@ class ContactController extends Controller
                 'Age'                 => $leadData['age'] ?? '',
                 'Status / Experience' => $leadData['status'] ?? '',
                 'Qualification'       => $leadData['graduate'] ?? '',
-                'Program / Note'      => $leadData['program'] ?? '',
                 'Source Page'         => $leadData['source'] ?? '',
             ], $trackingData));
 

@@ -52,8 +52,12 @@ function doPost(e) {
       data = e.parameter;
     }
 
+    // Read existing headers from row 1
+    var lastCol = sheet.getLastColumn();
+    var headers = lastCol > 0 ? sheet.getRange(1, 1, 1, lastCol).getValues()[0] : [];
+
     // Initialize headers if sheet is brand new or empty
-    if (sheet.getLastRow() === 0) {
+    if (headers.length === 0 || sheet.getLastRow() === 0) {
       sheet.appendRow([
         "Lead ID",
         "Date & Time",
@@ -65,11 +69,10 @@ function doPost(e) {
         "Age",
         "Status / Experience",
         "Qualification",
-        "Program / Notes",
         "Source Page"
       ]);
-      // Format header row
-      var headerRange = sheet.getRange(1, 1, 1, 12);
+      headers = ["Lead ID", "Date & Time", "Form Heading", "Full Name", "Mobile Number", "Email", "City", "Age", "Status / Experience", "Qualification", "Source Page"];
+      var headerRange = sheet.getRange(1, 1, 1, headers.length);
       headerRange.setFontWeight("bold");
       headerRange.setBackground("#061A36");
       headerRange.setFontColor("#FFFFFF");
@@ -92,23 +95,40 @@ function doPost(e) {
     var ageVal = data.age || data["Age"] || "";
     var statusVal = data.status || data["Status / Experience"] || data.experience || "";
     var graduateVal = data.graduate || data["Qualification"] || data.education || "";
-    var programVal = data.program || data["Program / Note"] || data["Program / Notes"] || data.message || "";
     var sourceVal = data.source || data["Source Page"] || "";
 
-    sheet.appendRow([
-      leadIdVal,
-      dateTimeVal,
-      formHeadingVal,
-      nameVal,
-      phoneVal,
-      emailVal,
-      cityVal,
-      ageVal,
-      statusVal,
-      graduateVal,
-      programVal,
-      sourceVal
-    ]);
+    // Map each cell dynamically to the corresponding column header
+    var valMap = {
+      "lead id": leadIdVal,
+      "date & time": dateTimeVal,
+      "date time": dateTimeVal,
+      "form heading": formHeadingVal,
+      "full name": nameVal,
+      "name": nameVal,
+      "mobile number": phoneVal,
+      "mobile": phoneVal,
+      "phone": phoneVal,
+      "email": emailVal,
+      "city": cityVal,
+      "age": ageVal,
+      "status / experience": statusVal,
+      "experience": statusVal,
+      "qualification": graduateVal,
+      "education": graduateVal,
+      "source page": sourceVal,
+      "source": sourceVal
+    };
+
+    var row = [];
+    for (var i = 0; i < headers.length; i++) {
+      var h = String(headers[i]).toLowerCase().trim();
+      if (h.indexOf("program") !== -1 || h.indexOf("note") !== -1) {
+        row.push(""); // Leave empty if column not yet deleted in sheet
+      } else {
+        row.push(valMap[h] !== undefined ? valMap[h] : "");
+      }
+    }
+    sheet.appendRow(row);
 
     return ContentService.createTextOutput(JSON.stringify({ status: "success", message: "Lead punched successfully" }))
       .setMimeType(ContentService.MimeType.JSON);
