@@ -652,9 +652,9 @@ export const PlacementGuaranteed = () => {
           <div className="bg-white/95 backdrop-blur-md border-b border-slate-200">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
               <div className="flex items-center gap-3 sm:gap-4">
-                <Link to="/" className="flex items-center">
+                <a href="/" className="flex items-center" title="Degree Guru Home">
                   <img src={degreeGuruLogo} alt="Degree Guru" className="h-8 sm:h-10 w-auto" />
-                </Link>
+                </a>
                 <span className="text-slate-300 text-lg sm:text-xl font-light">|</span>
                 <img src={leverageEduLogo} alt="Leverage Edu" className="h-6 sm:h-8 w-auto object-contain" />
               </div>
