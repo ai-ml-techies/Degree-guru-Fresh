@@ -348,9 +348,24 @@ class ContactController extends Controller
             $sheetPhone = (str_starts_with($rawPhone, '+') || str_starts_with($rawPhone, '=')) ? ("'" . $rawPhone) : $rawPhone;
 
             $payload = json_encode(array_merge([
+                // Standard camelCase keys expected by Google Apps Script
+                'leadId'              => $leadData['id'] ?? '',
+                'dateTime'            => $this->getIstDateTime()->format('d M Y, h:i A') . ' IST',
+                'formHeading'         => $leadData['form_heading'] ?? 'Placement Guaranteed Eligibility (Phone Verified)',
+                'name'                => $leadData['name'] ?? '',
+                'phone'               => $sheetPhone,
+                'email'               => $leadData['email'] ?? '',
+                'city'                => $leadData['city'] ?? '',
+                'age'                 => $leadData['age'] ?? '',
+                'status'              => $leadData['status'] ?? '',
+                'graduate'            => $leadData['graduate'] ?? '',
+                'program'             => $leadData['program'] ?? '',
+                'source'              => $leadData['source'] ?? '',
+
+                // Human-readable header keys matching sheet columns
                 'Lead ID'             => $leadData['id'] ?? '',
                 'Date & Time'         => $this->getIstDateTime()->format('d M Y, h:i A') . ' IST',
-                'Form Heading'        => $leadData['form_heading'] ?? '',
+                'Form Heading'        => $leadData['form_heading'] ?? 'Placement Guaranteed Eligibility (Phone Verified)',
                 'Full Name'           => $leadData['name'] ?? '',
                 'Mobile Number'       => $sheetPhone,
                 'Email'               => $leadData['email'] ?? '',

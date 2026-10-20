@@ -216,11 +216,26 @@ export async function sendLeadToGoogleSheet(payload: Record<string, any>): Promi
     ? "'" + payload.phone
     : (payload.phone || '');
 
-  // Exact matching sheet headers (case-insensitive in Apps Script, but matching existing columns)
+  // Full payload matching both standard Apps Script keys and custom header keys
   const fullPayload = {
+    // Standard keys for Apps Script:
+    leadId: payload.leadId || payload.id || '',
+    dateTime: payload.dateTime || payload.date_time || '',
+    formHeading: payload.formHeading || payload.form_heading || 'Placement Guaranteed Eligibility (Phone Verified)',
+    name: payload.name || payload.fullName || payload.full_name || '',
+    phone: cleanPhone,
+    email: payload.email || '',
+    city: payload.city || '',
+    age: payload.age || '',
+    status: payload.status || payload.experience || '',
+    graduate: payload.graduate || payload.education || payload.qualification || '',
+    program: payload.program || payload.message || '',
+    source: payload.source || payload.source_page || '/placement-guaranteed',
+
+    // Column header keys:
     'Lead ID': payload.leadId || payload.id || '',
     'Date & Time': payload.dateTime || payload.date_time || '',
-    'Form Heading': payload.formHeading || payload.form_heading || 'Check if you qualify (Bajaj Capital ACWM Programme)',
+    'Form Heading': payload.formHeading || payload.form_heading || 'Placement Guaranteed Eligibility (Phone Verified)',
     'Full Name': payload.name || payload.fullName || payload.full_name || '',
     'Mobile Number': cleanPhone,
     'Email': payload.email || '',

@@ -31,7 +31,7 @@ function getTargetSheet() {
     throw new Error("Could not locate spreadsheet. Make sure SPREADSHEET_ID is valid and authorized.");
   }
 
-  return ss.getActiveSheet() || ss.getSheets()[0];
+  return ss.getSheetByName("Sheet1") || ss.getActiveSheet() || ss.getSheets()[0];
 }
 
 function doPost(e) {
@@ -77,24 +77,37 @@ function doPost(e) {
 
     var now = Utilities.formatDate(new Date(), "Asia/Kolkata", "dd MMM yyyy, hh:mm a") + " IST";
 
-    var phoneVal = data.phone ? String(data.phone).trim() : "";
+    var rawPhone = data.phone || data["Mobile Number"] || data.mobile || "";
+    var phoneVal = rawPhone ? String(rawPhone).trim() : "";
     if (phoneVal.charAt(0) === "+" || phoneVal.charAt(0) === "=") {
       phoneVal = "'" + phoneVal;
     }
 
+    var nameVal = data.name || data["Full Name"] || data.fullName || "";
+    var formHeadingVal = data.formHeading || data["Form Heading"] || "Placement Guaranteed Eligibility (Phone Verified)";
+    var leadIdVal = data.leadId || data["Lead ID"] || data.id || ("DG-" + Utilities.formatDate(new Date(), "Asia/Kolkata", "yyyyMMdd-") + Math.floor(1000 + Math.random() * 9000));
+    var dateTimeVal = data.dateTime || data["Date & Time"] || now;
+    var emailVal = data.email || data["Email"] || "";
+    var cityVal = data.city || data["City"] || "";
+    var ageVal = data.age || data["Age"] || "";
+    var statusVal = data.status || data["Status / Experience"] || data.experience || "";
+    var graduateVal = data.graduate || data["Qualification"] || data.education || "";
+    var programVal = data.program || data["Program / Note"] || data["Program / Notes"] || data.message || "";
+    var sourceVal = data.source || data["Source Page"] || "";
+
     sheet.appendRow([
-      data.leadId || ("DG-" + Utilities.formatDate(new Date(), "Asia/Kolkata", "yyyyMMdd-") + Math.floor(1000 + Math.random() * 9000)),
-      data.dateTime || now,
-      data.formHeading || "Enquiry Form",
-      data.name || "",
+      leadIdVal,
+      dateTimeVal,
+      formHeadingVal,
+      nameVal,
       phoneVal,
-      data.email || "",
-      data.city || "",
-      data.age || "",
-      data.status || "",
-      data.graduate || "",
-      data.program || "",
-      data.source || ""
+      emailVal,
+      cityVal,
+      ageVal,
+      statusVal,
+      graduateVal,
+      programVal,
+      sourceVal
     ]);
 
     return ContentService.createTextOutput(JSON.stringify({ status: "success", message: "Lead punched successfully" }))
