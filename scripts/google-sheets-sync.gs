@@ -67,11 +67,10 @@ function doPost(e) {
         "Email",
         "City",
         "Age",
-        "Status / Experience",
-        "Qualification",
+        "Education",
         "Source Page"
       ]);
-      headers = ["Lead ID", "Date & Time", "Form Heading", "Full Name", "Mobile Number", "Email", "City", "Age", "Status / Experience", "Qualification", "Source Page"];
+      headers = ["Lead ID", "Date & Time", "Form Heading", "Full Name", "Mobile Number", "Email", "City", "Age", "Education", "Source Page"];
       var headerRange = sheet.getRange(1, 1, 1, headers.length);
       headerRange.setFontWeight("bold");
       headerRange.setBackground("#061A36");
@@ -93,8 +92,7 @@ function doPost(e) {
     var emailVal = data.email || data["Email"] || "";
     var cityVal = data.city || data["City"] || "";
     var ageVal = data.age || data["Age"] || "";
-    var statusVal = data.status || data["Status / Experience"] || data.experience || "";
-    var graduateVal = data.graduate || data["Qualification"] || data.education || "";
+    var graduateVal = data.education || data.graduate || data["Education"] || data["Qualification"] || "";
     var sourceVal = data.source || data["Source Page"] || "";
 
     // Map each cell dynamically to the corresponding column header
@@ -111,10 +109,8 @@ function doPost(e) {
       "email": emailVal,
       "city": cityVal,
       "age": ageVal,
-      "status / experience": statusVal,
-      "experience": statusVal,
-      "qualification": graduateVal,
       "education": graduateVal,
+      "qualification": graduateVal,
       "source page": sourceVal,
       "source": sourceVal
     };
@@ -122,7 +118,7 @@ function doPost(e) {
     var row = [];
     for (var i = 0; i < headers.length; i++) {
       var h = String(headers[i]).toLowerCase().trim();
-      if (h.indexOf("program") !== -1 || h.indexOf("note") !== -1) {
+      if (h.indexOf("program") !== -1 || h.indexOf("note") !== -1 || h.indexOf("status") !== -1 || h.indexOf("experience") !== -1) {
         row.push(""); // Leave empty if column not yet deleted in sheet
       } else {
         row.push(valMap[h] !== undefined ? valMap[h] : "");

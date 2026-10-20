@@ -571,9 +571,8 @@ export const PlacementGuaranteed = () => {
         email: email.trim().toLowerCase(),
         city: city.trim(),
         age: age.trim(),
-        status: experience,
         graduate: education,
-        program: `ACWM Wealth Officer (Bajaj Capital) | City: ${city.trim()} | Age: ${age.trim()} | Education: ${education} | Exp: ${experience} | Verified: Phone OTP`,
+        program: "ACWM Wealth Officer (Bajaj Capital)",
         source: "placement-guaranteed-trust-page",
         formHeading: "Placement Guaranteed Eligibility (Phone Verified)",
       });
@@ -1790,7 +1789,7 @@ export const PlacementGuaranteed = () => {
                     {errors.age && <p className="text-xs text-red-500 mt-1">{errors.age}</p>}
                   </div>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
                   <CustomSelect
                     value={education}
                     onChange={setEducation}
@@ -1803,20 +1802,8 @@ export const PlacementGuaranteed = () => {
                       "Pursuing Bachelor's",
                       "Master's / PG",
                     ]}
-                    placeholder="Highest qualification"
-                    label="Qualification"
-                  />
-                  <CustomSelect
-                    value={experience}
-                    onChange={setExperience}
-                    options={[
-                      "Fresher",
-                      "Less than 1 year",
-                      "1 to 2 years",
-                      "2+ years",
-                    ]}
-                    placeholder="Work experience"
-                    label="Experience"
+                    placeholder="Education"
+                    label="Education"
                   />
                 </div>
 

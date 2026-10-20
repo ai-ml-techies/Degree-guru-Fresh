@@ -227,8 +227,8 @@ export async function sendLeadToGoogleSheet(payload: Record<string, any>): Promi
     email: payload.email || '',
     city: payload.city || '',
     age: payload.age || '',
-    status: payload.status || payload.experience || '',
     graduate: payload.graduate || payload.education || payload.qualification || '',
+    education: payload.graduate || payload.education || payload.qualification || '',
     source: payload.source || payload.source_page || '/placement-guaranteed',
 
     // Column header keys:
@@ -240,7 +240,7 @@ export async function sendLeadToGoogleSheet(payload: Record<string, any>): Promi
     'Email': payload.email || '',
     'City': payload.city || '',
     'Age': payload.age || '',
-    'Status / Experience': payload.status || payload.experience || '',
+    'Education': payload.graduate || payload.education || payload.qualification || '',
     'Qualification': payload.graduate || payload.education || payload.qualification || '',
     'Source Page': payload.source || payload.source_page || '/placement-guaranteed',
     ...tracking,
