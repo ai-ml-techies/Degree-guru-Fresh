@@ -32,7 +32,7 @@ function getTargetSheet() {
     throw new Error("Could not locate spreadsheet. Make sure SPREADSHEET_ID is valid and authorized.");
   }
 
-  return ss.getSheetByName("Sheet1") || ss.getActiveSheet() || ss.getSheets()[0];
+  return ss.getSheetByName("Website") || ss.getSheetByName("Sheet1") || ss.getActiveSheet() || ss.getSheets()[0];
 }
 
 function doPost(e) {
@@ -53,30 +53,42 @@ function doPost(e) {
       data = e.parameter;
     }
 
-    // Read existing headers from row 1
-    var lastCol = sheet.getLastColumn();
-    var headers = lastCol > 0 ? sheet.getRange(1, 1, 1, lastCol).getValues()[0] : [];
+    // Ensure standard 12 headers in row 1
+    var expectedHeaders = [
+      "Lead ID",
+      "Date & Time",
+      "Form Heading",
+      "Full Name",
+      "Mobile Number",
+      "Email",
+      "City",
+      "Age",
+      "Education",
+      "Source Page",
+      "Remarks",
+      "Resume Link"
+    ];
 
-    // Initialize headers if sheet is brand new or empty
-    if (headers.length === 0 || sheet.getLastRow() === 0) {
-      sheet.appendRow([
-        "Lead ID",
-        "Date & Time",
-        "Form Heading",
-        "Full Name",
-        "Mobile Number",
-        "Email",
-        "City",
-        "Age",
-        "Education",
-        "Source Page",
-        "Resume Link"
-      ]);
-      headers = ["Lead ID", "Date & Time", "Form Heading", "Full Name", "Mobile Number", "Email", "City", "Age", "Education", "Source Page", "Resume Link"];
-      var headerRange = sheet.getRange(1, 1, 1, headers.length);
-      headerRange.setFontWeight("bold");
-      headerRange.setBackground("#061A36");
-      headerRange.setFontColor("#FFFFFF");
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow(expectedHeaders);
+      var hr = sheet.getRange(1, 1, 1, 12);
+      hr.setFontWeight("bold");
+      hr.setBackground("#061A36");
+      hr.setFontColor("#FFFFFF");
+    } else {
+      // Ensure header row 1 has "Source Page" in Col 10, "Remarks" in Col 11, and "Resume Link" in Col 12
+      var col10Val = String(sheet.getRange(1, 10).getValue() || "").trim();
+      if (!col10Val || col10Val.toLowerCase().indexOf("source") === -1) {
+        sheet.getRange(1, 10).setValue("Source Page").setFontWeight("bold").setBackground("#061A36").setFontColor("#FFFFFF");
+      }
+      var col11Val = String(sheet.getRange(1, 11).getValue() || "").trim();
+      if (!col11Val) {
+        sheet.getRange(1, 11).setValue("Remarks").setFontWeight("bold").setBackground("#061A36").setFontColor("#FFFFFF");
+      }
+      var col12Val = String(sheet.getRange(1, 12).getValue() || "").trim();
+      if (!col12Val || (col12Val.toLowerCase().indexOf("resume") === -1 && col12Val.toLowerCase().indexOf("drive") === -1 && col12Val.toLowerCase().indexOf("cv") === -1)) {
+        sheet.getRange(1, 12).setValue("Resume Link").setFontWeight("bold").setBackground("#061A36").setFontColor("#FFFFFF");
+      }
     }
 
     var now = Utilities.formatDate(new Date(), "Asia/Kolkata", "dd MMM yyyy, hh:mm a") + " IST";
@@ -95,82 +107,69 @@ function doPost(e) {
     var cityVal = data.city || data["City"] || "";
     var ageVal = data.age || data["Age"] || "";
     var graduateVal = data.education || data.graduate || data["Education"] || data["Qualification"] || "";
-    var sourceVal = data.source || data["Source Page"] || "";
+    var sourceVal = data.source || data["Source Page"] || "placement-guaranteed-trust-page";
 
     // Upload CV/Resume to designated Google Drive folder if provided
     var resumeDriveUrl = data.resumeLink || data["Resume Link"] || data.resumeUrl || "";
     if (data.resumeBase64 && data.resumeFileName) {
       try {
+        var base64Data = String(data.resumeBase64).trim();
+        if (base64Data.indexOf(",") !== -1) {
+          base64Data = base64Data.split(",")[1];
+        }
         var folder = DriveApp.getFolderById(DRIVE_FOLDER_ID);
-        var decoded = Utilities.base64Decode(data.resumeBase64);
+        var decoded = Utilities.base64Decode(base64Data);
         var mime = data.resumeMimeType || "application/pdf";
-        var blob = Utilities.newBlob(decoded, mime, data.resumeFileName);
+        var fileName = data.resumeFileName || ("CV_" + leadIdVal + ".pdf");
+        var blob = Utilities.newBlob(decoded, mime, fileName);
         var driveFile = folder.createFile(blob);
         try {
           driveFile.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
         } catch (shareErr) {
-          Logger.log("Sharing permission warning: " + shareErr);
+          Logger.log("Drive sharing permission warning: " + shareErr);
         }
         resumeDriveUrl = driveFile.getUrl();
       } catch (driveErr) {
-        Logger.log("Drive upload error: " + driveErr);
+        Logger.log("DriveApp upload error: " + driveErr);
       }
     }
 
-    // Map each cell dynamically to the corresponding column header
-    var valMap = {
-      "lead id": leadIdVal,
-      "date & time": dateTimeVal,
-      "date time": dateTimeVal,
-      "form heading": formHeadingVal,
-      "full name": nameVal,
-      "name": nameVal,
-      "mobile number": phoneVal,
-      "mobile": phoneVal,
-      "phone": phoneVal,
-      "email": emailVal,
-      "city": cityVal,
-      "age": ageVal,
-      "education": graduateVal,
-      "qualification": graduateVal,
-      "source page": sourceVal,
-      "source": sourceVal,
-      "resume link": resumeDriveUrl,
-      "resume link of drive": resumeDriveUrl,
-      "drive link": resumeDriveUrl,
-      "resume": resumeDriveUrl,
-      "cv": resumeDriveUrl,
-      "cv link": resumeDriveUrl
-    };
+    // Exactly matches historical rows 40-59 column structure:
+    // Col A (1): Lead ID
+    // Col B (2): Date & Time
+    // Col C (3): Form Heading
+    // Col D (4): Full Name
+    // Col E (5): Mobile Number
+    // Col F (6): Email
+    // Col G (7): City
+    // Col H (8): Age
+    // Col I (9): Education
+    // Col J (10): Source Page
+    // Col K (11): Remarks (left empty for counselors' manual notes)
+    // Col L (12): Resume Link (Google Drive file link)
+    var row = [
+      leadIdVal,
+      dateTimeVal,
+      formHeadingVal,
+      nameVal,
+      phoneVal,
+      emailVal,
+      cityVal,
+      ageVal,
+      graduateVal,
+      sourceVal,
+      "",
+      resumeDriveUrl
+    ];
 
-    // Auto-create "Resume Link" header if not already present in the sheet
-    var hasResumeHeader = false;
-    for (var i = 0; i < headers.length; i++) {
-      var hCheck = String(headers[i]).toLowerCase().trim();
-      if (hCheck.indexOf("resume") !== -1 || hCheck.indexOf("cv") !== -1 || hCheck.indexOf("drive") !== -1) {
-        hasResumeHeader = true;
-        break;
-      }
-    }
-    if (!hasResumeHeader) {
-      var newCol = headers.length + 1;
-      sheet.getRange(1, newCol).setValue("Resume Link").setFontWeight("bold").setBackground("#061A36").setFontColor("#FFFFFF");
-      headers.push("Resume Link");
-    }
-
-    var row = [];
-    for (var i = 0; i < headers.length; i++) {
-      var h = String(headers[i]).toLowerCase().trim();
-      if (h.indexOf("program") !== -1 || h.indexOf("note") !== -1 || h.indexOf("status") !== -1 || h.indexOf("experience") !== -1) {
-        row.push(""); // Leave empty if column not yet deleted in sheet
-      } else {
-        row.push(valMap[h] !== undefined ? valMap[h] : "");
-      }
-    }
     sheet.appendRow(row);
 
-    return ContentService.createTextOutput(JSON.stringify({ status: "success", message: "Lead punched successfully" }))
-      .setMimeType(ContentService.MimeType.JSON);
+    return ContentService.createTextOutput(JSON.stringify({
+      status: "success",
+      message: "Lead punched successfully",
+      leadId: leadIdVal,
+      resumeUrl: resumeDriveUrl
+    })).setMimeType(ContentService.MimeType.JSON);
   } catch (error) {
     return ContentService.createTextOutput(JSON.stringify({ status: "error", message: error.toString() }))
       .setMimeType(ContentService.MimeType.JSON);
@@ -191,16 +190,16 @@ function testLeadPunch() {
   sheet.appendRow([
     "TEST-LEAD-001",
     now,
-    "Test Form",
+    "Placement Guaranteed Eligibility (Phone Verified)",
     "Test Student",
-    "9999999999",
+    "'+91 9999999999",
     "test@example.com",
     "Delhi",
     "24",
-    "Graduate",
     "B.Com",
-    "Test notes",
-    "/placement-guaranteed"
+    "placement-guaranteed-trust-page",
+    "",
+    "https://drive.google.com/test-resume-link"
   ]);
-  Logger.log("Test row punched successfully into: " + sheet.getName());
+  Logger.log("Test row punched successfully into tab: " + sheet.getName());
 }

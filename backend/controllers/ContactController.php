@@ -121,6 +121,30 @@ class ContactController extends Controller
             }
         }
 
+        // Fallback: decode base64 directly if multipart file was not received
+        if (empty($resumeDriveUrl) && !empty($resumeBase64) && !empty($resumeFileName)) {
+            try {
+                $resumesDir = Yii::getAlias('@app/web/uploads/resumes');
+                if (!is_dir($resumesDir)) {
+                    @mkdir($resumesDir, 0777, true);
+                }
+                $cleanBase64 = $resumeBase64;
+                if (str_contains($cleanBase64, ',')) {
+                    $parts = explode(',', $cleanBase64, 2);
+                    $cleanBase64 = $parts[1];
+                }
+                $cleanFileName = preg_replace('/[^a-zA-Z0-9_\-\.]/', '_', $resumeFileName);
+                $targetFileName = $leadId . '_' . time() . '_' . $cleanFileName;
+                $targetFilePath = $resumesDir . '/' . $targetFileName;
+                $decoded = base64_decode($cleanBase64, true);
+                if ($decoded !== false && file_put_contents($targetFilePath, $decoded) !== false) {
+                    $resumeDriveUrl = 'https://degreeguru.in/uploads/resumes/' . $targetFileName;
+                }
+            } catch (\Throwable $fbEx) {
+                Yii::warning("Resume base64 save fallback error: " . $fbEx->getMessage(), __METHOD__);
+            }
+        }
+
         // 1. Save lead immediately to Excel-compatible CSV file with UTF-8 BOM
         try {
             $csvDir = Yii::getAlias('@app/web/uploads');
@@ -426,7 +450,7 @@ class ContactController extends Controller
             curl_setopt($ch, CURLOPT_USERAGENT, 'DegreeGuru-Backend/1.0');
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 25);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             $response = curl_exec($ch);
             $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);

@@ -537,25 +537,6 @@ export const PlacementGuaranteed = () => {
     setBusy(true);
     setOtpError("");
     try {
-      // 1. Immediately record lead to Google Sheet & backend so applicant details are NEVER lost even before OTP
-      const pc = validateIndianMobile(phone);
-      const nc = validateMeaningfulName(fullName, false);
-      submitLead({
-        name: nc.normalized || fullName.trim(),
-        phone: `+91 ${pc.normalized || phone.replace(/\D/g, "").slice(-10)}`,
-        email: email.trim().toLowerCase(),
-        city: city.trim(),
-        age: age.trim(),
-        graduate: education,
-        program: "ACWM Wealth Officer (Bajaj Capital)",
-        source: "placement-guaranteed-step1",
-        formHeading: formHeading || "Placement Guaranteed Eligibility (Lead Captured)",
-        cvFile: cvFile,
-        resumeBase64: cvBase64,
-        resumeFileName: cvFile ? cvFile.name : undefined,
-        resumeMimeType: cvFile ? cvFile.type : undefined,
-      }).catch((err) => console.warn("Background lead capture warning:", err));
-
       const res = await sendSmsOtp(phone);
       if (res.success) {
         setStep(2);
@@ -642,6 +623,24 @@ export const PlacementGuaranteed = () => {
       }
       const pc = validateIndianMobile(phone);
       const nc = validateMeaningfulName(fullName, false);
+
+      let finalBase64 = cvBase64;
+      if (cvFile && !finalBase64) {
+        try {
+          finalBase64 = await new Promise<string>((resolve) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+              const res = reader.result as string;
+              resolve(res.includes(",") ? res.split(",")[1] : res);
+            };
+            reader.onerror = () => resolve("");
+            reader.readAsDataURL(cvFile);
+          });
+        } catch {
+          // ignore
+        }
+      }
+
       await submitLead({
         name: nc.normalized || fullName.trim(),
         phone: `+91 ${pc.normalized || phone.replace(/\D/g, "").slice(-10)}`,
@@ -653,7 +652,7 @@ export const PlacementGuaranteed = () => {
         source: "placement-guaranteed-trust-page",
         formHeading: "Placement Guaranteed Eligibility (Phone Verified)",
         cvFile: cvFile,
-        resumeBase64: cvBase64,
+        resumeBase64: finalBase64,
         resumeFileName: cvFile ? cvFile.name : undefined,
         resumeMimeType: cvFile ? cvFile.type : undefined,
       });
