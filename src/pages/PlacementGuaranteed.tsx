@@ -187,7 +187,7 @@ const JOURNEY = [
   { when: "Month 1 – 2.5", title: "Classroom training", text: "240 hours — 190 with ICOFP, 50 with AIMA. Mastering practical wealth advisory.", tag: "ACWM certification", tone: "navy" },
   { when: "Month 3 – 6", title: "Bajaj Capital internship", text: "Four months inside a live Bajaj Capital branch.", tag: "₹15,000 / month stipend", tone: "green" },
   { when: "Month 7", title: "Wealth Officer", text: "Full-time role once the completion criteria are met.", tag: "₹4.2 – ₹4.8 LPA", tone: "green" },
-  { when: "Month 12", title: "Retention bonus", text: "After 12 months of full-time employment.", tag: "₹85,000", tone: "gold" },
+  { when: "", title: "Retention bonus", text: "After 12 months of full-time employment.", tag: "₹85,000", tone: "gold" },
 ];
 
 const CERTIFICATIONS_EXPOSURE = [
@@ -262,7 +262,7 @@ const FAQS = [
   },
   {
     q: "Who is eligible?",
-    a: "Candidates must be graduates in any stream. Age up to 30 for freshers, and up to 35 for experienced candidates. Selection is subject to clearing the screening test and panel interview.",
+    a: "Candidates must be graduates in any stream. Age 21 to 30 for freshers, and up to 35 for experienced candidates. Selection is subject to clearing the assessment and panel interview.",
   },
   {
     q: "What are the job placement locations?",
@@ -289,8 +289,8 @@ const LEGAL: Record<LegalTab, { label: string; body: React.ReactNode }> = {
     label: "Program Terms",
     body: (
       <ul className="list-disc pl-5 space-y-2">
-        <li>Eligibility: Must be a graduate (any stream). Age till 30 for freshers, and till 35 for experienced candidates.</li>
-        <li>Selection through screening test and Bajaj Capital panel interview.</li>
+        <li>Eligibility: Must be a graduate (any stream). Age 21 to 30 for freshers, and till 35 for experienced candidates.</li>
+        <li>Selection through assessment and Bajaj Capital panel interview.</li>
         <li>240 hours of training: 190 with ICOFP, 50 with AIMA.</li>
         <li>4-month internship at Bajaj Capital with ₹15,000 per month stipend.</li>
         <li>Certification: Advanced Certification in Wealth Management (ACWM).</li>
@@ -312,7 +312,7 @@ const LEGAL: Record<LegalTab, { label: string; body: React.ReactNode }> = {
     label: "Placement Terms",
     body: (
       <ul className="list-disc pl-5 space-y-2">
-        <li>The Pre-Placement Offer is issued to candidates who cleared screening test and interview by Bajaj Capital.</li>
+        <li>The Pre-Placement Offer is issued to candidates who cleared assessment and interview by Bajaj Capital.</li>
         <li>Full-time absorption requires 85% attendance, 80% in evaluations, NISM Series V-A certification, professional conduct and relocation readiness.</li>
         <li>Salary is within ₹4.2 – ₹4.8 LPA; the exact figure is stated in the offer letter.</li>
         <li>The ₹85,000 retention bonus applies after 12 months of full-time employment, subject to terms.</li>
@@ -529,7 +529,7 @@ export const PlacementGuaranteed = () => {
     if (!city.trim()) errs.city = "Enter your city.";
     const a = Number(age);
     if (!age.trim() || isNaN(a)) errs.age = "Select your age.";
-    else if (a < 20 || a > 35) errs.age = "Eligible age is 20 to 35.";
+    else if (a < 21 || a > 35) errs.age = "Eligible age is 21 to 35.";
     if (!isSerious) errs.serious = "Please check the confirmation box below to proceed.";
     setErrors(errs);
     if (Object.keys(errs).length) return;
@@ -907,7 +907,7 @@ export const PlacementGuaranteed = () => {
                           } cursor-pointer`}
                         >
                           <option value="">Age *</option>
-                          {Array.from({ length: 16 }, (_, idx) => 20 + idx).map((num) => (
+                          {Array.from({ length: 15 }, (_, idx) => 21 + idx).map((num) => (
                             <option key={num} value={num} className="text-slate-800">
                               {num}
                             </option>
@@ -1043,7 +1043,7 @@ export const PlacementGuaranteed = () => {
                       {busy ? <Loader2 size={16} className="animate-spin" /> : "VERIFY & DOWNLOAD GUIDE"}
                     </button>
 
-                    <div className="space-y-2 pt-1 text-xs text-slate-600">
+                    <div className="pt-1 text-xs text-slate-600">
                       <div className="flex items-center justify-between gap-2">
                         {timer > 0 ? (
                           <span className="text-slate-400">Resend SMS in <strong>{timer}s</strong></span>
@@ -1062,20 +1062,6 @@ export const PlacementGuaranteed = () => {
                           📞 Get OTP via Call
                         </button>
                       </div>
-
-                      <div className="text-center pt-1 border-t border-slate-100">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setIsVerified(true);
-                            setStep(3);
-                            downloadGuide();
-                          }}
-                          className="text-[11px] text-slate-500 hover:text-slate-800 underline cursor-pointer"
-                        >
-                          Didn't receive code? Click here to continue
-                        </button>
-                      </div>
                     </div>
                   </form>
                 )}
@@ -1087,7 +1073,7 @@ export const PlacementGuaranteed = () => {
                     </div>
                     <h4 className="text-xl font-black text-[#061A36]">Application Submitted!</h4>
                     <p className="text-xs text-slate-600 max-w-xs mx-auto leading-relaxed">
-                      Your eligibility screening is registered. Our admissions advisor will contact you within 24 hours.
+                      Our admissions advisor will contact you within 24 hours.
                     </p>
                     <div className="pt-2">
                       <button
@@ -1095,7 +1081,7 @@ export const PlacementGuaranteed = () => {
                         className="w-full py-3 px-4 rounded-xl bg-[#061A36] text-white font-bold text-xs tracking-wide flex items-center justify-center gap-2 shadow-md hover:bg-[#0c2a54] transition-colors cursor-pointer"
                       >
                         <Download size={15} />
-                        DOWNLOAD INTERVIEW PREP KIT PDF
+                        DOWNLOAD INTERVIEW PREP KIT
                       </button>
                     </div>
                   </div>
@@ -1154,7 +1140,7 @@ export const PlacementGuaranteed = () => {
                         {i + 1}
                       </span>
                       <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm hover:shadow-md transition-shadow">
-                        <div className="text-[11px] font-bold tracking-wider text-[#1557D6] uppercase">{s.when}</div>
+                        {s.when && <div className="text-[11px] font-bold tracking-wider text-[#1557D6] uppercase">{s.when}</div>}
                         <h3 className="text-lg sm:text-xl font-extrabold mt-0.5">{s.title}</h3>
                         <p className="text-sm text-slate-600 mt-1 leading-relaxed">{s.text}</p>
                         <span className="inline-block mt-3 text-xs font-bold px-3 py-1 rounded-full bg-[#061A36] text-white">
@@ -1177,12 +1163,11 @@ export const PlacementGuaranteed = () => {
             </Reveal>
 
             <Reveal>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 max-w-5xl mx-auto">
+              <div className="grid sm:grid-cols-3 gap-3 sm:gap-3.5 max-w-4xl mx-auto">
                 {[
                   "Graduate or Above",
-                  "Age Till 30 (Freshers)",
-                  "Age Till 35 (Experienced)",
-                  "Clear Screening Test & Interview",
+                  "Age 21–30 (Experienced Till 35)",
+                  "Clear Assessment & Interview",
                 ].map((item) => (
                   <div
                     key={item}
@@ -1925,7 +1910,7 @@ export const PlacementGuaranteed = () => {
                       } cursor-pointer`}
                     >
                       <option value="">Age *</option>
-                      {Array.from({ length: 16 }, (_, idx) => 20 + idx).map((num) => (
+                      {Array.from({ length: 15 }, (_, idx) => 21 + idx).map((num) => (
                         <option key={num} value={num} className="text-slate-800">
                           {num}
                         </option>
@@ -2072,7 +2057,7 @@ export const PlacementGuaranteed = () => {
                 >
                   {busy ? <><RefreshCw size={16} className="animate-spin" /> VERIFYING…</> : "VERIFY OTP"}
                 </button>
-                <div className="space-y-2 pt-1 text-xs">
+                <div className="pt-1 text-xs">
                   <div className="flex items-center justify-between">
                     <button type="button" onClick={() => setStep(1)} className="text-slate-500 underline">
                       Change number
@@ -2092,19 +2077,6 @@ export const PlacementGuaranteed = () => {
                       className={timer > 0 ? "text-slate-400" : "text-[#1557D6] font-semibold"}
                     >
                       {timer > 0 ? `Resend in ${timer}s` : "Resend SMS"}
-                    </button>
-                  </div>
-                  <div className="text-center pt-1 border-t border-slate-100">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setIsVerified(true);
-                        setStep(3);
-                        downloadGuide();
-                      }}
-                      className="text-[11px] text-slate-500 hover:text-slate-800 underline cursor-pointer"
-                    >
-                      Didn't receive code? Click here to continue
                     </button>
                   </div>
                 </div>
