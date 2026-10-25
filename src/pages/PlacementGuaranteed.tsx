@@ -30,6 +30,7 @@ import {
   Loader2,
   Play,
   Pause,
+  Paperclip,
 } from "lucide-react";
 import { submitLead, sendSmsOtp, verifySmsOtp } from "@/lib/api";
 import { validateIndianMobile, validateMeaningfulName, validateMeaningfulEmail } from "@/lib/validation";
@@ -261,7 +262,7 @@ const FAQS = [
   },
   {
     q: "Who is eligible?",
-    a: "Graduates or final-year Bachelor's students aged 20-28 (buffer 2 to 3 years above threshold is allowed) across any stream. No prior experience or coding background required.",
+    a: "Candidates must be graduates in any stream. Age up to 30 for freshers, and up to 35 for experienced candidates. Selection is subject to clearing the screening test and panel interview.",
   },
   {
     q: "What are the job placement locations?",
@@ -288,8 +289,8 @@ const LEGAL: Record<LegalTab, { label: string; body: React.ReactNode }> = {
     label: "Program Terms",
     body: (
       <ul className="list-disc pl-5 space-y-2">
-        <li>Eligibility: graduate or final-year Bachelor's student, age 20-28 (buffer 2 to 3 years above threshold is allowed).</li>
-        <li>Selection through eligibility check and Bajaj Capital panel interview.</li>
+        <li>Eligibility: Must be a graduate (any stream). Age till 30 for freshers, and till 35 for experienced candidates.</li>
+        <li>Selection through screening test and Bajaj Capital panel interview.</li>
         <li>240 hours of training: 190 with ICOFP, 50 with AIMA.</li>
         <li>4-month internship at Bajaj Capital with ₹15,000 per month stipend.</li>
         <li>Certification: Advanced Certification in Wealth Management (ACWM).</li>
@@ -311,7 +312,7 @@ const LEGAL: Record<LegalTab, { label: string; body: React.ReactNode }> = {
     label: "Placement Terms",
     body: (
       <ul className="list-disc pl-5 space-y-2">
-        <li>The Pre-Placement Offer is issued to candidates who cleared psychometric test and interview by Bajaj Capital.</li>
+        <li>The Pre-Placement Offer is issued to candidates who cleared screening test and interview by Bajaj Capital.</li>
         <li>Full-time absorption requires 85% attendance, 80% in evaluations, NISM Series V-A certification, professional conduct and relocation readiness.</li>
         <li>Salary is within ₹4.2 – ₹4.8 LPA; the exact figure is stated in the offer letter.</li>
         <li>The ₹85,000 retention bonus applies after 12 months of full-time employment, subject to terms.</li>
@@ -363,6 +364,44 @@ export const PlacementGuaranteed = () => {
   const [age, setAge] = useState("");
   const [education, setEducation] = useState("B.Com");
   const [experience, setExperience] = useState("Fresher");
+  const [cvFile, setCvFile] = useState<File | null>(null);
+  const [cvBase64, setCvBase64] = useState<string>("");
+  const [cvError, setCvError] = useState<string>("");
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      setCvError("File size must be under 5MB.");
+      return;
+    }
+    const ext = file.name.substring(file.name.lastIndexOf(".")).toLowerCase();
+    if (![".pdf", ".doc", ".docx"].includes(ext)) {
+      setCvError("Please upload a PDF or DOC/DOCX file.");
+      return;
+    }
+
+    setCvError("");
+    setCvFile(file);
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const res = reader.result as string;
+      const base64 = res.includes(",") ? res.split(",")[1] : res;
+      setCvBase64(base64);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleRemoveFile = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setCvFile(null);
+    setCvBase64("");
+    setCvError("");
+  };
+
   const [isSerious, setIsSerious] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
@@ -490,7 +529,7 @@ export const PlacementGuaranteed = () => {
     if (!city.trim()) errs.city = "Enter your city.";
     const a = Number(age);
     if (!age.trim() || isNaN(a)) errs.age = "Select your age.";
-    else if (a < 20 || a > 31) errs.age = "Eligible age is 20 to 31.";
+    else if (a < 20 || a > 35) errs.age = "Eligible age is 20 to 35.";
     if (!isSerious) errs.serious = "Please check the confirmation box below to proceed.";
     setErrors(errs);
     if (Object.keys(errs).length) return;
@@ -498,6 +537,25 @@ export const PlacementGuaranteed = () => {
     setBusy(true);
     setOtpError("");
     try {
+      // 1. Immediately record lead to Google Sheet & backend so applicant details are NEVER lost even before OTP
+      const pc = validateIndianMobile(phone);
+      const nc = validateMeaningfulName(fullName, false);
+      submitLead({
+        name: nc.normalized || fullName.trim(),
+        phone: `+91 ${pc.normalized || phone.replace(/\D/g, "").slice(-10)}`,
+        email: email.trim().toLowerCase(),
+        city: city.trim(),
+        age: age.trim(),
+        graduate: education,
+        program: "ACWM Wealth Officer (Bajaj Capital)",
+        source: "placement-guaranteed-step1",
+        formHeading: formHeading || "Placement Guaranteed Eligibility (Lead Captured)",
+        cvFile: cvFile,
+        resumeBase64: cvBase64,
+        resumeFileName: cvFile ? cvFile.name : undefined,
+        resumeMimeType: cvFile ? cvFile.type : undefined,
+      }).catch((err) => console.warn("Background lead capture warning:", err));
+
       const res = await sendSmsOtp(phone);
       if (res.success) {
         setStep(2);
@@ -538,11 +596,30 @@ export const PlacementGuaranteed = () => {
     setOtpError("");
     setOtp(["", "", "", "", "", ""]);
     try {
-      const res = await sendSmsOtp(phone);
+      const res = await sendSmsOtp(phone, "sms");
       if (res.success) setTimer(30);
       else setOtpError(res.message || "Could not resend OTP.");
     } catch {
       setOtpError("Network error while resending.");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const resendVoice = async () => {
+    if (busy) return;
+    setBusy(true);
+    setOtpError("");
+    try {
+      const res = await sendSmsOtp(phone, "voice");
+      if (res.success) {
+        setTimer(30);
+        setOtpError("Calling your mobile number with verification code now...");
+      } else {
+        setOtpError(res.message || "Could not trigger phone call.");
+      }
+    } catch {
+      setOtpError("Network error while placing call.");
     } finally {
       setBusy(false);
     }
@@ -575,6 +652,10 @@ export const PlacementGuaranteed = () => {
         program: "ACWM Wealth Officer (Bajaj Capital)",
         source: "placement-guaranteed-trust-page",
         formHeading: "Placement Guaranteed Eligibility (Phone Verified)",
+        cvFile: cvFile,
+        resumeBase64: cvBase64,
+        resumeFileName: cvFile ? cvFile.name : undefined,
+        resumeMimeType: cvFile ? cvFile.type : undefined,
       });
       try {
         localStorage.setItem("pg_phone_verified", "true");
@@ -810,7 +891,7 @@ export const PlacementGuaranteed = () => {
                           <option value="B.Sc">B.Sc</option>
                           <option value="BA">BA</option>
                           <option value="B.Tech / BCA">B.Tech / BCA</option>
-                          <option value="Pursuing Bachelor's">Pursuing Bachelor's</option>
+                          <option value="Other Graduate Degree">Other Graduate Degree</option>
                           <option value="Master's / PG">Master's / PG</option>
                         </select>
                       </div>
@@ -826,7 +907,7 @@ export const PlacementGuaranteed = () => {
                           } cursor-pointer`}
                         >
                           <option value="">Age *</option>
-                          {Array.from({ length: 12 }, (_, idx) => 20 + idx).map((num) => (
+                          {Array.from({ length: 16 }, (_, idx) => 20 + idx).map((num) => (
                             <option key={num} value={num} className="text-slate-800">
                               {num}
                             </option>
@@ -846,6 +927,45 @@ export const PlacementGuaranteed = () => {
                         className="w-full px-3.5 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#1557D6] bg-slate-50/60 font-medium placeholder:text-slate-400"
                       />
                       {errors.city && <p className="text-[11px] text-red-500 mt-0.5">{errors.city}</p>}
+                    </div>
+
+                    {/* Optional CV / Resume Upload */}
+                    <div>
+                      <label className="relative flex items-center justify-between px-3.5 py-2.5 rounded-xl border border-dashed border-slate-300 hover:border-[#1557D6] bg-slate-50/60 hover:bg-blue-50/30 cursor-pointer transition-all group">
+                        <input
+                          type="file"
+                          accept=".pdf,.doc,.docx"
+                          onChange={handleFileChange}
+                          className="sr-only"
+                        />
+                        <div className="flex items-center gap-2 min-w-0">
+                          <Paperclip size={15} className="text-slate-400 group-hover:text-[#1557D6] shrink-0 transition-colors" />
+                          {cvFile ? (
+                            <span className="text-xs font-semibold text-slate-800 truncate">
+                              {cvFile.name}
+                            </span>
+                          ) : (
+                            <span className="text-xs text-slate-500 font-medium truncate">
+                              Upload CV / Resume <span className="text-[11px] text-slate-400 font-normal">(Optional)</span>
+                            </span>
+                          )}
+                        </div>
+                        {cvFile ? (
+                          <button
+                            type="button"
+                            onClick={handleRemoveFile}
+                            className="p-1 hover:bg-slate-200 rounded-full text-slate-400 hover:text-slate-700 shrink-0"
+                            title="Remove file"
+                          >
+                            <X size={13} />
+                          </button>
+                        ) : (
+                          <span className="text-[10px] font-bold text-slate-400 group-hover:text-[#1557D6] shrink-0 uppercase tracking-wide">
+                            PDF / DOC
+                          </span>
+                        )}
+                      </label>
+                      {cvError && <p className="text-[11px] text-red-500 mt-0.5">{cvError}</p>}
                     </div>
 
                     {/* Checkbox */}
@@ -923,14 +1043,39 @@ export const PlacementGuaranteed = () => {
                       {busy ? <Loader2 size={16} className="animate-spin" /> : "VERIFY & DOWNLOAD GUIDE"}
                     </button>
 
-                    <div className="text-center text-xs text-slate-500">
-                      {timer > 0 ? (
-                        <span>Resend OTP in <strong>{timer}s</strong></span>
-                      ) : (
-                        <button type="button" onClick={resend} className="text-[#1557D6] font-bold underline cursor-pointer">
-                          Resend OTP
+                    <div className="space-y-2 pt-1 text-xs text-slate-600">
+                      <div className="flex items-center justify-between gap-2">
+                        {timer > 0 ? (
+                          <span className="text-slate-400">Resend SMS in <strong>{timer}s</strong></span>
+                        ) : (
+                          <button type="button" onClick={resend} className="text-[#1557D6] font-bold underline cursor-pointer">
+                            Resend SMS
+                          </button>
+                        )}
+
+                        <button
+                          type="button"
+                          onClick={resendVoice}
+                          disabled={busy}
+                          className="text-emerald-600 hover:text-emerald-700 font-bold underline cursor-pointer flex items-center gap-1"
+                        >
+                          📞 Get OTP via Call
                         </button>
-                      )}
+                      </div>
+
+                      <div className="text-center pt-1 border-t border-slate-100">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setIsVerified(true);
+                            setStep(3);
+                            downloadGuide();
+                          }}
+                          className="text-[11px] text-slate-500 hover:text-slate-800 underline cursor-pointer"
+                        >
+                          Didn't receive code? Click here to continue
+                        </button>
+                      </div>
                     </div>
                   </form>
                 )}
@@ -1034,10 +1179,10 @@ export const PlacementGuaranteed = () => {
             <Reveal>
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 max-w-5xl mx-auto">
                 {[
-                  "Graduation or Pursuing",
-                  "Age 20-28 (Buffer 2 to 3 years above threshold is allowed)",
-                  "No Experience Mandatory",
-                  "Must Clear Entrance Psychometric Test & Interview",
+                  "Graduate or Above",
+                  "Age Till 30 (Freshers)",
+                  "Age Till 35 (Experienced)",
+                  "Clear Screening Test & Interview",
                 ].map((item) => (
                   <div
                     key={item}
@@ -1780,7 +1925,7 @@ export const PlacementGuaranteed = () => {
                       } cursor-pointer`}
                     >
                       <option value="">Age *</option>
-                      {Array.from({ length: 12 }, (_, idx) => 20 + idx).map((num) => (
+                      {Array.from({ length: 16 }, (_, idx) => 20 + idx).map((num) => (
                         <option key={num} value={num} className="text-slate-800">
                           {num}
                         </option>
@@ -1799,12 +1944,51 @@ export const PlacementGuaranteed = () => {
                       "B.Sc",
                       "BA",
                       "B.Tech / BCA",
-                      "Pursuing Bachelor's",
+                      "Other Graduate Degree",
                       "Master's / PG",
                     ]}
                     placeholder="Education"
                     label="Education"
                   />
+                </div>
+
+                {/* Optional CV / Resume Upload */}
+                <div>
+                  <label className="relative flex items-center justify-between px-3.5 py-2.5 rounded-xl border border-dashed border-slate-300 hover:border-[#1557D6] bg-slate-50 hover:bg-blue-50/30 cursor-pointer transition-all group">
+                    <input
+                      type="file"
+                      accept=".pdf,.doc,.docx"
+                      onChange={handleFileChange}
+                      className="sr-only"
+                    />
+                    <div className="flex items-center gap-2 min-w-0">
+                      <Paperclip size={15} className="text-slate-400 group-hover:text-[#1557D6] shrink-0 transition-colors" />
+                      {cvFile ? (
+                        <span className="text-xs font-semibold text-slate-800 truncate">
+                          {cvFile.name}
+                        </span>
+                      ) : (
+                        <span className="text-xs text-slate-600 font-medium truncate">
+                          Upload CV / Resume <span className="text-[11px] text-slate-400 font-normal">(Optional)</span>
+                        </span>
+                      )}
+                    </div>
+                    {cvFile ? (
+                      <button
+                        type="button"
+                        onClick={handleRemoveFile}
+                        className="p-1 hover:bg-slate-200 rounded-full text-slate-400 hover:text-slate-700 shrink-0"
+                        title="Remove file"
+                      >
+                        <X size={13} />
+                      </button>
+                    ) : (
+                      <span className="text-[10px] font-bold text-slate-400 group-hover:text-[#1557D6] shrink-0 uppercase tracking-wide">
+                        PDF / DOC
+                      </span>
+                    )}
+                  </label>
+                  {cvError && <p className="text-xs text-red-500 mt-1">{cvError}</p>}
                 </div>
 
                 {errors.form && (
@@ -1888,18 +2072,41 @@ export const PlacementGuaranteed = () => {
                 >
                   {busy ? <><RefreshCw size={16} className="animate-spin" /> VERIFYING…</> : "VERIFY OTP"}
                 </button>
-                <div className="flex justify-between text-xs">
-                  <button type="button" onClick={() => setStep(1)} className="text-slate-500 underline">
-                    Change number
-                  </button>
-                  <button
-                    type="button"
-                    onClick={resend}
-                    disabled={timer > 0}
-                    className={timer > 0 ? "text-slate-400" : "text-[#1557D6] font-semibold"}
-                  >
-                    {timer > 0 ? `Resend in ${timer}s` : "Resend OTP"}
-                  </button>
+                <div className="space-y-2 pt-1 text-xs">
+                  <div className="flex items-center justify-between">
+                    <button type="button" onClick={() => setStep(1)} className="text-slate-500 underline">
+                      Change number
+                    </button>
+                    <button
+                      type="button"
+                      onClick={resendVoice}
+                      disabled={busy}
+                      className="text-emerald-600 font-bold hover:underline flex items-center gap-1"
+                    >
+                      📞 Get OTP via Call
+                    </button>
+                    <button
+                      type="button"
+                      onClick={resend}
+                      disabled={timer > 0}
+                      className={timer > 0 ? "text-slate-400" : "text-[#1557D6] font-semibold"}
+                    >
+                      {timer > 0 ? `Resend in ${timer}s` : "Resend SMS"}
+                    </button>
+                  </div>
+                  <div className="text-center pt-1 border-t border-slate-100">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsVerified(true);
+                        setStep(3);
+                        downloadGuide();
+                      }}
+                      className="text-[11px] text-slate-500 hover:text-slate-800 underline cursor-pointer"
+                    >
+                      Didn't receive code? Click here to continue
+                    </button>
+                  </div>
                 </div>
               </form>
             )}

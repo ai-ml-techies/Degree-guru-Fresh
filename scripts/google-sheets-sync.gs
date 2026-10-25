@@ -12,6 +12,7 @@
  */
 
 var SPREADSHEET_ID = "1k9e609RyT_1bJcNnowpSebw1eMZkieZ7Wtqzdpw3vv8";
+var DRIVE_FOLDER_ID = "1oSEoB_Lln1l7E1XNnLlX8W6uc45MRikf";
 
 function getTargetSheet() {
   var ss = null;
@@ -68,9 +69,10 @@ function doPost(e) {
         "City",
         "Age",
         "Education",
-        "Source Page"
+        "Source Page",
+        "Resume Link"
       ]);
-      headers = ["Lead ID", "Date & Time", "Form Heading", "Full Name", "Mobile Number", "Email", "City", "Age", "Education", "Source Page"];
+      headers = ["Lead ID", "Date & Time", "Form Heading", "Full Name", "Mobile Number", "Email", "City", "Age", "Education", "Source Page", "Resume Link"];
       var headerRange = sheet.getRange(1, 1, 1, headers.length);
       headerRange.setFontWeight("bold");
       headerRange.setBackground("#061A36");
@@ -95,6 +97,26 @@ function doPost(e) {
     var graduateVal = data.education || data.graduate || data["Education"] || data["Qualification"] || "";
     var sourceVal = data.source || data["Source Page"] || "";
 
+    // Upload CV/Resume to designated Google Drive folder if provided
+    var resumeDriveUrl = data.resumeLink || data["Resume Link"] || data.resumeUrl || "";
+    if (data.resumeBase64 && data.resumeFileName) {
+      try {
+        var folder = DriveApp.getFolderById(DRIVE_FOLDER_ID);
+        var decoded = Utilities.base64Decode(data.resumeBase64);
+        var mime = data.resumeMimeType || "application/pdf";
+        var blob = Utilities.newBlob(decoded, mime, data.resumeFileName);
+        var driveFile = folder.createFile(blob);
+        try {
+          driveFile.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+        } catch (shareErr) {
+          Logger.log("Sharing permission warning: " + shareErr);
+        }
+        resumeDriveUrl = driveFile.getUrl();
+      } catch (driveErr) {
+        Logger.log("Drive upload error: " + driveErr);
+      }
+    }
+
     // Map each cell dynamically to the corresponding column header
     var valMap = {
       "lead id": leadIdVal,
@@ -112,8 +134,29 @@ function doPost(e) {
       "education": graduateVal,
       "qualification": graduateVal,
       "source page": sourceVal,
-      "source": sourceVal
+      "source": sourceVal,
+      "resume link": resumeDriveUrl,
+      "resume link of drive": resumeDriveUrl,
+      "drive link": resumeDriveUrl,
+      "resume": resumeDriveUrl,
+      "cv": resumeDriveUrl,
+      "cv link": resumeDriveUrl
     };
+
+    // Auto-create "Resume Link" header if not already present in the sheet
+    var hasResumeHeader = false;
+    for (var i = 0; i < headers.length; i++) {
+      var hCheck = String(headers[i]).toLowerCase().trim();
+      if (hCheck.indexOf("resume") !== -1 || hCheck.indexOf("cv") !== -1 || hCheck.indexOf("drive") !== -1) {
+        hasResumeHeader = true;
+        break;
+      }
+    }
+    if (!hasResumeHeader) {
+      var newCol = headers.length + 1;
+      sheet.getRange(1, newCol).setValue("Resume Link").setFontWeight("bold").setBackground("#061A36").setFontColor("#FFFFFF");
+      headers.push("Resume Link");
+    }
 
     var row = [];
     for (var i = 0; i < headers.length; i++) {
