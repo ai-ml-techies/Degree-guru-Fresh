@@ -828,15 +828,15 @@ export const PlacementGuaranteed = () => {
             {/* Clear Form in Replace of Hero Image */}
             <div className="lg:col-span-5 mt-4 sm:mt-0" id="hero-apply-form">
               <div className="rounded-3xl bg-white text-[#061A36] p-6 sm:p-7 shadow-2xl border border-slate-100 relative">
-                {/* Form Header Inside Column */}
-                <div className="pb-3 border-b border-slate-100 mb-4">
-                  <h3 className="text-xl sm:text-2xl font-black text-[#061A36] tracking-tight">
-                    Check Your Eligibility
-                  </h3>
-                </div>
-
+                {/* Form Header Inside Column (Only on Step 1) */}
                 {step === 1 && (
-                  <form onSubmit={submitDetails} className="space-y-3">
+                  <>
+                    <div className="pb-3 border-b border-slate-100 mb-4">
+                      <h3 className="text-xl sm:text-2xl font-black text-[#061A36] tracking-tight">
+                        Check Your Eligibility
+                      </h3>
+                    </div>
+                    <form onSubmit={submitDetails} className="space-y-3">
                     {/* Full Name */}
                     <div>
                       <input
@@ -1007,12 +1007,13 @@ export const PlacementGuaranteed = () => {
                       )}
                     </button>
                   </form>
+                  </>
                 )}
 
                 {step === 2 && (
                   <form onSubmit={verify} className="space-y-4 py-2">
-                    <div className="text-center">
-                      <h4 className="text-base font-bold text-[#061A36]">Verify Mobile Number</h4>
+                    <div className="text-center pb-1">
+                      <h4 className="text-xl font-black text-[#061A36]">Verify Mobile Number</h4>
                       <p className="text-xs text-slate-500 mt-1">
                         Enter 6-digit OTP sent to <strong>+91 {phone}</strong>
                       </p>
@@ -1057,9 +1058,9 @@ export const PlacementGuaranteed = () => {
                           type="button"
                           onClick={resendVoice}
                           disabled={busy}
-                          className="text-emerald-600 hover:text-emerald-700 font-bold underline cursor-pointer flex items-center gap-1"
+                          className="text-emerald-600 hover:text-emerald-700 font-bold underline cursor-pointer"
                         >
-                          📞 Get OTP via Call
+                          Get OTP via Call
                         </button>
                       </div>
                     </div>
@@ -1167,7 +1168,7 @@ export const PlacementGuaranteed = () => {
                 {[
                   "Graduate or Above",
                   "Age 21–30 (Experienced Till 35)",
-                  "Clear Assessment & Interview",
+                  "Clear Assessment & Bajaj Panel Interview",
                 ].map((item) => (
                   <div
                     key={item}
@@ -2066,9 +2067,9 @@ export const PlacementGuaranteed = () => {
                       type="button"
                       onClick={resendVoice}
                       disabled={busy}
-                      className="text-emerald-600 font-bold hover:underline flex items-center gap-1"
+                      className="text-emerald-600 font-bold hover:underline"
                     >
-                      📞 Get OTP via Call
+                      Get OTP via Call
                     </button>
                     <button
                       type="button"
