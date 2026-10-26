@@ -70,21 +70,51 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
   const isGeneralIneligible =
     qualification === "Graduation Not Completed" || enrollInterest === "Just exploring";
 
-  const numAge = Number(age);
-  const isAgeExperienceIneligible =
-    !isGeneralIneligible &&
-    numAge >= 29 &&
-    numAge <= 35 &&
-    experience === "Fresher";
+  const numAge = parseInt(age, 10);
+  const isAgeValid = !isNaN(numAge) && numAge >= 21 && numAge <= 35;
 
+  // Both Fresher and Experienced are 100% allowed
   const isStep1Complete =
     qualification !== "" &&
-    age !== "" &&
+    isAgeValid &&
     experience !== "" &&
     enrollInterest !== "";
 
-  const isEligibleToProceed =
-    isStep1Complete && !isGeneralIneligible && !isAgeExperienceIneligible;
+  const isEligibleToProceed = isStep1Complete && !isGeneralIneligible;
+
+  // Restrict age typing strictly to 21–35
+  const handleAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value.replace(/\D/g, "").slice(0, 2);
+    if (errors.age) {
+      setErrors((prev) => {
+        const n = { ...prev };
+        delete n.age;
+        return n;
+      });
+    }
+
+    if (raw === "") {
+      setAge("");
+      return;
+    }
+
+    // 1 digit typed: only allow 2 or 3 because ages 21-35 start with 2 or 3
+    if (raw.length === 1) {
+      if (raw === "2" || raw === "3") {
+        setAge(raw);
+      }
+      return;
+    }
+
+    // 2 digits typed: only allow between 21 and 35
+    if (raw.length === 2) {
+      const num = parseInt(raw, 10);
+      if (num >= 21 && num <= 35) {
+        setAge(raw);
+      }
+      return;
+    }
+  };
 
   // File Upload Handlers (Resume only)
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -133,7 +163,7 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
   const handleProceedToStep2 = () => {
     const errs: Record<string, string> = {};
     if (!qualification) errs.qualification = "Select qualification";
-    if (!age) errs.age = "Select age";
+    if (!isAgeValid) errs.age = "Enter age (21–35)";
     if (!experience) errs.experience = "Select work experience";
     if (!enrollInterest) errs.enrollInterest = "Select your interest";
 
@@ -417,40 +447,27 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
               )}
             </div>
 
-            {/* 2. Age */}
+            {/* 2. Age (Type restricted to 21–35) */}
             <div>
               <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">
                 Age
               </label>
               <div className="relative">
-                <select
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={2}
                   value={age}
-                  onChange={(e) => {
-                    setAge(e.target.value);
-                    if (errors.age) {
-                      setErrors((prev) => {
-                        const n = { ...prev };
-                        delete n.age;
-                        return n;
-                      });
-                    }
-                  }}
-                  className={`w-full px-3.5 py-2.5 rounded-xl border text-sm transition-all appearance-none cursor-pointer focus:outline-none focus:ring-1 focus:ring-[#1557D6]/20 bg-slate-50/50 hover:bg-slate-50 focus:bg-white ${
+                  onChange={handleAgeChange}
+                  placeholder="Enter age (21–35)"
+                  className={`w-full px-3.5 py-2.5 rounded-xl border text-sm transition-all focus:outline-none focus:ring-1 focus:ring-[#1557D6]/20 bg-slate-50/50 hover:bg-slate-50 focus:bg-white ${
                     errors.age
                       ? "border-red-400"
-                      : age
-                      ? "border-[#1557D6] text-slate-700 font-medium"
-                      : "border-slate-200 text-slate-400 font-normal"
+                      : isAgeValid
+                      ? "border-[#1557D6] text-slate-800 font-medium"
+                      : "border-slate-200 text-slate-700 font-normal"
                   }`}
-                >
-                  <option value="">Select Age (21–35)</option>
-                  {Array.from({ length: 15 }, (_, i) => 21 + i).map((num) => (
-                    <option key={num} value={num}>
-                      {num}
-                    </option>
-                  ))}
-                </select>
-                <ChevronDown size={16} className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                />
               </div>
               {errors.age && (
                 <p className="text-[11px] text-red-500 mt-1 font-medium">{errors.age}</p>
@@ -566,29 +583,10 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
               </div>
             )}
 
-            {/* EXACT REQUIRED FALLBACK 2: Age 29–35 without experience */}
-            {isAgeExperienceIneligible && (
-              <div className="p-4 rounded-xl bg-amber-50/80 border border-amber-200/80 text-amber-950 space-y-3 animate-in fade-in duration-200">
-                <div className="flex items-start gap-2">
-                  <AlertCircle size={16} className="text-amber-600 shrink-0 mt-0.5" />
-                  <p className="text-xs sm:text-[13px] font-normal leading-relaxed text-slate-700">
-                    This profile does not match the programme criteria. Connect with Degree Guru's Career Advisor for personalized guidance.
-                  </p>
-                </div>
-                <a
-                  href={WA_ADVISOR_LINK}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="w-full py-2 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs sm:text-sm flex items-center justify-center gap-2 transition-colors cursor-pointer"
-                >
-                  <WhatsAppCircleIcon className="w-4 h-4 text-white" />
-                  Connect with Advisor
-                </a>
-              </div>
-            )}
+
 
             {/* Proceed to Step 2 Button */}
-            {!isGeneralIneligible && !isAgeExperienceIneligible && (
+            {!isGeneralIneligible && (
               <button
                 type="button"
                 onClick={handleProceedToStep2}
