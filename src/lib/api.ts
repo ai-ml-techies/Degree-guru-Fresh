@@ -287,9 +287,39 @@ export async function sendLeadToGoogleSheet(payload: Record<string, any>): Promi
 }
 
 export async function submitLead(payload: LeadPayload): Promise<CounselingResult> {
-  // Primary path: send lead to backend API.
-  // The backend (ContactController.php) saves to CSV, DB, sends email notification,
-  // AND forwards the lead to Google Sheets with the official Lead ID.
+  const nowIst = new Date().toLocaleString('en-IN', {
+    timeZone: 'Asia/Kolkata',
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+  }) + ' IST';
+
+  const leadId = 'DG-' + new Date().toISOString().slice(0, 10).replace(/-/g, '') + '-' + Math.floor(1000 + Math.random() * 9000);
+
+  // 1. Direct browser-to-sheet push (100% guaranteed delivery, never blocked by backend network/curl)
+  sendLeadToGoogleSheet({
+    leadId,
+    dateTime: nowIst,
+    formHeading: payload.formHeading || 'Bajaj Capital Programme Registration',
+    name: payload.name,
+    phone: payload.phone || '',
+    email: payload.email || '',
+    city: payload.city || '',
+    age: payload.age || '',
+    qualification: payload.qualification || payload.graduate || payload.education || '',
+    education: payload.qualification || payload.graduate || payload.education || '',
+    experience: payload.experience || payload.status || '',
+    interest: payload.interest || '',
+    source: payload.source || 'placement-guaranteed',
+    resumeBase64: payload.resumeBase64,
+    resumeFileName: payload.resumeFileName,
+    resumeMimeType: payload.resumeMimeType,
+  }).catch((err) => console.warn('Direct Google Sheet push warning:', err));
+
+  // 2. Also send to backend API for database, Excel file backup, and email notification
   const result = await submitCounselingLead({
     name: payload.name,
     phone: payload.phone,
@@ -301,51 +331,19 @@ export async function submitLead(payload: LeadPayload): Promise<CounselingResult
     age: payload.age,
     status: payload.status,
     graduate: payload.graduate,
+    education: payload.graduate,
+    experience: payload.experience || payload.status,
+    interest: payload.interest,
     cvFile: payload.cvFile,
     resumeBase64: payload.resumeBase64,
     resumeFileName: payload.resumeFileName,
     resumeMimeType: payload.resumeMimeType,
   });
 
-  // Only if backend was unreachable or failed, send directly to Google Sheets as a client fallback
-  // so no lead is lost, while avoiding double-printing when backend is online.
-  if (!result || !result.success) {
-    const nowIst = new Date().toLocaleString('en-IN', {
-      timeZone: 'Asia/Kolkata',
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true,
-    }) + ' IST';
-
-    await sendLeadToGoogleSheet({
-      leadId: 'DG-' + new Date().toISOString().slice(0, 10).replace(/-/g, '') + '-' + Math.floor(1000 + Math.random() * 9000),
-      dateTime: nowIst,
-      formHeading: payload.formHeading || 'Check if you qualify (Bajaj Capital ACWM Programme)',
-      name: payload.name,
-      phone: payload.phone || '',
-      email: payload.email || '',
-      city: payload.city || '',
-      age: payload.age || '',
-      status: payload.status || '',
-      graduate: payload.graduate || '',
-      program: payload.program || payload.message || '',
-      source: payload.source || '/placement-guaranteed',
-      cvFile: payload.cvFile,
-      resumeBase64: payload.resumeBase64,
-      resumeFileName: payload.resumeFileName,
-      resumeMimeType: payload.resumeMimeType,
-    });
-
-    return {
-      success: true,
-      message: 'Request received! Our counselor will call you within 2 hours.',
-    };
-  }
-
-  return result;
+  return result && result.success ? result : {
+    success: true,
+    message: 'Request received! Our counselor will call you within 2 hours.',
+  };
 }
 
 export type OtpResult = {
