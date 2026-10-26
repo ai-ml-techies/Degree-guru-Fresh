@@ -80,6 +80,9 @@ class ContactController extends Controller
         $age = trim((string) Yii::$app->request->post('age', ''));
         $status = trim((string) Yii::$app->request->post('status', ''));
         $graduate = trim((string) Yii::$app->request->post('graduate', ''));
+        $experience = trim((string) (Yii::$app->request->post('experience') ?: Yii::$app->request->post('status', '')));
+        $interest = trim((string) Yii::$app->request->post('interest', ''));
+        $qualification = trim((string) (Yii::$app->request->post('qualification') ?: (Yii::$app->request->post('education') ?: $graduate)));
 
         if (empty($formHeading)) {
             $formHeading = (str_contains($source ?? '', 'pdf')) 

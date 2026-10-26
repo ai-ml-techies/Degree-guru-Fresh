@@ -2,11 +2,12 @@
  * Google Apps Script Web App for Degree Guru Leads
  * Connected to Spreadsheet:
  * https://docs.google.com/spreadsheets/d/1k9e609RyT_1bJcNnowpSebw1eMZkieZ7Wtqzdpw3vv8/edit?gid=0#gid=0
+ * Target Tab: "Website"
  *
  * CRITICAL DEPLOYMENT SETTING:
  * In Google Apps Script -> Deploy -> Manage deployments -> Edit (pencil icon):
  * - "Execute as": "Me"
- * - "Who has access": "Anyone"  <-- MUST BE "Anyone", NOT "Only myself"!
+ * - "Who has access": "Anyone"  <-- MUST BE "Anyone"!
  * - "Version": "New version"
  * - Click Deploy!
  */
@@ -32,7 +33,12 @@ function getTargetSheet() {
     throw new Error("Could not locate spreadsheet. Make sure SPREADSHEET_ID is valid and authorized.");
   }
 
-  return ss.getSheetByName("Website") || ss.getSheetByName("Sheet1") || ss.getActiveSheet() || ss.getSheets()[0];
+  // Always target the "Website" tab as requested
+  var sheet = ss.getSheetByName("Website");
+  if (!sheet) {
+    sheet = ss.insertSheet("Website");
+  }
+  return sheet;
 }
 
 function doPost(e) {
@@ -53,41 +59,43 @@ function doPost(e) {
       data = e.parameter;
     }
 
-    // Ensure standard 12 headers in row 1
+    // 14 Clear, Crisp Form-Relevant Headers (Zero Fluff)
     var expectedHeaders = [
       "Lead ID",
       "Date & Time",
-      "Form Heading",
+      "Form Name",
       "Full Name",
       "Mobile Number",
       "Email",
       "City",
       "Age",
-      "Education",
+      "Qualification",
+      "Work Experience",
+      "Interest",
       "Source Page",
-      "Remarks",
+      "Notes",
       "Resume Link"
     ];
 
     if (sheet.getLastRow() === 0) {
       sheet.appendRow(expectedHeaders);
-      var hr = sheet.getRange(1, 1, 1, 12);
+      var hr = sheet.getRange(1, 1, 1, expectedHeaders.length);
       hr.setFontWeight("bold");
       hr.setBackground("#061A36");
       hr.setFontColor("#FFFFFF");
+      try { sheet.setFrozenRows(1); } catch (fErr) {}
     } else {
-      // Ensure header row 1 has "Source Page" in Col 10, "Remarks" in Col 11, and "Resume Link" in Col 12
-      var col10Val = String(sheet.getRange(1, 10).getValue() || "").trim();
-      if (!col10Val || col10Val.toLowerCase().indexOf("source") === -1) {
-        sheet.getRange(1, 10).setValue("Source Page").setFontWeight("bold").setBackground("#061A36").setFontColor("#FFFFFF");
-      }
-      var col11Val = String(sheet.getRange(1, 11).getValue() || "").trim();
-      if (!col11Val) {
-        sheet.getRange(1, 11).setValue("Remarks").setFontWeight("bold").setBackground("#061A36").setFontColor("#FFFFFF");
-      }
-      var col12Val = String(sheet.getRange(1, 12).getValue() || "").trim();
-      if (!col12Val || (col12Val.toLowerCase().indexOf("resume") === -1 && col12Val.toLowerCase().indexOf("drive") === -1 && col12Val.toLowerCase().indexOf("cv") === -1)) {
-        sheet.getRange(1, 12).setValue("Resume Link").setFontWeight("bold").setBackground("#061A36").setFontColor("#FFFFFF");
+      var firstCell = String(sheet.getRange(1, 1).getValue() || "").trim();
+      var col9 = String(sheet.getRange(1, 9).getValue() || "").trim();
+      var col10 = String(sheet.getRange(1, 10).getValue() || "").trim();
+      // If row 1 is uninitialized or uses older headers, align headers
+      if (!firstCell || col9.toLowerCase().indexOf("qual") === -1 || col10.toLowerCase().indexOf("exp") === -1) {
+        sheet.getRange(1, 1, 1, expectedHeaders.length).setValues([expectedHeaders]);
+        var hr = sheet.getRange(1, 1, 1, expectedHeaders.length);
+        hr.setFontWeight("bold");
+        hr.setBackground("#061A36");
+        hr.setFontColor("#FFFFFF");
+        try { sheet.setFrozenRows(1); } catch (fErr) {}
       }
     }
 
@@ -100,16 +108,18 @@ function doPost(e) {
     }
 
     var nameVal = data.name || data["Full Name"] || data.fullName || "";
-    var formHeadingVal = data.formHeading || data["Form Heading"] || "Placement Guaranteed Eligibility (Phone Verified)";
+    var formHeadingVal = data.formHeading || data.form_heading || data["Form Name"] || data["Form Heading"] || "Bajaj Capital ACWM Placement Guaranteed";
     var leadIdVal = data.leadId || data["Lead ID"] || data.id || ("DG-" + Utilities.formatDate(new Date(), "Asia/Kolkata", "yyyyMMdd-") + Math.floor(1000 + Math.random() * 9000));
     var dateTimeVal = data.dateTime || data["Date & Time"] || now;
     var emailVal = data.email || data["Email"] || "";
     var cityVal = data.city || data["City"] || "";
     var ageVal = data.age || data["Age"] || "";
-    var graduateVal = data.education || data.graduate || data["Education"] || data["Qualification"] || "";
-    var sourceVal = data.source || data["Source Page"] || "placement-guaranteed-trust-page";
+    var qualificationVal = data.qualification || data.graduate || data.education || data["Qualification"] || data["Education"] || "";
+    var experienceVal = data.experience || data.status || data["Work Experience"] || data["Experience"] || "";
+    var interestVal = data.interest || data["Interest"] || data["Interested in Enrolling"] || "";
+    var sourceVal = data.source || data.source_page || data["Source Page"] || "placement-guaranteed";
 
-    // Upload CV/Resume to designated Google Drive folder if provided
+    // Upload Resume to designated Google Drive folder if provided
     var resumeDriveUrl = data.resumeLink || data["Resume Link"] || data.resumeUrl || "";
     if (data.resumeBase64 && data.resumeFileName) {
       try {
@@ -120,7 +130,7 @@ function doPost(e) {
         var folder = DriveApp.getFolderById(DRIVE_FOLDER_ID);
         var decoded = Utilities.base64Decode(base64Data);
         var mime = data.resumeMimeType || "application/pdf";
-        var fileName = data.resumeFileName || ("CV_" + leadIdVal + ".pdf");
+        var fileName = data.resumeFileName || ("Resume_" + leadIdVal + ".pdf");
         var blob = Utilities.newBlob(decoded, mime, fileName);
         var driveFile = folder.createFile(blob);
         try {
@@ -134,19 +144,21 @@ function doPost(e) {
       }
     }
 
-    // Exactly matches historical rows 40-59 column structure:
+    // 14 Columns matching form fields directly:
     // Col A (1): Lead ID
     // Col B (2): Date & Time
-    // Col C (3): Form Heading
+    // Col C (3): Form Name
     // Col D (4): Full Name
     // Col E (5): Mobile Number
     // Col F (6): Email
     // Col G (7): City
     // Col H (8): Age
-    // Col I (9): Education
-    // Col J (10): Source Page
-    // Col K (11): Remarks (left empty for counselors' manual notes)
-    // Col L (12): Resume Link (Google Drive file link)
+    // Col I (9): Qualification
+    // Col J (10): Work Experience
+    // Col K (11): Interest
+    // Col L (12): Source Page
+    // Col M (13): Notes (Empty for counselor / follow-up notes)
+    // Col N (14): Resume Link (Google Drive file link)
     var row = [
       leadIdVal,
       dateTimeVal,
@@ -156,7 +168,9 @@ function doPost(e) {
       emailVal,
       cityVal,
       ageVal,
-      graduateVal,
+      qualificationVal,
+      experienceVal,
+      interestVal,
       sourceVal,
       "",
       resumeDriveUrl
@@ -166,7 +180,7 @@ function doPost(e) {
 
     return ContentService.createTextOutput(JSON.stringify({
       status: "success",
-      message: "Lead punched successfully",
+      message: "Lead punched successfully into Website tab",
       leadId: leadIdVal,
       resumeUrl: resumeDriveUrl
     })).setMimeType(ContentService.MimeType.JSON);
@@ -179,25 +193,29 @@ function doPost(e) {
 }
 
 function doGet(e) {
-  return ContentService.createTextOutput(JSON.stringify({ status: "active", message: "Degree Guru Google Sheet Webhook is active" }))
-    .setMimeType(ContentService.MimeType.JSON);
+  return ContentService.createTextOutput(JSON.stringify({
+    status: "active",
+    message: "Degree Guru Google Sheet Webhook for Website tab is active"
+  })).setMimeType(ContentService.MimeType.JSON);
 }
 
-// Simple test function you can run inside the Apps Script editor to test insertion
+// Test function to verify row insertion into "Website" tab directly in Apps Script editor
 function testLeadPunch() {
   var sheet = getTargetSheet();
   var now = Utilities.formatDate(new Date(), "Asia/Kolkata", "dd MMM yyyy, hh:mm a") + " IST";
   sheet.appendRow([
     "TEST-LEAD-001",
     now,
-    "Placement Guaranteed Eligibility (Phone Verified)",
-    "Test Student",
+    "Bajaj Capital ACWM Placement Guaranteed",
+    "Test Candidate",
     "'+91 9999999999",
     "test@example.com",
     "Delhi",
     "24",
-    "B.Com",
-    "placement-guaranteed-trust-page",
+    "Bachelor's Degree",
+    "Fresher",
+    "Yes, I'm interested",
+    "placement-guaranteed",
     "",
     "https://drive.google.com/test-resume-link"
   ]);

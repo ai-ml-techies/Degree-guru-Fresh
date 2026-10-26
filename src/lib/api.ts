@@ -55,6 +55,9 @@ export type CounselingPayload = {
   age?: string;
   status?: string;
   graduate?: string;
+  education?: string;
+  experience?: string;
+  interest?: string;
 };
 
 export type CounselingResult = {
@@ -146,6 +149,8 @@ export async function submitCounselingLead(payload: CounselingPayload & Record<s
   if (payload.age)         body.append('age', payload.age);
   if (payload.status)      body.append('status', payload.status);
   if (payload.graduate)    body.append('graduate', payload.graduate);
+  if (payload.experience)  body.append('experience', payload.experience);
+  if (payload.interest)    body.append('interest', payload.interest);
   if (payload.cvFile) {
     body.append('resume', payload.cvFile);
     body.append('resumeFileName', payload.resumeFileName || payload.cvFile.name);
@@ -241,6 +246,9 @@ export async function sendLeadToGoogleSheet(payload: Record<string, any>): Promi
     age: payload.age || '',
     graduate: payload.graduate || payload.education || payload.qualification || '',
     education: payload.graduate || payload.education || payload.qualification || '',
+    qualification: payload.graduate || payload.education || payload.qualification || '',
+    experience: payload.experience || payload.status || '',
+    interest: payload.interest || '',
     source: payload.source || payload.source_page || '/placement-guaranteed',
     resumeBase64: payload.resumeBase64 || '',
     resumeFileName: payload.resumeFileName || (payload.cvFile ? payload.cvFile.name : ''),
@@ -258,6 +266,8 @@ export async function sendLeadToGoogleSheet(payload: Record<string, any>): Promi
     'Age': payload.age || '',
     'Education': payload.graduate || payload.education || payload.qualification || '',
     'Qualification': payload.graduate || payload.education || payload.qualification || '',
+    'Work Experience': payload.experience || payload.status || '',
+    'Interest': payload.interest || '',
     'Source Page': payload.source || payload.source_page || '/placement-guaranteed',
     'Resume Link': payload.resumeLink || payload['Resume Link'] || '',
     ...tracking,
