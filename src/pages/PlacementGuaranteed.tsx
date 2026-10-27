@@ -259,7 +259,7 @@ const LADDER = [
 const FAQS = [
   {
     q: "Is the placement genuinely guaranteed?",
-    a: "Bajaj Capital issues a written Pre-Placement Offer upfront before any program fees are due. Full absorption as a Wealth Officer is guaranteed upon meeting completion criteria (85% attendance, evaluation scores, and NISM Series V-A certification).",
+    a: "Bajaj Capital issues a written Pre-Placement Offer upfront before any program fees are due. Full absorption as a Wealth Officer is guaranteed upon meeting completion criteria (75% attendance, evaluation scores, and NISM Series V-A certification).",
   },
   {
     q: "Who is eligible?",
@@ -314,7 +314,7 @@ const LEGAL: Record<LegalTab, { label: string; body: React.ReactNode }> = {
     body: (
       <ul className="list-disc pl-5 space-y-2">
         <li>The Pre-Placement Offer is issued to candidates who cleared assessment and interview by Bajaj Capital.</li>
-        <li>Full-time absorption requires 85% attendance, 80% in evaluations, NISM Series V-A certification, professional conduct and relocation readiness.</li>
+        <li>Full-time absorption requires 75% attendance, 80% in evaluations, NISM Series V-A certification, professional conduct and relocation readiness.</li>
         <li>Salary is within ₹4.2 – ₹4.8 LPA; the exact figure is stated in the offer letter.</li>
         <li>The ₹85,000 retention bonus applies after 12 months of full-time employment, subject to terms.</li>
         <li>Paid internship is mandatory to be eligible for full-time employment.</li>
@@ -1302,7 +1302,7 @@ export const PlacementGuaranteed = () => {
                   <ul className="space-y-3 text-sm text-slate-200">
                     {[
                       "Clear the Bajaj Capital interview",
-                      "85% attendance",
+                      "75% attendance",
                       "80% in evaluations",
                       "NISM Series V-A certification",
                       "Professional conduct and relocation readiness",
@@ -1319,12 +1319,12 @@ export const PlacementGuaranteed = () => {
           </div>
         </section>
 
-        {/* ADVANCED CERTIFICATIONS */}
+        {/* Certification exposure */}
         <section id="certifications" className="pt-10 pb-14 sm:pt-12 sm:pb-18 bg-[#F7F9FC] border-t border-slate-200 scroll-mt-24 relative overflow-hidden">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
             <Reveal className="text-center max-w-2xl mx-auto mb-8 sm:mb-12">
               <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-[#061A36]">
-                ADVANCED CERTIFICATIONS
+                Certification exposure
               </h2>
             </Reveal>
 
