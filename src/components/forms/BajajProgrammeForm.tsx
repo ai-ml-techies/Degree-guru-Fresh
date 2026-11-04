@@ -455,7 +455,7 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
   return (
     <div className="w-full bg-white text-[#061A36] rounded-3xl shadow-2xl border border-slate-100 overflow-hidden transition-all duration-300">
       {/* Clean Live Form Vibe Header */}
-      {step !== 3 && (
+      {step !== 3 && step !== "otp" && (
         <div className="px-6 sm:px-7 pt-6 sm:pt-7 pb-3 border-b border-slate-100 relative bg-white">
           {isModal && onClose && (
             <button
@@ -469,15 +469,11 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
           )}
 
           <h3 className="text-xl sm:text-2xl font-black text-[#061A36] tracking-tight">
-            {step === "otp"
-              ? "Verify Mobile Number"
-              : step === 2
-              ? "Applicant Details"
-              : formHeading}
+            {step === 2 ? "Applicant Details" : formHeading}
           </h3>
         </div>
       )}
-      {step === 3 && isModal && onClose && (
+      {(step === 3 || step === "otp") && isModal && onClose && (
         <div className="relative w-full pt-4 pr-4 flex justify-end">
           <button
             type="button"
