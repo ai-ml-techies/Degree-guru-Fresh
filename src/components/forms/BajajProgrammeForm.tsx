@@ -198,7 +198,7 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
     if (!em.valid) errs.email = em.error || "Enter valid email";
 
     const c = validateMeaningfulCity(city);
-    if (!c.valid) errs.city = c.error || "Enter a valid city name (minimum 3 letters)";
+    if (!c.valid) errs.city = c.error || "Please enter a valid city name";
     const finalCity = c.normalized || city.trim();
 
     if (!isFeeUnderstood) {
@@ -683,7 +683,7 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
                     : "bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200"
                 }`}
               >
-                <span>PROCEED TO REGISTRATION</span>
+                <span>PROCEED</span>
                 <ArrowRight size={16} />
               </button>
             )}
@@ -799,7 +799,7 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
                     if (!c.valid) {
                       setErrors((prev) => ({
                         ...prev,
-                        city: c.error || "Please enter a valid city name (minimum 3 letters)",
+                        city: c.error || "Please enter a valid city name",
                       }));
                     }
                   }
@@ -897,7 +897,7 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
                 </>
               ) : (
                 <>
-                  <span>SUBMIT REGISTRATION</span>
+                  <span>SUBMIT APPLICATION</span>
                   <ArrowRight size={15} />
                 </>
               )}
@@ -1032,7 +1032,7 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
             </div>
 
             <div className="space-y-1.5">
-              <h4 className="text-2xl font-black text-slate-900 tracking-tight">
+              <h4 className="text-lg sm:text-2xl font-extrabold text-slate-900 tracking-tight whitespace-nowrap">
                 Application Submitted!
               </h4>
               <p className="text-xs sm:text-[13px] text-slate-600 max-w-sm mx-auto leading-relaxed font-normal">

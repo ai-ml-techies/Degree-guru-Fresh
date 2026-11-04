@@ -499,7 +499,7 @@ export function validateMeaningfulCity(rawInput: string): ValidationResult {
   }
 
   if (trimmed.length < 3) {
-    return { valid: false, error: "Please enter a valid city name (minimum 3 letters)." };
+    return { valid: false, error: "Please enter a valid city name." };
   }
 
   if (trimmed.length > 50) {

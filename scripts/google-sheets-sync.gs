@@ -117,15 +117,6 @@ function doPost(e) {
       cityVal = cityVal.replace(/\w\S*/g, function(txt) {
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
       });
-      // Reject single-letter or non-genuine city names
-      var alphaOnly = cityVal.replace(/[^a-zA-Z]/g, "");
-      if (alphaOnly.length < 3) {
-        Logger.log("Invalid nonsense city rejected: " + cityVal);
-        return ContentService.createTextOutput(JSON.stringify({
-          status: "error",
-          message: "Invalid city name. Genuine city name with minimum 3 letters required."
-        })).setMimeType(ContentService.MimeType.JSON);
-      }
     }
     var ageVal = data.age || data["Age"] || "";
     var qualificationVal = data.qualification || data.graduate || data.education || data["Qualification"] || data["Education"] || "";
@@ -190,27 +181,21 @@ function doPost(e) {
       resumeDriveUrl
     ];
 
-    // Deduplication check: prevent multiple prints, ensure only 1 print in sheet
+    // Deduplication check: only ignore exact duplicate requests with the SAME Lead ID
     var lastRow = sheet.getLastRow();
     if (lastRow > 1) {
-      var checkCount = Math.min(50, lastRow - 1);
+      var checkCount = Math.min(30, lastRow - 1);
       var startRow = lastRow - checkCount + 1;
-      var existingData = sheet.getRange(startRow, 1, checkCount, 6).getValues();
-      var cleanNewPhone = (phoneVal || "").replace(/\D/g, "").slice(-10);
+      var existingData = sheet.getRange(startRow, 1, checkCount, 1).getValues();
 
       for (var r = existingData.length - 1; r >= 0; r--) {
         var exLeadId = String(existingData[r][0] || "").trim();
-        var exPhone = String(existingData[r][4] || "").replace(/\D/g, "").slice(-10);
-
-        var isSameLeadId = leadIdVal && exLeadId && (leadIdVal === exLeadId);
-        var isSamePhone = cleanNewPhone && exPhone && (cleanNewPhone === exPhone);
-
-        if (isSameLeadId || isSamePhone) {
-          Logger.log("Duplicate lead ignored: " + leadIdVal + " / " + phoneVal);
+        if (leadIdVal && exLeadId && leadIdVal === exLeadId) {
+          Logger.log("Duplicate lead ID ignored: " + leadIdVal);
           return ContentService.createTextOutput(JSON.stringify({
             status: "success",
-            message: "Lead already recorded in Logical Form Website tab (duplicate ignored)",
-            leadId: exLeadId || leadIdVal,
+            message: "Lead already recorded in Logical Form Website tab",
+            leadId: exLeadId,
             duplicate: true
           })).setMimeType(ContentService.MimeType.JSON);
         }
