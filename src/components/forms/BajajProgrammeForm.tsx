@@ -12,7 +12,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { submitLead, sendSmsOtp, verifySmsOtp } from "@/lib/api";
-import { validateIndianMobile, validateMeaningfulName, validateMeaningfulEmail } from "@/lib/validation";
+import { validateIndianMobile, validateMeaningfulName, validateMeaningfulEmail, validateMeaningfulCity } from "@/lib/validation";
 import { WhatsAppCircleIcon } from "@/components/SocialIcons";
 
 const WA_ADVISOR_LINK =
@@ -58,6 +58,7 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
   // Form handling state
   const [busy, setBusy] = useState<boolean>(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const leadSubmittedRef = useRef<boolean>(false);
 
   // Countdown timer for OTP
   useEffect(() => {
@@ -192,7 +193,9 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
     const em = validateMeaningfulEmail(email);
     if (!em.valid) errs.email = em.error || "Enter valid email";
 
-    if (!city.trim()) errs.city = "Enter current city";
+    const c = validateMeaningfulCity(city);
+    if (!c.valid) errs.city = c.error || "Enter a valid city name (minimum 3 letters)";
+    const finalCity = c.normalized || city.trim();
 
     if (!isFeeUnderstood) {
       errs.fee = "Please acknowledge the confirmation checkbox to proceed";
@@ -222,28 +225,31 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
       }
     }
 
-    try {
-      await submitLead({
-        name: fullName.trim(),
-        phone: `+91 ${phone.replace(/\D/g, "").slice(-10)}`,
-        email: email.trim().toLowerCase(),
-        city: city.trim(),
-        age: age.trim(),
-        graduate: qualification,
-        education: qualification,
-        qualification: qualification,
-        experience: experience,
-        interest: enrollInterest,
-        program: `ACWM Wealth Officer (Bajaj Capital) | Exp: ${experience} | Interest: ${enrollInterest}`,
-        source: "placement-guaranteed-trust-page",
-        formHeading: "Bajaj Capital Programme Registration",
-        cvFile: resumeFile || undefined,
-        resumeBase64: finalBase64 || undefined,
-        resumeFileName: resumeFile ? resumeFile.name : undefined,
-        resumeMimeType: resumeFile ? resumeFile.type : undefined,
-      });
-    } catch (submitErr) {
-      console.warn("Immediate lead submission note:", submitErr);
+    if (!leadSubmittedRef.current) {
+      try {
+        await submitLead({
+          name: fullName.trim(),
+          phone: `+91 ${phone.replace(/\D/g, "").slice(-10)}`,
+          email: email.trim().toLowerCase(),
+          city: finalCity,
+          age: age.trim(),
+          graduate: qualification,
+          education: qualification,
+          qualification: qualification,
+          experience: experience,
+          interest: enrollInterest,
+          program: `ACWM Wealth Officer (Bajaj Capital) | Exp: ${experience} | Interest: ${enrollInterest}`,
+          source: "placement-guaranteed-trust-page",
+          formHeading: "Bajaj Capital Programme Registration",
+          cvFile: resumeFile || undefined,
+          resumeBase64: finalBase64 || undefined,
+          resumeFileName: resumeFile ? resumeFile.name : undefined,
+          resumeMimeType: resumeFile ? resumeFile.type : undefined,
+        });
+        leadSubmittedRef.current = true;
+      } catch (submitErr) {
+        console.warn("Immediate lead submission note:", submitErr);
+      }
     }
 
     try {
@@ -361,26 +367,7 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
         }
       }
 
-      // Submit lead to Google Sheets & CRM
-      await submitLead({
-        name: fullName.trim(),
-        phone: `+91 ${phone.replace(/\D/g, "").slice(-10)}`,
-        email: email.trim().toLowerCase(),
-        city: city.trim(),
-        age: age.trim(),
-        graduate: qualification,
-        education: qualification,
-        qualification: qualification,
-        experience: experience,
-        interest: enrollInterest,
-        program: `ACWM Wealth Officer (Bajaj Capital) | Exp: ${experience} | Interest: ${enrollInterest}`,
-        source: "placement-guaranteed-trust-page",
-        formHeading: "Bajaj Capital Programme Registration (Verified)",
-        cvFile: resumeFile || undefined,
-        resumeBase64: finalBase64 || undefined,
-        resumeFileName: resumeFile ? resumeFile.name : undefined,
-        resumeMimeType: resumeFile ? resumeFile.type : undefined,
-      });
+      // Note: Lead is already submitted once to Google Sheets & CRM upon registration submit
 
       // Fire Meta Pixel & GA4 / GTM Lead Event
       if (typeof window !== "undefined") {
@@ -724,15 +711,54 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
             <div>
               <input
                 type="text"
+                list="major-indian-cities"
                 value={city}
-                onChange={(e) => setCity(e.target.value)}
-                placeholder="Current City"
+                onChange={(e) => {
+                  setCity(e.target.value);
+                  if (errors.city) {
+                    setErrors((prev) => {
+                      const n = { ...prev };
+                      delete n.city;
+                      return n;
+                    });
+                  }
+                }}
+                placeholder="Current City (e.g. Delhi, Mumbai, Bengaluru)"
                 className={`w-full px-3.5 py-2.5 rounded-xl border text-sm transition-all focus:outline-none focus:ring-1 focus:ring-[#1557D6]/20 ${
                   errors.city
                     ? "border-red-400 bg-red-50/20 text-slate-800"
                     : "border-slate-200 bg-slate-50/40 text-slate-700 font-medium placeholder:text-slate-400 placeholder:font-normal focus:bg-white"
                 }`}
               />
+              <datalist id="major-indian-cities">
+                <option value="Delhi" />
+                <option value="New Delhi" />
+                <option value="Noida" />
+                <option value="Gurgaon" />
+                <option value="Faridabad" />
+                <option value="Ghaziabad" />
+                <option value="Mumbai" />
+                <option value="Pune" />
+                <option value="Thane" />
+                <option value="Navi Mumbai" />
+                <option value="Bengaluru" />
+                <option value="Hyderabad" />
+                <option value="Chennai" />
+                <option value="Kolkata" />
+                <option value="Ahmedabad" />
+                <option value="Surat" />
+                <option value="Jaipur" />
+                <option value="Lucknow" />
+                <option value="Kanpur" />
+                <option value="Chandigarh" />
+                <option value="Indore" />
+                <option value="Bhopal" />
+                <option value="Patna" />
+                <option value="Kochi" />
+                <option value="Dehradun" />
+                <option value="Nagpur" />
+                <option value="Visakhapatnam" />
+              </datalist>
               {errors.city && <p className="text-[11px] text-red-500 mt-1 font-medium">{errors.city}</p>}
             </div>
 

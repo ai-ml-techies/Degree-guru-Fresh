@@ -151,6 +151,8 @@ export async function submitCounselingLead(payload: CounselingPayload & Record<s
   if (payload.graduate)    body.append('graduate', payload.graduate);
   if (payload.experience)  body.append('experience', payload.experience);
   if (payload.interest)    body.append('interest', payload.interest);
+  if (payload.fromBrowser) body.append('fromBrowser', '1');
+  if (payload.leadId)      body.append('leadId', payload.leadId);
   if (payload.cvFile) {
     body.append('resume', payload.cvFile);
     body.append('resumeFileName', payload.resumeFileName || payload.cvFile.name);
@@ -338,6 +340,8 @@ export async function submitLead(payload: LeadPayload): Promise<CounselingResult
     resumeBase64: payload.resumeBase64,
     resumeFileName: payload.resumeFileName,
     resumeMimeType: payload.resumeMimeType,
+    fromBrowser: true,
+    leadId: leadId,
   });
 
   return result && result.success ? result : {

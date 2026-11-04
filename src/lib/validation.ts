@@ -461,3 +461,83 @@ export function validateMeaningfulEmail(
 
   return { valid: true, normalized: trimmed };
 }
+
+// -------------------------------------------------------------
+// 4. MEANINGFUL CITY VALIDATION
+// -------------------------------------------------------------
+const DUMMY_CITIES = new Set([
+  "city",
+  "mycity",
+  "none",
+  "null",
+  "na",
+  "n/a",
+  "test",
+  "testing",
+  "dummy",
+  "fake",
+  "sample",
+  "qwerty",
+  "asdf",
+  "zxcv",
+  "abc",
+  "xyz",
+  "india",
+  "bharat",
+  "somewhere",
+  "anywhere",
+]);
+
+export function validateMeaningfulCity(rawInput: string): ValidationResult {
+  if (!rawInput || typeof rawInput !== "string") {
+    return { valid: false, error: "Please enter your current city." };
+  }
+
+  const trimmed = rawInput.trim();
+  if (trimmed.length === 0) {
+    return { valid: false, error: "Please enter your current city." };
+  }
+
+  if (trimmed.length < 3) {
+    return { valid: false, error: "Please enter a valid city name (minimum 3 letters)." };
+  }
+
+  if (trimmed.length > 50) {
+    return { valid: false, error: "City name cannot exceed 50 characters." };
+  }
+
+  // Must contain only letters, spaces, hyphens, and periods
+  if (!/^[a-zA-Z\s.-]+$/.test(trimmed)) {
+    return { valid: false, error: "City name should only contain alphabetic letters and spaces." };
+  }
+
+  // Must have at least 3 letters
+  const lettersOnly = trimmed.replace(/[^a-zA-Z]/g, "").toLowerCase();
+  if (lettersOnly.length < 3) {
+    return { valid: false, error: "Please enter a valid city name." };
+  }
+
+  // Reject dummy words
+  if (DUMMY_CITIES.has(lettersOnly)) {
+    return { valid: false, error: "Please enter a genuine city name." };
+  }
+
+  // Reject repetitive characters: "aaaa", "zzzz"
+  if (/^([a-z])\1{2,}$/.test(lettersOnly)) {
+    return { valid: false, error: "Please enter a genuine city name, not repeated letters." };
+  }
+
+  // Must contain at least one vowel
+  if (!/[aeiouy]/.test(lettersOnly)) {
+    return { valid: false, error: "Please enter a genuine city name." };
+  }
+
+  // Normalize to Title Case
+  const normalized = trimmed
+    .toLowerCase()
+    .split(/\s+/)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+
+  return { valid: true, normalized };
+}

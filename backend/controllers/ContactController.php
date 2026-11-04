@@ -97,7 +97,8 @@ class ContactController extends Controller
             ]);
         }
 
-        $leadId = 'DG-' . $this->getIstDateTime()->format('Ymd') . '-' . substr(uniqid(), -4);
+        $incomingLeadId = trim((string) Yii::$app->request->post('leadId', ''));
+        $leadId = !empty($incomingLeadId) ? $incomingLeadId : ('DG-' . $this->getIstDateTime()->format('Ymd') . '-' . substr(uniqid(), -4));
 
         // Process optional resume / CV upload
         $uploadedResume = \yii\web\UploadedFile::getInstanceByName('resume');
@@ -220,40 +221,50 @@ class ContactController extends Controller
             'resume_name'  => $resumeFileName,
         ]);
 
-        // 4. Forward lead to Google Sheets (Degree Guru Guranteed Placement Leads)
-        $post = Yii::$app->request->post();
-        $trackingFields = [
-            'source_type', 'campaign_type', 'first_source_type', 'first_campaign_type',
-            'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
-            'first_utm_campaign', 'first_utm_content', 'ref', 'fbclid', 'gclid',
-            'referrer', 'landing_url', 'first_visit_at', 'visit_count', 'device',
-            'in_app_browser', 'fbp', 'fbc', 'page_url'
-        ];
-        $trackingData = [];
-        foreach ($trackingFields as $tf) {
-            if (isset($post[$tf]) && $post[$tf] !== '') {
-                $trackingData[$tf] = trim((string)$post[$tf]);
+        // 4. Forward lead to Google Sheets only if not already pushed from browser (prevents duplicate printing)
+        $fromBrowser = (bool) Yii::$app->request->post('fromBrowser', false);
+        if (!$fromBrowser) {
+            $post = Yii::$app->request->post();
+            $trackingFields = [
+                'source_type', 'campaign_type', 'first_source_type', 'first_campaign_type',
+                'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
+                'first_utm_campaign', 'first_utm_content', 'ref', 'fbclid', 'gclid',
+                'referrer', 'landing_url', 'first_visit_at', 'visit_count', 'device',
+                'in_app_browser', 'fbp', 'fbc', 'page_url'
+            ];
+            $trackingData = [];
+            foreach ($trackingFields as $tf) {
+                if (isset($post[$tf]) && $post[$tf] !== '') {
+                    $trackingData[$tf] = trim((string)$post[$tf]);
+                }
             }
-        }
 
-        $this->sendToGoogleSheet([
-            'id'             => $leadId,
-            'form_heading'   => $formHeading,
-            'name'           => $name,
-            'phone'          => $phone,
-            'email'          => $email,
-            'city'           => $city,
-            'age'            => $age,
-            'status'         => $status,
-            'graduate'       => $graduate,
-            'program'        => $message,
-            'source'         => $source,
-            'resumeBase64'   => $resumeBase64,
-            'resumeFileName' => $resumeFileName,
-            'resumeMimeType' => $resumeMimeType,
-            'resumeLink'     => $resumeDriveUrl,
-            'Resume Link'    => $resumeDriveUrl,
-        ], $trackingData);
+            $this->sendToGoogleSheet([
+                'id'             => $leadId,
+                'form_heading'   => $formHeading,
+                'name'           => $name,
+                'phone'          => $phone,
+                'email'          => $email,
+                'city'           => $city,
+                'age'            => $age,
+                'status'         => $experience ?: $status,
+                'experience'     => $experience ?: $status,
+                'Work Experience'=> $experience ?: $status,
+                'graduate'       => $qualification ?: $graduate,
+                'qualification'  => $qualification ?: $graduate,
+                'education'      => $qualification ?: $graduate,
+                'Qualification'  => $qualification ?: $graduate,
+                'interest'       => $interest,
+                'Interest'       => $interest,
+                'program'        => $message,
+                'source'         => $source,
+                'resumeBase64'   => $resumeBase64,
+                'resumeFileName' => $resumeFileName,
+                'resumeMimeType' => $resumeMimeType,
+                'resumeLink'     => $resumeDriveUrl,
+                'Resume Link'    => $resumeDriveUrl,
+            ], $trackingData);
+        }
 
         return $this->asJson([
             'success' => true,

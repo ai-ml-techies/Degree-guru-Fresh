@@ -175,6 +175,33 @@ function doPost(e) {
       resumeDriveUrl
     ];
 
+    // Deduplication check: prevent multiple prints, ensure only 1 print in sheet
+    var lastRow = sheet.getLastRow();
+    if (lastRow > 1) {
+      var checkCount = Math.min(50, lastRow - 1);
+      var startRow = lastRow - checkCount + 1;
+      var existingData = sheet.getRange(startRow, 1, checkCount, 6).getValues();
+      var cleanNewPhone = (phoneVal || "").replace(/\D/g, "").slice(-10);
+
+      for (var r = existingData.length - 1; r >= 0; r--) {
+        var exLeadId = String(existingData[r][0] || "").trim();
+        var exPhone = String(existingData[r][4] || "").replace(/\D/g, "").slice(-10);
+
+        var isSameLeadId = leadIdVal && exLeadId && (leadIdVal === exLeadId);
+        var isSamePhone = cleanNewPhone && exPhone && (cleanNewPhone === exPhone);
+
+        if (isSameLeadId || isSamePhone) {
+          Logger.log("Duplicate lead ignored: " + leadIdVal + " / " + phoneVal);
+          return ContentService.createTextOutput(JSON.stringify({
+            status: "success",
+            message: "Lead already recorded in Logical Form Website tab (duplicate ignored)",
+            leadId: exLeadId || leadIdVal,
+            duplicate: true
+          })).setMimeType(ContentService.MimeType.JSON);
+        }
+      }
+    }
+
     sheet.appendRow(row);
 
     // Guaranteed Email Notification via MailApp (Direct Google Deliverability)
@@ -203,27 +230,7 @@ function doPost(e) {
         subject: subject,
         htmlBody: html
       });
-
-      // Send acknowledgment to applicant if valid email provided
-      if (emailVal && emailVal.indexOf("@") !== -1) {
-        try {
-          var applicantHtml = '<div style="font-family:Arial,sans-serif;max-width:550px;padding:16px;color:#1e293b;">' +
-            '<h2 style="color:#061A36;">Application Received</h2>' +
-            '<p>Dear ' + nameVal + ',</p>' +
-            '<p>Thank you for submitting your application for the <strong>Bajaj Capital ACWM Programme</strong> on Degree Guru.</p>' +
-            '<p>Our career admissions team will review your eligibility and connect with you shortly.</p>' +
-            '<p style="margin-top:20px;color:#64748b;font-size:12px;">Degree Guru Admissions Team</p>' +
-            '</div>';
-
-          MailApp.sendEmail({
-            to: emailVal,
-            subject: "Application Received - Degree Guru & Bajaj Capital",
-            htmlBody: applicantHtml
-          });
-        } catch (cErr) {
-          Logger.log("Applicant notification note: " + cErr);
-        }
-      }
+      // NOTE: Applicant email is strictly disabled as requested (no candidate emails sent)
     } catch (mailErr) {
       Logger.log("MailApp notification error: " + mailErr);
     }
