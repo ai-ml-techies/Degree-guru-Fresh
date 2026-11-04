@@ -232,8 +232,9 @@ class ContactController extends Controller
             'resume_name'  => $resumeFileName,
         ]);
 
-        // 4. Forward lead to Google Sheets (ensures delivery even if browser adblocker blocks direct push)
-        if (true) {
+        // 4. Forward lead to Google Sheets only if not already pushed from browser (prevents duplicate printing)
+        $fromBrowser = (bool) Yii::$app->request->post('fromBrowser', false);
+        if (!$fromBrowser) {
             $post = Yii::$app->request->post();
             $trackingFields = [
                 'source_type', 'campaign_type', 'first_source_type', 'first_campaign_type',

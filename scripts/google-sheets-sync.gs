@@ -181,7 +181,23 @@ function doPost(e) {
       resumeDriveUrl
     ];
 
-    // Deduplication removed: every lead is guaranteed to append
+    // Deduplication by Lead ID: ensure identical Lead ID is only printed 1 time
+    var lastRow = sheet.getLastRow();
+    if (lastRow > 1) {
+      var colA = sheet.getRange(2, 1, lastRow - 1, 1).getValues();
+      for (var r = colA.length - 1; r >= 0; r--) {
+        var existingId = String(colA[r][0] || "").trim();
+        if (leadIdVal && existingId && existingId === leadIdVal) {
+          Logger.log("Duplicate Lead ID ignored: " + leadIdVal);
+          return ContentService.createTextOutput(JSON.stringify({
+            status: "success",
+            message: "Lead already recorded (duplicate Lead ID ignored)",
+            leadId: leadIdVal,
+            duplicate: true
+          })).setMimeType(ContentService.MimeType.JSON);
+        }
+      }
+    }
 
     sheet.appendRow(row);
 
