@@ -54,8 +54,8 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
   const [isFeeUnderstood, setIsFeeUnderstood] = useState<boolean>(false);
 
   // OTP Verification
-  const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
-  const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const [otpCode, setOtpCode] = useState<string>("");
+  const otpMasterRef = useRef<HTMLInputElement | null>(null);
   const [timer, setTimer] = useState<number>(0);
   const [otpError, setOtpError] = useState<string>("");
 
@@ -259,17 +259,17 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
       if (res.success) {
         setStep("otp");
         setTimer(30);
-        setOtp(["", "", "", "", "", ""]);
-        setTimeout(() => otpRefs.current[0]?.focus(), 100);
+        setOtpCode("");
+        setTimeout(() => otpMasterRef.current?.focus(), 150);
       } else {
         // Even if SMS OTP gateway had an issue, the lead is already safely saved!
         setStep(3);
-        downloadInterviewPrepKit();
+        // auto-download disabled: candidate downloads manually via button
       }
     } catch {
       // Even if network error for SMS, the lead is already safely saved!
       setStep(3);
-      downloadInterviewPrepKit();
+      // auto-download disabled: candidate downloads manually via button
     } finally {
       setBusy(false);
     }
@@ -289,7 +289,7 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
         return;
       }
       setStep(3);
-      downloadInterviewPrepKit();
+      // auto-download disabled: candidate downloads manually via button
     } catch {
       setOtpError("Network error during verification.");
     } finally {
@@ -297,7 +297,7 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
     }
   };
 
-  // WebOTP API: Automatic SMS OTP detection on Android & Chrome mobile
+  // WebOTP API: Automatic SMS OTP capture on Android Chrome mobile (zero manual input)
   useEffect(() => {
     if (step !== "otp") return;
     if (typeof window !== "undefined" && "OTPCredential" in window && (navigator as any).credentials) {
@@ -309,10 +309,10 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
         })
         .then((content: any) => {
           if (content && content.code) {
-            const digits = content.code.replace(/\D/g, "").slice(0, 6).split("");
-            if (digits.length === 6) {
-              setOtp(digits);
-              autoVerifyCode(digits.join(""));
+            const clean = content.code.replace(/\D/g, "").slice(0, 6);
+            if (clean.length === 6) {
+              setOtpCode(clean);
+              autoVerifyCode(clean);
             }
           }
         })
@@ -321,30 +321,12 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
     }
   }, [step]);
 
-  const onOtpChange = (index: number, val: string) => {
-    const cleanDigits = val.replace(/\D/g, "");
-    if (cleanDigits.length > 1) {
-      const chars = cleanDigits.slice(0, 6).split("");
-      const nextOtp = ["", "", "", "", "", ""];
-      chars.forEach((d, k) => {
-        if (k < 6) nextOtp[k] = d;
-      });
-      setOtp(nextOtp);
-      otpRefs.current[Math.min(chars.length, 5)]?.focus();
-      if (chars.length === 6) {
-        autoVerifyCode(chars.join(""));
-      }
-      return;
-    }
-    const cleanDigit = cleanDigits.slice(-1);
-    const nextOtp = [...otp];
-    nextOtp[index] = cleanDigit;
-    setOtp(nextOtp);
-    if (cleanDigit && index < 5) {
-      otpRefs.current[index + 1]?.focus();
-    }
-    if (nextOtp.every((d) => d !== "") && nextOtp.join("").length === 6) {
-      autoVerifyCode(nextOtp.join(""));
+    const handleOtpInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const clean = e.target.value.replace(/\D/g, "").slice(0, 6);
+    setOtpCode(clean);
+    setOtpError("");
+    if (clean.length === 6) {
+      autoVerifyCode(clean);
     }
   };
 
@@ -353,7 +335,8 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
     if (timer > 0 || busy) return;
     setBusy(true);
     setOtpError("");
-    setOtp(["", "", "", "", "", ""]);
+    setOtpCode("");
+    setTimeout(() => otpMasterRef.current?.focus(), 150);
     try {
       const res = await sendSmsOtp(phone, "sms");
       if (res.success) setTimer(30);
@@ -388,7 +371,7 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
   // Verify OTP and complete lead registration
   const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault();
-    const code = otp.join("");
+    const code = otpCode.trim();
     if (code.length !== 6) {
       setOtpError("Enter the 6-digit code.");
       return;
@@ -452,7 +435,7 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
       }
 
       setStep(3);
-      downloadInterviewPrepKit();
+      // auto-download disabled: candidate downloads manually via button
     } catch {
       setOtpError("Something went wrong. Please try again.");
     } finally {
@@ -796,7 +779,7 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
             <div>
               <input
                 type="text"
-                list="major-indian-cities"
+                
                 autoCapitalize="words"
                 value={city}
                 onChange={(e) => {
@@ -821,42 +804,14 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
                     }
                   }
                 }}
-                placeholder="Current City (e.g. Delhi, Mumbai, Bengaluru)"
+                placeholder="City"
                 className={`w-full px-3.5 py-2.5 rounded-xl border text-sm transition-all focus:outline-none focus:ring-1 focus:ring-[#1557D6]/20 ${
                   errors.city
                     ? "border-red-400 bg-red-50/20 text-slate-800"
                     : "border-slate-200 bg-slate-50/40 text-slate-700 font-medium placeholder:text-slate-400 placeholder:font-normal focus:bg-white"
                 }`}
               />
-              <datalist id="major-indian-cities">
-                <option value="Delhi" />
-                <option value="New Delhi" />
-                <option value="Noida" />
-                <option value="Gurgaon" />
-                <option value="Faridabad" />
-                <option value="Ghaziabad" />
-                <option value="Mumbai" />
-                <option value="Pune" />
-                <option value="Thane" />
-                <option value="Navi Mumbai" />
-                <option value="Bengaluru" />
-                <option value="Hyderabad" />
-                <option value="Chennai" />
-                <option value="Kolkata" />
-                <option value="Ahmedabad" />
-                <option value="Surat" />
-                <option value="Jaipur" />
-                <option value="Lucknow" />
-                <option value="Kanpur" />
-                <option value="Chandigarh" />
-                <option value="Indore" />
-                <option value="Bhopal" />
-                <option value="Patna" />
-                <option value="Kochi" />
-                <option value="Dehradun" />
-                <option value="Nagpur" />
-                <option value="Visakhapatnam" />
-              </datalist>
+              
               {errors.city && <p className="text-[11px] text-red-500 mt-1 font-medium">{errors.city}</p>}
             </div>
 
@@ -960,43 +915,54 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
               </p>
             </div>
 
-            {/* 6 Digit Input Boxes */}
-            <div className="flex justify-center gap-2 sm:gap-2.5">
-              {otp.map((digit, i) => (
-                <input
-                  key={i}
-                  ref={(el) => (otpRefs.current[i] = el)}
-                  type="text"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  autoComplete={i === 0 ? "one-time-code" : "off"}
-                  maxLength={i === 0 ? 6 : 1}
-                  value={digit}
-                  onChange={(e) => onOtpChange(i, e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Backspace" && !otp[i] && i > 0) {
-                      otpRefs.current[i - 1]?.focus();
+            {/* 6 Digit Unified Input with Native Mobile SMS Autofill & Auto-Proceed */}
+            <div
+              className="relative flex justify-center gap-2 sm:gap-2.5 cursor-pointer py-1 select-none"
+              onClick={() => otpMasterRef.current?.focus()}
+            >
+              {/* Invisible native input with autoComplete="one-time-code" for Android & iOS autofill */}
+              <input
+                ref={otpMasterRef}
+                type="tel"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                autoComplete="one-time-code"
+                maxLength={6}
+                value={otpCode}
+                onChange={handleOtpInputChange}
+                onPaste={(e) => {
+                  e.preventDefault();
+                  const pasted = e.clipboardData.getData("text/plain").replace(/\D/g, "").slice(0, 6);
+                  if (pasted) {
+                    setOtpCode(pasted);
+                    if (pasted.length === 6) {
+                      autoVerifyCode(pasted);
                     }
-                  }}
-                  onPaste={(e) => {
-                    e.preventDefault();
-                    const pasted = e.clipboardData.getData("text/plain").replace(/\D/g, "").slice(0, 6);
-                    if (pasted) {
-                      const chars = pasted.split("");
-                      const nextOtp = ["", "", "", "", "", ""];
-                      chars.forEach((d, k) => {
-                        if (k < 6) nextOtp[k] = d;
-                      });
-                      setOtp(nextOtp);
-                      otpRefs.current[Math.min(chars.length, 5)]?.focus();
-                      if (chars.length === 6) {
-                        autoVerifyCode(chars.join(""));
-                      }
-                    }
-                  }}
-                  className="w-10 sm:w-11 h-11 sm:h-12 text-center text-lg sm:text-xl font-semibold rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:border-[#1557D6] focus:ring-1 focus:ring-[#1557D6]/20 outline-none transition-all"
-                />
-              ))}
+                  }
+                }}
+                className="absolute inset-0 w-full h-full opacity-0 z-20 cursor-pointer caret-transparent"
+                autoFocus
+              />
+
+              {/* 6 High-Visibility Visual Digit Slots */}
+              {[0, 1, 2, 3, 4, 5].map((i) => {
+                const char = otpCode[i] || "";
+                const isCurrentSlot = otpCode.length === i || (otpCode.length === 6 && i === 5);
+                return (
+                  <div
+                    key={i}
+                    className={`w-10 sm:w-11 h-11 sm:h-12 flex items-center justify-center text-lg sm:text-xl font-bold rounded-xl border transition-all ${
+                      char
+                        ? "border-[#1557D6] bg-blue-50/20 text-[#061A36]"
+                        : isCurrentSlot
+                        ? "border-[#1557D6] bg-white ring-2 ring-[#1557D6]/20 shadow-xs"
+                        : "border-slate-200 bg-slate-50/50 text-slate-400"
+                    }`}
+                  >
+                    {char || (isCurrentSlot ? <span className="w-0.5 h-5 bg-[#1557D6] animate-pulse" /> : "")}
+                  </div>
+                );
+              })}
             </div>
 
             {otpError && (
