@@ -15,6 +15,10 @@ import { submitLead, sendSmsOtp, verifySmsOtp } from "@/lib/api";
 import { validateIndianMobile, validateMeaningfulName, validateMeaningfulEmail, validateMeaningfulCity } from "@/lib/validation";
 import { WhatsAppCircleIcon } from "@/components/SocialIcons";
 
+const capitalizeWords = (str: string) => {
+  return str.replace(/(^|\s|-)([a-z\u00C0-\u024F])/g, (_, boundary, char) => boundary + char.toUpperCase());
+};
+
 const WA_ADVISOR_LINK =
   "https://wa.me/918448411672?text=" +
   encodeURIComponent("Hi Degree Guru, I would like to speak with a Career Advisor for personalized guidance regarding suitable programmes.");
@@ -226,30 +230,28 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
     }
 
     if (!leadSubmittedRef.current) {
-      try {
-        await submitLead({
-          name: fullName.trim(),
-          phone: `+91 ${phone.replace(/\D/g, "").slice(-10)}`,
-          email: email.trim().toLowerCase(),
-          city: finalCity,
-          age: age.trim(),
-          graduate: qualification,
-          education: qualification,
-          qualification: qualification,
-          experience: experience,
-          interest: enrollInterest,
-          program: `ACWM Wealth Officer (Bajaj Capital) | Exp: ${experience} | Interest: ${enrollInterest}`,
-          source: "placement-guaranteed-trust-page",
-          formHeading: "Bajaj Capital Programme Registration",
-          cvFile: resumeFile || undefined,
-          resumeBase64: finalBase64 || undefined,
-          resumeFileName: resumeFile ? resumeFile.name : undefined,
-          resumeMimeType: resumeFile ? resumeFile.type : undefined,
-        });
-        leadSubmittedRef.current = true;
-      } catch (submitErr) {
-        console.warn("Immediate lead submission note:", submitErr);
-      }
+      leadSubmittedRef.current = true;
+      submitLead({
+        name: fullName.trim(),
+        phone: `+91 ${phone.replace(/\D/g, "").slice(-10)}`,
+        email: email.trim().toLowerCase(),
+        city: finalCity,
+        age: age.trim(),
+        graduate: qualification,
+        education: qualification,
+        qualification: qualification,
+        experience: experience,
+        interest: enrollInterest,
+        program: `ACWM Wealth Officer (Bajaj Capital) | Exp: ${experience} | Interest: ${enrollInterest}`,
+        source: "placement-guaranteed-trust-page",
+        formHeading: "Bajaj Capital Programme Registration",
+        cvFile: resumeFile || undefined,
+        resumeBase64: finalBase64 || undefined,
+        resumeFileName: resumeFile ? resumeFile.name : undefined,
+        resumeMimeType: resumeFile ? resumeFile.type : undefined,
+      }).catch((submitErr) => {
+        console.warn("Background lead submission note:", submitErr);
+      });
     }
 
     try {
@@ -258,39 +260,91 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
         setStep("otp");
         setTimer(30);
         setOtp(["", "", "", "", "", ""]);
-        setTimeout(() => otpRefs.current[0]?.focus(), 250);
+        setTimeout(() => otpRefs.current[0]?.focus(), 100);
       } else {
         // Even if SMS OTP gateway had an issue, the lead is already safely saved!
         setStep(3);
-        downloadProgramGuide();
+        downloadInterviewPrepKit();
       }
     } catch {
       // Even if network error for SMS, the lead is already safely saved!
       setStep(3);
-      downloadProgramGuide();
+      downloadInterviewPrepKit();
     } finally {
       setBusy(false);
     }
   };
 
   // OTP Input handler
+  
+  // Auto-verify helper when 6 digits are detected
+  const autoVerifyCode = async (code: string) => {
+    if (code.length !== 6 || busy) return;
+    setBusy(true);
+    setOtpError("");
+    try {
+      const r = await verifySmsOtp(phone, code);
+      if (!r.success) {
+        setOtpError(r.message || "Invalid or expired code.");
+        return;
+      }
+      setStep(3);
+      downloadInterviewPrepKit();
+    } catch {
+      setOtpError("Network error during verification.");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  // WebOTP API: Automatic SMS OTP detection on Android & Chrome mobile
+  useEffect(() => {
+    if (step !== "otp") return;
+    if (typeof window !== "undefined" && "OTPCredential" in window && (navigator as any).credentials) {
+      const ac = new AbortController();
+      (navigator as any).credentials
+        .get({
+          otp: { transport: ["sms"] },
+          signal: ac.signal,
+        })
+        .then((content: any) => {
+          if (content && content.code) {
+            const digits = content.code.replace(/\D/g, "").slice(0, 6).split("");
+            if (digits.length === 6) {
+              setOtp(digits);
+              autoVerifyCode(digits.join(""));
+            }
+          }
+        })
+        .catch(() => {});
+      return () => ac.abort();
+    }
+  }, [step]);
+
   const onOtpChange = (index: number, val: string) => {
-    if (val.length > 1) {
-      const digits = val.replace(/\D/g, "").slice(0, 6).split("");
-      const nextOtp = [...otp];
-      digits.forEach((d, k) => {
-        if (index + k < 6) nextOtp[index + k] = d;
+    const cleanDigits = val.replace(/\D/g, "");
+    if (cleanDigits.length > 1) {
+      const chars = cleanDigits.slice(0, 6).split("");
+      const nextOtp = ["", "", "", "", "", ""];
+      chars.forEach((d, k) => {
+        if (k < 6) nextOtp[k] = d;
       });
       setOtp(nextOtp);
-      otpRefs.current[Math.min(index + digits.length, 5)]?.focus();
+      otpRefs.current[Math.min(chars.length, 5)]?.focus();
+      if (chars.length === 6) {
+        autoVerifyCode(chars.join(""));
+      }
       return;
     }
-    const cleanDigit = val.replace(/\D/g, "");
+    const cleanDigit = cleanDigits.slice(-1);
     const nextOtp = [...otp];
     nextOtp[index] = cleanDigit;
     setOtp(nextOtp);
     if (cleanDigit && index < 5) {
       otpRefs.current[index + 1]?.focus();
+    }
+    if (nextOtp.every((d) => d !== "") && nextOtp.join("").length === 6) {
+      autoVerifyCode(nextOtp.join(""));
     }
   };
 
@@ -398,7 +452,7 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
       }
 
       setStep(3);
-      downloadProgramGuide();
+      downloadInterviewPrepKit();
     } catch {
       setOtpError("Something went wrong. Please try again.");
     } finally {
@@ -406,10 +460,10 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
     }
   };
 
-  const downloadProgramGuide = () => {
+  const downloadInterviewPrepKit = () => {
     const a = document.createElement("a");
     a.href = "/assets/acwm/bajaj_capital_interview_prep_kit.pdf";
-    a.download = "Bajaj_Capital_ACWM_Guide.pdf";
+    a.download = "Bajaj_Capital_Interview_Prep_Kit.pdf";
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -418,28 +472,40 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
   return (
     <div className="w-full bg-white text-[#061A36] rounded-3xl shadow-2xl border border-slate-100 overflow-hidden transition-all duration-300">
       {/* Clean Live Form Vibe Header */}
-      <div className="px-6 sm:px-7 pt-6 sm:pt-7 pb-3 border-b border-slate-100 relative bg-white">
-        {isModal && onClose && (
+      {step !== 3 && (
+        <div className="px-6 sm:px-7 pt-6 sm:pt-7 pb-3 border-b border-slate-100 relative bg-white">
+          {isModal && onClose && (
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Close form"
+              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-colors cursor-pointer"
+            >
+              <X size={16} />
+            </button>
+          )}
+
+          <h3 className="text-xl sm:text-2xl font-black text-[#061A36] tracking-tight">
+            {step === "otp"
+              ? "Verify Mobile Number"
+              : step === 2
+              ? "Registration Details"
+              : formHeading}
+          </h3>
+        </div>
+      )}
+      {step === 3 && isModal && onClose && (
+        <div className="relative w-full pt-4 pr-4 flex justify-end">
           <button
             type="button"
             onClick={onClose}
             aria-label="Close form"
-            className="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-colors cursor-pointer"
+            className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-colors cursor-pointer z-10"
           >
             <X size={16} />
           </button>
-        )}
-
-        <h3 className="text-xl sm:text-2xl font-black text-[#061A36] tracking-tight">
-          {step === 3
-            ? "Registration Confirmed"
-            : step === "otp"
-            ? "Verify Mobile Number"
-            : step === 2
-            ? "Registration Details"
-            : formHeading}
-        </h3>
-      </div>
+        </div>
+      )}
 
       {/* Main Form Body */}
       <div className="p-6 sm:p-7">
@@ -660,8 +726,27 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
             <div>
               <input
                 type="text"
+                autoCapitalize="words"
                 value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
+                onChange={(e) => {
+                  const val = capitalizeWords(e.target.value);
+                  setFullName(val);
+                  if (errors.name) {
+                    setErrors((prev) => {
+                      const n = { ...prev };
+                      delete n.name;
+                      return n;
+                    });
+                  }
+                }}
+                onBlur={() => {
+                  if (fullName.trim()) {
+                    const n = validateMeaningfulName(fullName, false);
+                    if (!n.valid) {
+                      setErrors((prev) => ({ ...prev, name: n.error || "Enter full name" }));
+                    }
+                  }
+                }}
                 placeholder="Full Name"
                 className={`w-full px-3.5 py-2.5 rounded-xl border text-sm transition-all focus:outline-none focus:ring-1 focus:ring-[#1557D6]/20 ${
                   errors.name
@@ -712,15 +797,28 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
               <input
                 type="text"
                 list="major-indian-cities"
+                autoCapitalize="words"
                 value={city}
                 onChange={(e) => {
-                  setCity(e.target.value);
+                  const val = capitalizeWords(e.target.value.replace(/[^a-zA-Z\s.-]/g, ""));
+                  setCity(val);
                   if (errors.city) {
                     setErrors((prev) => {
                       const n = { ...prev };
                       delete n.city;
                       return n;
                     });
+                  }
+                }}
+                onBlur={() => {
+                  if (city.trim()) {
+                    const c = validateMeaningfulCity(city);
+                    if (!c.valid) {
+                      setErrors((prev) => ({
+                        ...prev,
+                        city: c.error || "Please enter a valid city name (minimum 3 letters)",
+                      }));
+                    }
                   }
                 }}
                 placeholder="Current City (e.g. Delhi, Mumbai, Bengaluru)"
@@ -868,13 +966,32 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
                 <input
                   key={i}
                   ref={(el) => (otpRefs.current[i] = el)}
+                  type="text"
                   inputMode="numeric"
-                  maxLength={1}
+                  pattern="[0-9]*"
+                  autoComplete={i === 0 ? "one-time-code" : "off"}
+                  maxLength={i === 0 ? 6 : 1}
                   value={digit}
                   onChange={(e) => onOtpChange(i, e.target.value)}
                   onKeyDown={(e) => {
                     if (e.key === "Backspace" && !otp[i] && i > 0) {
                       otpRefs.current[i - 1]?.focus();
+                    }
+                  }}
+                  onPaste={(e) => {
+                    e.preventDefault();
+                    const pasted = e.clipboardData.getData("text/plain").replace(/\D/g, "").slice(0, 6);
+                    if (pasted) {
+                      const chars = pasted.split("");
+                      const nextOtp = ["", "", "", "", "", ""];
+                      chars.forEach((d, k) => {
+                        if (k < 6) nextOtp[k] = d;
+                      });
+                      setOtp(nextOtp);
+                      otpRefs.current[Math.min(chars.length, 5)]?.focus();
+                      if (chars.length === 6) {
+                        autoVerifyCode(chars.join(""));
+                      }
                     }
                   }}
                   className="w-10 sm:w-11 h-11 sm:h-12 text-center text-lg sm:text-xl font-semibold rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:border-[#1557D6] focus:ring-1 focus:ring-[#1557D6]/20 outline-none transition-all"
@@ -941,43 +1058,33 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
           </form>
         )}
 
-        {/* ==================== STEP 3: REGISTRATION CONFIRMED ==================== */}
+              {/* ==================== STEP 3: APPLICATION SUBMITTED ==================== */}
         {step === 3 && (
-          <div className="text-center py-4 space-y-4 animate-in zoom-in-95 duration-300">
-            <div className="w-14 h-14 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-inner">
-              <CheckCircle2 size={30} className="stroke-[2.5]" />
+          <div className="text-center py-5 space-y-4 animate-in zoom-in-95 duration-300">
+            <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-inner">
+              <CheckCircle2 size={34} className="stroke-[2.5]" />
             </div>
 
-            <div>
-              <h4 className="text-xl font-bold text-slate-900 tracking-tight">
-                Registration Confirmed!
+            <div className="space-y-1.5">
+              <h4 className="text-2xl font-black text-slate-900 tracking-tight">
+                Application Submitted!
               </h4>
-              <p className="text-xs sm:text-[13px] text-slate-600 mt-1 max-w-sm mx-auto leading-relaxed font-normal">
-                Thank you, <strong className="text-slate-900 font-semibold">{fullName}</strong>. Your registration for the
+              <p className="text-xs sm:text-[13px] text-slate-600 max-w-sm mx-auto leading-relaxed font-normal">
+                Thank you, <strong className="text-slate-900 font-semibold">{fullName}</strong>. Your application for the
                 Bajaj Capital ACWM Programme has been submitted. Our admissions team will contact you within
                 24 hours.
               </p>
             </div>
 
-            <div className="pt-2 space-y-2">
+            <div className="pt-2">
               <button
                 type="button"
-                onClick={downloadProgramGuide}
-                className="w-full py-3 px-4 rounded-xl bg-[#061A36] hover:bg-[#0c2a54] text-white font-bold text-xs tracking-wider flex items-center justify-center gap-2 shadow-md transition-colors cursor-pointer"
+                onClick={downloadInterviewPrepKit}
+                className="w-full py-3.5 px-5 rounded-xl bg-[#061A36] hover:bg-[#0c2a54] text-white font-bold text-xs sm:text-sm tracking-wider flex items-center justify-center gap-2 shadow-md transition-all active:scale-98 cursor-pointer"
               >
-                <Download size={14} />
-                DOWNLOAD PROGRAM GUIDE
+                <Download size={16} />
+                DOWNLOAD INTERVIEW PREP KIT
               </button>
-
-              <a
-                href={WA_ADVISOR_LINK}
-                target="_blank"
-                rel="noreferrer"
-                className="w-full py-3 px-4 rounded-xl border border-slate-300 hover:bg-slate-50 text-[#061A36] font-semibold text-xs tracking-wider flex items-center justify-center gap-2 transition-colors"
-              >
-                <WhatsAppCircleIcon className="w-4 h-4" />
-                CONNECT WITH ADVISOR
-              </a>
             </div>
           </div>
         )}

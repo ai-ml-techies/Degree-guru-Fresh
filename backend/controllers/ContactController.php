@@ -90,6 +90,17 @@ class ContactController extends Controller
                 : 'Check if you qualify (Bajaj Capital ACWM Programme)';
         }
 
+        // Validate city: minimum 3 letters, alphabetic only, no single-letter nonsense
+        if (!empty($city)) {
+            $cleanCity = trim($city);
+            if (strlen($cleanCity) < 3 || !preg_match('/^[a-zA-Z\s.-]+$/', $cleanCity)) {
+                return $this->asJson([
+                    'success' => false,
+                    'message' => 'Please enter a valid city name (minimum 3 letters).',
+                ]);
+            }
+        }
+
         if (empty($name) || empty($phone)) {
             return $this->asJson([
                 'success' => false,

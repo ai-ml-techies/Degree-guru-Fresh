@@ -111,7 +111,22 @@ function doPost(e) {
     var leadIdVal = data.leadId || data["Lead ID"] || data.id || ("DG-" + Utilities.formatDate(new Date(), "Asia/Kolkata", "yyyyMMdd-") + Math.floor(1000 + Math.random() * 9000));
     var dateTimeVal = data.dateTime || data["Date & Time"] || now;
     var emailVal = data.email || data["Email"] || "";
-    var cityVal = data.city || data["City"] || "";
+    var cityVal = String(data.city || data["City"] || "").trim();
+    if (cityVal) {
+      // Normalize city to Title Case
+      cityVal = cityVal.replace(/\w\S*/g, function(txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      });
+      // Reject single-letter or non-genuine city names
+      var alphaOnly = cityVal.replace(/[^a-zA-Z]/g, "");
+      if (alphaOnly.length < 3) {
+        Logger.log("Invalid nonsense city rejected: " + cityVal);
+        return ContentService.createTextOutput(JSON.stringify({
+          status: "error",
+          message: "Invalid city name. Genuine city name with minimum 3 letters required."
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+    }
     var ageVal = data.age || data["Age"] || "";
     var qualificationVal = data.qualification || data.graduate || data.education || data["Qualification"] || data["Education"] || "";
     var experienceVal = data.experience || data.status || data["Work Experience"] || data["Experience"] || "";
