@@ -229,7 +229,7 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
       }
     }
 
-    if (!leadSubmittedRef.current) {
+    if (true) {
       leadSubmittedRef.current = true;
       submitLead({
         name: fullName.trim(),
@@ -1042,16 +1042,7 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
               </p>
             </div>
 
-            <div className="pt-2">
-              <button
-                type="button"
-                onClick={downloadInterviewPrepKit}
-                className="w-full py-3.5 px-5 rounded-xl bg-[#061A36] hover:bg-[#0c2a54] text-white font-bold text-xs sm:text-sm tracking-wider flex items-center justify-center gap-2 shadow-md transition-all active:scale-98 cursor-pointer"
-              >
-                <Download size={16} />
-                DOWNLOAD INTERVIEW PREP KIT
-              </button>
-            </div>
+            
           </div>
         )}
       </div>

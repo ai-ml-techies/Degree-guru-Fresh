@@ -232,9 +232,8 @@ class ContactController extends Controller
             'resume_name'  => $resumeFileName,
         ]);
 
-        // 4. Forward lead to Google Sheets only if not already pushed from browser (prevents duplicate printing)
-        $fromBrowser = (bool) Yii::$app->request->post('fromBrowser', false);
-        if (!$fromBrowser) {
+        // 4. Forward lead to Google Sheets (ensures delivery even if browser adblocker blocks direct push)
+        if (true) {
             $post = Yii::$app->request->post();
             $trackingFields = [
                 'source_type', 'campaign_type', 'first_source_type', 'first_campaign_type',
@@ -347,9 +346,6 @@ class ContactController extends Controller
         }
         if (!empty($program)) {
             $rows[] = "<tr><td style='{$thTopStyle}'>Program</td><td style='{$tdTopStyle}'>{$program}</td></tr>";
-        }
-        if (!empty($formHeading)) {
-            $rows[] = "<tr><td style='{$thTopStyle}'>Form Source</td><td style='{$tdTopStyle} color:#64748b;'>{$formHeading}" . ($source ? " ({$source})" : "") . "</td></tr>";
         }
         if (!empty($leadData['resume_link'])) {
             $rows[] = "<tr><td style='{$thStyle}'>Resume / CV</td><td style='{$tdStyle}'><a href='{$leadData['resume_link']}' target='_blank' style='color:#2563eb; font-weight:700;'>View / Download Resume</a></td></tr>";

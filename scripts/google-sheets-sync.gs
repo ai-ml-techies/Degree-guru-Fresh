@@ -181,26 +181,7 @@ function doPost(e) {
       resumeDriveUrl
     ];
 
-    // Deduplication check: only ignore exact duplicate requests with the SAME Lead ID
-    var lastRow = sheet.getLastRow();
-    if (lastRow > 1) {
-      var checkCount = Math.min(30, lastRow - 1);
-      var startRow = lastRow - checkCount + 1;
-      var existingData = sheet.getRange(startRow, 1, checkCount, 1).getValues();
-
-      for (var r = existingData.length - 1; r >= 0; r--) {
-        var exLeadId = String(existingData[r][0] || "").trim();
-        if (leadIdVal && exLeadId && leadIdVal === exLeadId) {
-          Logger.log("Duplicate lead ID ignored: " + leadIdVal);
-          return ContentService.createTextOutput(JSON.stringify({
-            status: "success",
-            message: "Lead already recorded in Logical Form Website tab",
-            leadId: exLeadId,
-            duplicate: true
-          })).setMimeType(ContentService.MimeType.JSON);
-        }
-      }
-    }
+    // Deduplication removed: every lead is guaranteed to append
 
     sheet.appendRow(row);
 
@@ -217,7 +198,6 @@ function doPost(e) {
         '<p><strong>Age:</strong> ' + ageVal + '</p>' +
         '<p><strong>Qualification:</strong> ' + qualificationVal + '</p>' +
         '<p><strong>Work Experience:</strong> ' + experienceVal + '</p>' +
-        '<p><strong>Interest:</strong> ' + interestVal + '</p>' +
         '<p><strong>Form:</strong> ' + formHeadingVal + '</p>' +
         '<p><strong>Lead ID:</strong> ' + leadIdVal + '</p>' +
         '<p><strong>Date & Time:</strong> ' + dateTimeVal + '</p>' +
