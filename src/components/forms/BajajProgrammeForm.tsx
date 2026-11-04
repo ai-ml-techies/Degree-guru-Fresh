@@ -472,7 +472,7 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
             {step === "otp"
               ? "Verify Mobile Number"
               : step === 2
-              ? "Registration Details"
+              ? "Applicant Details"
               : formHeading}
           </h3>
         </div>
