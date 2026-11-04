@@ -181,6 +181,18 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
 
     setErrors({});
     setStep(2);
+    if (typeof window !== "undefined") {
+      try {
+        if ((window as any).dataLayer) {
+          (window as any).dataLayer.push({
+            event: "proceed_to_form_fill",
+            qualification: qualification,
+            age: age,
+            experience: experience,
+          });
+        }
+      } catch {}
+    }
   };
 
   // Step 2: Submit Details & Trigger OTP
@@ -671,6 +683,7 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
             {!isGeneralIneligible && (
               <button
                 type="button"
+                id="btn-proceed-eligibility"
                 onClick={handleProceedToStep2}
                 disabled={!isStep1Complete}
                 className={`w-full py-3 px-5 rounded-xl font-bold text-sm tracking-wide flex items-center justify-center gap-2 transition-all duration-200 shadow-md ${
@@ -679,8 +692,8 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
                     : "bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200"
                 }`}
               >
-                <span>PROCEED</span>
-                <ArrowRight size={16} />
+                <span className="pointer-events-none">PROCEED</span>
+                <ArrowRight size={16} className="pointer-events-none" />
               </button>
             )}
           </div>
@@ -883,6 +896,7 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
             {/* Submit Registration Button */}
             <button
               type="submit"
+              id="btn-submit-application"
               disabled={busy || !isFeeUnderstood}
               className="w-full py-3 px-5 rounded-xl bg-gradient-to-r from-[#18B879] via-[#34D399] to-[#F4B942] hover:brightness-105 disabled:opacity-50 disabled:cursor-not-allowed text-[#061A36] font-bold text-sm tracking-wide flex items-center justify-center gap-2 transition-all shadow-md shadow-emerald-500/20 active:scale-98 cursor-pointer"
             >
@@ -893,8 +907,8 @@ export const BajajProgrammeForm: React.FC<BajajProgrammeFormProps> = ({
                 </>
               ) : (
                 <>
-                  <span>SUBMIT APPLICATION</span>
-                  <ArrowRight size={15} />
+                  <span className="pointer-events-none">SUBMIT APPLICATION</span>
+                  <ArrowRight size={15} className="pointer-events-none" />
                 </>
               )}
             </button>
