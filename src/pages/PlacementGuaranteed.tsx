@@ -721,9 +721,9 @@ export const PlacementGuaranteed = () => {
               {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
                 <span
                   key={i}
-                  className="text-[11px] sm:text-xs font-medium tracking-wide px-8 sm:px-16 min-w-[50vw] shrink-0 inline-flex items-center justify-center text-white"
+                  className="text-[11px] sm:text-xs font-semibold tracking-wider px-8 sm:px-16 min-w-[50vw] shrink-0 inline-flex items-center justify-center text-white"
                 >
-                  Current cohort registration is closing soon. Register today.
+                  FOR SERIOUS APPLICANTS ONLY • LIMITED SEATS
                 </span>
               ))}
             </div>

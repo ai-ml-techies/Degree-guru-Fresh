@@ -35,7 +35,7 @@ import { CORE_COURSES } from "@/data/courses";
 import { ACTIVE_ONLINE_UNIVERSITIES } from "@/data/universities";
 import { BLOG_POSTS } from "@/data/blogs";
 import { fetchHomeContent } from "@/lib/api";
-import heroDesktop from "@/assets/hero-desktop.jpg";
+import heroStudents from "@/assets/hero-career-students.jpg";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { WhatsAppCircleIcon } from "@/components/SocialIcons";
 
@@ -53,55 +53,75 @@ export const Index = () => {
         <title>Degree Guru — Education Marketplace, Career Discovery & Job Platform</title>
         <meta
           name="description"
-          content="Explore online degrees, compare accredited universities, find career paths, build ATS resumes and discover jobs — all in one place. 100% free career discovery."
+          content="Explore online degree programmes, professional courses, free career counselling and job assurance courses."
         />
         <link rel="canonical" href="https://degreeguru.in/" />
       </Helmet>
 
-      {/* 1. HERO SECTION (Prompt Rule #7 & #2) */}
-      <section id="hero" className="relative min-h-[calc(88vh-80px)] flex items-center pt-16 sm:pt-20 md:pt-24 lg:pt-28 pb-16 md:pb-24 overflow-hidden bg-gradient-to-b from-primary/8 via-background to-background border-b border-border/50 scroll-mt-28 md:scroll-mt-36">
+      {/* 1. HERO SECTION */}
+      <section id="hero" className="relative min-h-[82vh] sm:min-h-[88vh] flex items-center py-16 sm:py-20 md:py-24 lg:py-28 overflow-hidden bg-gradient-to-b from-primary/6 via-background to-background border-b border-border/40 scroll-mt-28 md:scroll-mt-36">
         <div className="container-dg w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
             {/* Left Copy */}
             <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
-              <h1 className="text-3xl sm:text-5xl lg:text-5xl xl:text-6xl font-black text-foreground tracking-normal leading-[1.24] sm:leading-[1.26] md:leading-[1.32]">
-                Make Your Next Education Decision <span className="block text-gradient mt-1">With Confidence.</span>
-              </h1>
-              <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0 leading-relaxed">
-                Discover the right university, program and career path with expert guidance.
+              <div className="space-y-3">
+                <h1 className="text-3xl sm:text-5xl lg:text-5xl xl:text-6xl font-black text-foreground tracking-tight leading-[1.12] sm:leading-[1.16]">
+                  From Career Counselling to Job Guarantee.
+                </h1>
+                <div className="text-xl sm:text-2xl lg:text-3xl font-extrabold bg-gradient-to-r from-primary via-indigo-600 to-purple-600 bg-clip-text text-transparent tracking-tight">
+                  Degree Guru Is Here for You.
+                </div>
+              </div>
+
+              <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
+                Explore online degree programmes, professional courses, free career counselling and job assurance courses.
               </p>
 
               {/* Primary & Counselor CTAs */}
-              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-2">
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3.5 pt-3">
                 <Link
                   to="/courses"
-                  className="px-6 py-3.5 rounded-2xl bg-primary text-primary-foreground font-extrabold text-sm shadow-xl shadow-primary/25 hover:bg-primary/90 hover:scale-[1.02] transition-all flex items-center gap-2"
+                  className="px-6 sm:px-7 py-3.5 sm:py-4 rounded-2xl bg-primary text-primary-foreground font-extrabold text-sm sm:text-base shadow-xl shadow-primary/25 hover:bg-primary/90 hover:scale-[1.02] transition-all flex items-center gap-2"
                 >
-                  <GraduationCap size={18} /> Find My Course <ArrowRight size={15} />
+                  <GraduationCap size={19} /> Find My Course <ArrowRight size={16} />
+                </Link>
+
+                <Link
+                  to="/placement-guaranteed"
+                  className="px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl bg-emerald-600/10 hover:bg-emerald-600/20 text-emerald-700 dark:text-emerald-400 font-bold text-sm sm:text-base transition-all flex items-center gap-2 border border-emerald-500/25"
+                >
+                  <ShieldCheck size={19} className="text-emerald-600 dark:text-emerald-400" />
+                  <span>Job Guarantee Courses</span>
                 </Link>
 
                 <a
                   href="https://wa.me/919350199001?text=Hi%20Degree%20Guru%2C%20I%20would%20like%20to%20talk%20to%20a%20counselor"
                   target="_blank"
                   rel="noreferrer"
-                  className="px-5 py-3.5 rounded-2xl bg-emerald-600/10 hover:bg-emerald-600/20 text-emerald-700 dark:text-emerald-400 font-bold text-sm transition-all flex items-center gap-2 group"
+                  className="px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-sm sm:text-base transition-all flex items-center gap-2 group"
                 >
                   <WhatsAppCircleIcon className="w-5 h-5 rounded-full shrink-0 group-hover:scale-110 transition-transform" />
-                  <span>Talk to a Counselor</span>
+                  <span>Free Counselling</span>
                 </a>
               </div>
             </div>
 
-            {/* Right Hero Image (Enlarged, natural young professional, not generic stock) */}
-            <div className="lg:col-span-6 relative">
-              <div className="relative mx-auto max-w-lg sm:max-w-xl lg:max-w-none">
-                <div className="absolute -inset-6 bg-gradient-to-tr from-primary/25 via-[#6528f7]/20 to-transparent rounded-[44px] blur-3xl pointer-events-none" />
-                <img
-                  src={heroDesktop}
-                  alt="Young student and professional discovering online degree options on Degree Guru"
-                  className="relative rounded-3xl w-full object-cover aspect-[4/3] sm:aspect-[1.15/1] lg:aspect-[1/1] xl:aspect-[1.05/1] max-h-[520px] shadow-2xl border border-border/80"
-                  loading="eager"
-                />
+            {/* Right Hero Image (Clean seamless blend into background with ZERO square corners or box) */}
+            <div className="lg:col-span-6 relative flex items-center justify-center">
+              {/* Soft atmospheric ambient glow */}
+              <div className="absolute w-80 h-80 sm:w-[420px] sm:h-[420px] bg-primary/15 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute w-64 h-64 sm:w-80 sm:h-80 bg-purple-500/10 rounded-full blur-3xl pointer-events-none -bottom-4 -left-4" />
+
+              <div className="relative w-full max-w-lg lg:max-w-xl flex items-center justify-center">
+                {/* Zero corners: Radial elliptical feathered gradient mask blends smoothly into background */}
+                <div className="relative w-full overflow-hidden [mask-image:radial-gradient(ellipse_52%_52%_at_50%_50%,black_38%,rgba(0,0,0,0.7)_58%,transparent_82%)] [-webkit-mask-image:radial-gradient(ellipse_52%_52%_at_50%_50%,black_38%,rgba(0,0,0,0.7)_58%,transparent_82%)]">
+                  <img
+                    src={heroStudents}
+                    alt="Degree Guru — From Career Counselling to Job Guarantee"
+                    className="w-full h-auto max-h-[560px] object-contain mx-auto mix-blend-multiply dark:mix-blend-normal filter contrast-[1.02]"
+                    loading="eager"
+                  />
+                </div>
               </div>
             </div>
           </div>
