@@ -20,7 +20,7 @@ const capitalizeWords = (str: string) => {
 };
 
 const WA_ADVISOR_LINK =
-  "https://wa.me/918448411672?text=" +
+  "https://wa.me/919350199001?text=" +
   encodeURIComponent("Hi Degree Guru, I would like to speak with a Career Advisor for personalized guidance regarding suitable programmes.");
 
 interface BajajProgrammeFormProps {
