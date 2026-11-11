@@ -125,7 +125,6 @@ const WhatsAppOfficialIcon = ({ className = "w-6 h-6" }: { className?: string })
   </svg>
 );
 
-import leverageEduLogo from "@/assets/acwm/leverage-edu.png";
 import aimaLogo from "@/assets/acwm/aima.png";
 import bajajCapitalLogo from "@/assets/acwm/bajaj-capital.png";
 import icofpLogo from "@/assets/acwm/icofp.png";
@@ -732,8 +731,8 @@ export const PlacementGuaranteed = () => {
           <div className="bg-white/95 backdrop-blur-md border-b border-slate-200">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
               <div className="flex items-center">
-                <a href="/" className="flex items-center" title="Leverage Edu">
-                  <img src={leverageEduLogo} alt="Leverage Edu" className="h-7 sm:h-9 w-auto object-contain" />
+                <a href="/" className="flex items-center" title="Bajaj Capital">
+                  <img src={bajajCapitalLogo} alt="Bajaj Capital" className="h-7 sm:h-9 w-auto object-contain" />
                 </a>
               </div>
               <nav className="hidden md:flex items-center gap-1.5" aria-label="Page sections">
